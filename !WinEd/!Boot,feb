@@ -1,0 +1,5 @@
+If "<WinEd$Dir>" = "" Then Set WinEd$Dir <Obey$Dir>
+If "<WinEdRes$Path>" = "" Then Run <WinEd$Dir>.Resources.ResFind WinEd
+If "<WinEd$Meta>" = "" Then Set WinEd$Meta WinEdRes:!Meta
+If "<Alias$@RunType_FEC>" = "" Then Set Alias$@RunType_FEC /<WinEd$Dir>.!Run %%*0
+IconSprites <WinEd$Dir>.!Sprites

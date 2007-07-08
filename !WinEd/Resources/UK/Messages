@@ -1,0 +1,420 @@
+# Run file message
+run_copyover:Due to internal changes, this version of WinEd must not be copied over an old version. Please download WinEd again and place it in a new location.
+run_minos:WinEd requires RISC OS 4.0 or later.
+run_minclib:WinEd requires SharedCLibrary version 5.34 or later. This can be downloaded from http://www.iyonix.com/32bit/system.shtml
+
+MsgFrom:WinEd
+Already:WinEd is already loaded
+Templates:Templates
+NoTemp:Template '%0' not found
+TempMem:Not enough memory for template '%0'
+Untitled:<Untitled>
+BrowMem:Not enough memory for browser
+WinMem:Not enough memory for new window
+IndMem:Not enough memory for icon's indirected data
+IconMem:Not enough memory for new icon
+NotFile:File '%0' not found
+WontOpen:File '%0' won't open
+NotWindow:Removing unrecognised object (type %1) from file '%0'
+LoadMem:Not enough memory to load file '%0'
+ContMem:File '%0' has only partially loaded due to lack of memory
+BadFilePart:File '%0' has only partially loaded because it is corrupted
+BadFileFull:File '%0' can not be loaded because it is corrupted
+BadHeader:This file has an apparently invalid header and may not load correctly. Try anyway?
+CorruptInd:This file has invalid indirected data. Continue to load it?
+QuitWarn:WinEd contains templates which have not been saved after editing
+CloseWarn:These templates have not been saved after editing
+CantSave:Unable to save file '%0'
+Empty:No templates to save
+NoID:Window must have an identifier
+Overwrt:Window '%0' already exists. OK to overwrite?
+ToSave:To save, drag the icon to a directory display
+FontMem:Not enough memory to create font reference
+TMFonts:Template contains too many fonts
+BadFont:Illegal font handle
+NoMenu:Unable to make menu
+LoadAck:Data transfer failed: Receiver died
+SprtArea:Not enough memory for sprite area
+IconMem:Not enough memory to display icon
+ViewMem:Not enough memory for window
+IconRange:Icon number out of range
+BadBorder:The frame icon's flags/data do not appear suitable for making a frame. Do you wish to continue with this operation?
+BehindBorder:The frame icon is not behind all those in the selection. Do you wish to continue with this operation?
+SelBorder:The frame icon is included in the selection. Do you wish to continue with this operation?
+ShortNone:T
+PickMem:Not enough memory for picker window
+Safety:Attempting to save altered files to !Scrap after fatal error
+WorkArea:Work area
+IcnDgTI:Edit icon %0
+IcnDgTT:Edit title
+WADgT:'%0' work area
+WinDgT:Edit window '%0'
+Total:Total
+FInfo:%0 window(s), %1 font(s), %2 bytes
+CrdTitle:Icon %0 coordinates
+VisTitle:'%0' visible area
+NoURI:There is no application available to handle this request
+#Icon button types
+BType0:Never
+BType1:Continuous
+BType2:Auto repeat
+BType3:Click
+BType4:Release
+BType5:Double click
+BType6:Click/Drag
+BType7:Release/Drag
+BType8:Double/Drag
+BType9:Menu
+BType10:Double/Click/Drag
+BType11:Radio
+BType12:12 (Reserved)
+BType13:13 (Reserved)
+BType14:Writable/Drag
+BType15:Writable
+#
+#Menus
+#
+IBMenu:Info|Help,Icon picker,Monitor,Choices...,Clear sprites|Quit
+BrowMen:>Create,Window '123456789012',Select all,Clear selection,>Save,Statistics
+BrowMenK:>Create             ^R,Window '123456789012',Select all         ^A,Clear selection    ^Z,>Save               F3,Statistics         ^S
+BMTemp:Window
+Selection/BMSel:Selection
+BrowSub:>Copy,>Rename,Delete,Edit,Preview,>Export icon names
+BrowSubK:>Copy              ^C,>Rename            ^N,Delete            ^K,Edit              ^E,Preview           ^P,>Export icon names
+Preview:Preview
+PrevMen:Close,Store position,Store icon states,Edit template
+BType:Button type
+VMIcon:Icon
+ViewMen:Selection,Select all,Clear selection,Work area...,Visible area...,Edit window...,Edit title...,Close window,Preview window
+ViewMenK:Selection,Select all      ^A,Clear selection ^Z,Work area...    ^O,Visible area... ^V,Edit window...  ^W,Edit title...   ^T,Close window   ^F2,Preview window  ^P
+IconMen:Delete,>Renumber nnn,Copy,Edit...,Align...,Space out...,Resize...,Coordinates...,Frame...
+IconMenK:Delete         ^K,>Renumber nnn   ^N,Copy,Edit...        ^E,Align...       ^L,Space out...   ^S,Resize...      ^R,Coordinates... ^D,Frame...       ^F
+CopyMen: Down,Right,Left,Up
+CopyMenK:Down   ^2,Right  ^6,Left   ^4,Up     ^8
+CopyName:Copy
+Renumber:Renumber
+ConfirmDel:Please confirm that you want to delete the selected object(s).
+#
+#Interactive Help messages
+#
+H_IBI:\TWinEd icon.|M\Screate a new Template file.|MDrag a Template file here to edit it.|MDrag a Sprite file here to add it to WinEd's sprite pool.
+H_IBM_00:\Rsee information about WinEd
+H_IBM_01:\Sopen the icon picker.
+H_IBM_02:\Sopen the monitor.
+H_IBM_03:\Sopen the choices dialogue box.
+H_IBM_04:\Sclear all sprites from WinEd's user sprite pool.
+H_IBM_05:\Squit WinEd.
+H_ATP:This \w displays information about WinEd.
+H_ATP_10:\Scompose an email for the author of WinEd.
+H_ATP_11:\Svisit WinEd's World Wide Web site.
+H_Brow:This is a template file browser.|MDouble click \s to edit a \w.|MDouble click \a to preview a \w.
+H_BRM_00:\Rcreate a new \w.
+H_BRM_01:\Rperform an operation on the selected \w(s).
+H_BRM_03G/H_BRM_01G:\Gno \ws are selected.
+H_BRM_0100:\Rcopy the selected \w.
+H_BRM_0104G/H_BRM_0103G/H_BRM_0101G/H_BRM_0100G:\Gthere is not exactly one selected \w.
+H_BRM_0101:\Rrename the selected \w.
+H_BT_06
+H_BRM_0102:\Sdelete the selected template(s).
+H_BRM_0103:\Sedit the selected \w.
+H_BRM_0104:\Spreview the selected \w.
+H_BRM_0105:\Rexport the icon names from the selected \w(s).
+H_BT_01:\Sselect all the templates in the browser.|M\Aclear the selection.
+H_BRM_02:\Sselect all the templates in the browser.
+H_VRM_02
+H_BRM_03:\Sclear the selection.
+H_BRM_04:\Rsave the Template file.
+H_BT_07
+H_BRM_05:\Sopen a statistics \w for these templates.
+H_Prev:This is a preview \w for checking the final appearance and behaviour of a template.
+H_PRM_00:\Sclose the preview \w.
+H_PRM_01:\Supdate the template data with the \w's current position.
+H_PRM_02:\Supdate the template data with the current selection status of the icons.
+H_PRM_03:\Smake this window editable.
+H_View:\Wan editable template.
+H_VRM_00:\Rperform an operation on the selected icon(s).
+H_VRM_00G:\Gno icons are selected.
+H_VT_05
+H_VRM_0000:\Sdelete the selected icon(s).
+H_VRM_0001:\Srenumber the selected icon(s) starting from this number.|M\Rto enter a new initial number.
+H_VRM_0002:\Rto copy the selected icon(s).
+H_VRM_000200:\Sto copy the selected icon(s) downwards.
+H_VRM_000201:\Sto copy the selected icon(s) to the right.
+H_VRM_000202:\Sto copy the selected icon(s) to the left.
+H_VRM_000203:\Sto copy the selected icon(s) upwards.
+H_VRM_0003:\Sedit the selected icon.
+H_VRM_0003G:\Gthere is not exactly one selected icon.
+H_VT_07
+H_VRM_0004:\Salign the selected icons with each other.
+H_VRM_0004G:\Gonly one icon is selected.
+H_VT_08
+H_VRM_0005:\Sspace the selected icons out from each other or a single icon from the edges of the \w.
+H_VT_09
+H_VRM_0006:\Sresize the selected icon(s).
+H_VT_12
+H_VRM_0007:\Schange the coordinates and/or size of the selected icon.
+H_VT_10
+H_VRM_0008:\Splace a frame around the selected icon(s).
+H_VT_00:\Sselect all the icons in the viewer.|M\Aclear the selection.
+H_VRM_01:\Sselect all the icons in the viewer.
+H_VRM_02G:\Gthere are no selected icons.
+H_VT_02
+H_VRM_03:\Sedit the \w's work area.
+H_VT_11
+H_VRM_04:\Sedit the \w's visible area.
+H_VT_03
+H_VRM_05:\Sedit the \w.
+H_VT_04
+H_VRM_06:\Sedit the \w's title.
+H_VRM_07:\Sclose the \w.
+H_VRM_08:\Smake this window a preview.
+H_CLO/H_PRQ:This \w is to warn you of potential data loss.
+H_PRQ_00:\Sdiscard all data in WinEd and quit.
+H_PRQ_02:\Skeep WinEd and its data.
+H_CLO_00:\Sopen the Save as dialogue box for this file.
+H_CLO_02:\Sdiscard this file.
+H_CLO_03:\Skeep this file.
+H_ALN:\Ticon alignment dialogue box.
+H_ALN_00:\Salign the selected icons.
+H_SPC_01/H_WAD_01/H_COL_01/H_ICC_02/H_BOR_01/H_ALN_01/H_WEC_01/H_CHO_01
+H_CRD_17/H_VSA_17/H_SAVE_01/H_MIE_61/H_EXP_01:\Sclose this dialogue box.
+H_ALN_02/H_ALN_04/H_ALN_05/H_ALN_06/H_ALN_07/H_ALN_08/H_ALN_09
+H_ALN_10:Select which way you want to align the selected icons from these options.
+H_ALN_03/H_ALN_13/H_ALN_14
+H_ALN_15:These options determine in which direction the selected icons or their edges will move.
+H_ALN_11/H_ALN_12:Select from these options whether to move whole icons or resize them, moving only the relevant edge.
+H_BOR:\Ticon framing dialogue box.
+H_BOR_00:\Smake the frame.
+H_BOR_02:Enter the gap to leave between the frame and the icons it bounds here.
+H_BOR_03:\Sdecrease the gap.
+H_BOR_04:\Sincrease the gap.
+H_BOR_05:Select this option to frame the selected icon(s) with the \w's visible area.
+H_BOR_06:Select this option to frame the selected icon(s) with the chosen icon.
+H_BOR_07:Enter the icon with which to frame the selection here.
+H_BOR_08:\Sdecrease the frame icon number.
+H_BOR_09:\Sincrease the frame icon number.
+H_BOR_10:Select this option to increase the gap at the top of the frame to make room for a label.
+H_BOR_11:Enter the extra gap to leave for the label here (24 for standard size).
+H_BOR_12:\Sdecrease the extra gap to leave for the label.
+H_BOR_13:\Sincrease the extra gap to leave for the label.
+H_BOR_14/H_BOR_15/H_BOR_16
+H_BOR_17:Select these icons to determine which sides of the frame will be altered.
+H_SAVE:\Tdialogue box for saving templates.
+H_SAVE_00:\Ssave the templates with the above pathname.
+H_SAVE_02:Enter a new leafname or pathname for the templates here.
+H_SAVE_03:Drag this icon to the directory display where you want to save the templates or to another application.
+H_SAVE_04:Select this option if you only want to save the \ws which are selected in the browser.
+H_EXP:\Tdialogue box for exporting icon names.
+H_EXP_00:\Ssave the icon names with the above pathname.
+H_EXP_02:Enter a new leafname or pathname for the file here.
+H_EXP_03:Drag this icon to the directory display where you want to save the icon names or to another application.
+H_EXP_04:Select this option if you want to export the icon names as an enum statement for use in C programs.
+H_EXP_05:Select this option if you want to export the icon names as message tokens for a Messages file.
+H_WEC:This is the \w flag editing dialogue box.
+H_WEC_00:\Supdate the \w template with the above flags.
+H_WEC_12/H_WEC_13/H_WEC_14/H_WEC_15/H_WEC_16/H_WEC_17/H_WEC_18/H_WEC_03
+H_WEC_02:These flags determine which of the named tool icons will appear around the \w.
+H_WEC_04/H_WEC_05/H_WEC_21/H_WEC_22/H_WEC_23/H_WEC_24/H_WEC_25/H_WEC_26/H_WEC_27/H_WEC_28
+H_WEC_72/H_WEC_29:These flags affect the behaviour of the \w.
+H_WEC_11/H_WEC_19
+H_WEC_20:These options determine whether and how the \w will receive scroll events.
+H_WEC_30:\Tbutton type of the \w's work area.
+H_WEC_31:\Sto change the button type.
+H_WEC_34/H_WEC_38/H_WEC_42/H_WEC_46/H_WEC_50/H_WEC_54/H_WEC_58
+H_WEC_68/H_WEC_64/H_WEC_65/H_WEC_66/H_WEC_70/H_WEC_67/H_WEC_69
+H_WEC_8/H_WEC_9:These icons show the colours to be used in the \w.
+H_WEC_35/H_WEC_39/H_WEC_43/H_WEC_47/H_WEC_51/H_WEC_55
+H_WEC_59/H_ICC_39/H_ICC_44:\Sdecrease the colour number for this item..
+H_WEC_36/H_WEC_40/H_WEC_44/H_WEC_48/H_WEC_52/H_WEC_56
+H_WEC_60/H_ICC_40/H_ICC_45:\Sincrease the colour number for this item.
+H_WEC_37/H_WEC_41/H_WEC_45/H_WEC_49/H_WEC_53/H_WC_57
+H_WEC_61/H_ICC_41/H_ICC_46:\Schoose a new colour for this item.
+H_WEC_62:\Sset all the colours to their recommended default values.
+H_WEC_63:If this option is selected the \w will use GCOL colours instead of Wimp colours.
+H_ICC:\Ticon/title editing dialogue box.
+H_ICC_00:\Supdate the icon/title, ensuring the icon is large enough to hold the data.
+H_ICC_01:\Supdate the icon without checking its size.
+H_ICC_06:Enter the text or the sprite name of the icon here.
+H_ICC_07:This flag indicates the icon contains text.
+H_ICC_08:This flag indicates the icon contains a sprite.
+H_ICC_09:This flag indicates the icon is indirected.
+H_ICC_11:Enter the icon's validation string here.
+H_ICC_13:Enter the maximum permitted length of the icon's text (including terminator) here.
+H_ICC_14:\Sset the icon's maximum text length to the length of the current data.
+H_ICC_18:\Ticon's button type.
+H_ICC_19:\Schange the button type.
+/H_ICC_20/H_ICC_21/H_ICC_22/H_ICC_30/H_ICC_31/H_ICC_32
+H_ICC_23/H_ICC_24/H_ICC_25/H_ICC_26/H_ICC_27/H_ICC_28
+H_ICC_29:These are the icon's flags.
+H_ICC_34:\Ticon's ESG (Exclusive Selection Group number).
+H_ICC_35:\Sdecrease the ESG.
+H_ICC_36:\Sincrease the ESG.
+H_ICC_38:\Ticon's foreground colour.
+H_ICC_43:\Ticon's background colour.
+H_ICC_48:This flag determines whether to use an outline font in the icon.
+H_ICC_49:\Tname of the font used in the icon.
+H_ICC_50:\Schange the font name.
+H_ICC_52:Enter the height of the font here.
+H_ICC_53:\Sdecrease the font height.
+H_ICC_54:\Sincrease the font height.
+H_ICC_57:Enter the aspect ratio (width to height) of the font as a percentage here.
+H_ICC_59:\Stake the colours defined above and add them to the icon's validation string.
+H_Font:\Sset the desired font.
+H_COL:\Wthe wimp colour selector.
+H_COL_00:\Sset the chosen colour.
+H_COL_02:\Schoose no colour (transparent).
+H_COL_03:\Tchosen colour.
+H_COL_04/H_COL_05/H_COL_06/H_COL_07/H_COL_08/H_COL_09/H_COL_10/H_COL_11/H_COL_12/H_COL_13
+H_COL_14/H_COL_16/H_COL_17/H_COL_18/H_COL_19/H_COL_20:Choose a colour from this table.
+H_MON:\Wthe monitor.|MIt shows the \w identifier and icon under the pointer.
+H_MON_04:This shows the identifier of the \w under the pointer. A '*' means the \w is editable, otherwise it is a preview.
+H_MON_05:This shows the number of the icon under the pointer.
+H_MON_02/H_MON_06/H_MON_07/H_MON_08
+H_MON_09:These icons show the work area coordinates of the icon under the pointer or the visible limits of the work area.
+H_MON_10:This icon shows the size of the icon under the pointer or of the visible area.
+H_Pick:\Wthe icon picker.|MDrag icons from here to make copies in your own \ws.
+H_WAD:\Twork area editing dialogue box.
+H_WAD_00:\Supdate the work area.
+H_WAD_06:Enter the coordinate of the top edge of the work area here.
+H_WAD_07:\Sdecrease the top edge coordinate of the work area.
+H_WAD_08:\Sincrease the top edge coordinate of the work area.
+H_WAD_09:Enter the coordinate of the left edge of the work area here.
+H_WAD_10:\Sdecrease the left edge coordinate of the work area.
+H_WAD_11:\Sincrease the left edge coordinate of the work area.
+H_WAD_12:Enter the coordinate of the right edge of the work area here.
+H_WAD_13:\Sdecrease the right edge coordinate of the work area.
+H_WAD_14:\Sincrease the right edge coordinate of the work area.
+H_WAD_15:Enter the coordinate of the bottom edge of the work area here.
+H_WAD_16:\Sdecrease the bottom edge coordinate of the work area.
+H_WAD_17:\Sincrease the bottom edge coordinate of the work area.
+H_WAD_18:\Sto set the work area to the same size as the current visible area with the origin at (0,0).
+H_WAD_19:\Sto set the work area to the same as the visible area.
+H_WAD_20:Enter the minimum allowed width of the visible area here.
+H_WAD_21:\Sdecrease the minimum allowed width of the visible area.
+H_WAD_22:\Sincrease the minimum allowed width of the visible area.
+H_WAD_23:Enter the minimum allowed height of the visible area here.
+H_WAD_24:\Sdecrease the minimum allowed height of the visible area.
+H_WAD_25:\Sincrease the minimum allowed height of the visible area.
+H_SPC:\Wfor spacing out icons from each other or from the edges of the visible area.
+H_SPC_00:\Sspace out the selected icon(s).
+H_SPC_02/H_SPC_03/H_SPC_04
+H_SPC_05:From these options choose which direction or edge to space the icon(s) from.
+H_SPC_07:Enter the gap to leave between icons here.
+H_SPC_08:\Sdecrease the gap to leave between icons.
+H_SPC_09:\Sincrease the gap to leave between icons.
+H_RSZ:\Wfor resizing icons.
+H_RSZ_04:\Sset the width of the selected icon(s) to just wide enough for its/their data.
+H_RSZ_05:\Sset the height of the selected icon(s) to just tall enough for its/their data.
+H_RSZ_06:\Sset the size of the selected icon(s) to just large enough for its/their data.
+H_RSZ_07:\Smake all the selected icons as wide as the widest one selected.
+H_RSZ_08:\Smake all the selected icons as wide as the narrowest one selected.
+H_RSZ_09:\Smake all the selected icons as tall as the tallest one selected.
+H_RSZ_10:\Smake all the selected icons as tall as the shortest one selected.
+H_BTM:This is the button-type menu.
+H_BTM_09:'Menu' button type will act the same as 'Click' for work areas.
+H_BTM_14:Do not use the Writable/Drag button type for work areas.
+H_STAT:This \w shows statistics about a template file loaded in WinEd.|MThe figures show sizes in bytes.
+H_BT:\Tbrowser tool bar. It allows quicker access to browser functions.
+H_BT_00:\Screate a new \w.
+H_BT_03:\Ssave the templates.
+H_BT_04:\Scopy the selected template.
+H_BT_05:\Srename the selected template.
+H_VT:\Tviewer tool pane. It allows quicker access to viewer functions.
+H_VT_06:\Srenumber the selected icon(s), entering a number in the submenu.|M\Arenumber the selected icon(s) with the current renumber value.
+H_CHO:\TChoices dialogue box.
+H_CHO_21:\Supdate the choices.
+H_CHO_19:\Supdate and save the choices, preserving them for future sessions with WinEd.
+H_CHO_23:\Sto discard your changes.
+H_CHO_17:Select this option if you want the monitor to automatically open and close with editable and preview \ws.
+H_CHO_04:Select this option if you want the icon picker to automatically open and close with editable \ws.
+H_CHO_05:Select this option if you want tool bars in browsers.
+H_CHO_06:Select this option if you want tool panes attached to editable \ws.
+H_CHO_07:Select this option if you want to use keyboard short cuts.
+H_CHO_08:Select this option if you want a cross hatch pattern to be drawn in ediatble \ws that need the task's help to be redrawn.
+H_CHO_09:Select this option if you want editable \ws to be created with all tool icons present.
+H_CHO_10:Select this option if you want WinEd to attempt to load accompanying Sprites files with templates.
+H_CHO_11:Select this option if you want the icon and window editing dialogue boxes' Update and Cancel icons to be in panes.
+H_CHO_12:Select this option to allow selected icons to be moved with the cursor keys without holding the mouse button.
+H_CHO_13:Select this option to force borders to be drawn around all editable icons.
+H_CHO_14:Select this option if you want to be prompted to confirm before deleting anything.
+H_CHO_15:Select this option to terminate all strings with CR.|MDeselect it to use NULL terminators.
+H_CHO_16:Select this option to ensure that panes can't be given furniture leading to strange behaviour.
+H_CHO_26:Select this option to display the list of templates in alphabetical order in the browser window.
+H_CRE:Use this dialogue box to enter a name for your new \w.
+H_COP:Use this dialogue box to enter a name for the copy of the slected \w.
+H_REN:Use this dialogue box to enter a new name for the selected \w.
+H_NUM:Use this dialogue box to enter a number to start renumbering the selected icon(s) from.
+H_CRD:Use this dialogue box to alter the selected icon's coordinates.
+H_CRD_02:\Tcoordinate of the selected icon's left edge.
+H_CRD_03:\Sdecrease the coordinate of the selected icon's left edge.
+H_CRD_04:\Sincrease the coordinate of the selected icon's left edge.
+H_CRD_05:\Tcoordinate of the selected icon's top edge.
+H_CRD_06:\Sdecrease the coordinate of the selected icon's top edge.
+H_CRD_07:\Sincrease the coordinate of the selected icon's top edge.
+H_CRD_10:\Tselected icon's width.
+H_CRD_11:\Sdecrease the selected icon's width.
+H_CRD_12:\Sincrease the selected icon's width.
+H_CRD_13:\Tselected icon's height.
+H_CRD_14:\Sdecrease the selected icon's height.
+H_CRD_15:\Sincrease the selected icon's height.
+H_CRD_16:\Supdate the coordinates of the selected icon to these values.
+H_VSA:Use this dialogue box to alter the \w's visible area ie its position on screen.
+H_VSA_02:\Tcoordinate of the visible area's left edge.
+H_VSA_03:\Sdecrease the coordinate of the visible area's left edge.
+H_VSA_04:\Sincrease the coordinate of the visible area's left edge.
+H_VSA_05:\Tcoordinate of the visible area's top edge.
+H_VSA_06:\Sdecrease the coordinate of the visible area's top edge.
+H_VSA_07:\Sincrease the coordinate of the visible area's top edge.
+H_VSA_10:\Tvisible area's width.
+H_VSA_11:\Sdecrease the visible area's width.
+H_VSA_12:\Sincrease the visible area's width.
+H_VSA_13:\Tvisible area's height.
+H_VSA_14:\Sdecrease the visible area's height.
+H_VSA_15:\Sincrease the visible area's height.
+H_VSA_16:\Supdate the coordinates of the visible area to these values.
+H_VSA_20:\T\w's horizontal scroll offset from the left of the work area.
+H_VSA_21:\Sdecrease the horizontal scroll offset.
+H_VSA_22:\Sincrease the horizontal scroll offset.
+H_VSA_23:\T\w's vertical scroll offset from the top of the work area.|MIt should be negative.
+H_VSA_24:\Sdecrease the vertical scroll offset.
+H_VSA_25:\Sincrease the vertical scroll offset.
+H_MIE:This \w is for editing some of the flags of a multiple selection of icons simultaneously.
+H_MIE_07/H_MIE_15/H_MIE_19/H_MIE_23/H_MIE_27/H_MIE_34/H_MIE_38/H_MIE_42/H_MIE_46/H_MIE_50
+H_MIE_03:Select this button to set this flag for all icons in the selection.
+H_MIE_08/H_MIE_16/H_MIE_20/H_MIE_24/H_MIE_28/H_MIE_35/H_MIE_39/H_MIE_43/H_MIE_47/H_MIE_51
+H_MIE_04:Select this button to clear this flag for all icons in the selection.
+H_MIE_09/H_MIE_17/H_MIE_21/H_MIE_25/H_MIE_29/H_MIE_36/H_MIE_40/H_MIE_44/H_MIE_48/H_MIE_52
+H_MIE_05:Select this button to leave this flag unaffected for all icons in the selection.
+H_MIE_54:Whether to set the selected icons' button types.
+H_MIE_55/H_MIE_56:The button type to set the selected icons to.
+H_MIE_57:Whether to set the selected icons' ESG.
+H_MIE_58/H_MIE_59/H_MIE_60:The ESG to set the selected icons to.
+H_MIE_62:\Supdate all the selected icons' flags with these values.
+H_OVR:You're trying to save this template file over the top of a different, existing, file.|MPlease select 'Overwrite' below if this is what you intended.
+H_OVR_1:Click here to overwrite the file on disc with this template file.
+H_OVR_2:Click here to cancel the save operation.
+#
+# Icon name export templates
+#
+ExportLeaf:IconNames
+
+E_Preamble:/* Icon names exported by WinEd */\n\n
+E_PreWin:/* Icons for window %0 */\ntypedef enum {\n
+E_1stIcon:  %0_%1 = %2,\n
+E_Icon:  %0_%1 = %2,\n
+E_OneIcon:
+E_LastIcon:  %0_%1 = %2\n
+E_PostWin:} %0_icons;\n\n
+E_Postamble:\n
+
+M_Preamble:# Icon names exported by WinEd\n\n
+M_PreWin:# Icons for window %0\n
+M_1stIcon:%0_%1:\n
+M_Icon:%0_%1:\n
+M_OneIcon:
+M_LastIcon:%0_%1:\n
+M_PostWin:
+M_Postamble:\n
+
+NoExport:Unable to export icon names to file '%0'
+

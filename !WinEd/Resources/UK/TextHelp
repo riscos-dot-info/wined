@@ -1,0 +1,1502 @@
+
+
+
+
+  ************************************************************************
+  **          This is an obsolete version of the help file.             **
+  ** For the a current version please load a web browser and try again. **
+  ************************************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                          ____
+                    |        |           |          |
+                    |        |  *   __   |       ___|
+                    |        |  |  |  \  |˜˜˜˜  /   |
+                     \  /\  /   |  |   | |     |    |
+                      \/  \/    |  |   | |____  \__/|
+
+
+
+    A template editor for RISC OS 3.
+
+
+
+
+
+
+    Author:	Tony Houghton, Adam Richardson
+    Email:	riscos@snowstone.org.uk
+    WWW:	http://www.riscos.info/index.php?title=WinEd
+
+
+
+
+    This manual describes release 2.8x of WinEd.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    CONTENTS
+
+
+
+
+    About WinEd............................................................1
+    Requirements...........................................................1
+    Conditions of use and distribution.....................................1
+    Installation...........................................................1
+    Disclaimer.............................................................2
+    Units used.............................................................2
+    Mode independence......................................................2
+    WinEd‘s dialogue boxes.................................................2
+    Error handling.........................................................2
+    Interactive help.......................................................2
+    Loading and creating templates.........................................3
+    Keyboard control of the pointer........................................3
+    Sprite files and sprite areas..........................................3
+    The icon bar menu......................................................3
+    The Choices dialogue box...............................................4
+    Browsers...............................................................5
+    Mouse operations in browsers...........................................6
+    The browser menu.......................................................6
+    Saving templates.......................................................7
+    Statistics windows.....................................................7
+    The browser tool bar...................................................7
+    Exporting icon names...................................................8
+    Preview windows........................................................8
+    The preview menu.......................................................8
+    Editable windows.......................................................8
+    Mouse operations in editable windows...................................9
+    Selected icon(s) submenu..............................................10
+    The editable window tool bar..........................................10
+    Edit window dialogue box..............................................11
+    The monitor...........................................................11
+    Creating icons: the Icon picker.......................................12
+    Work area dialogue box................................................12
+    Visible area dialogue box.............................................13
+    Edit icon/title dialogue box..........................................13
+    Edit multiple icons dialogue box......................................14
+    Align dialogue box....................................................14
+    Space out dialogue box................................................15
+    Resize icons dialogue box.............................................16
+    Coordinates dialogue box..............................................17
+    Frame dialogue box....................................................17
+    Hints & tips..........................................................17
+    Customising WinEd.....................................................19
+    Bug reports & suggestions.............................................21
+    Acknowledgements......................................................21
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    WINED
+    ________________________________________________________________________
+
+
+
+    About WinEd
+    ˜˜˜˜˜˜˜˜˜˜˜
+    WinEd is a template editor.  Its features are aimed at designing
+    templates for RISC OS 3 with a 3D look, but it can also be used for 2D
+    templates.  The most attractive features of WinEd are:
+
+                   Main editing interfaces use dialogue boxes.
+                   Icons can be dragged between windows, including a
+                    customisable Picker‘ window containing the most
+                    commonly used icons.
+                   Multiple files can be loaded by one instantiation of
+                    WinEd.
+                   Conventions are based on Acorn‘s Style Guide.
+                   Statistics are available on the size etc of template
+                    files.
+                   Powerful features for positioning icons relative to
+                    each other.
+                   Optional rounding of coordinates in high resolution
+                    modes to ensure low resolution compatibility.
+                   Optional tool panes and keyboard short cuts enhance
+                    convenience.
+                   Fast loading and saving.
+
+    Requirements
+    ˜˜˜˜˜˜˜˜˜˜˜˜
+    WinEd requires RISC OS 3.1 or later, but will work on 1Mb systems.  No
+    modules are required except that, because it is designed for a 3D look,
+    you should use the NewLook suite if you have RISC OS 3.1.  This
+    includes the WindowUtils module, without which some 3D applications may
+    crash.
+
+    Conditions of use and distribution
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    WinEd is part way between freeware and shareware.  This means that it
+    can be freely copied and distributed, provided all files are left in
+    their original form and permission is sought from the author before
+    distributing it in connection with a commercial venture.  If you like
+    WinEd you are encouraged to send the author a donation in appreciation
+    of the work put into its creation, but unlike shareware, this is
+    voluntary and does not imply extra support being given in return.
+
+    To make a donation send approximately £10.00 sterling or equivalent
+    (cheques payable to A. Houghton) to:
+
+    Tony Houghton
+    271 Upper Weston Lane
+    Southampton
+    SO19 9HY
+    England
+
+    Installation
+    ˜˜˜˜˜˜˜˜˜˜˜˜
+
+
+
+                                    Page 1
+
+
+
+
+
+                                    WINED
+    ________________________________________________________________________
+
+
+
+    WinEd can be run from any filing system.  To install WinEd drag it from
+    the directory you receive it on to the directory you want it to live‘
+    in.  To ensure your new copy is used in preference to the original open
+    the application directory with Shift-Double-click and double click the
+    !Boot file.  You only need to do this if you have just made a new copy
+    and intend to use it without rebooting the computer.
+
+    Disclaimer
+    ˜˜˜˜˜˜˜˜˜˜
+    I, the author can accept no liability for any loss or damage caused by
+    installing or using WinEd.  I reserve the right to change the
+    specification of WinEd without notice and upgrade it or not as I see
+    fit.
+
+    Units used
+    ˜˜˜˜˜˜˜˜˜˜
+    The units used and referred to throughout are OS units, except where
+    stated.  If a writable icon expecting a number is left blank, zero is
+    assumed.
+
+    Remember that work area coordinates have the origin at the top left and
+    anything below this is negative.
+
+    Mode independence
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    WinEd has been designed so that you do not have to design your
+    templates in low resolution modes to ensure compatibility.  This is
+    done by providing an option to round all coordinates to the nearest 4
+    OS units (equivalent to one pixel in the lowest resolution desktop
+    modes), including the dashed outline in drags.
+
+    WinEd‘s dialogue boxes
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    Most of WinEd‘s dialogue boxes are static ie a click outside them does
+    not close them.  This slightly improves convenience and consistency.
+
+    Error handling
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    Where possible, WinEd tries to continue after an error, but you should
+    save your data as soon as possible.  If WinEd can not continue there
+    will be a Cancel button instead of OK or Continue.  After a fatal error
+    WinEd will attempt to save files with unsaved changes in
+    <Wimp$ScrapDir>.WinEd. I hope you never have occasion to find this
+    useful :-).
+
+
+    Interactive help
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    WinEd supports interactive help, including its menus; you may find this
+    helpful at first.
+
+
+
+
+                                    Page 2
+
+
+
+
+
+                                    WINED
+    ________________________________________________________________________
+
+
+
+
+    Loading and creating templates
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    Template files can be loaded by double clicking or dragging them to
+    WinEd's icon on the icon bar.  The number of files WinEd can load and
+    edit is only limited by memory.  To create a new file click the WinEd
+    icon; this opens an empty browser (see below).
+
+    Files can be merged by dragging one file into a browser containing the
+    other.
+
+    Keyboard control of the pointer
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    While WinEd is on the icon bar and no other windows have input focus,
+    each press of one of the cursor keys moves the mouse pointer by one
+    pixel in the appropriate direction.  Alternatively, the cursor keys can
+    be made to 'nudge' any selected icons without using the mouse.
+
+    Sprite files and sprite areas
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    In some windows it is necessary to create icons with sprites that
+    belong to an application instead of the Wimp‘s sprite pool.  You can
+    load user‘ sprite files into WinEd by dragging them to its icon.
+    WinEd only has one sprite pool which it shares between all windows
+    loaded in it, but it can load sprite files dragged to any of its
+    windows or its icon bar.
+
+    Holding shift while dragging a sprite file to WinEd causes it to be
+    merged with the Wimp sprite pool and the screen is redrawn.
+
+    From version 2.30 onwards, all sprite area fields are saved with the
+    value 1 (use Wimp sprites) and WinEd makes no distinction between the
+    Wimp sprite pool and the user sprite pool.  RISC OS 3 allows all sprite
+    area pointers to be set to a user sprite area and it will look for
+    sprites in the Wimp pool if they are not found in the user‘s area.  It
+    is up to the target application to change sprite area pointers to its
+    own sprite area if necessary.
+
+    The icon bar menu
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+
+    Info
+    ----
+    Moving the pointer right opens a typical dialogue box contating
+    information about WinEd.  However, clicking on the box's toggle size
+    icon reveals two extra buttons, one for emailing me and one for
+    visiting WinEd's web page.  These require suitable Internet software to
+    have been booted or loaded.
+
+
+    Icon picker
+    -----------
+
+
+
+                                    Page 3
+
+
+
+
+
+                                    WINED
+    ________________________________________________________________________
+
+
+
+    This opens the icon picker immediately above the right hand end of the
+    icon bar.  The icon picker is described in a later section.
+
+    Monitor
+    -------
+    This opens the monitor window at the top right of the screen.  The
+    monitor is described in a later section.
+
+    Clear sprites
+    -------------
+    Clears the user sprite area to save memory.
+
+    The Choices dialogue box
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+
+    Automatic monitor
+    -----------------
+    If selected the monitor will automatically open and close when editable
+    or preview windows are opened and closed, as described in the section
+    about The monitor.
+
+
+
+    Automatic icon picker
+    ---------------------
+    This makes the icon picker open and close with editable windows in a
+    similar way to the monitor.
+
+    Browser tool bar
+    ----------------
+    This causes a tool bar to be displayed along the top of browsers.
+
+    Editable window tool bar
+    ------------------------
+    This causes a tool pane to be attached to the top left of editable
+    windows.
+
+    Editor panes
+    ------------
+    If this option is set, the two large dialogue boxes for editing windows
+    and icons will have their main action buttons in panes.
+
+    Editable window furniture
+    -------------------------
+    This causes editable windows to be displayed with all the tools (title
+    bar, scroll bars etc) to save you having to repeatedly switch them on
+    and off every time you want to move or scroll the window.  A Preview
+    system is provided to see how your windows will actually look.
+
+    Hatch user-drawn windows
+    ------------------------
+    If selected, a cross hatch pattern will be displayed in any editable
+
+
+
+                                    Page 4
+
+
+
+
+
+                                    WINED
+    ________________________________________________________________________
+
+
+
+    window which needs the task‘s help to be redrawn.
+
+    Round coordinates
+    -----------------
+    This causes all coordinates to be rounded to the nearest 4 OS units as
+    described in the section on Mode independence.
+
+    Auto-load sprites
+    -----------------
+    When a template file is loaded WinEd will load a Sprites or Sprites22
+    file from the same directory if one exists and this option is set.
+
+    Keyboard short cuts
+    -------------------
+    If selected, browsers and editable windows will claim input focus and
+    respond to keyboard short cuts.  The short cuts are shown in the menus
+    if this option is selected.
+
+    Move selection without mouse
+    ----------------------------
+    If selected, selected icons in editable windows can be nudged with the
+    cursor keys instead of the keys only nudging the mouse pointer.
+
+
+    Confirm deletions
+    -----------------
+    If selected, you will be prompted with an error box before deleting any
+    icons or windows.
+
+    Always show borders
+    -------------------
+    If selected, all editable icons will be drawn with borders, making it
+    easier to line them up with each other without using the automated
+    features WinEd provides.
+
+    FormEd compatible strings
+    -------------------------
+    All strings in template files are supposed to use CR (carriage-return)
+    terminators.  The Wimp's template SWIs, and most applications, work
+    with any control character terminator, but FormEd is a notable
+    exception, which insists on CR for most strings.  WinEd now uses CR by
+    default, but if this option is unticked, it will use only zero
+    terminators, which may be useful if you're programming lazily in C :-).
+
+    Strict with panes
+    -----------------
+    If selected, windows with the pane flag set will have certain other
+    flags disabled to avoid unusual behaviour in the target application.
+
+
+    Browsers
+    ˜˜˜˜˜˜˜˜
+
+
+
+                                    Page 5
+
+
+
+
+
+                                    WINED
+    ________________________________________________________________________
+
+
+
+    Browser is the term for a window which displays a list of the
+    window/dialogue box definitions in a file.  Each entry is shown as a
+    small icon depicting a dialogue box (with no scroll bars) or window
+    (with scroll bars) next to its template identifier.  The windows are
+    displayed in the order they appear in the file left to right.
+
+    If you click Adjust on a browser‘s close tool WinEd will attempt to
+    open the directory the templates were last loaded or saved in, keeping
+    the browser open if you hold Shift.  Iconising a browser (Shift-Select
+    on the close tool) closes any windows which belong‘ to it, thus it can
+    be used for a quick tidy-up.
+
+    Mouse operations in browsers
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    Where work area‘ is shown in brackets below it refers to clicking over
+    a part of the window not covered by an icon.  Similarly, (icon)‘ means
+    clicking over an icon; each icon corresponds to a window or dialogue
+    box definition.  If neither are specified it refers to any part of the
+    window.  Holding down Ctrl while clicking has the effect of forcing the
+    action to behave as if the click is over the work area, ignoring any
+    icon.
+
+            Select (icon)              Exclusively select icon
+            Select (work area)         Clear selection
+            Adjust (icon)              Toggle selection state of icon
+                                       without affecting others
+            Double-click Select (icon) Open window for editing, or close
+                                       it if already open
+            Double-click Adjust (icon) Open window for preview, or close
+                                       it if already open
+            Drag Select (work area)    Start dragging rubber box; when
+                                       complete all icons within the box
+                                       are selected
+            Drag Select (icon)         Start drag & drop operation on
+                                       current selection, saving it with a
+                                       filename of "Selection".
+            Drag Adjust                Start dragging rubber box; all icons
+                                       inside will have their selection
+                                       state toggled
+            Menu                       Open browser menu.
+
+    The browser menu
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+
+    Create
+    ------
+    Move the pointer right to create a new window.  This must contain at
+    least one character, and you will be asked for confirmation if you are
+    about to overwrite any existing windows with the same name.
+
+    Statistics
+    ----------
+
+
+
+                                    Page 6
+
+
+
+
+
+                                    WINED
+    ________________________________________________________________________
+
+
+
+    Opens a statistics window for the file in the browser.  This is
+    described below.
+
+    Saving templates
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    If one or more windows are selected the Selection button will be
+    selectable.  Select this if you only want to save the selected
+    templates.  Note that when you save a selection, the fonts for the
+    whole file are saved with it.  To remove superfluous fonts load the new
+    file back into WinEd and resave.
+
+    Statistics windows
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    The top row shows the column headings.  The Identifier column shows the
+    name of the window, Icons shows how many icons the window contains.
+    Buffer shows the size of the buffer needed to load the window block
+    with Wimp_LoadTemplate; similarly Indirected shows the size of buffer
+    needed to hold the icons‘ indirected data.  Note that the Buffer size
+    is the size that will be requested by Wimp_LoadTemplate and includes
+    the Wimp's scratch buffer for indirected data.
+
+    Each row in the main section of the window shows the data described
+    above for each window definition in the file.
+
+    The penultimate row shows the total of each column for all the windows
+    in the file.
+
+    The bottom row shows, from left to right, the number of windows in the
+    file, the number of different font definitions used, and the size in
+    bytes of the file as stored on disc.  Note the latter is generally
+    smaller than the total size needed to load the templates, this is
+    because only the parts of indirected strings which contain data are
+    stored in the file, but the application using the templates needs to
+    reserve space for the maximum possible length of the string.
+
+    The browser tool bar
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    This is a row of tool icons which can optionally be displayed along the
+    top of browser windows.  The tools provide short cuts for the functions
+    described above, available from the browser menu.  They are (from left
+    to right):
+
+            Create (opens writable submenu)
+            Select all (Select mouse button) /
+                    Clear selection (Adjust mouse button)
+            Save
+            Copy (opens writable submenu)
+            Rename (opens writable submenu)
+            Delete
+            Statistics
+
+
+
+
+                                    Page 7
+
+
+
+
+
+                                    WINED
+    ________________________________________________________________________
+
+
+
+
+    Exporting icon names
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    The last entry on the selected window(s) submenu of the browser menu
+    leads to a Save as dialogue box for exporting icon names.  An icon can
+    be given a name in an N validation command.  WinEd is configured to
+    export the icon names as sets of enum statements for the C programming
+    language, but it can be configured by editing its Messages file.  See
+    the chapter on customisation.
+
+    Preview windows
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    Since editable windows have their attributes altered to make them
+    easier to edit, it is necessary to have a system of viewing exactly how
+    your finished windows will look and behave.  This is what preview
+    windows are for.  They can be opened by double clicking Adjust on a
+    window in a browser or by choosing Preview from the browser menu.
+
+    Previews can also be used to fine tune the size and appearance of
+    windows in ways which are not practical or possible with editable
+    windows.
+
+    It is possible to drag a preview window by dragging an empty part (ie
+    not covered by an icon) of its work area while pressing Ctrl.  Using
+    Select has the same effect as dragging the title bar (move window) and
+    Adjust is the same as dragging the adjust size tool (resize window).
+
+    It may also be necessary to see how windows fit with each other (eg for
+    panes) without superfluous tools.
+
+    Once you are satisfied with the size and position of a preview window
+    remember to store the position and size with the preview menu (see
+    below), otherwise they will be reset next time you open the window.
+
+    The preview menu
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+
+    Store position
+    --------------
+    Stores the current on-screen size and position of the window in the
+    template definition.
+
+    Store icon states
+    -----------------
+    Stores the selection states of the window‘s icons in the template
+    definition.  However, it is better practice to leave any selection to
+    the application which finally uses the templates.
+
+    Editable windows
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    The changes you make to editable windows directly affect the template
+    data, including moving and resizing.  Editable windows are optionally
+
+
+
+                                    Page 8
+
+
+
+
+
+                                    WINED
+    ________________________________________________________________________
+
+
+
+    always shown with all tools (title bar, scroll bars etc) to make
+    editing easier.  All icons are given the same button type to make them
+    selectable.   To see how your windows will really look use the preview
+    system.
+
+    Many of the following sections refer to dialogue boxes; each of these
+    is described in its own section.
+
+    Mouse operations in editable windows
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    These are summarised below with notes.  Note also that all mouse
+    operations in editable windows can be modified in the same way with the
+    Ctrl key.  This has the effect of making the operation act as if over
+    an empty bit of work area instead of over an icon.  All irreversible
+    drags (ie excepting rubber boxes) can be cancelled by pressing Esc when
+    you release the mouse.
+
+
+
+            Select (work area)         Clear selection
+            Select                     Exclusively select icon
+            (non-selected icon)
+            Menu                       Open editable window menu.
+            Adjust                     Select icon without
+            (non-selected icon)        affecting others
+            Adjust (selected icon)     Deselect icon
+            Drag Select (work area)    Drag a rubber box to select icons ¹
+            Drag Select (icon)         Move (local)/Copy (export) icon   ²
+            Drag Adjust (work area)    Drag a rubber box to invert the
+                                       selection state of icons          ¹
+            Drag Adjust (icon)         Resize icon, moving the edge
+                                       nearest the pointer               ³
+            Drag Shift-Adjust          Resize icon, moving the corner
+            (icon)                     nearest the pointer               ³
+            Drag Shift-Select          Copy (local)/Move (export) icon   ²
+            (icon)
+            Drag Shift-Ctrl-Select     Move window as if dragging
+                                       title bar
+            Drag Shift-Ctrl-Adjust     Resize window as if dragging
+                                       adjust size tool
+            Double click Select        Edit window (open dialogue)       œ
+            (work area)
+            Double click Select        Edit icon(s)      "               *
+            (icon)
+            Double click Adjust        Edit work area    "               œ
+            (work area)
+            Double click Adjust        Minimise icon                     
+            (icon)
+            Double click Shift-Select  Edit window title icon  "         œ
+            (work area)
+
+    ¹       This is similar to the same type of drag in browsers.
+
+
+
+                                    Page 9
+
+
+
+
+
+                                    WINED
+    ________________________________________________________________________
+
+
+
+    ²       This follows the conventions of Drag & Drop as outlined in the
+    Style Guide.  The unmodified drag and Shift-modified drag have the
+    opposite effect depending on whether the drag is local (finishing in
+    the same window as it started) or an export (to a different window).
+    In the local case an unmodified drag moves the icon and a Shift-drag
+    copies it, in the export case an unmodified drag copies the icon, a
+    Shift-drag effectively moves the icon by making a copy in the
+    destination window and deleting the original.  If the pointer leaves
+    the window during a drag the window is scrolled if possible; if the
+    drag turns out to be an export the scroll bars are reset to their
+    original positions.  The Shift key is polled at the start of the drag,
+    not the end.
+    ³       Resize drags are limited by the window‘s visible area.
+    œ       These operations open the relevant dialogue box.
+           This minimises both the width and height of an icon;
+    minimisation makes the icon just large enough to display its contents
+    and is described in more detail in the section about the Resize icons
+    dialogue box.
+    *       See "Edit..." below.
+
+    Selected icon(s) submenu
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+
+    Delete
+    ------
+    Deletes the selected icon(s).  Deleted icons are entirely removed from
+    the template; any icons with higher numbers are renumbered to fill the
+    gap‘.
+
+    Renumber nn
+    -----------
+    Renumbers the selection, starting from the number shown.  A different
+    number can be entered by moving the pointer right.  Groups of icons can
+    be renumbered as well as single icons.  When renumbering a group they
+    are kept in the same order but are made consecutive, starting from the
+    new number.  After renumbering the number in the menu and dialogue box
+    is updated to the number following the new number of the last
+    renumbered icon.
+
+    Edit...
+    -------
+    If only one icon is selected, the Edit icon dialogue box is opened, if
+    more than one is selected, the Edit multiple icons dialogue is opened.
+
+    The editable window tool bar
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    This is optionally attached to the top-left edge of editable windows
+    and provides short cuts for the menu functions described above.  The
+    tools are (left to right, top to bottom):
+
+            Edit window...
+            Edit title...
+
+
+
+                                    Page 10
+
+
+
+
+
+                                    WINED
+    ________________________________________________________________________
+
+
+
+            Work area...
+            Visible area...
+            Delete
+            Renumber (Select opens dialogue box,
+                    Adjust renumbers with value currently shown in menu)
+            Align...
+            Space out...
+            Resize...
+            Coords...
+            Frame...
+            Select all (Select mouse button) /
+                    Clear selection (Adjust mouse button)
+
+    Edit window dialogue box
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    Most of the option buttons in this dialogue box correspond directly to
+    window flags documented in the PRM and other books.  The names of the
+    colours are abbreviated to save space.  They are:
+
+
+            TF      Title bar Foreground.
+            TB      Title bar Background.
+            WF      Work area Foreground.
+            WB      Work area Background.
+            SO      Scroll bar Outer.
+            SI      Scroll bar Inner.
+            IF      Input focus (the colour the title bar changes to when
+                    the window has input focus).
+
+    Default
+    -------
+    Sets all the colours to their recommended default values.  This button
+    doesn‘t close the dialogue box.
+
+    GCOL colours
+    ------------
+    If set the above colours are taken to be GCOL values.  This was
+    originally intended for 256 colour modes and should not really be used.
+     WinEd only supports colours in the usual range of 0-15 (and 255/-1 for
+    transparent).
+
+    The monitor
+    ˜˜˜˜˜˜˜˜˜˜˜
+    The monitor shows the following information about any window/icon under
+    the pointer, provided it is in a template loaded in WinEd.
+
+    Window
+    ------
+    The identifier of the window under the pointer.  A trailing * means it
+    is an editable window, otherwise it is a preview window.
+
+    Icon
+
+
+
+                                    Page 11
+
+
+
+
+
+                                    WINED
+    ________________________________________________________________________
+
+
+
+    ----
+    The number of the icon under the pointer, or ”Work area•.
+
+    Position
+    --------
+    The work area coordinate of each edge of the icon.
+
+    Size
+    ----
+    The size of the icon, shown as <width> x <height>.
+
+    If the pointer is over an empty bit of work area instead of an icon,
+    the dimensions refer to the visible portion of the work area.  This
+    information is generally the most useful, it can be used to accurately
+    position icons near the visible edge of a window.
+
+    The monitor can be opened from the icon bar menu and closed with its
+    close icon as a manual override, but it also opens automatically (this
+    is optional) when any editable or preview windows are opened and closes
+    when no editable or preview windows are open.
+
+    Creating icons: the Icon picker
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    The icon picker is a convenient alternative to creating icons from a
+    menu.  You simply drag one or more icons from the picker to where you
+    want them in an editable window.  It behaves rather like an editable
+    window, but most of the functions are suppressed.  The only action
+    which can be carried out, apart from making selections, is to export
+    icons from it to other editable windows.
+
+    Like the monitor the icon picker can be opened from the icon bar menu
+    and closed with its close icon as a manual override, but it also opens
+    automatically when any editable or preview windows are opened and
+    closes when no editable or preview windows are open.
+
+    The icon picker contains examples of most of the common types of icon,
+    but it can be customised.  See the section on Customising WinEd.
+
+    Work area dialogue box
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    The work area coordinates are shown in formation.  Note that it is
+    usual to have the origin of the window (0) at the top, and the bottom
+    coordinate is negative.
+
+    Minimise
+    --------
+    This sets the values in the work area coordinate fields to the work
+    area coordinates of the portion of the window currently visible.  It is
+    not recommended that the origin (X0 & Y1) coordinates are set to any
+    value other than zero, hence the Keep origin button is provided.
+
+    Keep origin
+
+
+
+                                    Page 12
+
+
+
+
+
+                                    WINED
+    ________________________________________________________________________
+
+
+
+    -----------
+    This has a similar effect to the Minimise button, but the origin (X0 &
+    Y1) coordinates are set to zero.
+
+    Minimum size
+    ------------
+    These icons set the minimum size (both values are positive) the window
+    can be dragged to with the Adjust size tool.  Zero values mean the size
+    will be determined by the size of the title bar and window tools.  The
+    Maximise button sets the values to the current size of the window.
+
+    Visible area dialogue box
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    This allows you to specify the position, size and scroll offsets of a
+    window as it will appear on screen when first opened.  All values are
+    usually positive, except for the vertical scroll offset (V Scroll),
+    which should be negative.
+
+
+    Edit icon/title dialogue box
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    Most of the entries in this window correspond to icon flags and
+    properties described in the PRM or other books.
+
+    Txt/sprt
+    --------
+    If the icon contains a text or sprite, enter the text or sprite name
+    here.
+
+    Validation
+    ----------
+    You can enter a validation string here for indirected text icons.
+
+    Max text length
+    ---------------
+    Enter the maximum allowed length (including terminator) of the text for
+    indirected text icons.  This can be set to the length of the string in
+    the Txt/sprt field by clicking the Minimise button.
+
+    Outline font
+    ------------
+    If set the icon uses the outline font shown in the field below; fonts
+    can be chosen from a menu by clicking the menu button.  The height can
+    be entered in points (decimals are allowed).  The Aspect ratio is the
+    ratio of width to height expressed as a percentage.
+
+    Outline fonts do not seem to work in icons with validation strings
+    containing the L command.
+
+    Validate
+    --------
+    Font handles overwrite the colour fields in icon flags, therefore the
+
+
+
+                                    Page 13
+
+
+
+
+
+                                    WINED
+    ________________________________________________________________________
+
+
+
+    colour data is held in an F command in the validation string.  The
+    Validate button reads the colours from the fields in the dialogue box
+    and ensures the validation string contains the correct L command,
+    forcing the indirected flag on if necessary.
+
+    Don‘t resize
+    Update
+    ------
+    These both update the template data with settings from the dialogue
+    box.  Update also resizes the icon if it is currently too small to
+    display its data (see Resize icons dialogue box).
+
+    Edit multiple icons dialogue box
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    WinEd can apply changes to a subset of the icon flags to a selection of
+    icons simultaneously; only those which do not affect icon data or
+    outline fonts can be changed for a multiple selection.
+
+    For simple on/off flags you can choose one of the radios Y, N or ?,
+    meaning set the flag for all selected icons, reset it, or leave this
+    flag alone for each icon respectively.  For ESG and Button type tick
+    the option button on the left to enable a value to be entered for all
+    selected icons, otherwise they will not be affected.
+
+    Align dialogue box
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    This is opened from an editable window menu tree.  It is for aligning
+    groups of icons with each other.  The top group of radio icons
+    determines along which edge the icons will be aligned.  If only one
+    icon is selected it can be centred in its window.
+
+    Left
+    ----
+    The icons will all share the same left (minimum x) coordinate.
+
+    H centre
+    --------
+    The icons will be arranged so that half their width is each side of a
+    notional vertical mid-line.  This mid-line is calculated from the
+    left-most or right-most mid-point of all the icons, depending on
+    whether the Move left or Move right icon is selected.
+
+    Right
+    -----
+    The icons will all share the same right (maximum x) coordinate.
+
+    Top
+    ---
+    The icons will all share the same top (maximum y) coordinate.
+
+    V centre
+    --------
+
+
+
+                                    Page 14
+
+
+
+
+
+                                    WINED
+    ________________________________________________________________________
+
+
+
+    The icons will be arranged so that half their height is each side of a
+    notional horizontal mid-line.  This mid-line is calculated from the
+    topmost or bottom-most mid-point of all the icons, depending on whether
+    the Move down or Move up icon is selected.
+
+    Bottom
+    ------
+    The icons will all share the same bottom (minimum y) coordinate.
+
+    Group box & label
+    -----------------
+    This is only applicable if exactly two icons are selected in the
+    editable window and the lower-numbered of them has a border and no text
+    and the other has text and no border.  The icons will be aligned so
+    that the label‘s left edge 32 OS units to the right of the left edge of
+    the group box and its bottom edge is 24 OS units below the top of the
+    group box (ideal for labels 44 OS units high).
+
+    Move
+    Resize
+    ------
+    Icons can either be moved or resized to achieve alignment.  If Move is
+    chosen, icons are moved without changing their size.  If Resize is
+    chosen, only the edge that has to be aligned is moved, thus resizing
+    the icon; icons will not be allowed to become too small to be selected.
+
+    Move left/down/label
+    Move right/up/box
+    -----------------
+    These determine which way the icons will be moved or resized.  For
+    instance if one of the horizontal alignments is selected above and Move
+    left is selected all the icons will be aligned with the originally
+    left-most icon.  In the special case of Group box & label these options
+    determine whether the label or the box is moved.
+
+    Centre in window
+    ----------------
+    If this is selected instead of one of the above, the centre of the
+    window is chosen as the reference point instead of one of the icons,
+    and it only allows alignment of centres, not edges.
+
+    Space out dialogue box
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    Opened from an editable window menu tree, the Space out dialogue box
+    can either be used to space a group of icons out from each other or a
+    single icon from the edge of the visible area.
+
+    The icons are sorted into order depending on their horizontal or
+    vertical positions and spaced out from each other by the number of OS
+    units entered in the Gap icon.  The direction radio icons determine
+    which icon is used as the anchor‘ eg if you choose From left the
+    left-most icon stays still and all the others are spaced out to its
+
+
+
+                                    Page 15
+
+
+
+
+
+                                    WINED
+    ________________________________________________________________________
+
+
+
+    right.
+
+    If only a single icon is selected it is spaced out from the edge of the
+    visible area corresponding to the direction radio icons.
+
+    Resize icons dialogue box
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    This dialogue box is for changing the size of icons, either making a
+    group all the same size, making a single icon or group just large
+    enough to display its data, or a single icon a specified size.  The
+    resizing is carried out on the right and top edges, leaving the bottom
+    left corner fixed.
+
+    Minimise
+    --------
+    These action buttons change the width and/or height of the selected
+    icon(s), making it just large enough to display its data, using fairly
+    intelligent rules.
+
+    The size needed for text (taking outline fonts into account) is first
+    calculated, adding a few pixels to each side to satisfy Style Guide
+    conventions.  Then the size needed for any sprite is calculated if
+    possible.  These two sizes are combined, taking into account the icon‘s
+    alignment flags.  If there is a border, sufficient pixels are added,
+    depending on the type of border.  If the icon still has a zero size it
+    is made just large enough to click with the mouse.
+
+    Icons with L‘ validation commands can now also be minimised fairly
+    sensibly.  The program ensures that the current width is sufficient to
+    display the longest word, then makes the icon just the right size to
+    preserve the current format of the text.  This does not take outline
+    fonts into account; they do not work with the L command in RISC OS 3.1
+    anyway.
+
+    Versions 2.12 onwards ensure that icons that use the system font are
+    also large enough for the current RISC PC Desktop font.  If the Desktop
+    font is the System font or you are using RISC OS 3.1 Homerton.Medium
+    (12pt) is used.  Note that this does not apply to L validation, but it
+    is unlikely that an outline font will take more room than the System
+    font for long strings.
+
+    Make same size
+    --------------
+    This only applies to multiple selections.  All the icons can be set to
+    the same width or height, either taking on the width of the narrowest
+    or the widest or the height of the tallest or shortest.
+
+    Excluding borders
+    -----------------
+    If this option is set while making a group of icons the same size as
+    each other, only the size of the icons inside their borders is made the
+    same, so icons with wider borders will be larger overall.  This is most
+
+
+
+                                    Page 16
+
+
+
+
+
+                                    WINED
+    ________________________________________________________________________
+
+
+
+    useful for sets of action buttons where the default action button is
+    the same size as the others with an additional trench around it.
+
+    Coordinates dialogue box
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    This allows you to enter the position (relative to the window's work
+    area) and size coordinates of an icon.  The Top entry is usually
+    negative.
+
+    Frame dialogue box
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    This is for placing a frame around the selected icons.  The frame can
+    consist of the window‘s visible area or an empty bordered icon (group
+    box) with a lower number than any of the selected icons.
+
+    Gap
+    ---
+    Enter the minimum gap (OS units) to leave between the frame and any
+    icons inside it.  This varies depending on whether the frame is the
+    window‘s visible area (8-16 looks best) or an icon with a 3D border
+    (usually R4 validation, 20 or more looks better).
+
+    Visible area
+    ------------
+    If selected the frame is made by resizing the window‘s visible area to
+    fit the selection.  The window‘s work area must be large enough to
+    accommodate it.
+
+    Icon
+    ----
+    If selected the frame is made by moving and resizing the icon specified
+    in the adjacent writable field to make a group box.  It must satisfy
+    the requirements outlined above.
+
+    Allow for label
+    ---------------
+    Group boxes often have a label at the top.  If this option is selected
+    an extra gap (read from the writable icon, the default is 24 OS units)
+    is left between the top of the frame and the topmost selected icon to
+    make room for a text label.
+
+    Top, Left, Right, Bottom
+    ------------------------
+    Only the frame‘s edges indicated by which of these icons are selected
+    are moved (unless the frame would become too small or have negative
+    size).  This is useful because frames are often initially placed in
+    relation to objects outside them and resized when their contents have
+    been entered.
+
+    Hints & tips
+    ˜˜˜˜˜˜˜˜˜˜˜˜
+
+
+
+
+                                    Page 17
+
+
+
+
+
+                                    WINED
+    ________________________________________________________________________
+
+
+
+    Size of dialogue boxes
+    ----------------------
+    When designing dialogue boxes and non-scrollable windows, try to make
+    sure they will fit on screen in as many modes as possible.  Mode 22
+    support (768 * 576 OS units) is not strictly necessary, but you should
+    at least fit your windows on a Mode 27 screen (1280 * 960 OS units).
+    The Style Guide recommends a maximum of 800 * 600 OS units for dialogue
+    boxes.
+
+    Positioning icons
+    -----------------
+    Icons with similar functions should be the same size as each other and
+    aligned.  When aligning icons, some of which have double borders (eg R6
+    validation), align with the inner border (use the centre alignment
+    options).  If a dialogue box has several groups of icons (eg two or
+    more groups of radio icons with two or more different ESG‘s) place
+    group boxes around them.
+
+    Place action icons, particularly the default action and Cancel buttons
+    aligned up the side or preferably along the bottom of dialogue boxes.
+    Position the default action button at the bottom right.
+
+    Your dialogue boxes will look more attractive the more you space out
+    icons, up to a point.  The larger the dialogue box, the more space you
+    should leave.  The Style Guide suggests a gap of at least 8 OS units
+    between icons, but 16 or more generally looks far better.
+
+    Note that WinEd‘s window and icon editing dialogue boxes are not spaced
+    out very much, in this case it was considered more important to make
+    them as small as possible.  It is also unconventional to have scrolling
+    dialogue boxes unless they are a pane with the default action and
+    Cancel buttons in the parent window so they are also visible.  Panes
+    were used in WinEd 1.00, but were too restrictive.
+
+    Writable icons
+    --------------
+    Use a validation string containing Kta, not Ktar as the Style Guide
+    suggests.  Due to a bug in RISC OS 3.1 this must be the last entry in a
+    validation string to work correctly.
+
+    Outline fonts
+    -------------
+    Outline fonts in icons should generally be avoided.  Apart from the
+    latest versions of RISC OS now being able to automatically use outline
+    fonts in all icons there are a couple of bugs.
+
+    In RISC OS 3.1 using an outline font in the title bar of a window
+    causes a terrible mess if a customised title bar (eg NewLook‘s 3D one)
+    is used.
+
+    In RISC OS 3.5 using an outline font in slabbing icons (R5 and R6
+    validation) causes the default desktop font to be reset or disappear or
+
+
+
+                                    Page 18
+
+
+
+
+
+                                    WINED
+    ________________________________________________________________________
+
+
+
+    something.
+
+    In RISC OS 3.1 at least, outline fonts seem to be incompatible with L‘
+    validation commands.
+
+    Modifying other people‘s templates
+    ----------------------------------
+    Be careful when modifying other people‘s templates; always make sure
+    you have a backup of the original file.  Some programs may object to
+    changes in their template files eg adding outline fonts, changing the
+    order of windows in the file, and increasing the amount of indirected
+    data.  Never renumber any icons.
+
+    Deleting icons
+    --------------
+    Unlike many template editors, when deleting an icon in WinEd its
+    definition is entirely removed from the template, subsequent icons are
+    renumbered to fill the gap‘.
+
+    The Delete flag is best avoided, having deleted icons in your templates
+    can cause confusion when using other template editors.
+
+    Customising WinEd
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    As well as the Choices dialogue box WinEd can be customised by editing
+    its own template file; this is the file called Templates‘ within the
+    !WinEd directory.
+
+    WinEd can not handle outline fonts in its own template file, but
+    changing the order of windows and the amount of indirected data is not
+    a problem.
+
+    Some windows you may wish to customise are:
+
+    Icon picker
+    -----------
+    You can put any icons you want in here (but no outline fonts),
+    depending on which icons you like to create most often.  Its initial
+    position depends on its template.
+
+    Monitor
+    -------
+    The monitor‘s initial position depends on its template.
+
+
+    Edit window dialogue box
+    Edit icon dialogue box
+    ----------------------
+    The shape, size and initial positions of these dialogue boxes may be
+    inconvenient to you so you may wish to rearrange the icons.  Do not
+    renumber or delete any icons; if you want to get rid of any
+    non-functional icons such as group boxes and labels, temporarily
+
+
+
+                                    Page 19
+
+
+
+
+
+                                    WINED
+    ________________________________________________________________________
+
+
+
+    enlarge the work area and move them out of the way.  Remember you can
+    turn the command button panes off in Choices if you want to reshape the
+    window.
+
+    Tool panes
+    ----------
+    You can customise these by editing the WinTools and BrowTools templates
+    and/or the Sprites and Sprites22 files.  Note that you will have to
+    disable the Editable window tool icons option to avoid inadvertently
+    resizing the current browser tool bar while editing it.  You can make
+    these panes any size you like, within reason.  If you design some that
+    you think are better than mine, which are perhaps a little small,
+    please let me know.
+
+    Many of the default values shown in writable icons etc in the dialogue
+    boxes are determined by the values in WinEd‘s templates.
+
+    If you alter WinEd‘s templates be sure to back up the original file;
+    WinEd must be distributed with this Templates file.
+
+    Exporting icon names
+    --------------------
+    The format in which icon names are exported is highly configurable by
+    editing the Messages file.  For example, look at the export template
+    messages as supplied; you should find them at the bottom of the file:
+
+      XPreamble:/* Icon names exported by WinEd 2.84 */\n\n
+      XPreWin:/* Icons for window %0 */\ntypedef enum {\n
+      X1stIcon
+      XIcon:  icon_%1 = %2,\n
+      XOneIcon
+      XLastIcon:  icon_%1 = %2\n
+      XPostWin:} icons_%0;\n\n
+      XPostamble:\n
+
+    The string up to and including the colon at the beginning of each line
+    is the tag used by the program to look up the message.  The following
+    text is the message that will be substituted.  In each line, the
+    following parameters can be substituted:
+
+            %0      Window template name
+            %1      Icon name
+            %2      Icon number
+
+    Note that %1 and %2 are undefined for XPreamble, XPreWin, XPostWin and
+    XPostamble, and %0 is undefined for XPreamble and XPostamble.  You need
+    not use all the substitutions available for any message.
+
+    A newline character is substituted for \n and a tab for \t.  Any other
+    character following a backslash will be written, but cause the
+    backslash to be ignored, so you can use \\ to include a backslash in
+    your messages.  However, to allow a % character to be included in a
+    message you must type %%.
+
+
+                                    Page 20
+
+
+
+
+
+                                    WINED
+    ________________________________________________________________________
+
+
+
+
+    XPreamble is a message that will appear at the top of an icon names
+    file, and XPostamble will appear at the end.  XPreWin appears at the
+    start of each window and XPostWin at the end; they will not be written
+    for a window with no icons.  X1stIcon, XLastIcon and XIcon are the
+    messages for the first, last and any other icon in each window
+    respectively.  If a window has one icon, XOneIcon is used.
+
+    Bug reports & suggestions
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    I hope that you will find WinEd to be reliable; I would not release it
+    with known bugs.  However, no application is entirely bug free, so you
+    are advised to keep backups and save your work regularly.
+
+    Bug reports will be welcome from all users, even if you have not
+    registered (yet).  If you do find a bug please do your best to inform
+    me of the exact circumstances that cause it, ideally sending template
+    files on disc or by email if they seem to be triggering a problem.
+    Where possible I will personally send you a corrected upgrade if the
+    bug is serious and a corrected version is not already in circulation.
+
+    Acknowledgements
+    ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜
+    WinEd was written in C (compiled by Acorn C Release 5) with extensive
+    use of DeskLib.  DeskLib is a set of freeware C libraries written by
+    Jason Williams and many others, now managed by Julian Smith.  All C
+    programmers should consider this an essential replacement for
+    RISC_OSLib.
+
+    Dr Smith's C Development Toolkit, written by Julian Smith and marketed
+    by WSS, was helpful in debugging recent versions.
+
+    The text editor used was !Zap, an excellent PD program written by
+    Dominic Symes with extensions by several other skilled programmers.
+
+    The templates were initially created with TemplEd, a PD template
+    editor.  I consider this to be WinEd‘s main rival and I have aimed to
+    improve on it in every aspect.
+
+    I would like to thank David Holden of APDL for his advice from one
+    shareware author to another and for some useful suggestions about
+    WinEd, and many users for submitting bug reports and suggestions to
+    help make WinEd the reliable and useful tool it is today.
+
+
+
+
+
+
+
+
+
+
+
+                                    Page 21

@@ -1,0 +1,4 @@
+| !Help file for WinEd
+Set WinEd$Dir <Obey$Dir>
+Run <WinEd$Dir>.Resources.ResFind WinEd
+If "<Alias$@RunType_FAF>" <> "" Then Filer_Run WinEdRes:Help Else Filer_Run WinEdRes:TextHelp
