@@ -1,9 +1,9 @@
 ;DragExt code source
 
 
-	GET	h.RegDefs
-	GET	h.SWINos
-	GET	h.PlotCodes
+	GET	RegDefs/h
+	GET	SWINos/h
+	GET	PlotCodes/h
 
 	AREA	|Drag$$Data|,CODE,READONLY
 
