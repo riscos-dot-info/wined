@@ -1263,7 +1263,7 @@ BOOL browser_merge(char *filename,int filesize,void *reference)
 
   if (browser_getfile(filename,filesize,browser))
   {
-    browser_sorticons(browser,FALSE,TRUE,FALSE);
+    browser_sorticons(browser,TRUE,TRUE,FALSE);
     browser_settitle(browser,0,TRUE);
     return TRUE;
   }
@@ -2726,7 +2726,7 @@ void browcom_delete(browser_fileinfo *browser)
       browser_deletewindow(winentry);
   }
   while (index != -1);
-  browser_sorticons(browser,FALSE,TRUE,FALSE);
+  browser_sorticons(browser,TRUE,TRUE,FALSE);
   browser_settitle(browser,NULL,TRUE);
 }
 
