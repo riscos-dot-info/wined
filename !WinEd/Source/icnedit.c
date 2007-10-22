@@ -125,6 +125,9 @@ BOOL icnedit_processicon(browser_winentry *winentry,
      			 icon_flags *flags,icon_data *data,
      			 wimp_rect *workarearect,BOOL editable)
 {
+
+  Debug_Printf("icnedit_processicon");
+
   /* Font */
   if (flags->data.font)
     flags->font.handle =
@@ -138,6 +141,7 @@ BOOL icnedit_processicon(browser_winentry *winentry,
 
     if (flags->data.text || (flags->data.sprite&&data->indirectsprite.nameisname))
     {
+      Debug_Printf("  either data.text or data.sprite and indirectsprite.nameisname");
       if (data->indirecttext.bufflen > 0)
       {
         data->indirecttext.buffer = malloc(data->indirecttext.bufflen);
@@ -147,7 +151,10 @@ BOOL icnedit_processicon(browser_winentry *winentry,
       else
         data->indirecttext.buffer = 0;
       if (data->indirecttext.buffer && bufindex > 0)
+      {
         strncpycr(data->indirecttext.buffer,bufcont,data->indirecttext.bufflen);
+        Debug_Printf("  value: %s", data->indirecttext.buffer);
+      }
       else if (data->indirecttext.buffer)
         *data->indirecttext.buffer = 0;
     }
@@ -204,7 +211,9 @@ BOOL icnedit_processicon(browser_winentry *winentry,
 
   if (editable)
     icnedit_makeeditableflags(winentry, flags);
+  Debug_Printf("Size: %d, %d, %d, %d", workarearect->min.x, workarearect->min.y, workarearect->max.x, workarearect->max.y);
 
+//if ((workarearect->min.x) >10000) workarearect->min.x = 100;
   return TRUE;
 }
 

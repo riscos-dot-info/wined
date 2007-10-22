@@ -58,12 +58,7 @@ void WinEd_CreateMenu(menu_ptr, int x, int y);
 extern browser_fileinfo *selection_browser;
 extern browser_winentry *selection_viewer;
 
-/* For use debugging */
-//#define Adams_DEBUG
-#define SWI_Reporter 0x054C80
-void Report(const char *message, ...);
 void test_fn(void);
-
 
 /* For changing pointer shape when dragging */
 #define SWI_Wimp_SPRITEOP 0x400E9

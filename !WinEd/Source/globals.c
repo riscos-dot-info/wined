@@ -149,25 +149,11 @@ void WinEd_CreateMenu(menu_ptr m, int x, int y)
   overwrite_warn_open = FALSE;
 }
 
-#ifdef Adams_DEBUG
-void Report(const char *message, ...)
-{
-  va_list argptr;
-  char output[1024];
-
-  va_start(argptr, message);
-  vsnprintf(output, 1024, message, argptr);
-  va_end(argptr);
-
-  SWI(1 ,0 ,SWI_Reporter, output);
-}
-
 void test_fn(void)
 {
   char temp[100];
   sprintf(temp, "try this: %d <-number. Again: %d. String: %s", 12345, 15, "hi");
 //  Error_Report(123, "try this: %d <-number. Again: %d. String: %s", 12345, 1.5, "hi");
-Report(temp);
-  Report("try this: %d <-number. Again: %d. String: %s", 12345, 15, "hi");
+  Debug_Printf(temp);
+  Debug_Printf("try this: %d <-number. Again: %d. String: %s", 12345, 15, "hi");
 }
-#endif

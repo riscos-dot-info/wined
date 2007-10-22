@@ -628,6 +628,8 @@ BOOL viewer_makewinblock(browser_winentry *winentry,
   BOOL sofar = TRUE;
   int icon;
 
+  Debug_Printf("viewer_makewinblock - %s", winentry->identifier);
+
   /* Create replica of window info */
   *winblock = malloc(sizeof(window_block) +
   	     	     winentry->window->window.numicons * sizeof(icon_block));
@@ -671,8 +673,9 @@ BOOL viewer_makewinblock(browser_winentry *winentry,
     MsgTrans_Report(messages,"IconMem",FALSE);
   }
   /* Icons */
-  for (icon = 0;icon < (*winblock)->window.numicons;icon++)
+  for (icon = 0; icon < (*winblock)->window.numicons; icon++)
   {
+    Debug_Printf("processing icon %d", icon);
     if (!icnedit_processicon(winentry,&(*winblock)->icon[icon].flags,
     			    &(*winblock)->icon[icon].data,
     			    &(*winblock)->icon[icon].workarearect,
@@ -704,6 +707,8 @@ void viewer_open(browser_winentry *winentry,BOOL editable)
 {
   browser_winblock *winblock;
   window_state wstate;
+
+  Debug_Printf("viewer_open");
 
   /* Make winblock */
   if (!viewer_makewinblock(winentry,editable,editable,&winblock))

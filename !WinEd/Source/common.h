@@ -61,6 +61,8 @@
 #include "DeskLib:Window.h"
 #endif
 
+#include "DeskLib:Debug.h"
+
 #ifndef __wined_globals_h
 #include "globals.h"
 #endif

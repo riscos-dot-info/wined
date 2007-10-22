@@ -17,6 +17,7 @@
 #include "datatrans.h"
 #include "drag.h"
 #include "export.h"
+#include "globals.h"
 #include "icndiag.h"
 #include "icnedit.h"
 #include "monitor.h"
@@ -230,6 +231,8 @@ void browser_createmenus()
   char menutext[256];
   char subtitle[32];
 
+  Debug_Printf("browser_createmenus");
+
   /* Main menu */
   if (browser_parentmenu)
     Menu_FullDispose(browser_parentmenu);
@@ -258,6 +261,8 @@ static BOOL create_clicked(event_pollblock *event,void *reference)
 {
   char buffer[16];
   browser_fileinfo *browser = reference;
+  Debug_Printf("create_clicked");
+
   if (event->type == event_KEY && event->data.key.code != 13)
   {
     Wimp_ProcessKey(event->data.key.code);
@@ -284,6 +289,8 @@ static BOOL create_clicked(event_pollblock *event,void *reference)
 
 static void release_create()
 {
+  Debug_Printf("release_create");
+
   EventMsg_ReleaseWindow(create_dbox);
   Event_ReleaseWindow(create_dbox);
   help_release_window(create_dbox);
@@ -292,6 +299,8 @@ static void release_create()
 
 static BOOL release_create_msg(event_pollblock *e, void *r)
 {
+  Debug_Printf("release_create_msg");
+
   release_create();
   EventMsg_Release(message_MENUSDELETED, event_ANY, release_create_msg);
   return TRUE;
@@ -299,6 +308,8 @@ static BOOL release_create_msg(event_pollblock *e, void *r)
 
 void browcom_create(BOOL submenu, int x, int y,void *reference)
 {
+  Debug_Printf("browcom_create");
+
   if (create_open)
     release_create();
   if (!submenu)
@@ -332,6 +343,8 @@ static BOOL copy_clicked(event_pollblock *event,void *reference)
   browser_winentry *winentry;
   int index = -1;
 
+  Debug_Printf("copy_clicked");
+
   if (event->type == event_KEY && event->data.key.code != 13)
   {
     Wimp_ProcessKey(event->data.key.code);
@@ -363,6 +376,8 @@ static BOOL copy_clicked(event_pollblock *event,void *reference)
 
 static void release_copy()
 {
+  Debug_Printf("release_copy");
+
   EventMsg_ReleaseWindow(copy_dbox);
   Event_ReleaseWindow(copy_dbox);
   help_release_window(copy_dbox);
@@ -371,6 +386,8 @@ static void release_copy()
 
 static BOOL release_copy_msg(event_pollblock *e, void *r)
 {
+  Debug_Printf("release_copy_msg");
+
   release_copy();
   EventMsg_Release(message_MENUSDELETED, event_ANY, release_copy_msg);
   return TRUE;
@@ -378,6 +395,8 @@ static BOOL release_copy_msg(event_pollblock *e, void *r)
 
 void browcom_copy(BOOL submenu, int x, int y,void *reference)
 {
+  Debug_Printf("browcom_copy(");
+
   int index = -1;
   browser_fileinfo *browser = reference;
   if (copy_open)
@@ -414,6 +433,8 @@ static BOOL rename_clicked(event_pollblock *event,void *reference)
   int index;
   browser_winentry *winentry;
 
+  Debug_Printf("rename_clicked");
+
   if (event->type == event_KEY && event->data.key.code != 13)
   {
     Wimp_ProcessKey(event->data.key.code);
@@ -446,6 +467,8 @@ static BOOL rename_clicked(event_pollblock *event,void *reference)
 
 static void release_rename()
 {
+  Debug_Printf("release_rename");
+
   EventMsg_ReleaseWindow(rename_dbox);
   Event_ReleaseWindow(rename_dbox);
   help_release_window(rename_dbox);
@@ -454,6 +477,8 @@ static void release_rename()
 
 static BOOL release_rename_msg(event_pollblock *e, void *r)
 {
+  Debug_Printf("release_rename_msg");
+
   release_rename();
   EventMsg_Release(message_MENUSDELETED, event_ANY, release_rename_msg);
   return TRUE;
@@ -463,6 +488,8 @@ void browcom_rename(BOOL submenu, int x, int y,void *reference)
 {
   int index = -1;
   browser_fileinfo *browser = reference;
+  Debug_Printf("browcom_rename");
+
   if (rename_open)
     release_rename();
   if (!submenu)
@@ -494,6 +521,8 @@ void create_minidboxes()
 {
   window_block *templat;
 
+  Debug_Printf("create_minidboxes");
+
   templat = templates_load("Create",0,0,0,0);
   Error_CheckFatal(Wimp_CreateWindow(templat,&create_dbox));
   free(templat);
@@ -515,6 +544,8 @@ void create_minidboxes()
 static void browser_cr(browser_fileinfo *browser)
 {
   browser_winentry *winentry;
+
+  Debug_Printf("\\b browser_cr");
 
   for (winentry = LinkList_NextItem(&browser->winlist); winentry;
        winentry = LinkList_NextItem(winentry))
@@ -585,6 +616,8 @@ static BOOL browser_dosave(char *filename,browser_fileinfo *browser,
   template_header header;
   browser_winentry *winentry;
   int offset;
+
+  Debug_Printf("browser_dosave");
 
   browser_cr(browser);
 
@@ -699,6 +732,8 @@ static void browser_safetynet()
 {
   BOOL reported = FALSE;
   browser_fileinfo *browser;
+  Debug_Printf("browser_safetynet");
+
   if (browser_userquit)
     return;
   browser_userquit = TRUE;
@@ -739,6 +774,8 @@ void browser_init(void)
   char filename[64] = "WinEdRes:Sprites";
   char *tempind = NULL;
   int indsize;
+
+  Debug_Printf("browser_init");
 
   atexit(browser_safetynet);
   Screen_CacheModeInfo();
@@ -887,6 +924,8 @@ browser_fileinfo *browser_newbrowser()
 */
   int index;
 
+  Debug_Printf("browser_newbrowser");
+
   /* Create new info block */
   newfile = malloc(sizeof(browser_fileinfo));
   if (!newfile)
@@ -981,6 +1020,8 @@ browser_fileinfo *browser_newbrowser()
 BOOL browser_OpenWindow(event_pollblock *event,void *reference)
 {
   browser_fileinfo *browser = reference;
+  Debug_Printf("browser_OpenWindow");
+
   int ncols = (event->data.openblock.screenrect.max.x -
   	event->data.openblock.screenrect.min.x) / (WIDTH + MARGIN);
   if (ncols != browser->numcolumns)
@@ -1002,6 +1043,8 @@ BOOL browser_iconise(event_pollblock *event,void *reference)
   char *leaf;
   browser_fileinfo *browser = reference;
   browser_winentry *winentry;
+
+  Debug_Printf("browser_iconise");
 
   /* Ignore iconise messages for other windows
   if (event->data.message.data.windowinfo.window != browser->window)
@@ -1041,6 +1084,8 @@ BOOL browser_iconise(event_pollblock *event,void *reference)
 void browser_close(browser_fileinfo *browser)
 {
   browser_winentry *entry;
+
+  Debug_Printf("browser_close");
 
   /* Check for unsaved data */
   if (browser->altered)
@@ -1090,6 +1135,8 @@ void browser_close(browser_fileinfo *browser)
 
 void browser_forceclose(browser_fileinfo *browser)
 {
+  Debug_Printf("browser_forceclose");
+
   /* Reset the global variable which tracks if the user clicked on the close icon */
   overwrite_save_from_close = FALSE;
 
@@ -1102,6 +1149,8 @@ BOOL browser_closeevent(event_pollblock *event,void *reference)
   mouse_block ptrinfo;
   browser_fileinfo *browser = reference;
   BOOL shift;
+
+  Debug_Printf("browser_closeevent");
 
   /* If Adjust, open parent directory */
   Wimp_GetPointerInfo(&ptrinfo);
@@ -1132,6 +1181,8 @@ BOOL browser_click(event_pollblock *event,void *reference)
 {
   browser_fileinfo *browser = reference;
   BOOL tools;
+
+  Debug_Printf("browser_click");
 
   /* Note click/double events are transposed */
   switch (event->data.mouse.button.value)
@@ -1194,6 +1245,8 @@ BOOL browser_click(event_pollblock *event,void *reference)
 
 BOOL browser_loadhandler(event_pollblock *event,void *reference)
 {
+  Debug_Printf("browser_loadhandler");
+
   if (event->data.message.data.dataload.filetype == filetype_TEMPLATE)
   {
     datatrans_load(event,browser_merge,reference);
@@ -1204,6 +1257,8 @@ BOOL browser_loadhandler(event_pollblock *event,void *reference)
 
 BOOL browser_savehandler(event_pollblock *event,void *reference)
 {
+  Debug_Printf("browser_savehandler");
+
   if (event->data.message.data.datasave.filetype == filetype_TEMPLATE)
   {
     datatrans_saveack(event);
@@ -1215,6 +1270,8 @@ BOOL browser_savehandler(event_pollblock *event,void *reference)
 BOOL browser_load(char *filename,int filesize,void *reference)
 {
   browser_fileinfo *browser;
+
+  Debug_Printf(" browser_load");
 
   browser = browser_newbrowser();
 
@@ -1261,6 +1318,8 @@ BOOL browser_merge(char *filename,int filesize,void *reference)
 {
   browser_fileinfo *browser = reference;
 
+  Debug_Printf("browser_merge");
+
   if (browser_getfile(filename,filesize,browser))
   {
     browser_sorticons(browser,TRUE,TRUE,FALSE);
@@ -1274,7 +1333,8 @@ typedef enum {
   load_OK,
   load_MemoryError,
   load_FileError,
-  load_ReportedError
+  load_ReportedError,
+  load_IconError
 } load_result;
 
 /* Lengths exclude terminators */
@@ -1461,6 +1521,8 @@ static load_result browser_load_header(browser_fileinfo *browser,
 {
   template_header header;
 
+  Debug_Printf("browser_load_header");
+
   if (File_ReadBytes(fp,&header,sizeof(template_header)))
   {
     return load_FileError;
@@ -1488,6 +1550,8 @@ static load_result browser_load_fonts(browser_fileinfo *browser,
                                       int fontoffset, int filesize,
                                       file_handle fp, char *filename)
 {
+  Debug_Printf("browser_load_fonts");
+
   if (fontoffset != -1 && fontoffset < filesize)
   {
     if (!flex_alloc((flex_ptr) newfontinfo,filesize - fontoffset))
@@ -1516,6 +1580,8 @@ static load_result browser_load_fonts(browser_fileinfo *browser,
 static load_result browser_load_index_entry(template_index *entry, int index,
                                             file_handle fp, char *filename)
 {
+  Debug_Printf("browser_load_index_entry");
+
   /* Find index'th index entry in file */
   if (Error_Check(File_Seek(fp,sizeof(template_header) +
                             index * sizeof(template_index))))
@@ -1534,6 +1600,8 @@ static load_result browser_load_index_entry(template_index *entry, int index,
 
 static void browser_make_new_toggle(browser_winentry *winentry)
 {
+  Debug_Printf("browser_make_new_toggle");
+
   winentry->window->window.flags.data.toggleicon = FALSE;
   if (winentry->window->window.flags.data.vscroll)
   {
@@ -1550,6 +1618,8 @@ static void browser_make_flags_new(browser_winentry *winentry)
 {
   /* Conditions handled rather oddly due to Norcroft bug:
      unable to spill registers when debugging enabled... */
+
+  Debug_Printf("browser_make_flags_new");
 
   winentry->window->window.flags.data.titlebar =
             winentry->window->window.flags.data.hastitle;
@@ -1607,6 +1677,8 @@ static load_result browser_all_indirected(browser_fileinfo *browser,
   ind_table *indtable;  /* Table of indirected text offsets
                            to resolve shared strings */
 
+  Debug_Printf("browser_all_indirected");
+
   indtable = malloc(sizeof(ind_table) *
                     (winentry->window->window.numicons + 1));
   if (!indtable)
@@ -1628,6 +1700,7 @@ static load_result browser_all_indirected(browser_fileinfo *browser,
     }
     for (icon = 0; icon < winentry->window->window.numicons; icon++)
     {
+//      Debug_Printf("In loop, icon:%d", icon);
       result = browser_check_indirected(winentry,
                                         &winentry->window->icon[icon].flags,
                                         &winentry->window->icon[icon].data,
@@ -1651,6 +1724,8 @@ static void browser_process_fonts(browser_fileinfo *browser,
 {
   BOOL reported = FALSE;
   int icon;
+
+  Debug_Printf("browser_process_fonts");
 
   if (winentry->window->window.titleflags.data.font)
   {
@@ -1699,6 +1774,44 @@ static void browser_process_fonts(browser_fileinfo *browser,
   }
 }
 
+BOOL validate_icon_data(icon_block icon)
+{
+  /* Return FALSE if there's some problem */
+  BOOL result = TRUE;
+
+  #ifdef DeskLib_DEBUG
+  if (!icon.flags.data.indirected)
+    Debug_Printf(" Icon data: %s", icon.data.text);
+  #endif
+
+  if (  (icon.workarearect.min.x > icon.workarearect.max.x)
+     || (icon.workarearect.min.y > icon.workarearect.max.y) )
+  {
+    Debug_Printf("\\r  Icon dimensions topsy turvy");
+    result = FALSE;
+  }
+
+  return result;
+}
+
+static load_result browser_verify_data(browser_winentry *winentry)
+{
+  load_result result = load_OK;
+  int icon;
+
+  for (icon = 0; icon < winentry->window->window.numicons; icon++)
+  {
+    Debug_Printf("Validating icon %d", icon);
+    if (!validate_icon_data(winentry->window->icon[icon]))
+    {
+      result = load_IconError;
+      icon = winentry->window->window.numicons; /* break out of for loop */
+    }
+  }
+
+  return result;
+}
+
 static load_result browser_load_templat(browser_fileinfo *browser,
                                          template_index *entry,
                                          template_fontinfo **newfontinfo,
@@ -1706,6 +1819,11 @@ static load_result browser_load_templat(browser_fileinfo *browser,
 {
   browser_winentry *winentry;
   load_result result;
+  #ifdef DeskLib_DEBUG
+  char reportertext[wimp_MAXNAME+1];
+  #endif
+
+  Debug_Printf("browser_load_templat");
 
   /* Delete this entry if it already exists */
   winentry = browser_findnamedentry(browser,entry->identifier);
@@ -1740,16 +1858,31 @@ static load_result browser_load_templat(browser_fileinfo *browser,
     return load_FileError;
   }
 
+
+
   winentry->status = status_CLOSED;
   winentry->fontarray = 0;
   winentry->browser = browser;
 
   /* Check for old format flags */
   if (!winentry->window->window.flags.data.newflags)
+  {
+    Debug_Printf("\\B Old format flags found");
     browser_make_flags_new(winentry);
+  }
 
   /* Check indirected data */
   result = browser_all_indirected(browser, winentry, entry);
+  if (result)
+  {
+    flex_free((flex_ptr) &winentry->window);
+    LinkList_Unlink(&browser->winlist,&winentry->header);
+    free(winentry);
+    return result;
+  }
+
+  /* Verify template data */
+  result = browser_verify_data(winentry);
   if (result)
   {
     flex_free((flex_ptr) &winentry->window);
@@ -1764,6 +1897,11 @@ static load_result browser_load_templat(browser_fileinfo *browser,
 
   browser->numwindows++;
 
+  #ifdef DeskLib_DEBUG
+  strncpycr(reportertext, winentry->identifier, wimp_MAXNAME); /* it's CR terminated... */
+  Debug_Printf("\\d browser '%s' loaded. %d icons.", reportertext, winentry->window->window.numicons);
+  #endif
+
   return load_OK;
 }
 
@@ -1776,6 +1914,8 @@ static load_result browser_load_from_fp(browser_fileinfo *browser,
   int fontoffset;
   template_fontinfo *newfontinfo = NULL;
   load_result result;
+
+  Debug_Printf("browser_load_from_fp");
 
   browser_badind_reported = FALSE;
   result = browser_load_header(browser, &fontoffset, fp);
@@ -1808,7 +1948,13 @@ static load_result browser_load_from_fp(browser_fileinfo *browser,
       result = browser_load_templat(browser, &entry, &newfontinfo,
                                      fp, filename);
       if (result)
-        break;
+      {
+        if (result == load_IconError)
+          /* This error might just be this window so carry on loading... */
+          MsgTrans_ReportPS(messages,"ContIcon",FALSE,entry.identifier,0,0,0);
+        else
+          break; /* Stop loading windows */
+      }
     }
   }
 
@@ -1820,7 +1966,7 @@ static load_result browser_load_from_fp(browser_fileinfo *browser,
     /* Allows partial loading */
     if (index)
     {
-      if (result == load_FileError)
+      if ((result == load_FileError))
         MsgTrans_ReportPS(messages,"BadFilePart",FALSE,filename,0,0,0);
       else if (result == load_MemoryError)
         MsgTrans_ReportPS(messages,"ContMem",FALSE,filename,0,0,0);
@@ -1835,6 +1981,8 @@ BOOL browser_getfile(char *filename,int filesize,browser_fileinfo *browser)
   file_handle fp;
   load_result result;
   void *checkanc;
+
+  Debug_Printf("browser_getfile");
 
   /* Do a quick check to see if there is apparently enough memory */
   if (!flex_alloc(&checkanc,filesize))
@@ -1887,6 +2035,8 @@ icon_handle browser_newicon(browser_fileinfo *browser,int index,
   int column,row;
   /* window_redrawblock redraw; */
 
+  Debug_Printf("browser_newicon");
+
   column = index % browser->numcolumns;
   row = index / browser->numcolumns;
   newicdata.window = browser->window;
@@ -1926,6 +2076,8 @@ icon_handle browser_newicon(browser_fileinfo *browser,int index,
 
 void browser_delwindow(browser_winentry *winentry)
 {
+  Debug_Printf("browser_delwindow");
+
   if (winentry->status)
     viewer_close(winentry);
   tempfont_losewindow(winentry->browser,winentry);
@@ -1937,6 +2089,8 @@ void browser_delwindow(browser_winentry *winentry)
 
 void browser_deletewindow(browser_winentry *winentry)
 {
+  Debug_Printf("browser_deletewindow");
+
   if (winentry->icon != -1)
     Wimp_DeleteIcon(winentry->browser->window,winentry->icon);
 
@@ -1947,6 +2101,8 @@ browser_winentry *browser_findnamedentry(browser_fileinfo *browser,char *id)
 {
   browser_winentry *winentry;
 
+  Debug_Printf("browser_findnamedentry");
+
   winentry = LinkList_NextItem(&browser->winlist);
   while (winentry && strcmpcr(winentry->identifier,id))
     winentry = LinkList_NextItem(winentry);
@@ -1956,6 +2112,8 @@ browser_winentry *browser_findnamedentry(browser_fileinfo *browser,char *id)
 void browser_setextent(browser_fileinfo *browser)
 {
   wimp_rect extent;
+  Debug_Printf("browser_setextent");
+
   extent.min.x = 0;
   extent.min.y = - MARGIN -
                  ((browser->numwindows + browser->numcolumns - 1) /
@@ -1974,6 +2132,8 @@ int alphacomp(const void *one, const void *two)
   char lc_one[wimp_MAXNAME];
   char lc_two[wimp_MAXNAME];
 
+//  Debug_Printf("alphacomp");
+
   strncpycr(lc_one, (char *)one, wimp_MAXNAME);
   strncpycr(lc_two, (char *)two, wimp_MAXNAME);
 
@@ -1986,6 +2146,8 @@ int alphacomp(const void *one, const void *two)
 
 char *lower_case(char *s)
 {
+//  Debug_Printf("lower_case");
+
   char *ret = s;
   if (s)
   {
@@ -2006,6 +2168,8 @@ void browser_sorticons(browser_fileinfo *browser, BOOL force, BOOL reopen, BOOL 
   window_state wstate;
   char *selected;
   char names[browser->numwindows][wimp_MAXNAME];
+
+  Debug_Printf("browser_sorticons");
 
   if (choices->round)
   {
@@ -2083,6 +2247,8 @@ void browser_sorticons(browser_fileinfo *browser, BOOL force, BOOL reopen, BOOL 
 /* See title.h */
 void browser_settitle(browser_fileinfo *browser,char *title,BOOL altered)
 {
+  Debug_Printf("browser_settitle");
+
   if (altered != browser->altered || title)
   {
     char buffer[256];
@@ -2121,6 +2287,8 @@ BOOL browser_prequit(event_pollblock *event,void *reference)
 {
   browser_fileinfo *browser = LinkList_NextItem(&browser_list);
 
+  Debug_Printf("browser_prequit");
+
   while (browser)
   {
     if (browser->altered)
@@ -2137,6 +2305,8 @@ BOOL browser_prequit(event_pollblock *event,void *reference)
 void browser_shutdown()
 {
   browser_fileinfo *browser;
+
+  Debug_Printf("browser_shutdown");
 
   Hourglass_Smash();
 
@@ -2160,6 +2330,8 @@ void browser_preselfquit()
 {
   browser_fileinfo *browser = LinkList_NextItem(&browser_list);
 
+  Debug_Printf("browser_preselfquit");
+
   while (browser)
   {
     if (browser->altered)
@@ -2179,6 +2351,8 @@ BOOL browser_save(char *filename,void *reference,BOOL selection)
   browser_fileinfo *browser = reference;
   file_handle fp;
   BOOL result;
+
+  Debug_Printf("browser_save");
 
   Hourglass_On();
 
@@ -2216,6 +2390,8 @@ BOOL browser_save_check(char *filename, void *reference, BOOL selection)
   BOOL returnvalue;
   char current_title[256];
   int title_length;
+
+  Debug_Printf("browser_save_check");
 
   /* Save info to pass on to the overwrite handler */
   strncpy(overwrite_check_filename, filename, 1024);
@@ -2257,6 +2433,8 @@ BOOL overwrite_checkanswer(event_pollblock *event, void *reference)
 {
   BOOL overwrite, returnvalue;
   void *ref;
+
+  Debug_Printf("overwrite_checkanswer");
 
   /* Release handlers */
   Event_ReleaseWindow(overwrite_warn);
@@ -2303,6 +2481,8 @@ BOOL overwrite_checkanswer(event_pollblock *event, void *reference)
 
 static void browser_shademultisel()
 {
+  Debug_Printf("browser_shademultisel");
+
   Menu_SetFlags(browser_submenu,submenu_COPY,0,1);
   Menu_SetFlags(browser_submenu,submenu_RENAME,0,1);
   Menu_SetFlags(browser_submenu,submenu_PREVIEW,0,1);
@@ -2311,6 +2491,8 @@ static void browser_shademultisel()
 
 static void browser_selunshade()
 {
+  Debug_Printf("browser_selunshade");
+
   Menu_SetFlags(browser_parentmenu,parent_CLEAR,0,0);
   Menu_SetFlags(browser_parentmenu,parent_templat,0,0);
   Menu_SetFlags(browser_submenu,submenu_DELETE,0,0);
@@ -2322,6 +2504,8 @@ void browser_makemenus(browser_fileinfo *browser,int x,int y,
 {
   char buffer[64];
   int selections;
+
+  Debug_Printf("browser_makemenus");
 
   /* Count selected icons */
   selections = count_selections(browser->window);
@@ -2402,6 +2586,8 @@ BOOL browser_menuselect(event_pollblock *event,void *reference)
   wimp_point lastmenupos;
   browser_fileinfo *browser = reference;
 
+  Debug_Printf("browser_menuselect");
+
   Wimp_GetPointerInfo(&ptrinfo);
 
   switch (event->data.selection[0])
@@ -2463,6 +2649,8 @@ BOOL browser_menuselect(event_pollblock *event,void *reference)
 
 BOOL browser_releasemenus(event_pollblock *event,void *reference)
 {
+  Debug_Printf("browser_releasemenus");
+
   /*if (!menu_destroy)
   { */
     if (create_open && win_is_open(create_dbox))
@@ -2488,6 +2676,8 @@ BOOL browser_releasemenus(event_pollblock *event,void *reference)
 BOOL browser_sublink(event_pollblock *event,void *reference)
 {
   browser_fileinfo *browser = reference;
+
+  Debug_Printf("browser_sublink");
 
   switch (event->data.message.data.menuwarn.selection[0])
   {
@@ -2529,6 +2719,8 @@ void browser_savecomplete(void *ref,BOOL successful,BOOL safe,char *filename,
 {
   browser_fileinfo *browser = ref;
 
+  Debug_Printf("browser_savecomplete");
+
   if (successful && safe && !selection)
     browser_settitle(browser,filename,FALSE);
 }
@@ -2536,8 +2728,10 @@ void browser_savecomplete(void *ref,BOOL successful,BOOL safe,char *filename,
 void browser_exportcomplete(void *ref,BOOL successful,BOOL safe,char *filename,
      			  BOOL selection)
 {
-/*Error_Report(0, "Successful: %d, safe: %d, selection: %d",
+/*Error_Debug_Printf(0, "Successful: %d, safe: %d, selection: %d",
 successful,safe,selection);*/
+  Debug_Printf("browser_exportcomplete");
+
   if (successful && safe)
   {
     browser_fileinfo *browser = ref;
@@ -2551,6 +2745,8 @@ browser_winentry *browser_copywindow(browser_fileinfo *browser,
 {
   browser_winentry *winentry;
   int icon;
+
+  Debug_Printf("browser_copywindow");
 
   if (!browser_overwrite(browser,identifier))
     return NULL;
@@ -2597,6 +2793,8 @@ BOOL browser_overwrite(browser_fileinfo *browser,char *id)
 {
   browser_winentry *winentry = browser_findnamedentry(browser,id);
 
+  Debug_Printf("browser_overwrite");
+
   if (winentry)
   {
     os_error message;
@@ -2619,6 +2817,8 @@ BOOL browser_overwrite(browser_fileinfo *browser,char *id)
 browser_winentry *browser_findselection(browser_fileinfo *browser,int *index,
 		 			int max)
 {
+  Debug_Printf("browser_findselection");
+
   for ((*index)++;*index < max;(*index)++)
     if (Icon_GetSelect(browser->window,*index))
     {
@@ -2633,6 +2833,8 @@ browser_winentry *browser_findwinentry(browser_fileinfo *browser,int icon)
 {
   browser_winentry *winentry;
 
+  Debug_Printf("browser_findwinentry");
+
   for (winentry = LinkList_NextItem(&browser->winlist);
   	 winentry && winentry->icon != icon;
   	 winentry = LinkList_NextItem(winentry));
@@ -2643,6 +2845,8 @@ void browser_clearselection()
 {
   int index;
   icon_handle *selection;
+
+  Debug_Printf("browser_clearselection");
 
   if (selection_browser)
   {
@@ -2667,6 +2871,8 @@ void browser_clearselection()
 
 void browcom_clearsel()
 {
+  Debug_Printf("browcom_clearsel");
+
   if (selection_browser)
     browser_clearselection();
   if (selection_viewer)
@@ -2676,6 +2882,8 @@ void browcom_clearsel()
 void browcom_selall(browser_fileinfo *browser)
 {
   int index;
+
+  Debug_Printf("browcom_selall");
 
   browcom_clearsel();
   for (index = 0;index < browser->numwindows;index++)
@@ -2691,6 +2899,8 @@ void browcom_save(browser_fileinfo *browser,int x,int y,BOOL leaf,BOOL seln)
 {
   int selection;
 
+  Debug_Printf("browcom_save");
+
   selection = (count_selections(browser->window) > 0);
   datatrans_saveas(browser->title,selection,
   		   x,y,leaf,
@@ -2699,6 +2909,8 @@ void browcom_save(browser_fileinfo *browser,int x,int y,BOOL leaf,BOOL seln)
 
 void browcom_export(browser_fileinfo *browser,int x,int y,BOOL leaf)
 {
+  Debug_Printf("browcom_export");
+
   datatrans_saveas(browser->namesfile,FALSE,
   		   x,y,leaf,
   		   browser_export,browser_exportcomplete,browser,FALSE,TRUE);
@@ -2709,6 +2921,8 @@ void browcom_delete(browser_fileinfo *browser)
   browser_winentry *winentry;
   int index = -1;
   int orig_numwindows = browser->numwindows;
+
+  Debug_Printf("browcom_delete");
 
   if (choices->confirm)
   {
@@ -2732,6 +2946,8 @@ void browcom_delete(browser_fileinfo *browser)
 
 void browcom_stats(browser_fileinfo *browser)
 {
+  Debug_Printf("browcom_stats");
+
   stats_open(browser);
 }
 
@@ -2740,6 +2956,8 @@ BOOL browser_hotkey(event_pollblock *event,void *reference)
   browser_fileinfo *browser = reference;
   mouse_block ptrinfo;
   int selections;
+
+  Debug_Printf("browser_hotkey");
 
   selections = count_selections(browser->window);
   switch (event->data.key.code)
@@ -2811,6 +3029,8 @@ void browser_claimcaret(browser_fileinfo *browser)
 {
   caret_block caret;
 
+  Debug_Printf("browser_claimcaret");
+
   caret.window = browser->window;
   caret.icon = -1;
   caret.offset.x = -1000;
@@ -2825,6 +3045,8 @@ void browcom_view(browser_fileinfo *browser,BOOL editable)
   int index = -1;
   browser_winentry *winentry;
 
+  Debug_Printf("browcom_view");
+
   winentry = browser_findselection(browser,&index,browser->numwindows);
   if (winentry->status)
     viewer_close(winentry);
@@ -2835,6 +3057,8 @@ void browser_responder(choices_str *old,choices_str *new_ch)
 {
   browser_fileinfo *browser;
   browser_winentry *winentry;
+
+  Debug_Printf("browser_responder");
 
   for (browser = LinkList_NextItem(&browser_list);
        browser;
@@ -2886,6 +3110,8 @@ BOOL browser_modechange(event_pollblock *event,void *reference)
   Screen_CacheModeInfo();
   browser_maxnumcolumns = (screen_size.x-MARGIN-32) / (WIDTH + MARGIN);
 
+  Debug_Printf("browser_modechange");
+
   for (browser = LinkList_NextItem(&browser_list); browser;
   	browser = LinkList_NextItem(browser))
   {
@@ -2915,6 +3141,8 @@ BOOL browser_modechange(event_pollblock *event,void *reference)
 void browser_changesparea(browser_winblock *win, void *sparea)
 {
   int icon;
+  Debug_Printf("browser_changesparea");
+
   win->window.spritearea = sparea;
   for (icon = 0;icon < win->window.numicons;icon++)
   {
@@ -2934,6 +3162,8 @@ BOOL browser_export(char *filename, void *ref, BOOL selection)
   browser_winentry *winentry;
   FILE *fp;
   char buffer[256], pre[3], buffy[256];
+
+  Debug_Printf("browser_export");
 
   if (Icon_GetSelect(saveas_export, 4))
     strcpy(pre, "E_");
@@ -2987,6 +3217,8 @@ int browser_estsize(browser_fileinfo *browser)
 {
   browser_winentry *winentry;
   int estsize = sizeof(template_header) + 4; /* 4 for terminating zero */
+
+  Debug_Printf("browser_estsize");
 
   if (browser->fontinfo)
     estsize += flex_size((flex_ptr) & browser->fontinfo);
