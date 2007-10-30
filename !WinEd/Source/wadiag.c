@@ -98,7 +98,7 @@ void wadiag_open(browser_winentry *winentry)
   wadiag_winentry = winentry;
   wadiag_setworkarea(&winentry->window->window.workarearect);
   wadiag_setminsize(&winentry->window->window.minsize);
-  Str_MakeASCIIZ(winentry->identifier,12);
+  Str_MakeASCIIZ(winentry->identifier,wimp_MAXNAME);
   MsgTrans_LookupPS(messages,"WADgT",buffer,28,winentry->identifier,0,0,0);
   Window_SetTitle(wadiag_window,buffer);
   Window_Show(wadiag_window,open_UNDERPOINTER);

@@ -14,6 +14,7 @@ WinMem:Not enough memory for new window
 IndMem:Not enough memory for icon's indirected data
 IconMem:Not enough memory for new icon
 NotFile:File '%0' not found
+LongIdent:Indentifier '%0' is too long. It has been truncated to 11 characters.
 WontOpen:File '%0' won't open
 NotWindow:Removing unrecognised object (type %1) from file '%0'
 LoadMem:Not enough memory to load file '%0'

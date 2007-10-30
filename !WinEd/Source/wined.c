@@ -29,7 +29,7 @@
 #include "MemCheck:MemCheck.h"
 #endif
 
-#define app_VERSION "3.05ß (October 2007)"
+#define app_VERSION "3.06ß (October 2007)"
 
 extern void __heap_checking_on_all_allocates(int);
 extern void __heap_checking_on_all_deallocates(int);
@@ -306,10 +306,7 @@ void wined_initialise(int maxmem)
   /* message_MENUSDELETED now only generated internally to avoid confusion
      over which menu tree it's actually for */
 
-  Debug_Initialise(dl_Debug_REPORTER);
 
-  Debug_Printf("\\b");
-  Debug_Printf("\\b Starting up, \\t, %s", app_VERSION);
 
   /* Work out whether to support nested wimp */
   SWI(1, 1, 0x400f2, 7, &taskmanager_call);
@@ -321,6 +318,11 @@ void wined_initialise(int maxmem)
   /* Start task and trap unhandled events */
   Event_Initialise3(APPNAME,taskmanager_call,wined_wimpmessages);
   EventMsg_Initialise();
+
+  Debug_Initialise(dl_Debug_REPORTER);
+
+  Debug_Printf("\\b");
+  Debug_Printf("\\b WinEd starting up, \\t, %s", app_VERSION);
 
   strncpy(resource_pathname, "WinEdRes:", 30);
   resource_pathname[30] = '\0';               /* Ensure string is terminated */

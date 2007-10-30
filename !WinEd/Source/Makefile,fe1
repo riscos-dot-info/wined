@@ -2,7 +2,8 @@
 
 
 # Toolflags:
-cc1flags =  -c -O3 -std=c99 -mlibscl  -Wunused  -Wuninitialized -Wall -fno-strict-aliasing -mapcs-32 -mfp=2   -mthrowback  
+#cc1flags =  -c -DDeskLib_DEBUG -std=c99 -mlibscl -Wunused -Wuninitialized -Wall -fno-strict-aliasing -mapcs-32 -mfp=2 -mthrowback
+cc1flags =  -c -O3 -std=c99 -mlibscl -Wunused -Wuninitialized -Wall -fno-strict-aliasing -mapcs-32 -mfp=2 -mthrowback
 gccflags =     -mlibscl -o $@ 
 
 # Final targets:

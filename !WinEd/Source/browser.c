@@ -454,8 +454,12 @@ static BOOL rename_clicked(event_pollblock *event,void *reference)
     return TRUE;
   index = -1;
   winentry = browser_findselection(browser,&index,browser->numwindows);
-  strcpy(winentry->identifier,buffer);
+
+  strncpy(winentry->identifier, buffer, sizeof(winentry->identifier) - 1);
+  winentry->identifier[sizeof(winentry->identifier) - 1] = '\0';
+
   browser_settitle(browser,NULL,TRUE);
+  browser_sorticons(browser,TRUE,TRUE,FALSE);
   Icon_ForceWindowRedraw(browser->window,index);
   if (monitor_isactive && monitor_winentry == winentry)
   {
@@ -620,7 +624,7 @@ static BOOL browser_dosave(char *filename,browser_fileinfo *browser,
   Debug_Printf("browser_dosave");
 
   browser_cr(browser);
-
+  Debug_Printf("cr checked");
   /* Save header */
   if (browser->fontinfo)
   {
@@ -645,6 +649,8 @@ static BOOL browser_dosave(char *filename,browser_fileinfo *browser,
     return FALSE;
   }
 
+  Debug_Printf("header written");
+
   /* Work out eventual offset for start off window data */
   offset = sizeof(template_header);
   for (winentry = LinkList_NextItem(&browser->winlist); winentry;
@@ -656,6 +662,7 @@ static BOOL browser_dosave(char *filename,browser_fileinfo *browser,
   /* Save index entry for each window */
   for (winentry = LinkList_NextItem(&browser->winlist); winentry;
        winentry = LinkList_NextItem(winentry))
+  {
     if (!selection || Icon_GetSelect(browser->window,winentry->icon))
     {
       template_index index;
@@ -665,7 +672,7 @@ static BOOL browser_dosave(char *filename,browser_fileinfo *browser,
       index.size = flex_size((flex_ptr) &winentry->window);
       index.type = 1;
       /* Don't use strcpycr, we need to keep original terminator */
-      for (i = 0; ; i++)
+      for (i = 0; i < 12; i++) /* Titles can only be 12 chars long */
       {
         index.identifier[i] = winentry->identifier[i];
         if (index.identifier[i] < 32)
@@ -684,12 +691,15 @@ static BOOL browser_dosave(char *filename,browser_fileinfo *browser,
       }
       offset += index.size;
     }
+  }
 
   /* Save index-terminating zero */
   if (Error_Check(File_Write32(fp,0)))
   {
     return FALSE;
   }
+
+  Debug_Printf("Index written");
 
   /* Save actual data for each window */
   for (winentry = LinkList_NextItem(&browser->winlist); winentry;
@@ -723,6 +733,8 @@ static BOOL browser_dosave(char *filename,browser_fileinfo *browser,
         return FALSE;
       }
   }
+
+  Debug_Printf("End of do_save");
 
   return TRUE;
 }
@@ -1839,7 +1851,13 @@ static load_result browser_load_templat(browser_fileinfo *browser,
     return load_MemoryError;
   }
   LinkList_AddToTail(&browser->winlist,&winentry->header);
-  strncpy(winentry->identifier,entry->identifier,wimp_MAXNAME);
+
+  if (strlencr(entry->identifier) >= wimp_MAXNAME)
+    MsgTrans_ReportPS(messages,"LongIdent",FALSE,entry->identifier,0,0,0);
+
+  strncpycr(winentry->identifier, entry->identifier, sizeof(winentry->identifier) - 1);
+  winentry->identifier[sizeof(winentry->identifier) - 1] = '\0';
+
   winentry->icon = -1;
 
   /* Allocate memory and load window/icon data */
@@ -1898,7 +1916,8 @@ static load_result browser_load_templat(browser_fileinfo *browser,
   browser->numwindows++;
 
   #ifdef DeskLib_DEBUG
-  strncpycr(reportertext, winentry->identifier, wimp_MAXNAME); /* it's CR terminated... */
+  strncpycr(reportertext, winentry->identifier, wimp_MAXNAME-1); /* it's CR terminated... */
+//  reportertext[wimp_MAXNAME] = '\0'; /* Or not terminated at all if 12 chars long */
   Debug_Printf("\\d browser '%s' loaded. %d icons.", reportertext, winentry->window->window.numicons);
   #endif
 
@@ -2129,13 +2148,17 @@ void browser_setextent(browser_fileinfo *browser)
 
 int alphacomp(const void *one, const void *two)
 {
-  char lc_one[wimp_MAXNAME];
-  char lc_two[wimp_MAXNAME];
-
-//  Debug_Printf("alphacomp");
+  char lc_one[wimp_MAXNAME + 1];
+  char lc_two[wimp_MAXNAME + 1];
 
   strncpycr(lc_one, (char *)one, wimp_MAXNAME);
   strncpycr(lc_two, (char *)two, wimp_MAXNAME);
+
+  /* If the names are 12 chars long, won't be terminated at all by wimp */
+  lc_one[wimp_MAXNAME] = '\0';
+  lc_two[wimp_MAXNAME] = '\0';
+
+  Debug_Printf("alphacomp   1:%s, 2:%s", lc_one, lc_two);
 
   /* make comparison case-insensitive */
   lower_case(lc_one);
@@ -2178,6 +2201,7 @@ void browser_sorticons(browser_fileinfo *browser, BOOL force, BOOL reopen, BOOL 
     while (winentry)
     {
       strncpycr(names[index], winentry->identifier, wimp_MAXNAME);
+      names[index][wimp_MAXNAME - 1] = '\0'; /* Ensure null termination */
       index++;
       winentry = LinkList_NextItem(&winentry->header);
     }
@@ -2767,7 +2791,8 @@ browser_winentry *browser_copywindow(browser_fileinfo *browser,
 
   memcpy(winentry->window,*windata,flex_size((flex_ptr) windata));
 
-  strcpy(winentry->identifier,identifier);
+  strncpy(winentry->identifier, identifier, sizeof(winentry->identifier) - 1);
+  winentry->identifier[sizeof(winentry->identifier) - 1] = '\0';
 
   LinkList_AddToTail(&browser->winlist,&winentry->header);
 

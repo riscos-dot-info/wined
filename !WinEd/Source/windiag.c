@@ -169,7 +169,7 @@ void windiag_open(browser_winentry *winentry)
   windiag_winentry = winentry;
   windiag_seticons(&winentry->window->window);
 
-  Str_MakeASCIIZ(winentry->identifier,12);
+  Str_MakeASCIIZ(winentry->identifier,wimp_MAXNAME);
   MsgTrans_LookupPS(messages,"WinDgT",buffer,28,winentry->identifier,0,0,0);
   Window_SetTitle(windiag_window,buffer);
 
