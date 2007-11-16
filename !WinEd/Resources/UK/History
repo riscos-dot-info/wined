@@ -1,3 +1,17 @@
+3.07
+~~~~
+- Implimented strict restriction on length of window names in templates
+  to 11 characters or less (leaves room for required terminator)
+
+3.06
+~~~~
+- Introduced checking of validity of template data to catch some
+  corrupt window definitions (where icon sizes are negative)
+  
+3.05
+~~~~
+- Fixed browser window redraw bug after viewer deletion or merge
+
 3.03
 ~~~~
 - Added mistaken-file-overwrite warning dialogue when saving to a new

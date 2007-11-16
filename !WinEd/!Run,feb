@@ -20,5 +20,5 @@ WimpSlot -min 512k -max 512k
 | First number below is max size of dynamic area in K
 | 0 = use WimpSlot instead, otherwise 4096 recommended
 If "<WinEd$CarryOn>" = "True" Then Run <WinEd$Dir>.!RunImage 0 %0
-|%*0 2>Mem::Memphis.$.ErrorLog
+| %*0 2>Mem::Memphis.$.ErrorLog
 Unset Wined$CarryOn

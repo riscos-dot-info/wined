@@ -1853,7 +1853,12 @@ static load_result browser_load_templat(browser_fileinfo *browser,
   LinkList_AddToTail(&browser->winlist,&winentry->header);
 
   if (strlencr(entry->identifier) >= wimp_MAXNAME)
-    MsgTrans_ReportPS(messages,"LongIdent",FALSE,entry->identifier,0,0,0);
+  {
+    char buffer[48];
+    strncpycr(buffer, entry->identifier, sizeof(buffer)-1);
+    buffer[sizeof(buffer)-1] = '\0';
+    MsgTrans_ReportPS(messages,"LongIdent",FALSE,buffer,0,0,0);
+  }
 
   strncpycr(winentry->identifier, entry->identifier, sizeof(winentry->identifier) - 1);
   winentry->identifier[sizeof(winentry->identifier) - 1] = '\0';

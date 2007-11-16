@@ -14,6 +14,7 @@
 #include "DeskLib:Resource.h"
 #include "DeskLib:SWI.h"
 #include "DeskLib:Time.h"
+#include "DeskLib:Debug.h"
 
 #include "browser.h"
 #include "choices.h"
@@ -29,7 +30,7 @@
 #include "MemCheck:MemCheck.h"
 #endif
 
-#define app_VERSION "3.06ß (October 2007)"
+#define app_VERSION "3.07 (November 2007)"
 
 extern void __heap_checking_on_all_allocates(int);
 extern void __heap_checking_on_all_deallocates(int);
@@ -319,7 +320,7 @@ void wined_initialise(int maxmem)
   Event_Initialise3(APPNAME,taskmanager_call,wined_wimpmessages);
   EventMsg_Initialise();
 
-  Debug_Initialise(dl_Debug_REPORTER);
+  Debug_Initialise(dl_debug_REPORTER);
 
   Debug_Printf("\\b");
   Debug_Printf("\\b WinEd starting up, \\t, %s", app_VERSION);
