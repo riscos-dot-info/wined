@@ -1,3 +1,7 @@
+3.08
+~~~~
+- Added support for "numeric" icon flag
+
 3.07
 ~~~~
 - Implimented strict restriction on length of window names in templates

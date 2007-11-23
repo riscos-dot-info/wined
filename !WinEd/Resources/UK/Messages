@@ -261,6 +261,7 @@ H_ICC_53:\Sdecrease the font height.
 H_ICC_54:\Sincrease the font height.
 H_ICC_57:Enter the aspect ratio (width to height) of the font as a percentage here.
 H_ICC_59:\Stake the colours defined above and add them to the icon's validation string.
+H_ICC_60:This flag indicated the icon contains only numeric data.|MFor territories where text is displayed right-to-left, this preserves the left-to-right formatting.
 H_Font:\Sset the desired font.
 H_COL:\Wthe wimp colour selector.
 H_COL_00:\Sset the chosen colour.
@@ -381,11 +382,11 @@ H_VSA_23:\T\w's vertical scroll offset from the top of the work area.|MIt should
 H_VSA_24:\Sdecrease the vertical scroll offset.
 H_VSA_25:\Sincrease the vertical scroll offset.
 H_MIE:This \w is for editing some of the flags of a multiple selection of icons simultaneously.
-H_MIE_07/H_MIE_15/H_MIE_19/H_MIE_23/H_MIE_27/H_MIE_34/H_MIE_38/H_MIE_42/H_MIE_46/H_MIE_50
+H_MIE_07/H_MIE_15/H_MIE_19/H_MIE_23/H_MIE_27/H_MIE_34/H_MIE_38/H_MIE_42/H_MIE_46/H_MIE_50/H_MIE_64
 H_MIE_03:Select this button to set this flag for all icons in the selection.
-H_MIE_08/H_MIE_16/H_MIE_20/H_MIE_24/H_MIE_28/H_MIE_35/H_MIE_39/H_MIE_43/H_MIE_47/H_MIE_51
+H_MIE_08/H_MIE_16/H_MIE_20/H_MIE_24/H_MIE_28/H_MIE_35/H_MIE_39/H_MIE_43/H_MIE_47/H_MIE_51/H_MIE_65
 H_MIE_04:Select this button to clear this flag for all icons in the selection.
-H_MIE_09/H_MIE_17/H_MIE_21/H_MIE_25/H_MIE_29/H_MIE_36/H_MIE_40/H_MIE_44/H_MIE_48/H_MIE_52
+H_MIE_09/H_MIE_17/H_MIE_21/H_MIE_25/H_MIE_29/H_MIE_36/H_MIE_40/H_MIE_44/H_MIE_48/H_MIE_52/H_MIE_66
 H_MIE_05:Select this button to leave this flag unaffected for all icons in the selection.
 H_MIE_54:Whether to set the selected icons' button types.
 H_MIE_55/H_MIE_56:The button type to set the selected icons to.

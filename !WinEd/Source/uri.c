@@ -7,6 +7,7 @@
 #include "DeskLib:Event.h"
 #include "DeskLib:MsgTrans.h"
 #include "DeskLib:WimpSWIs.h"
+#include "DeskLib:Debug.h"
 
 #include "globals.h"
 #include "uri.h"
@@ -35,6 +36,7 @@ static BOOL uri_noack(event_pollblock *event, void *handle)
 
 void uri_init(void)
 {
+  Debug_Printf("uri_init");
   Event_Claim(event_ACK, event_ANY, event_ANY, uri_noack, 0);
 }
 

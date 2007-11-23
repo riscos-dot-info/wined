@@ -16,6 +16,7 @@ void picker_init()
   char *indirected;
   browser_winblock *templat;
   int i; /* Sorry, but I'm using this for lots of different things */
+  Debug_Printf("picker_init");
 
   picker_knownactive = 0;
 

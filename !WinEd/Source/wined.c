@@ -30,7 +30,7 @@
 #include "MemCheck:MemCheck.h"
 #endif
 
-#define app_VERSION "3.07 (November 2007)"
+#define app_VERSION "3.09 (Beta)"
 
 extern void __heap_checking_on_all_allocates(int);
 extern void __heap_checking_on_all_deallocates(int);
@@ -367,6 +367,7 @@ void wined_initialise(int maxmem)
 
   deskfont_init();
 
+  Debug_Printf("Opening templates");
   /* Open templates */
   sprintf(buffer,"%sTemplates",resource_pathname);
   Error_CheckFatal(Wimp_OpenTemplate(buffer));
@@ -383,6 +384,7 @@ void wined_initialise(int maxmem)
   /* Close templates */
   Wimp_CloseTemplate();
   wined_templatesopen = FALSE;
+  Debug_Printf("Templates closed");
 
   /* Icon bar menu */
   MsgTrans_Lookup(messages,"IBMenu",buffer,256);

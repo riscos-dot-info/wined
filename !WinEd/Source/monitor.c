@@ -33,6 +33,7 @@ BOOL monitor_close(event_pollblock *event,void *reference);
 void monitor_init()
 {
   window_block *templat;
+  Debug_Printf("monitor_init");
 
   templat = templates_load("Monitor",0,0,0,0);
   Error_CheckFatal(Wimp_CreateWindow(templat,&monitor_window));

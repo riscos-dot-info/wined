@@ -97,6 +97,7 @@ void datatrans_saveack(event_pollblock *event)
 void saveas_init()
 {
   window_block *templat;
+  Debug_Printf("saveas_init");
 
   /* Main save box */
   templat = templates_load("SaveAs",0,0,0,0);

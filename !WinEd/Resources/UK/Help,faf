@@ -609,7 +609,7 @@ which should be negative.</p>
 <p>Most of the entries in this window correspond to icon flags and
 properties described in the PRM or other books.</p>
 
-<h3>Txt/sprt</h3>
+<h3>Test/sprite</h3>
 <p>If the icon contains a text or sprite, enter the text or sprite name
 here.</p>
 

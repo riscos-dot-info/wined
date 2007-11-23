@@ -57,7 +57,8 @@ typedef enum {
   icndiag_DECFONTHEIGHT,
   icndiag_INCFONTHEIGHT,
   icndiag_FONTASPECT = 57,
-  icndiag_FONTVALID = 59
+  icndiag_FONTVALID = 59,
+  icndiag_NUMERIC
 } icndiag_icons;
 
 /* Handlers */
@@ -314,17 +315,18 @@ void icndiag_seticons(browser_winentry *winentry,int icon)
   diagutils_writebtype(icndiag_window,icndiag_BTNTYPE,flags->data.buttontype);
 
   /* Flags */
-  Icon_SetSelect(icndiag_window,icndiag_BORDER,flags->data.border);
-  Icon_SetSelect(icndiag_window,icndiag_HCENTRE,flags->data.hcentre);
-  Icon_SetSelect(icndiag_window,icndiag_VCENTRE,flags->data.vcentre);
-  Icon_SetSelect(icndiag_window,icndiag_RALIGN,flags->data.rightjustify);
-  Icon_SetSelect(icndiag_window,icndiag_FILLED,flags->data.filled);
-  Icon_SetSelect(icndiag_window,icndiag_NEEDSHELP,flags->data.needshelp);
-  Icon_SetSelect(icndiag_window,icndiag_ALLOWADJUST,flags->data.allowadjust);
-  Icon_SetSelect(icndiag_window,icndiag_HALFSIZE,flags->data.halfsize);
-  Icon_SetSelect(icndiag_window,icndiag_SELECTED,flags->data.selected);
-  Icon_SetSelect(icndiag_window,icndiag_SHADED,flags->data.shaded);
-  Icon_SetSelect(icndiag_window,icndiag_DELETED,flags->data.deleted);
+  Icon_SetSelect(icndiag_window, icndiag_BORDER,      flags->data.border);
+  Icon_SetSelect(icndiag_window, icndiag_HCENTRE,     flags->data.hcentre);
+  Icon_SetSelect(icndiag_window, icndiag_VCENTRE,     flags->data.vcentre);
+  Icon_SetSelect(icndiag_window, icndiag_RALIGN,      flags->data.rightjustify);
+  Icon_SetSelect(icndiag_window, icndiag_FILLED,      flags->data.filled);
+  Icon_SetSelect(icndiag_window, icndiag_NEEDSHELP,   flags->data.needshelp);
+  Icon_SetSelect(icndiag_window, icndiag_ALLOWADJUST, flags->data.allowadjust);
+  Icon_SetSelect(icndiag_window, icndiag_HALFSIZE,    flags->data.halfsize);
+  Icon_SetSelect(icndiag_window, icndiag_SELECTED,    flags->data.selected);
+  Icon_SetSelect(icndiag_window, icndiag_SHADED,      flags->data.shaded);
+  Icon_SetSelect(icndiag_window, icndiag_DELETED,     flags->data.deleted);
+  Icon_SetSelect(icndiag_window, icndiag_NUMERIC,     flags->data.numeric);
 
   /* ESG */
   Icon_SetInteger(icndiag_window,icndiag_ESG,flags->data.esg);
@@ -526,27 +528,23 @@ static void icndiag_readdbox(icon_block *iblock)
 {
   int esg;
 
-  iblock->flags.data.text = Icon_GetSelect(icndiag_window,icndiag_TEXT);
-  iblock->flags.data.sprite = Icon_GetSelect(icndiag_window,icndiag_SPRITE);
-  iblock->flags.data.indirected = Icon_GetSelect(icndiag_window,
-  			       	 		icndiag_INDIRECTED);
-  iblock->flags.data.buttontype = diagutils_readbtype(icndiag_window,
-  			       	 		     icndiag_BTNTYPE);
-  iblock->flags.data.text = Icon_GetSelect(icndiag_window,icndiag_TEXT);
-  iblock->flags.data.border = Icon_GetSelect(icndiag_window,icndiag_BORDER);
-  iblock->flags.data.hcentre = Icon_GetSelect(icndiag_window,icndiag_HCENTRE);
-  iblock->flags.data.vcentre = Icon_GetSelect(icndiag_window,icndiag_VCENTRE);
-  iblock->flags.data.filled = Icon_GetSelect(icndiag_window,icndiag_FILLED);
-  iblock->flags.data.needshelp =
-  	Icon_GetSelect(icndiag_window,icndiag_NEEDSHELP);
-  iblock->flags.data.rightjustify = Icon_GetSelect(icndiag_window,
-  				   		  icndiag_RALIGN);
-  iblock->flags.data.allowadjust = Icon_GetSelect(icndiag_window,
-  				  		 icndiag_ALLOWADJUST);
-  iblock->flags.data.halfsize = Icon_GetSelect(icndiag_window,icndiag_HALFSIZE);
-  iblock->flags.data.selected = Icon_GetSelect(icndiag_window,icndiag_SELECTED);
-  iblock->flags.data.shaded = Icon_GetSelect(icndiag_window,icndiag_SHADED);
-  iblock->flags.data.deleted = Icon_GetSelect(icndiag_window,icndiag_DELETED);
+  iblock->flags.data.text         = Icon_GetSelect(icndiag_window, icndiag_TEXT);
+  iblock->flags.data.sprite       = Icon_GetSelect(icndiag_window, icndiag_SPRITE);
+  iblock->flags.data.indirected   = Icon_GetSelect(icndiag_window, icndiag_INDIRECTED);
+  iblock->flags.data.buttontype   = diagutils_readbtype(icndiag_window,  icndiag_BTNTYPE);
+  iblock->flags.data.text         = Icon_GetSelect(icndiag_window, icndiag_TEXT);
+  iblock->flags.data.border       = Icon_GetSelect(icndiag_window, icndiag_BORDER);
+  iblock->flags.data.hcentre      = Icon_GetSelect(icndiag_window, icndiag_HCENTRE);
+  iblock->flags.data.vcentre      = Icon_GetSelect(icndiag_window, icndiag_VCENTRE);
+  iblock->flags.data.filled       = Icon_GetSelect(icndiag_window, icndiag_FILLED);
+  iblock->flags.data.needshelp    = Icon_GetSelect(icndiag_window, icndiag_NEEDSHELP);
+  iblock->flags.data.rightjustify = Icon_GetSelect(icndiag_window, icndiag_RALIGN);
+  iblock->flags.data.allowadjust  = Icon_GetSelect(icndiag_window, icndiag_ALLOWADJUST);
+  iblock->flags.data.halfsize     = Icon_GetSelect(icndiag_window, icndiag_HALFSIZE);
+  iblock->flags.data.selected     = Icon_GetSelect(icndiag_window, icndiag_SELECTED);
+  iblock->flags.data.shaded       = Icon_GetSelect(icndiag_window, icndiag_SHADED);
+  iblock->flags.data.deleted      = Icon_GetSelect(icndiag_window, icndiag_DELETED);
+  iblock->flags.data.numeric      = Icon_GetSelect(icndiag_window, icndiag_NUMERIC);
   esg = Icon_GetInteger(icndiag_window,icndiag_ESG);
   if (esg < 0)
     esg = 0;

@@ -249,7 +249,8 @@ void browser_createmenus()
   if (choices->hotkeys)
     MsgTrans_Lookup(messages,"BrowSubK",menutext,256);
   else
-  MsgTrans_Lookup(messages,"BrowSub",menutext,256);
+    MsgTrans_Lookup(messages,"BrowSub",menutext,256);
+
   MsgTrans_Lookup(messages,"BMSel",subtitle,32);
   browser_submenu = Menu_New(subtitle,menutext);
 
@@ -919,7 +920,6 @@ void browser_init(void)
   */
 
   browser_createmenus();
-
   atexit(browser_shutdown);
 
   EventMsg_Claim(message_PREQUIT,event_ANY,browser_prequit,0);

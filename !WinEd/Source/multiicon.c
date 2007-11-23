@@ -25,7 +25,8 @@ typedef enum {
 
   multiicon_BTNTYPEOPT = 54, multiicon_BTNTYPE, multiicon_BTNMENU,
 
-  multiicon_ESGOPT = 57, multiicon_ESG, multiicon_DECESG, multiicon_INCESG
+  multiicon_ESGOPT = 57, multiicon_ESG, multiicon_DECESG, multiicon_INCESG,
+  multiicon_NUMERIC = 64
 
   /*
   multiicon_FORECOLOPT = 63, multiicon_FORECOL,
@@ -142,6 +143,7 @@ void multiicon_reseticons()
   multiicon_SETRADIO(multiicon_SELECTED);
   multiicon_SETRADIO(multiicon_SHADED);
   multiicon_SETRADIO(multiicon_DELETED);
+  multiicon_SETRADIO(multiicon_NUMERIC);
 
   Icon_Deselect(multiicon_window, multiicon_BTNTYPEOPT);
   diagutils_writebtype(multiicon_window, multiicon_BTNTYPE, 0);
@@ -252,6 +254,7 @@ BOOL multiicon_update(event_pollblock *event,void *reference)
       multiicon_setflag(&flags, multiicon_SELECTED, icon_SELECTED);
       multiicon_setflag(&flags, multiicon_SHADED, icon_SHADED);
       multiicon_setflag(&flags, multiicon_DELETED, icon_DELETED);
+      multiicon_setflag(&flags, multiicon_NUMERIC, dl_icon_NUMERIC);
 
       if (Icon_GetSelect(multiicon_window, multiicon_BTNTYPEOPT))
       {
