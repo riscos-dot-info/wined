@@ -360,7 +360,7 @@ void wined_initialise(int maxmem)
     }
   } while (taskmanager_call >= 0);
 
-  flex_init("WinEd",NULL,maxmem); /* Old WinEd used Castle flex. This version uses Justin Fletcher flex */
+  flex_init("WinEd",NULL,maxmem); /* Old WinEd used Castle flex. This version uses ROL flex */
 
   /* Set up user sprite area */
   usersprt_init();

@@ -376,7 +376,9 @@ void viewer_createmenus()
 
   viewer_parentmenu = Menu_New(APPNAME,menutext);
   if (!viewer_parentmenu) MsgTrans_Report(messages,"NoMenu",TRUE);
-  Menu_SetOpenShaded(viewer_parentmenu, viewer_ICON);
+
+  /* This line removed to stop shaded items getting opened - don't know why it's here?
+  Menu_SetOpenShaded(viewer_parentmenu, viewer_ICON); */
 
   /* "Icon" menu */
   if (viewer_iconmenu) Menu_FullDispose(viewer_iconmenu);

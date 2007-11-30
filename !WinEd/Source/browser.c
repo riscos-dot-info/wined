@@ -241,7 +241,9 @@ void browser_createmenus()
   else
     MsgTrans_Lookup(messages,"BrowMen",menutext,256);
   browser_parentmenu = Menu_New(APPNAME,menutext);
-  Menu_SetOpenShaded(browser_parentmenu,parent_templat);
+
+  /* This line removed to stop shaded items getting opened - don't know why it's here?
+  Menu_SetOpenShaded(browser_parentmenu,parent_templat); */
 
   /* Copy/delete submenu */
   if (browser_submenu)
