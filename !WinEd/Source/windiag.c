@@ -7,42 +7,47 @@
 #include "usersprt.h"
 #include "viewex.h"
 #include "windiag.h"
+/* Icon names exported by WinEd */
 
+/* Icons for window windiag */
 typedef enum {
-  windiag_UPDATE,
-  windiag_CANCEL,
+  windiag_UPDATE = 0,
+  windiag_CANCEL = 1,
   windiag_NOSCROLL = 11,
-  windiag_BACK,
-  windiag_CLOSE,
-  windiag_TITLE,
-  windiag_TOGGLE,
-  windiag_VSCROLL,
-  windiag_ADJUST,
-  windiag_HSCROLL,
-  windiag_SCROLLDEBOUNCED,
-  windiag_SCROLLAUTOREPEAT,
-  windiag_MOVEABLE,
-  windiag_AUTOREDRAW,
-  windiag_PANE,
-  windiag_BACKDROP,
-  windiag_HOTKEYS,
-  windiag_NOBOUNDS,
-  windiag_CONFINE,
-  windiag_IGNORERIGHT,
-  windiag_IGNOREBOTTOM,
-  windiag_BUTTONTYPE,
-  windiag_WIMPSPRITES = 32,
-  windiag_USERSPRITES,
-  wincolour_TITLEFORE = 34,
-  wincolour_TITLEBACK = 38,
-  wincolour_WORKFORE = 42,
-  wincolour_WORKBACK = 46,
-  wincolour_SCROLLOUTER = 50,
-  wincolour_SCROLLINNER = 54,
-  wincolour_FOCUS = 58,
-  wincolour_DEFAULT = 62,
-  wincolour_GCOL,
-  windiag_FURNITURE = 72
+  windiag_BACK = 12,
+  windiag_CLOSE = 13,
+  windiag_TITLE = 14,
+  windiag_TOGGLE = 15,
+  windiag_VSCROLL = 16,
+  windiag_ADJUST = 17,
+  windiag_HSCROLL = 18,
+  windiag_SCROLLDEBOUNCED = 19,
+  windiag_SCROLLAUTOREPEAT = 20,
+  windiag_MOVEABLE = 21,
+  windiag_AUTOREDRAW = 22,
+  windiag_PANE = 23,
+  windiag_BACKDROP = 24,
+  windiag_HOTKEYS = 25,
+  windiag_NOBOUNDS = 26,
+  windiag_CONFINE = 27,
+  windiag_IGNORERIGHT = 28,
+  windiag_IGNOREBOTTOM = 29,
+  windiag_BUTTONTYPE = 30,
+  windiag_COLTITLEFORE = 32,
+  windiag_COLTITLEBACK = 36,
+  windiag_COLWORKFORE = 40,
+  windiag_COLWORKBACK = 44,
+  windiag_COLSCROLLOUTER = 48,
+  windiag_COLSCROLLINNER = 52,
+  windiag_COLFOCUS = 56,
+  windiag_COLDEFAULT = 60,
+  windiag_COLGCOL = 61,
+  windiag_FURNITURE = 70,
+  windiag_SCROLLEXTENDED = 71,
+  windiag_COL24BIT = 72,
+  windiag_BORDER3DYES = 73,
+  windiag_SHADEDINFO = 74,
+  windiag_BORDER3DNO = 76
 } windiag_icons;
 
 /* Handlers for window */
@@ -75,7 +80,7 @@ void windiag_init()
 {
   window_block *templat;
 
-  templat = templates_load("WinEdit",0,0,0,0);
+  templat = templates_load("windiag",0,0,0,0);
   Error_CheckFatal(Wimp_CreateWindow(templat,&windiag_window));
   free(templat);
   templat = templates_load("WinPane",0,0,0,0);
@@ -83,33 +88,30 @@ void windiag_init()
   windiag_paneheight = templat->screenrect.max.y - templat->screenrect.min.y;
   free(templat);
 
-  Event_Claim(event_OPEN,windiag_window,event_ANY,windiag_OpenWindow,0);
-  Event_Claim(event_CLOSE,windiag_window,event_ANY,windiag_CloseWindow,0);
-  Event_Claim(event_CLICK,windiag_window,windiag_UPDATE,windiag_update,0);
-  Event_Claim(event_CLICK,windiag_pane,windiag_CANCEL,windiag_cancel,0);
-  Event_Claim(event_CLICK,windiag_pane,windiag_UPDATE,windiag_update,0);
-  Event_Claim(event_CLICK,windiag_window,windiag_CANCEL,windiag_cancel,0);
-  Event_Claim(event_CLICK,windiag_window,windiag_TITLE,windiag_optionclick,0);
-  Event_Claim(event_CLICK,windiag_window,windiag_FURNITURE,
-  	windiag_optionclick,0);
-  Event_Claim(event_CLICK,windiag_window,windiag_PANE,windiag_optionclick,0);
-  Event_Claim(event_CLICK,windiag_window,windiag_VSCROLL,
-  	      windiag_optionclick,0);
-  Event_Claim(event_CLICK,windiag_window,windiag_HSCROLL,
-  	      windiag_optionclick,0);
-  Event_Claim(event_CLICK,windiag_window,wincolour_DEFAULT,
-  	      windiag_clickdefault,0);
+  Event_Claim(event_OPEN,  windiag_window, event_ANY,          windiag_OpenWindow,0);
+  Event_Claim(event_CLOSE, windiag_window, event_ANY,          windiag_CloseWindow,0);
+  Event_Claim(event_CLICK, windiag_window, windiag_UPDATE,     windiag_update,0);
+  Event_Claim(event_CLICK, windiag_pane,   windiag_CANCEL,     windiag_cancel,0);
+  Event_Claim(event_CLICK, windiag_pane,   windiag_UPDATE,     windiag_update,0);
+  Event_Claim(event_CLICK, windiag_window, windiag_CANCEL,     windiag_cancel,0);
+  Event_Claim(event_CLICK, windiag_window, windiag_TITLE,      windiag_optionclick,0);
+  Event_Claim(event_CLICK, windiag_window, windiag_FURNITURE,  windiag_optionclick,0);
+  Event_Claim(event_CLICK, windiag_window, windiag_PANE,       windiag_optionclick,0);
+  Event_Claim(event_CLICK, windiag_window, windiag_VSCROLL,    windiag_optionclick,0);
+  Event_Claim(event_CLICK,windiag_window,  windiag_HSCROLL,    windiag_optionclick,0);
+  Event_Claim(event_CLICK,windiag_window,  windiag_COL24BIT,   windiag_optionclick,0);
+  Event_Claim(event_CLICK,windiag_window,  windiag_COLDEFAULT, windiag_clickdefault,0);
   help_claim_window(windiag_window,"WEC");
   help_claim_window(windiag_pane,"WEC");
 
   diagutils_btype(windiag_window,windiag_BUTTONTYPE);
-  diagutils_colour(windiag_window,wincolour_TITLEFORE,TRUE);
-  diagutils_colour(windiag_window,wincolour_TITLEBACK,FALSE);
-  diagutils_colour(windiag_window,wincolour_WORKFORE,FALSE);
-  diagutils_colour(windiag_window,wincolour_WORKBACK,TRUE);
-  diagutils_colour(windiag_window,wincolour_SCROLLOUTER,FALSE);
-  diagutils_colour(windiag_window,wincolour_SCROLLINNER,FALSE);
-  diagutils_colour(windiag_window,wincolour_FOCUS,FALSE);
+  diagutils_colour(windiag_window,windiag_COLTITLEFORE,TRUE);
+  diagutils_colour(windiag_window,windiag_COLTITLEBACK,FALSE);
+  diagutils_colour(windiag_window,windiag_COLWORKFORE,FALSE);
+  diagutils_colour(windiag_window,windiag_COLWORKBACK,TRUE);
+  diagutils_colour(windiag_window,windiag_COLSCROLLOUTER,FALSE);
+  diagutils_colour(windiag_window,windiag_COLSCROLLINNER,FALSE);
+  diagutils_colour(windiag_window,windiag_COLFOCUS,FALSE);
 }
 
 BOOL windiag_OpenWindow(event_pollblock *event, void *ref)
@@ -201,7 +203,10 @@ BOOL windiag_cancel(event_pollblock *event,void *reference)
 BOOL windiag_optionclick(event_pollblock *event,void *reference)
 {
   BOOL back = TRUE, close = TRUE, toggle = TRUE,
-  	moveable = TRUE, adjust = TRUE;
+  	moveable = TRUE, adjust = TRUE, deepcolour = FALSE;
+
+  if (Icon_GetSelect(windiag_window, windiag_COL24BIT))
+    deepcolour=TRUE;
 
   if (!Icon_GetSelect(windiag_window,windiag_TITLE))
   {
@@ -229,6 +234,7 @@ BOOL windiag_optionclick(event_pollblock *event,void *reference)
     Icon_Deselect(windiag_window,windiag_BACK);
     Icon_Shade(windiag_window,windiag_BACK);
   }
+
   if (close)
     Icon_Unshade(windiag_window,windiag_CLOSE);
   else
@@ -236,6 +242,7 @@ BOOL windiag_optionclick(event_pollblock *event,void *reference)
     Icon_Deselect(windiag_window,windiag_CLOSE);
     Icon_Shade(windiag_window,windiag_CLOSE);
   }
+
   if (toggle)
     Icon_Unshade(windiag_window,windiag_TOGGLE);
   else
@@ -243,6 +250,7 @@ BOOL windiag_optionclick(event_pollblock *event,void *reference)
     Icon_Deselect(windiag_window,windiag_TOGGLE);
     Icon_Shade(windiag_window,windiag_TOGGLE);
   }
+
   if (moveable)
     Icon_Unshade(windiag_window,windiag_MOVEABLE);
   else
@@ -250,6 +258,7 @@ BOOL windiag_optionclick(event_pollblock *event,void *reference)
     Icon_Deselect(windiag_window,windiag_MOVEABLE);
     Icon_Shade(windiag_window,windiag_MOVEABLE);
   }
+
   if (adjust)
     Icon_Unshade(windiag_window,windiag_ADJUST);
   else
@@ -257,6 +266,12 @@ BOOL windiag_optionclick(event_pollblock *event,void *reference)
     Icon_Deselect(windiag_window,windiag_ADJUST);
     Icon_Shade(windiag_window,windiag_ADJUST);
   }
+
+  if (deepcolour)
+    Icon_Shade(windiag_window, windiag_COLGCOL);
+  else
+    Icon_Unshade(windiag_window, windiag_COLGCOL);
+
   return TRUE;
 }
 
@@ -266,13 +281,13 @@ BOOL windiag_clickdefault(event_pollblock *event,void *reference)
       !event->data.mouse.button.data.adjust)
     return FALSE;
 
-  diagutils_writecolour(windiag_window,wincolour_TITLEFORE,7);
-  diagutils_writecolour(windiag_window,wincolour_TITLEBACK,2);
-  diagutils_writecolour(windiag_window,wincolour_WORKFORE,7);
-  diagutils_writecolour(windiag_window,wincolour_WORKBACK,1);
-  diagutils_writecolour(windiag_window,wincolour_SCROLLOUTER,3);
-  diagutils_writecolour(windiag_window,wincolour_SCROLLINNER,1);
-  diagutils_writecolour(windiag_window,wincolour_FOCUS,12);
+  diagutils_writecolour(windiag_window,windiag_COLTITLEFORE,7);
+  diagutils_writecolour(windiag_window,windiag_COLTITLEBACK,2);
+  diagutils_writecolour(windiag_window,windiag_COLWORKFORE,7);
+  diagutils_writecolour(windiag_window,windiag_COLWORKBACK,1);
+  diagutils_writecolour(windiag_window,windiag_COLSCROLLOUTER,3);
+  diagutils_writecolour(windiag_window,windiag_COLSCROLLINNER,1);
+  diagutils_writecolour(windiag_window,windiag_COLFOCUS,12);
   return TRUE;
 }
 
@@ -286,30 +301,35 @@ void windiag_seticons(window_block *wblock)
   Icon_SetSelect(windiag_window,windiag_ADJUST,wblock->flags.data.adjusticon);
   Icon_SetSelect(windiag_window,windiag_HSCROLL,wblock->flags.data.hscroll);
   Icon_SetSelect(windiag_window,windiag_MOVEABLE,wblock->flags.data.moveable);
-  Icon_SetSelect(windiag_window,windiag_AUTOREDRAW,
-  		 wblock->flags.data.autoredraw);
+  Icon_SetSelect(windiag_window,windiag_AUTOREDRAW, wblock->flags.data.autoredraw);
   Icon_SetSelect(windiag_window,windiag_PANE,wblock->flags.data.pane);
-  Icon_SetSelect(windiag_window,windiag_BACKDROP,
-  		 wblock->flags.data.backwindow);
+  Icon_SetSelect(windiag_window,windiag_BACKDROP, wblock->flags.data.backwindow);
   Icon_SetSelect(windiag_window,windiag_HOTKEYS,wblock->flags.data.hotkeys);
   Icon_SetSelect(windiag_window,windiag_NOBOUNDS,wblock->flags.data.nobounds);
-  Icon_SetSelect(windiag_window,windiag_CONFINE,
-  		 wblock->flags.data.keeponscreen);
-  Icon_SetSelect(windiag_window,windiag_IGNORERIGHT,
-  		 wblock->flags.data.ignoreright);
-  Icon_SetSelect(windiag_window,windiag_IGNOREBOTTOM,
-  		 wblock->flags.data.ignorebottom);
-  Icon_SetSelect(windiag_window,windiag_SCROLLDEBOUNCED,
-  		 wblock->flags.data.scrollrqdebounced);
-  Icon_SetSelect(windiag_window,windiag_SCROLLAUTOREPEAT,
-  		 wblock->flags.data.scrollrq);
+  Icon_SetSelect(windiag_window,windiag_CONFINE, wblock->flags.data.keeponscreen);
+  Icon_SetSelect(windiag_window,windiag_IGNORERIGHT, wblock->flags.data.ignoreright);
+  Icon_SetSelect(windiag_window,windiag_IGNOREBOTTOM, wblock->flags.data.ignorebottom);
+  Icon_SetSelect(windiag_window,windiag_SCROLLDEBOUNCED, wblock->flags.data.scrollrqdebounced);
+  Icon_SetSelect(windiag_window,windiag_SCROLLAUTOREPEAT, wblock->flags.data.scrollrq);
   Icon_SetSelect(windiag_window,windiag_NOSCROLL,
   		 !(wblock->flags.data.scrollrq ||
   		 	wblock->flags.data.scrollrqdebounced));
-  Icon_SetSelect(windiag_window,windiag_FURNITURE,
-                 wblock->flags.data.childfurniture);
-  diagutils_writebtype(windiag_window,windiag_BUTTONTYPE,
-  		       wblock->workflags.data.buttontype);
+  Icon_SetSelect(windiag_window,windiag_FURNITURE, wblock->flags.data.childfurniture);
+
+  /* New window flags */
+  Icon_SetSelect(windiag_window,windiag_BORDER3DYES,wblock->colours.cols.always3d);
+  Icon_SetSelect(windiag_window,windiag_BORDER3DNO,wblock->colours.cols.never3d);
+  if (wblock->colours.cols.always3d && wblock->colours.cols.never3d)
+  {
+    /* If /both/ are set, act as if neither are set */
+    Icon_SetSelect(windiag_window,windiag_BORDER3DYES,FALSE);
+    Icon_SetSelect(windiag_window,windiag_BORDER3DNO,FALSE);
+  }
+  Icon_SetSelect(windiag_window,windiag_SHADEDINFO,wblock->colours.cols.returnshaded);
+  Icon_SetSelect(windiag_window,windiag_SCROLLEXTENDED,wblock->colours.cols.extendedscroll);
+  Icon_SetSelect(windiag_window,windiag_COL24BIT,wblock->colours.cols.fullcolour);
+
+  diagutils_writebtype(windiag_window,windiag_BUTTONTYPE, wblock->workflags.data.buttontype);
   /*
   if ((int) wblock->spritearea == 1)
   {
@@ -322,74 +342,66 @@ void windiag_seticons(window_block *wblock)
     Icon_Select(windiag_window,windiag_USERSPRITES);
   }
   */
-  diagutils_writecolour(windiag_window,wincolour_TITLEFORE,wblock->colours.vals.colours[0]);
-  diagutils_writecolour(windiag_window,wincolour_TITLEBACK,wblock->colours.vals.colours[1]);
-  diagutils_writecolour(windiag_window,wincolour_WORKFORE,
-  			wblock->colours.vals.colours[2]);
-  diagutils_writecolour(windiag_window,wincolour_WORKBACK,wblock->colours.vals.colours[3]);
-  diagutils_writecolour(windiag_window,wincolour_SCROLLOUTER,
-  			wblock->colours.vals.colours[4]);
-  diagutils_writecolour(windiag_window,wincolour_SCROLLINNER,
-  			wblock->colours.vals.colours[5]);
-  diagutils_writecolour(windiag_window,wincolour_FOCUS,wblock->colours.vals.colours[6]);
-  Icon_SetSelect(windiag_window,wincolour_GCOL,wblock->flags.data.realcolours);
+  diagutils_writecolour(windiag_window,windiag_COLTITLEFORE,wblock->colours.vals.colours[0]);
+  diagutils_writecolour(windiag_window,windiag_COLTITLEBACK,wblock->colours.vals.colours[1]);
+  diagutils_writecolour(windiag_window,windiag_COLWORKFORE,wblock->colours.vals.colours[2]);
+  diagutils_writecolour(windiag_window,windiag_COLWORKBACK,wblock->colours.vals.colours[3]);
+  diagutils_writecolour(windiag_window,windiag_COLSCROLLOUTER,wblock->colours.vals.colours[4]);
+  diagutils_writecolour(windiag_window,windiag_COLSCROLLINNER,wblock->colours.vals.colours[5]);
+  diagutils_writecolour(windiag_window,windiag_COLFOCUS,wblock->colours.vals.colours[6]);
+  Icon_SetSelect(windiag_window,windiag_COLGCOL,wblock->flags.data.realcolours);
 }
 
 void windiag_readicons(window_block *wblock)
 {
-  wblock->flags.data.backicon = Icon_GetSelect(windiag_window,windiag_BACK);
-  wblock->flags.data.closeicon = Icon_GetSelect(windiag_window,windiag_CLOSE);
-  wblock->flags.data.titlebar = Icon_GetSelect(windiag_window,windiag_TITLE);
-  wblock->flags.data.toggleicon =
-    Icon_GetSelect(windiag_window,windiag_TOGGLE);
-  wblock->flags.data.vscroll = Icon_GetSelect(windiag_window,windiag_VSCROLL);
-  wblock->flags.data.adjusticon =
-    Icon_GetSelect(windiag_window,windiag_ADJUST);
-  wblock->flags.data.hscroll = Icon_GetSelect(windiag_window,windiag_HSCROLL);
-  wblock->flags.data.moveable =
-    Icon_GetSelect(windiag_window,windiag_MOVEABLE);
-  wblock->flags.data.autoredraw =
-    Icon_GetSelect(windiag_window,windiag_AUTOREDRAW);
-  wblock->flags.data.pane = Icon_GetSelect(windiag_window,windiag_PANE);
-  wblock->flags.data.backwindow =
-    Icon_GetSelect(windiag_window,windiag_BACKDROP);
-  wblock->flags.data.hotkeys = Icon_GetSelect(windiag_window,windiag_HOTKEYS);
-  wblock->flags.data.nobounds =
-    Icon_GetSelect(windiag_window,windiag_NOBOUNDS);
-  wblock->flags.data.keeponscreen =
-    Icon_GetSelect(windiag_window,windiag_CONFINE);
-  wblock->flags.data.ignoreright =
-    Icon_GetSelect(windiag_window,windiag_IGNORERIGHT);
-  wblock->flags.data.ignorebottom =
-    Icon_GetSelect(windiag_window,windiag_IGNOREBOTTOM);
-  wblock->flags.data.scrollrqdebounced =
-    Icon_GetSelect(windiag_window,windiag_SCROLLDEBOUNCED);
-  wblock->flags.data.scrollrq =
-    Icon_GetSelect(windiag_window,windiag_SCROLLAUTOREPEAT);
-  wblock->flags.data.childfurniture =
-          Icon_GetSelect(windiag_window,windiag_FURNITURE);
-  wblock->workflags.data.buttontype =
-    diagutils_readbtype(windiag_window,windiag_BUTTONTYPE);
+  wblock->flags.data.backicon          = Icon_GetSelect(windiag_window, windiag_BACK);
+  wblock->flags.data.closeicon         = Icon_GetSelect(windiag_window, windiag_CLOSE);
+  wblock->flags.data.titlebar          = Icon_GetSelect(windiag_window, windiag_TITLE);
+  wblock->flags.data.toggleicon        = Icon_GetSelect(windiag_window, windiag_TOGGLE);
+  wblock->flags.data.vscroll           = Icon_GetSelect(windiag_window, windiag_VSCROLL);
+  wblock->flags.data.adjusticon        = Icon_GetSelect(windiag_window, windiag_ADJUST);
+  wblock->flags.data.hscroll           = Icon_GetSelect(windiag_window, windiag_HSCROLL);
+  wblock->flags.data.moveable          = Icon_GetSelect(windiag_window, windiag_MOVEABLE);
+  wblock->flags.data.autoredraw        = Icon_GetSelect(windiag_window, windiag_AUTOREDRAW);
+  wblock->flags.data.pane              = Icon_GetSelect(windiag_window, windiag_PANE);
+  wblock->flags.data.backwindow        = Icon_GetSelect(windiag_window, windiag_BACKDROP);
+  wblock->flags.data.hotkeys           = Icon_GetSelect(windiag_window, windiag_HOTKEYS);
+  wblock->flags.data.nobounds          = Icon_GetSelect(windiag_window, windiag_NOBOUNDS);
+  wblock->flags.data.keeponscreen      = Icon_GetSelect(windiag_window, windiag_CONFINE);
+  wblock->flags.data.ignoreright       = Icon_GetSelect(windiag_window, windiag_IGNORERIGHT);
+  wblock->flags.data.ignorebottom      = Icon_GetSelect(windiag_window, windiag_IGNOREBOTTOM);
+  wblock->flags.data.scrollrqdebounced = Icon_GetSelect(windiag_window, windiag_SCROLLDEBOUNCED);
+  wblock->flags.data.scrollrq          = Icon_GetSelect(windiag_window, windiag_SCROLLAUTOREPEAT);
+  wblock->flags.data.childfurniture    = Icon_GetSelect(windiag_window, windiag_FURNITURE);
+  wblock->workflags.data.buttontype    = diagutils_readbtype(windiag_window,windiag_BUTTONTYPE);
+
+  /* New window flags */
+  wblock->colours.cols.always3d        = Icon_GetSelect(windiag_window, windiag_BORDER3DYES);
+  wblock->colours.cols.never3d         = Icon_GetSelect(windiag_window, windiag_BORDER3DNO);
+  wblock->colours.cols.returnshaded    = Icon_GetSelect(windiag_window, windiag_SHADEDINFO);
+  wblock->colours.cols.extendedscroll  = Icon_GetSelect(windiag_window, windiag_SCROLLEXTENDED);
+  wblock->colours.cols.fullcolour      = Icon_GetSelect(windiag_window, windiag_COL24BIT);
+
   /*if (Icon_GetSelect(windiag_window,windiag_USERSPRITES))*/
   wblock->spritearea = user_sprites;
   /*else
     wblock->spritearea = (void *) 1;*/
   wblock->colours.vals.colours[0] =
-    diagutils_readcolour(windiag_window,wincolour_TITLEFORE);
+    diagutils_readcolour(windiag_window,windiag_COLTITLEFORE);
   wblock->colours.vals.colours[1] =
-    diagutils_readcolour(windiag_window,wincolour_TITLEBACK);
+    diagutils_readcolour(windiag_window,windiag_COLTITLEBACK);
   wblock->colours.vals.colours[2] =
-    diagutils_readcolour(windiag_window,wincolour_WORKFORE);
+    diagutils_readcolour(windiag_window,windiag_COLWORKFORE);
   wblock->colours.vals.colours[3] =
-    diagutils_readcolour(windiag_window,wincolour_WORKBACK);
+    diagutils_readcolour(windiag_window,windiag_COLWORKBACK);
   wblock->colours.vals.colours[4] =
-    diagutils_readcolour(windiag_window,wincolour_SCROLLOUTER);
+    diagutils_readcolour(windiag_window,windiag_COLSCROLLOUTER);
   wblock->colours.vals.colours[5] =
-    diagutils_readcolour(windiag_window,wincolour_SCROLLINNER);
+    diagutils_readcolour(windiag_window,windiag_COLSCROLLINNER);
   wblock->colours.vals.colours[6] =
-    diagutils_readcolour(windiag_window,wincolour_FOCUS);
+    diagutils_readcolour(windiag_window,windiag_COLFOCUS);
   wblock->flags.data.realcolours =
-    Icon_GetSelect(windiag_window,wincolour_GCOL);
+    Icon_GetSelect(windiag_window,windiag_COLGCOL);
 }
 
 BOOL windiag_update(event_pollblock *event,void *reference)
