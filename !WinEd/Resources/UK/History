@@ -1,6 +1,10 @@
-3.08
+3.10
 ~~~~
+- Added icon name/number export to Basic file
 - Added support for "numeric" icon flag
+- Added open-viewer indication in browser
+- Added support for new (RO4+) window flags
+- Added display of icon name in Monitor
 
 3.07
 ~~~~

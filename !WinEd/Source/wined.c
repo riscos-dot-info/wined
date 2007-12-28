@@ -30,7 +30,7 @@
 #include "MemCheck:MemCheck.h"
 #endif
 
-#define app_VERSION "3.09 (Beta)"
+#define app_VERSION "3.091 (Beta)"
 
 extern void __heap_checking_on_all_allocates(int);
 extern void __heap_checking_on_all_deallocates(int);
@@ -323,7 +323,7 @@ void wined_initialise(int maxmem)
   Debug_Initialise(dl_debug_REPORTER);
 
   Debug_Printf("\\b");
-  Debug_Printf("\\b WinEd starting up, \\t, %s", app_VERSION);
+  Debug_Printf("\\b WinEd starting up, \\t, %s. Wimp version:%d", app_VERSION, event_wimpversion);
 
   strncpy(resource_pathname, "WinEdRes:", 30);
   resource_pathname[30] = '\0';               /* Ensure string is terminated */

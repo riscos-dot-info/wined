@@ -63,6 +63,7 @@ void datatrans_load(event_pollblock *event,datatrans_loader loader,void *ref)
 {
   int size;
   message_block message = event->data.message;
+  Debug_Printf("datatrans_load");
 
   size = File_Size(message.data.dataload.filename);
   if (size && (*loader)(message.data.dataload.filename,size,ref))
@@ -85,6 +86,7 @@ void datatrans_load(event_pollblock *event,datatrans_loader loader,void *ref)
 void datatrans_saveack(event_pollblock *event)
 {
   message_block message = event->data.message;
+  Debug_Printf("datatrans_saveack");
 
   message.header.size = 64;
   message.header.yourref = message.header.myref;
@@ -105,7 +107,7 @@ void saveas_init()
   free(templat);
 
   /* Export icon name/numbers save box */
-  templat = templates_load("Export",0,0,0,0);
+  templat = templates_load("export",0,0,0,0);
   Error_CheckFatal(Wimp_CreateWindow(templat,&saveas_export));
   free(templat);
 
@@ -118,6 +120,7 @@ BOOL saveas_selection(event_pollblock *event,void *ref)
   char buffer[256];
   int buflen;
   char untitled[24];
+  Debug_Printf("saveas_selection");
 
   if (Icon_GetSelect(saveas_window,saveas_SELECTION))
   {
@@ -140,6 +143,7 @@ BOOL saveas_selection(event_pollblock *event,void *ref)
 
 static BOOL saveas_esccancel(event_pollblock *event,void *reference)
 {
+  Debug_Printf("saveas_esccancel");
   if (event->data.key.code == keycode_ESCAPE)
   {
     Wimp_DragBox(NULL);
@@ -154,6 +158,8 @@ static BOOL saveas_esccancel(event_pollblock *event,void *reference)
 
 static void saveas_release_specific(void *ref)
 {
+  Debug_Printf("saveas_release_specific");
+
   if (saveas_dragging)
   {
     event_pollblock event;
@@ -164,6 +170,8 @@ static void saveas_release_specific(void *ref)
 
 static BOOL saveas_release_msg(event_pollblock *e, void *ref)
 {
+  Debug_Printf("saveas_release_msg");
+
   saveas_release_specific(ref);
   return FALSE;
 }
@@ -178,6 +186,7 @@ void datatrans_saveas(char *filename,BOOL allow_selection,
 		      BOOL export)
 {
   window_handle win = export ? saveas_export : saveas_window;
+  Debug_Printf("datatrans_saveas");
 
   /* Ensure event handlers for saveas not already registered */
   saveas_release();
@@ -224,6 +233,7 @@ void datatrans_saveas(char *filename,BOOL allow_selection,
 
 BOOL saveas_accclose(event_pollblock *event,void *ref)
 {
+  Debug_Printf("savea_acclse");
   Wimp_CloseWindow(saveas_window);
   saveas_release_specific(ref);
   saveas_release();
@@ -233,6 +243,7 @@ BOOL saveas_accclose(event_pollblock *event,void *ref)
 static void saveas_immediate_save(window_handle window, BOOL close, void *ref)
 {
   char buffer[256];
+  Debug_Printf("saveas_immedite_sve");
 
   Icon_GetText(window,saveas_FILE,buffer);
   if (!strchr(buffer,'.') && !strchr(buffer,':'))
@@ -259,6 +270,7 @@ static void saveas_immediate_save(window_handle window, BOOL close, void *ref)
 
 BOOL saveas_clicksave(event_pollblock *event,void *ref)
 {
+  Debug_Printf("saveas_clicksave");
   if (!event->data.mouse.button.data.select &&
       !event->data.mouse.button.data.adjust)
     return FALSE;
@@ -271,6 +283,7 @@ BOOL saveas_clicksave(event_pollblock *event,void *ref)
 
 BOOL saveas_key(event_pollblock *event,void *ref)
 {
+  Debug_Printf("saveas_key");
   switch (event->data.key.code)
   {
     case keycode_RETURN:
@@ -286,9 +299,13 @@ BOOL saveas_key(event_pollblock *event,void *ref)
 
 BOOL saveas_startdrag(event_pollblock *event,void *ref)
 {
+  Debug_Printf("saveas_startdrag");
   if (!event->data.mouse.button.data.dragselect &&
       !event->data.mouse.button.data.dragadjust)
+  {
+    Debug_Printf(" exiting - not a drag");
     return FALSE;
+  }
 
   Error_Check(DragASprite_DragIcon(event->data.mouse.window,saveas_ICON));
   Event_Claim(event_USERDRAG,event_ANY,event_ANY,saveas_dragcomplete,ref);
@@ -299,6 +316,7 @@ BOOL saveas_startdrag(event_pollblock *event,void *ref)
 
 void saveas_release()
 {
+  Debug_Printf("saveas_release");
   if (saveas_open || saveas_export_open)
     EventMsg_Release(message_MENUSDELETED, event_ANY, saveas_release_msg);
   if (saveas_open)
@@ -321,6 +339,7 @@ BOOL saveas_dragcomplete(event_pollblock *event,void *ref)
   message_block message;
   char filename[256];
   char *leaf;
+  Debug_Printf("saveas_dragcomplete");
 
   Event_Release(event_USERDRAG,event_ANY,event_ANY,saveas_dragcomplete,ref);
   Event_Release(event_KEY,event_ANY,event_ANY,saveas_esccancel,ref);
@@ -370,6 +389,7 @@ BOOL saveas_dragcomplete(event_pollblock *event,void *ref)
 BOOL datatrans_dosave(event_pollblock *event,void *ref)
 {
   message_block message;
+  Debug_Printf("datatrans_dosave");
 
   /* Release handlers */
   if (!datatrans_releasesaveack(event,ref))
@@ -409,6 +429,7 @@ BOOL datatrans_dosave(event_pollblock *event,void *ref)
 
 BOOL datatrans_nosaveack(event_pollblock *event,void *reference)
 {
+  Debug_Printf("datatrans_nosaveack");
   if (event->data.message.header.action != message_DATASAVE)
     return FALSE;
   if (datatrans_releasesaveack(event,reference))
@@ -423,6 +444,7 @@ BOOL datatrans_nosaveack(event_pollblock *event,void *reference)
 
 BOOL datatrans_releasesaveack(event_pollblock *event,void *reference)
 {
+  Debug_Printf("datatrans_releasesaveack");
   if ((int) reference != datatrans_myref)
     return FALSE;
 
@@ -433,6 +455,7 @@ BOOL datatrans_releasesaveack(event_pollblock *event,void *reference)
 
 BOOL datatrans_loadack(event_pollblock *event,void *reference)
 {
+  Debug_Printf("datatrans_loadack");
   if (!datatrans_releaseloadack(event,reference))
     return FALSE;
 
@@ -448,6 +471,7 @@ BOOL datatrans_loadack(event_pollblock *event,void *reference)
 
 BOOL datatrans_noloadack(event_pollblock *event,void *reference)
 {
+  Debug_Printf("datatrans_noloadack");
   if (event->data.message.header.action != message_DATALOAD)
     return FALSE;
   if (datatrans_releaseloadack(event,reference))
@@ -463,6 +487,7 @@ BOOL datatrans_noloadack(event_pollblock *event,void *reference)
 
 BOOL datatrans_releaseloadack(event_pollblock *event,void *reference)
 {
+  Debug_Printf("datatrans_releaseloadack");
   if ((int) reference != datatrans_myref)
     return FALSE;
 
@@ -478,6 +503,7 @@ void datatrans_dragndrop(datatrans_saver saver, datatrans_complete complete,
   wimp_rect /*srect,*/ prect;
   mouse_block ptr;
 
+  Debug_Printf("datatrans_dragndrop");
   saveas_saver = saver;
   saveas_complete = complete;
   datatrans_browser = browser;

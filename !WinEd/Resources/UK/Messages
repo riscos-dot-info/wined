@@ -405,7 +405,7 @@ E_Preamble:/* Icon names exported by WinEd */\n\n
 E_PreWin:/* Icons for window %0 */\ntypedef enum {\n
 E_1stIcon:  %0_%1 = %2,\n
 E_Icon:  %0_%1 = %2,\n
-E_OneIcon:
+E_OneIcon:  %0_%1 = %2,\n
 E_LastIcon:  %0_%1 = %2\n
 E_PostWin:} %0_icons;\n\n
 E_Postamble:\n
@@ -414,10 +414,19 @@ M_Preamble:# Icon names exported by WinEd\n\n
 M_PreWin:# Icons for window %0\n
 M_1stIcon:%0_%1:\n
 M_Icon:%0_%1:\n
-M_OneIcon:
+M_OneIcon:%0_%1:\n
 M_LastIcon:%0_%1:\n
 M_PostWin:
 M_Postamble:\n
+
+B_Preamble:Ý òiconnumbers
+B_PreWin:ô Icons for window %0
+B_1stIcon:%0_%1%%=%2
+B_Icon:%0_%1%%=%2
+B_OneIcon:%0_%1%%=%2
+B_LastIcon:%0_%1%%=%2
+B_PostWin:
+B_Postamble:á
 
 NoExport:Unable to export icon names to file '%0'
 

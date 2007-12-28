@@ -4,14 +4,18 @@
 
 #include "monitor.h"
 
+/* Icon names exported by WinEd */
+
+/* Icons for window monitor */
 typedef enum {
   monitor_WINDOW = 4,
-  monitor_ICON,
-  monitor_XMIN,
-  monitor_YMIN,
-  monitor_XMAX,
-  monitor_YMAX,
-  monitor_SIZE
+  monitor_ICON = 5,
+  monitor_XMIN = 6,
+  monitor_YMIN = 7,
+  monitor_XMAX = 8,
+  monitor_YMAX = 9,
+  monitor_SIZE = 10,
+  monitor_NAME = 12
 } monitor_icons;
 
 BOOL monitor_isactive;
@@ -35,7 +39,7 @@ void monitor_init()
   window_block *templat;
   Debug_Printf("monitor_init");
 
-  templat = templates_load("Monitor",0,0,0,0);
+  templat = templates_load("monitor",0,0,0,0);
   Error_CheckFatal(Wimp_CreateWindow(templat,&monitor_window));
   free(templat);
 
@@ -84,6 +88,7 @@ void monitor_activedec()
 
 BOOL monitor_activate(event_pollblock *event,void *reference)
 {
+  /* Set to winentry of viewer with pointer focus */
   monitor_winentry = reference;
   if (monitor_isopen && (!monitor_isactive))
   {
@@ -115,6 +120,7 @@ BOOL monitor_deactivate(event_pollblock *event,void *reference)
     Icon_SetText(monitor_window,monitor_XMAX,"");
     Icon_SetText(monitor_window,monitor_YMAX,"");
     Icon_SetText(monitor_window,monitor_SIZE,"");
+    Icon_SetText(monitor_window,monitor_NAME,"");
   }
   monitor_lasticon = event_ANY;
   return TRUE;
@@ -125,6 +131,7 @@ BOOL monitor_update(event_pollblock *event,void *reference)
   mouse_block ptrinfo;
   browser_winentry *winentry = reference;
   char buffer[16];
+  char icname[32]; /* Note: size of space in monitor template for icon name */
   wimp_point size;
   convert_block con;
   wimp_point new_pos, offset;
@@ -158,7 +165,7 @@ BOOL monitor_update(event_pollblock *event,void *reference)
     /* Drags are always going to be rounded down to the nearest multiple of 4, so reflect that in monitor */
     /* We can resize by 1, if Ctrl is held down. This is a bit inconsistent so isn't documented!         */
     if (!(    (!(drag_sidemove.min.x && drag_sidemove.max.y && drag_sidemove.max.x && drag_sidemove.min.y))
-         && (Kbd_KeyDown(inkey_ALT)) ))
+         && (Kbd_KeyDown(inkey_CTRL)) ))
       /* E.g. we're not (resizing with shift down) */
       round_down_box(&final);
 
@@ -190,6 +197,7 @@ BOOL monitor_update(event_pollblock *event,void *reference)
         	       winentry->window->window.screenrect.min.y;
         MsgTrans_Lookup(messages,"WorkArea",buffer,16);
         Icon_SetText(monitor_window,monitor_ICON,buffer);
+        Icon_SetText(monitor_window,monitor_NAME,""); /* Clear icon name */
         Icon_SetInteger(monitor_window,monitor_XMIN,
         		      winentry->window->window.workarearect.min.x +
         		      winentry->window->window.scroll.x);
@@ -207,7 +215,31 @@ BOOL monitor_update(event_pollblock *event,void *reference)
       }
       else
       {
+        /* Extract icon name */
+        strcpy(icname,""); /* Clear it first */
+        if (winentry->window->icon[ptrinfo.icon].flags.data.indirected)
+        /* Only worth trying if the icon is indirected */
+        {
+          int valix;
+          char *validstring = winentry->window->icon[ptrinfo.icon].data.indirecttext.validstring +
+        	                    (int) winentry->window;
+
+          valix = Validation_ScanString(validstring, 'N');
+          if (valix)
+          {
+            int n = 0;
+            int len;
+            len = sizeof(icname);
+
+            for (n = valix; validstring[n] > 31 && validstring[n] != ';' && n<len; ++n)
+              icname[n-valix] = validstring[n];
+            icname[n-valix] = 0;
+            Debug_Printf("Over icon named '%s'", icname);
+          }
+        }
+
         Icon_SetInteger(monitor_window,monitor_ICON,ptrinfo.icon);
+        Icon_SetText(monitor_window,monitor_NAME,icname);
         Icon_SetInteger(monitor_window,monitor_XMIN,
         		      winentry->window->icon[ptrinfo.icon].workarearect.min.x);
         Icon_SetInteger(monitor_window,monitor_YMIN,

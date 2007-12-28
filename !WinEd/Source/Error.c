@@ -64,7 +64,6 @@ BOOL Error_Check(os_error *errblk)
 {
   if (!errblk)
     return FALSE;
-
   Hourglass_Smash();
   Wimp_ReportError(errblk,1,error_title);
   return TRUE;

@@ -50,6 +50,12 @@
 #define MIN_TOOLS 128
 #define MIN_CLOSE 64
 
+/* browser icon sprite names - set up in browser.c */
+extern char browser_dialogvalid[];
+extern char browser_odialogvalid[];
+extern char browser_windowvalid[];
+extern char browser_owindowvalid[];
+
 /* Whether an icon can be selected with menu click */
 BOOL viewer_selection_withmenu = TRUE;
 
@@ -250,6 +256,8 @@ void viewcom_quickrenum(browser_winentry *winentry)
   int selections;
   icon_handle *table;
 
+  Debug_Printf("wiewcom_quickrenum");
+
   /* Find number to start renumbering from */
   value = Icon_GetInteger(renum_dbox, 2);
   selections = count_selections(winentry->handle);
@@ -323,6 +331,8 @@ static BOOL renum_clicked(event_pollblock *event,void *reference)
 
 static void release_renum()
 {
+  Debug_Printf("release_renum");
+
   EventMsg_ReleaseWindow(renum_dbox);
   Event_ReleaseWindow(renum_dbox);
   help_release_window(renum_dbox);
@@ -331,6 +341,8 @@ static void release_renum()
 
 static BOOL release_renum_msg(event_pollblock *e, void *r)
 {
+  Debug_Printf("release_renum_msg");
+
   release_renum();
   EventMsg_Release(message_MENUSDELETED, event_ANY, release_renum_msg);
   return TRUE;
@@ -338,6 +350,8 @@ static BOOL release_renum_msg(event_pollblock *e, void *r)
 
 void viewcom_renum(BOOL submenu, int x, int y,browser_winentry *reference)
 {
+  Debug_Printf("viewcom_renum");
+
   if (renum_open)
     release_renum();
   if (!submenu)
@@ -366,6 +380,8 @@ void viewcom_renum(BOOL submenu, int x, int y,browser_winentry *reference)
 void viewer_createmenus()
 {
   char menutext[256], title[64];
+
+  Debug_Printf("viewer_createmenus");
 
   /* Main menu and subs */
   if (viewer_parentmenu) Menu_FullDispose(viewer_parentmenu);
@@ -411,6 +427,8 @@ void viewer_init()
 
   char menutitle[32],menutext[256];
 
+  Debug_Printf("viewer_init");
+
   /*MsgTrans_Lookup(messages,"Number",menutitle,32);
   viewer_renummenu = Menu_New(menutitle,"1234");
   if (!viewer_renummenu)
@@ -455,6 +473,8 @@ void viewer_init()
 
 void viewer_closechildren(browser_winentry *winentry)
 {
+  Debug_Printf("viewer_closechildren");
+
   if (windiag_winentry == winentry)
     windiag_close();
   if (wadiag_winentry == winentry)
@@ -482,16 +502,16 @@ void viewer_close(browser_winentry *winentry)
   window_info winfo;
   icon_handle icon;
 
-  if (!winentry->status)
-    return;
+  Debug_Printf("viewer_close:%d",winentry->handle);
 
   /* Release handlers */
   EventMsg_ReleaseWindow(winentry->handle);
   Event_ReleaseWindow(winentry->handle);
+  //Debug_Printf("1 - handlers released:%d",winentry->handle);
 
   /* Get rid of all indirected data */
   /* Title */
-  Window_GetInfo3(winentry->handle,&winfo);
+  Window_GetInfo(winentry->handle,&winfo);
   icnedit_freeindirected(&winfo.block.titleflags,&winfo.block.title);
   /* Icons */
   for (icon = 0;icon < winfo.block.numicons;icon++)
@@ -502,6 +522,7 @@ void viewer_close(browser_winentry *winentry)
     if (!istate.flags.data.deleted)
       icnedit_freeindirected(&istate.flags,&istate.data);
   }
+  //Debug_Printf("2 - freed icon data:%d",winentry->handle);
 
   /* Lose fonts */
   if (winentry->fontarray)
@@ -510,6 +531,7 @@ void viewer_close(browser_winentry *winentry)
     flex_free((flex_ptr) &winentry->fontarray);
     winentry->fontarray = 0;
   }
+  //Debug_Printf("3 - lost fonts:%d",winentry->handle);
 
   if (selection_viewer == winentry)
   {
@@ -528,13 +550,19 @@ void viewer_close(browser_winentry *winentry)
     if (choices->hotkeys)
       return_caret(winentry->handle, winentry->browser->window);
   }
+  //Debug_Printf("4 - picker & monitor closed:%d",winentry->handle);
 
   /* Delete window */
   Error_Check(Wimp_DeleteWindow(winentry->handle));
+  //Debug_Printf("5 - window deleted:%d",winentry->handle);
+
   /* Clear up winentry */
   winentry->status = status_CLOSED;
+
   /* Close any editing windows */
   viewer_closechildren(winentry);
+  //Debug_Printf("6 - viewer childeren (tool pane) closed:%d",winentry->handle);
+
   /* Close tool pane */
   if (choices->viewtools)
     viewtools_deletepane(winentry);
@@ -542,6 +570,8 @@ void viewer_close(browser_winentry *winentry)
 
 void viewer_modifyflags(window_block *window)
 {
+  Debug_Printf("viewer_modifyflags");
+
   window->flags.data.moveable = 1;
   window->flags.data.autoredraw = 0;
   window->flags.data.nobounds = 0;
@@ -577,6 +607,8 @@ void viewer_modifyflags(window_block *window)
 
 void viewer_claimeditevents(browser_winentry *winentry)
 {
+  Debug_Printf("viewer_claimeditevents");
+
   Event_Claim(event_REDRAW,winentry->handle,event_ANY, viewer_redraw,     winentry);
   Event_Claim(event_OPEN,  winentry->handle,event_ANY, viewer_openevent,  winentry);
   Event_Claim(event_CLOSE, winentry->handle,event_ANY, viewer_closeevent, winentry);
@@ -595,6 +627,8 @@ BOOL viewer_createwindow(browser_winentry *winentry,
      			 browser_winblock *winblock)
 {
   int icon;
+
+  Debug_Printf("viewer_createwindow");
 
   if (Error_Check(Wimp_CreateWindow(&winblock->window,&winentry->handle)))
   {
@@ -677,7 +711,9 @@ BOOL viewer_makewinblock(browser_winentry *winentry,
   /* Icons */
   for (icon = 0; icon < (*winblock)->window.numicons; icon++)
   {
+    #ifdef WINED_DETAILEDDEBUG
     Debug_Printf("processing icon %d", icon);
+    #endif
     if (!icnedit_processicon(winentry,&(*winblock)->icon[icon].flags,
     			    &(*winblock)->icon[icon].data,
     			    &(*winblock)->icon[icon].workarearect,
@@ -695,6 +731,8 @@ BOOL viewer_makewinblock(browser_winentry *winentry,
 
 static void viewer_claimpreviewevents(browser_winentry *winentry)
 {
+  Debug_Printf("viewer_claimpreviewevents");
+
   Event_Claim(event_REDRAW, winentry->handle, event_ANY, Handler_NullRedraw, 0);
   Event_Claim(event_OPEN,   winentry->handle, event_ANY, viewer_openevent,   winentry);
   Event_Claim(event_CLOSE,  winentry->handle, event_ANY, viewer_closeevent,  winentry);
@@ -724,7 +762,6 @@ void viewer_open(browser_winentry *winentry,BOOL editable)
   }
 
   winentry->pane = 0;
-
 
   if (editable)
   {
@@ -760,10 +797,15 @@ void viewer_open(browser_winentry *winentry,BOOL editable)
   viewer_numbermenu(0);
 
   free(winblock);
+
+  /* Refresh browser to reflect open status of viewer */
+  browser_sorticons(winentry->browser,TRUE,FALSE,TRUE);
 }
 
 static void viewer_deregisterwindow(browser_winentry *winentry)
 {
+  Debug_Printf("viewer_deregisterwindow");
+
   /* Delete window and lose handlers */
   Wimp_CloseWindow(winentry->handle);
   Wimp_DeleteWindow(winentry->handle);
@@ -775,6 +817,8 @@ static void viewer_deregisterwindow(browser_winentry *winentry)
 static window_info *viewer_preparewinblock(browser_winentry *winentry,
 	window_handle *behind, BOOL *monitor_was_active, BOOL newtitle)
 {
+  Debug_Printf("viewer_preparewinblock");
+
   window_state wstate;
   window_info *winfo = malloc(sizeof(window_info) +
   	winentry->window->window.numicons * sizeof(icon_block));
@@ -829,6 +873,8 @@ static window_info *viewer_preparewinblock(browser_winentry *winentry,
 static BOOL viewer_rawreopen(browser_winentry *winentry, window_info *winfo,
 	window_handle behind, BOOL monitor_was_active)
 {
+  Debug_Printf("viewer_rawreopen");
+
   window_state wstate;
   /* Create new window */
   if (!viewer_createwindow(winentry,(browser_winblock *) &winfo->block))
@@ -851,6 +897,8 @@ static BOOL viewer_rawreopen(browser_winentry *winentry, window_info *winfo,
 
 void viewer_reopen(browser_winentry *winentry,BOOL newtitle)
 {
+  Debug_Printf("viewer_reopen");
+
   window_info *winfo;
   window_handle behind;
   icon_createblock iblock;
@@ -901,6 +949,8 @@ BOOL viewer_openevent(event_pollblock *event,void *reference)
   browser_winentry *winentry = reference;
   window_state wstate;
 
+  Debug_Printf("viewer_openevent");
+
   /* To see if window has moved */
   Wimp_GetWindowState(event->data.openblock.window,&wstate);
   viewer_roundopenblock(&event->data.openblock);
@@ -935,12 +985,22 @@ BOOL viewer_openevent(event_pollblock *event,void *reference)
 
 BOOL viewer_closeevent(event_pollblock *event,void *reference)
 {
-  viewer_close(reference);
+  browser_winentry *viewer;
+  Debug_Printf("viewer_closeevent");
+
+  viewer = (browser_winentry *)reference;
+  viewer_close(viewer);
+
+  /* Refresh browser to reflect closed state of viewer */
+  browser_sorticons(viewer->browser,TRUE,FALSE,TRUE);
+
   return TRUE;
 }
 
 BOOL preview_click(event_pollblock *event,void *reference)
 {
+  Debug_Printf("preview_click");
+
   if (event->data.mouse.button.data.menu)
   {
     WinEd_CreateMenu(preview_menu,event->data.mouse.pos.x,event->data.mouse.pos.y);
@@ -971,6 +1031,8 @@ BOOL preview_click(event_pollblock *event,void *reference)
 
 BOOL preview_releasemenu(event_pollblock *event,void *reference)
 {
+  Debug_Printf("preview_releasemenu");
+
   Event_Release(event_MENU,event_ANY,event_ANY,preview_menuselect,reference);
   EventMsg_Release(message_MENUSDELETED,event_ANY,preview_releasemenu);
   help_release_menu();
@@ -979,6 +1041,8 @@ BOOL preview_releasemenu(event_pollblock *event,void *reference)
 
 BOOL preview_menuselect(event_pollblock *event,void *reference)
 {
+  Debug_Printf("preview_menuselect");
+
   mouse_block ptrinfo;
   window_state wstate;
   int icon;
@@ -1031,6 +1095,8 @@ void viewer_roundopenblock(window_openblock *openblock)
 BOOL viewer_click(event_pollblock *event,void *reference)
 {
   browser_winentry *winentry = reference;
+
+  Debug_Printf("viewer_click");
 
   viewer_closechildren(winentry);
 
@@ -1259,6 +1325,8 @@ BOOL viewer_resizedrag(event_pollblock *event,void *reference)
   wimp_rect box;
   viewer_cancelref vcr;
 
+  Debug_Printf("viewer_resizedrag");
+
   vcr.handler = viewer_resizedrag;
   viewer_canceldrag(vcr);
 
@@ -1300,6 +1368,8 @@ void viewer_clearselection()
   int icon;
   icon_handle *selection;
 
+  Debug_Printf("viewer_clearselection");
+
   if (!selection_viewer)
     return;
 
@@ -1330,6 +1400,8 @@ static void viewer_canceldrag(viewer_cancelref vcr)
   char ptr_name[] = "ptr_default";
   mouse_block ptrinfo;
   browser_winentry *destination;
+
+  Debug_Printf("viewer_canceldrag");
 
   Event_Release(event_USERDRAG,event_ANY,event_ANY, vcr.handler,viewer_dragref.winentry);
 
@@ -1365,6 +1437,8 @@ static void viewer_canceldrag(viewer_cancelref vcr)
 
 static BOOL viewer_canceldraghandler(event_pollblock *event,void *reference)
 {
+  Debug_Printf("viewer_canceldraghandler");
+
   if (event->data.key.code == keycode_ESCAPE)
   {
     viewer_cancelref vcr;
@@ -1384,6 +1458,8 @@ BOOL viewer_moveonedrag(event_pollblock *event,void *reference)
   wimp_box workarearect;
   window_state wstate;
   viewer_cancelref vcr;
+
+  Debug_Printf("viewer_moveonedrag");
 
   vcr.handler = viewer_moveonedrag;
   viewer_canceldrag(vcr);
@@ -1449,6 +1525,8 @@ void viewer_newbounds(browser_winentry *winentry,int icon,
      		      wimp_rect *startrect)
 {
   wimp_point size;
+
+  Debug_Printf("viewer_nobounds");
 
   /* Copy icon's original bounds to newrect to avoid typing nested
      structure 4 times */
@@ -1532,6 +1610,8 @@ BOOL viewer_movemanydrag(event_pollblock *event,void *reference)
   browser_winentry *dest;
   viewer_cancelref vcr;
 
+  Debug_Printf("viewer_movemanydrag");
+
   vcr.handler = viewer_movemanydrag;
   viewer_canceldrag(vcr);
 
@@ -1577,6 +1657,8 @@ BOOL viewer_scrolldrag(event_pollblock *event,window_handle window)
   mouse_block ptrinfo;
   wimp_point scrollby;
 
+  Debug_Printf("viewer_scrolldrag");
+
   Wimp_GetWindowState(window,&wstate);
   Wimp_GetPointerInfo(&ptrinfo);
 
@@ -1609,6 +1691,8 @@ void viewer_resetscrollbars()
 {
   event_pollblock event;
 
+  Debug_Printf("viewer_resetscrollbars");
+
   event.type = event_OPEN;
   Wimp_GetWindowState(viewer_dragref.winentry->handle,
   		      (window_state *) &event.data.openblock);
@@ -1619,6 +1703,8 @@ void viewer_resetscrollbars()
 BOOL viewer_iconise(event_pollblock *event,browser_winentry *winentry)
 {
   message_block message = event->data.message;
+
+  Debug_Printf("viewer_iconise");
 
   /*if (event->data.message.data.windowinfo.window != winentry->handle)
     return FALSE;*/
@@ -1649,6 +1735,8 @@ BOOL viewer_menuselect(event_pollblock *event,void *reference)
   mouse_block ptrinfo;
   wimp_point lastmenupos;
   browser_winentry *winentry = reference;
+
+  Debug_Printf("viewer_menuselect");
 
   Wimp_GetPointerInfo(&ptrinfo);
 
@@ -1733,6 +1821,8 @@ BOOL viewer_menuselect(event_pollblock *event,void *reference)
       break;
     case viewer_CLOSE:
       viewer_close(winentry);
+      /* Refresh browser to reflect closed state of viewer */
+      browser_sorticons(winentry->browser,TRUE,FALSE,TRUE);
       break;
     case viewer_PREVIEW:
       viewer_view(winentry,FALSE);
@@ -1749,6 +1839,8 @@ BOOL viewer_menuselect(event_pollblock *event,void *reference)
 
 BOOL viewer_sublink(event_pollblock *event,void *reference)
 {
+  Debug_Printf("viewer_sublink");
+
   if (event->data.message.data.menuwarn.selection[0] == viewer_ICON &&
   	event->data.message.data.menuwarn.selection[1] == viewer_RENUMBER)
   {
@@ -1763,6 +1855,8 @@ BOOL viewer_sublink(event_pollblock *event,void *reference)
 
 BOOL viewer_releasemenu(event_pollblock *event,void *reference)
 {
+  Debug_Printf("viewer_releasemenu");
+
   Event_Release(event_MENU,event_ANY,event_ANY,viewer_menuselect,reference);
   EventMsg_Release(message_MENUSDELETED,event_ANY,viewer_releasemenu);
   EventMsg_Release(message_MENUWARN,event_ANY,viewer_sublink);
@@ -1776,6 +1870,9 @@ BOOL viewer_releasemenu(event_pollblock *event,void *reference)
 void viewer_numbermenu(int value)
 {
   char buffer[32];
+
+  Debug_Printf("viewer_numbermenu");
+
   MsgTrans_Lookup(messages,"Renumber",buffer,24);
   sprintf(buffer + strlen(buffer)," %d",value);
   if (choices->hotkeys)
@@ -1794,6 +1891,8 @@ void viewer_iconmenufield(int value)
 {
   char buffer[32];
 
+  Debug_Printf("viewer_iconmenufield");
+
   MsgTrans_Lookup(messages,"VMIcon",buffer,32);
   sprintf(buffer + strlen(buffer)," %d",value);
   Menu_SetText(viewer_parentmenu,viewer_ICON,buffer);
@@ -1803,6 +1902,8 @@ static void viewer_shademultisel()
 {
   char buffer[64];
 
+  Debug_Printf("viewer_shademultisel");
+
   Menu_SetFlags(viewer_iconmenu,viewer_COORDS,0,1);
   MsgTrans_Lookup(messages,"BMSel",buffer,64);
   strncpy(viewer_iconmenu->title,buffer,12);
@@ -1811,6 +1912,8 @@ static void viewer_shademultisel()
 
 static void viewer_selunshade()
 {
+  Debug_Printf("viewer_selunshade");
+
   Menu_SetFlags(viewer_parentmenu,viewer_ICON,0,0);
   Menu_SetFlags(viewer_parentmenu,viewer_CLEARSEL,0,0);
   Menu_SetFlags(viewer_iconmenu,viewer_DELETE,0,0);
@@ -1828,6 +1931,8 @@ void viewer_preparemenu(browser_winentry *winentry)
   int selections;
   int selected; /* logical icon */
   char buffer[64];
+
+  Debug_Printf("viewer_preparemenu");
 
   selections = count_selections(winentry->handle);
   switch (selections)
@@ -1862,6 +1967,8 @@ void viewer_preparemenu(browser_winentry *winentry)
 
 static void viewer_openmenu_at(browser_winentry *winentry, int x, int y)
 {
+  Debug_Printf("viewer_openmenu_at");
+
   viewer_preparemenu(winentry);
   WinEd_CreateMenu(viewer_parentmenu,x,y);
   /*menu_destroy = */ viewer_menuopen = TRUE;
@@ -1873,6 +1980,8 @@ static void viewer_openmenu_at(browser_winentry *winentry, int x, int y)
 
 void viewer_openmenu(event_pollblock *event,browser_winentry *winentry)
 {
+  Debug_Printf("viewer_openmenu");
+
   /* Work out whether this is a multiple selection or single icon */
   if (viewer_selection_withmenu && event->data.mouse.icon != -1)
   {
@@ -1891,6 +2000,8 @@ BOOL viewer_redraw(event_pollblock *event,void *reference)
   window_redrawblock redraw;
   BOOL more;
   int origin_x,origin_y;
+
+  Debug_Printf("viewer_redraw");
 
   redraw.window = winentry->handle;
   Wimp_RedrawWindow(&redraw,&more);
@@ -1949,6 +2060,8 @@ void viewcom_copy(browser_winentry *winentry,viewer_copydirection direction)
   wimp_rect sourcerect,destrect;
   wimp_point size;
 
+  Debug_Printf("viewcom_copy");
+
   drag_getselectionbounds(winentry,&sourcerect,&destrect);
                                                            /* destrect is
   			  				      dummy here */
@@ -1996,6 +2109,8 @@ void viewcom_delete(browser_winentry *winentry)
 {
   icon_handle icon;
 
+  Debug_Printf("viewcom_delete");
+
   if (choices->confirm)
   {
     os_error err;
@@ -2026,6 +2141,8 @@ void viewer_swapicons(browser_winentry *winentry,int icon,int value)
 {
   icon_block swap;
   icon_createblock orig,with;
+
+  Debug_Printf("viewer_swapicons");
 
   /* Swap icon blocks */
   swap = winentry->window->icon[icon];
@@ -2061,6 +2178,8 @@ void viewcom_selectall(browser_winentry *winentry)
 {
   int icon;
 
+  Debug_Printf("viewcom_selectall");
+
   Hourglass_On();
   viewcom_clearselection();
   for (icon = 0;icon < winentry->window->window.numicons;icon++)
@@ -2074,6 +2193,8 @@ void viewcom_selectall(browser_winentry *winentry)
 
 void viewcom_editicon(browser_winentry *winentry)
 {
+  Debug_Printf("viewcom_editicon");
+
   switch (count_selections(winentry->handle))
   {
     case 0:
@@ -2091,6 +2212,8 @@ void viewer_claimcaret(browser_winentry *winentry)
 {
   caret_block caret;
 
+  Debug_Printf("viewcom_claimcaret");
+
   caret.window = winentry->handle;
   caret.icon = -1;
   caret.offset.x = 0;
@@ -2103,6 +2226,8 @@ void viewer_claimcaret(browser_winentry *winentry)
 void viewer_moveselection(browser_winentry *winentry, int xby, int yby, BOOL snap)
 {
   icon_handle i;
+
+  Debug_Printf("viewcom_moveselection");
 
   for (i = 0; i < winentry->window->window.numicons; i++)
   {
@@ -2125,6 +2250,8 @@ void viewer_moveselection(browser_winentry *winentry, int xby, int yby, BOOL sna
 
 static void viewer_movepointer(int x,int y)
 {
+  Debug_Printf("viewer_movepointer");
+
   struct {
     char reason;
     char x_lsb,x_msb,y_lsb,y_msb;
@@ -2150,6 +2277,8 @@ BOOL viewer_hotkey(event_pollblock *event,void *reference)
 {
   browser_winentry *winentry = reference;
   int selections = count_selections(winentry->handle);
+
+  Debug_Printf("viewer_hotkey");
 
   switch (event->data.key.code)
   {
@@ -2316,6 +2445,8 @@ void viewer_responder(browser_winentry *winentry,
 {
   window_state wstate;
 
+  Debug_Printf("viewer_responder");
+
   if (old->viewtools && !new_ch->viewtools)
   {
     viewtools_deletepane(winentry);
@@ -2369,12 +2500,16 @@ void viewer_responder(browser_winentry *winentry,
 
 void viewer_forceusrsprt(browser_winentry *winentry)
 {
+  Debug_Printf("viewer_forceusrsprt");
+
   winentry->window->window.spritearea = user_sprites;
   viewer_reopen(winentry, FALSE);
 }
 
 void viewer_setselect(browser_winentry *winentry,int icon,BOOL state)
 {
+  Debug_Printf("viewer_setselect");
+
   if (state)
     Wimp_SetIconState(winentry->handle,icon,(1<<21)|(1<<5),(1<<21)|(1<<5));
     	/* Selected and filled */
@@ -2390,6 +2525,8 @@ void viewer_changefonts(browser_winentry *winentry)
   window_info *winfo;
   window_handle behind;
   BOOL monitor_was_active;
+
+  Debug_Printf("viewer_changefonts");
 
   winfo = viewer_preparewinblock(winentry, &behind, &monitor_was_active,
   	winentry->window->window.titleflags.data.font);
