@@ -10,6 +10,7 @@
 #include "DeskLib:Hourglass.h"
 #include "DeskLib:Kbd.h"
 #include "DeskLib:KeyCodes.h"
+#include "DeskLib:Environment.h"
 
 #include "browser.h"
 #include "browtools.h"
@@ -65,6 +66,9 @@ char browser_owindowvalid[] = "Sowindow";
 static menu_ptr browser_parentmenu = 0;
 static menu_ptr browser_submenu = 0;
 static BOOL browser_menuopen = FALSE;
+
+/* Bodge to make right clicking on select all followed by choosing a subwindow off the menu, work */
+static BOOL rightclickonselectall = FALSE;
 
 /* Whether an icon can be selected with Menu click */
 BOOL browser_selection_withmenu = TRUE;
@@ -766,11 +770,14 @@ static void       browser_safetynet()
       strcpy(browser->title,"<Wimp$ScrapDir>.WinEd");
       if (!reported)
       {
+        char buffer[50];
         MsgTrans_Report(messages,"Safety",FALSE);
         Wimp_CommandWindow(-1);
         /* Create directory */
         if (SWI(5,0,SWI_OS_File,8,browser->title,0,0,0))
           return;
+        snprintf(buffer, sizeof(buffer), "Filer_OpenDir %s", browser->title);
+        OS_CLI(buffer);
         reported = TRUE;
       }
       strcat(browser->title,".");
@@ -2623,13 +2630,11 @@ void               browser_makemenus(browser_fileinfo *browser,int x,int y,
   }
 
   WinEd_CreateMenu(browser_parentmenu,x,y);
-
   /*menu_destroy = */ browser_menuopen = TRUE;
 
   /* Register handlers */
   Event_Claim(event_MENU,event_ANY,event_ANY,browser_menuselect,browser);
-  EventMsg_Claim(message_MENUSDELETED,event_ANY,
-  		 browser_releasemenus,browser);
+  EventMsg_Claim(message_MENUSDELETED,event_ANY, browser_releasemenus,browser);
   EventMsg_Claim(message_MENUWARN,event_ANY,browser_sublink,browser);
   help_claim_menu("BRM");
 }
@@ -2679,6 +2684,7 @@ BOOL               browser_menuselect(event_pollblock *event,void *reference)
       browcom_selall(browser);
       if (ptrinfo.button.data.adjust)
       {
+        rightclickonselectall = TRUE;
         /*browser_releasemenus(event,reference);*/
         browser_makemenus(browser,lastmenupos.x+64,lastmenupos.y,-1);
         return TRUE;
@@ -2724,11 +2730,21 @@ BOOL               browser_releasemenus(event_pollblock *event,void *reference)
   /*}
   menu_destroy = */ browser_menuopen = FALSE;
 
-  /* Release handlers */
-  Event_Release(event_MENU,event_ANY,event_ANY,browser_menuselect,reference);
-  EventMsg_Release(message_MENUSDELETED,event_ANY,browser_releasemenus);
-  EventMsg_Release(message_MENUWARN,event_ANY,browser_sublink);
-  help_release_menu();
+  /* This is a bodge to prevent the sublink items getting unattached from the
+     main menu when you right-click on "Select All". I can't work out where
+     this function is being called from, hence this bidge :( */
+  if (rightclickonselectall)
+  {
+    rightclickonselectall = FALSE;
+  }
+  else
+  {
+    /* Release handlers */
+    Event_Release(event_MENU,event_ANY,event_ANY,browser_menuselect,reference);
+    EventMsg_Release(message_MENUWARN,event_ANY,browser_sublink);
+    EventMsg_Release(message_MENUSDELETED,event_ANY,browser_releasemenus);
+    help_release_menu();
+  }
 
   return TRUE;
 }

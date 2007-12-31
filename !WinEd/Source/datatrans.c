@@ -59,7 +59,7 @@ BOOL saveas_export_open = FALSE;
 
 /* Calls a loader function then replies to the Message_DataLoad and deletes
    Scrap file if appropriate */
-void datatrans_load(event_pollblock *event,datatrans_loader loader,void *ref)
+void        datatrans_load(event_pollblock *event,datatrans_loader loader,void *ref)
 {
   int size;
   message_block message = event->data.message;
@@ -83,7 +83,7 @@ void datatrans_load(event_pollblock *event,datatrans_loader loader,void *ref)
     File_Delete(message.data.dataload.filename);
 }
 
-void datatrans_saveack(event_pollblock *event)
+void        datatrans_saveack(event_pollblock *event)
 {
   message_block message = event->data.message;
   Debug_Printf("datatrans_saveack");
@@ -96,7 +96,7 @@ void datatrans_saveack(event_pollblock *event)
   Error_Check(Wimp_SendMessage(event_SEND,&message,message.header.sender,0));
 }
 
-void saveas_init()
+void        saveas_init()
 {
   window_block *templat;
   Debug_Printf("saveas_init");
@@ -114,7 +114,7 @@ void saveas_init()
   saveas_dragging = FALSE;
 }
 
-BOOL saveas_selection(event_pollblock *event,void *ref)
+BOOL        saveas_selection(event_pollblock *event,void *ref)
 {
   char *filename = ref;
   char buffer[256];
@@ -176,14 +176,14 @@ static BOOL saveas_release_msg(event_pollblock *e, void *ref)
   return FALSE;
 }
 
-void datatrans_saveas(char *filename,BOOL allow_selection,
-                      int x,int y,
-                      BOOL leaf,
-		      datatrans_saver saver,
-		      datatrans_complete complete,
-		      void *ref,/* <- unsaved_browser */
-		      BOOL seln,
-		      BOOL export)
+void        datatrans_saveas(char *filename,BOOL allow_selection,
+                             int x,int y,
+                             BOOL leaf,
+		             datatrans_saver saver,
+		             datatrans_complete complete,
+		             void *ref,/* <- unsaved_browser */
+		             BOOL seln,
+		             BOOL export)
 {
   window_handle win = export ? saveas_export : saveas_window;
   Debug_Printf("datatrans_saveas");
@@ -197,7 +197,8 @@ void datatrans_saveas(char *filename,BOOL allow_selection,
   Event_Claim(event_CLOSE,win,event_ANY,saveas_accclose,ref);
   Event_Claim(event_CLICK,win,saveas_SAVE,saveas_clicksave,ref);
   Event_Claim(event_CLICK,win,saveas_CANCEL,kill_menus,ref);
-  Event_Claim(event_CLICK,win,saveas_ICON,saveas_startdrag,ref);
+  Event_Claim(event_CLICK,win,3,saveas_startdrag,ref);
+  Event_Claim(event_CLICK,win,7,saveas_startdrag,ref);
   Event_Claim(event_KEY,win,saveas_FILE,saveas_key,ref);
   if (export) help_claim_window(win, "EXP"); else help_claim_window(win,"SAVE");
   if (!export)
@@ -209,7 +210,12 @@ void datatrans_saveas(char *filename,BOOL allow_selection,
     saveas_selection(0,filename);
   }
   else
+  {
     Icon_SetText(win,saveas_FILE,filename);
+    Event_Claim(event_CLICK,win,saveas_SELECTION,export_setfiletype,ref);
+    Event_Claim(event_CLICK,win,saveas_MESSAGES,export_setfiletype,ref);
+    Event_Claim(event_CLICK,win,saveas_BASIC,export_setfiletype,ref);
+  }
 
   if (leaf)
     Error_Check(Wimp_CreateSubMenu((menu_ptr) win,x,y));
@@ -231,7 +237,7 @@ void datatrans_saveas(char *filename,BOOL allow_selection,
   Icon_SetCaret(win,saveas_FILE);
 }
 
-BOOL saveas_accclose(event_pollblock *event,void *ref)
+BOOL        saveas_accclose(event_pollblock *event,void *ref)
 {
   Debug_Printf("savea_acclse");
   Wimp_CloseWindow(saveas_window);
@@ -268,7 +274,7 @@ static void saveas_immediate_save(window_handle window, BOOL close, void *ref)
   		FALSE : Icon_GetSelect(saveas_window,saveas_SELECTION));
 }
 
-BOOL saveas_clicksave(event_pollblock *event,void *ref)
+BOOL        saveas_clicksave(event_pollblock *event,void *ref)
 {
   Debug_Printf("saveas_clicksave");
   if (!event->data.mouse.button.data.select &&
@@ -281,7 +287,28 @@ BOOL saveas_clicksave(event_pollblock *event,void *ref)
   return TRUE;
 }
 
-BOOL saveas_key(event_pollblock *event,void *ref)
+BOOL        export_setfiletype(event_pollblock *event,void *ref)
+{
+  Debug_Printf("export_setfiletype");
+
+  switch(Icon_WhichRadioInEsg(saveas_export, 1))
+  {
+    case saveas_BASIC:
+      Icon_SetDeleted(saveas_export, 3, 1);
+      Icon_SetDeleted(saveas_export, 7, 0);
+      saveas_ICON = 7;
+      Debug_Printf("Basic icon revealed");
+      break;
+    default:
+      Icon_SetDeleted(saveas_export, 3, 0);
+      Icon_SetDeleted(saveas_export, 7, 1);
+      saveas_ICON = 3;
+      Debug_Printf("Basic icon revealed");      break;
+  }
+  return TRUE;
+}
+
+BOOL        saveas_key(event_pollblock *event,void *ref)
 {
   Debug_Printf("saveas_key");
   switch (event->data.key.code)
@@ -297,7 +324,7 @@ BOOL saveas_key(event_pollblock *event,void *ref)
   return FALSE;
 }
 
-BOOL saveas_startdrag(event_pollblock *event,void *ref)
+BOOL        saveas_startdrag(event_pollblock *event,void *ref)
 {
   Debug_Printf("saveas_startdrag");
   if (!event->data.mouse.button.data.dragselect &&
@@ -306,7 +333,6 @@ BOOL saveas_startdrag(event_pollblock *event,void *ref)
     Debug_Printf(" exiting - not a drag");
     return FALSE;
   }
-
   Error_Check(DragASprite_DragIcon(event->data.mouse.window,saveas_ICON));
   Event_Claim(event_USERDRAG,event_ANY,event_ANY,saveas_dragcomplete,ref);
   Event_Claim(event_KEY,event_ANY,event_ANY,saveas_esccancel,ref);
@@ -314,7 +340,7 @@ BOOL saveas_startdrag(event_pollblock *event,void *ref)
   return TRUE;
 }
 
-void saveas_release()
+void        saveas_release()
 {
   Debug_Printf("saveas_release");
   if (saveas_open || saveas_export_open)
@@ -333,7 +359,7 @@ void saveas_release()
   }
 }
 
-BOOL saveas_dragcomplete(event_pollblock *event,void *ref)
+BOOL        saveas_dragcomplete(event_pollblock *event,void *ref)
 {
   mouse_block ptrinfo;
   message_block message;
@@ -386,7 +412,7 @@ BOOL saveas_dragcomplete(event_pollblock *event,void *ref)
   return TRUE;
 }
 
-BOOL datatrans_dosave(event_pollblock *event,void *ref)
+BOOL        datatrans_dosave(event_pollblock *event,void *ref)
 {
   message_block message;
   Debug_Printf("datatrans_dosave");
@@ -427,7 +453,7 @@ BOOL datatrans_dosave(event_pollblock *event,void *ref)
   return TRUE;
 }
 
-BOOL datatrans_nosaveack(event_pollblock *event,void *reference)
+BOOL        datatrans_nosaveack(event_pollblock *event,void *reference)
 {
   Debug_Printf("datatrans_nosaveack");
   if (event->data.message.header.action != message_DATASAVE)
@@ -442,7 +468,7 @@ BOOL datatrans_nosaveack(event_pollblock *event,void *reference)
   return FALSE;
 }
 
-BOOL datatrans_releasesaveack(event_pollblock *event,void *reference)
+BOOL        datatrans_releasesaveack(event_pollblock *event,void *reference)
 {
   Debug_Printf("datatrans_releasesaveack");
   if ((int) reference != datatrans_myref)
@@ -453,7 +479,7 @@ BOOL datatrans_releasesaveack(event_pollblock *event,void *reference)
   return TRUE;
 }
 
-BOOL datatrans_loadack(event_pollblock *event,void *reference)
+BOOL        datatrans_loadack(event_pollblock *event,void *reference)
 {
   Debug_Printf("datatrans_loadack");
   if (!datatrans_releaseloadack(event,reference))
@@ -469,7 +495,7 @@ BOOL datatrans_loadack(event_pollblock *event,void *reference)
   return TRUE;
 }
 
-BOOL datatrans_noloadack(event_pollblock *event,void *reference)
+BOOL        datatrans_noloadack(event_pollblock *event,void *reference)
 {
   Debug_Printf("datatrans_noloadack");
   if (event->data.message.header.action != message_DATALOAD)
@@ -485,7 +511,7 @@ BOOL datatrans_noloadack(event_pollblock *event,void *reference)
   return FALSE;
 }
 
-BOOL datatrans_releaseloadack(event_pollblock *event,void *reference)
+BOOL        datatrans_releaseloadack(event_pollblock *event,void *reference)
 {
   Debug_Printf("datatrans_releaseloadack");
   if ((int) reference != datatrans_myref)
@@ -496,8 +522,8 @@ BOOL datatrans_releaseloadack(event_pollblock *event,void *reference)
   return TRUE;
 }
 
-void datatrans_dragndrop(datatrans_saver saver, datatrans_complete complete,
-	browser_fileinfo *browser)
+void        datatrans_dragndrop(datatrans_saver saver, datatrans_complete complete,
+                	        browser_fileinfo *browser)
 {
   char buffer[256];
   wimp_rect /*srect,*/ prect;

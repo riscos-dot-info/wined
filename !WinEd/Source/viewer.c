@@ -178,7 +178,7 @@ static void viewer_canceldrag(viewer_cancelref);
 static BOOL viewer_canceldraghandler(event_pollblock *,void *);
 
 /* Change from preview to editable or vice versa */
-static void viewer_view(browser_winentry *winentry,BOOL editable)
+static void         viewer_view(browser_winentry *winentry,BOOL editable)
 {
   if (winentry->status)
     viewer_close(winentry);
@@ -249,7 +249,7 @@ static char viewer_dbvalid[] = "R2";
 static window_handle renum_dbox;
 static BOOL renum_open = FALSE;
 
-void viewcom_quickrenum(browser_winentry *winentry)
+void                viewcom_quickrenum(browser_winentry *winentry)
 {
   int icon;
   int value;
@@ -312,7 +312,7 @@ void viewcom_quickrenum(browser_winentry *winentry)
   viewer_iconmenufield(value);
 }
 
-static BOOL renum_clicked(event_pollblock *event,void *reference)
+static BOOL         renum_clicked(event_pollblock *event,void *reference)
 {
   if (event->type == event_KEY && event->data.key.code != 13)
   {
@@ -329,7 +329,7 @@ static BOOL renum_clicked(event_pollblock *event,void *reference)
   return TRUE;
 }
 
-static void release_renum()
+static void         release_renum()
 {
   Debug_Printf("release_renum");
 
@@ -339,7 +339,7 @@ static void release_renum()
   renum_open = FALSE;
 }
 
-static BOOL release_renum_msg(event_pollblock *e, void *r)
+static BOOL         release_renum_msg(event_pollblock *e, void *r)
 {
   Debug_Printf("release_renum_msg");
 
@@ -348,7 +348,7 @@ static BOOL release_renum_msg(event_pollblock *e, void *r)
   return TRUE;
 }
 
-void viewcom_renum(BOOL submenu, int x, int y,browser_winentry *reference)
+void                viewcom_renum(BOOL submenu, int x, int y,browser_winentry *reference)
 {
   Debug_Printf("viewcom_renum");
 
@@ -377,7 +377,7 @@ void viewcom_renum(BOOL submenu, int x, int y,browser_winentry *reference)
   renum_open = TRUE;
 }
 
-void viewer_createmenus()
+void                viewer_createmenus()
 {
   char menutext[256], title[64];
 
@@ -421,7 +421,7 @@ void viewer_createmenus()
   Menu_AddSubMenu(viewer_iconmenu,   viewer_COPY, viewer_copymenu);
 }
 
-void viewer_init()
+void                viewer_init()
 {
   window_block *templat;
 
@@ -471,7 +471,7 @@ void viewer_init()
   viewer_dummyborder.data.indirecttext.bufflen = 0;
 }
 
-void viewer_closechildren(browser_winentry *winentry)
+void                viewer_closechildren(browser_winentry *winentry)
 {
   Debug_Printf("viewer_closechildren");
 
@@ -497,7 +497,7 @@ void viewer_closechildren(browser_winentry *winentry)
     multiicon_close();
 }
 
-void viewer_close(browser_winentry *winentry)
+void                viewer_close(browser_winentry *winentry)
 {
   window_info winfo;
   icon_handle icon;
@@ -568,7 +568,7 @@ void viewer_close(browser_winentry *winentry)
     viewtools_deletepane(winentry);
 }
 
-void viewer_modifyflags(window_block *window)
+void                viewer_modifyflags(window_block *window)
 {
   Debug_Printf("viewer_modifyflags");
 
@@ -605,7 +605,7 @@ void viewer_modifyflags(window_block *window)
   window->workflags.data.buttontype = iconbtype_DOUBLECLICKDRAG;
 }
 
-void viewer_claimeditevents(browser_winentry *winentry)
+void                viewer_claimeditevents(browser_winentry *winentry)
 {
   Debug_Printf("viewer_claimeditevents");
 
@@ -623,8 +623,7 @@ void viewer_claimeditevents(browser_winentry *winentry)
     help_claim_window(winentry->handle,"Pick");
 }
 
-BOOL viewer_createwindow(browser_winentry *winentry,
-     			 browser_winblock *winblock)
+BOOL                viewer_createwindow(browser_winentry *winentry, browser_winblock *winblock)
 {
   int icon;
 
@@ -657,9 +656,9 @@ BOOL viewer_createwindow(browser_winentry *winentry,
   return TRUE;
 }
 
-BOOL viewer_makewinblock(browser_winentry *winentry,
-     			 BOOL wineditable,BOOL icneditable,
-     			 browser_winblock **winblock)
+BOOL                viewer_makewinblock(browser_winentry *winentry,
+                                        BOOL wineditable,BOOL icneditable,
+     		               	        browser_winblock **winblock)
 {
   BOOL sofar = TRUE;
   int icon;
@@ -729,7 +728,7 @@ BOOL viewer_makewinblock(browser_winentry *winentry,
   return TRUE;
 }
 
-static void viewer_claimpreviewevents(browser_winentry *winentry)
+static void         viewer_claimpreviewevents(browser_winentry *winentry)
 {
   Debug_Printf("viewer_claimpreviewevents");
 
@@ -743,7 +742,7 @@ static void viewer_claimpreviewevents(browser_winentry *winentry)
   help_claim_window(winentry->handle,"Prev");
 }
 
-void viewer_open(browser_winentry *winentry,BOOL editable)
+void                viewer_open(browser_winentry *winentry,BOOL editable)
 {
   browser_winblock *winblock;
   window_state wstate;
@@ -802,7 +801,7 @@ void viewer_open(browser_winentry *winentry,BOOL editable)
   browser_sorticons(winentry->browser,TRUE,FALSE,TRUE);
 }
 
-static void viewer_deregisterwindow(browser_winentry *winentry)
+static void         viewer_deregisterwindow(browser_winentry *winentry)
 {
   Debug_Printf("viewer_deregisterwindow");
 
@@ -870,7 +869,7 @@ static window_info *viewer_preparewinblock(browser_winentry *winentry,
 }
 
 /* Reopens window regardless of whether it was editable */
-static BOOL viewer_rawreopen(browser_winentry *winentry, window_info *winfo,
+static BOOL         viewer_rawreopen(browser_winentry *winentry, window_info *winfo,
 	window_handle behind, BOOL monitor_was_active)
 {
   Debug_Printf("viewer_rawreopen");
@@ -895,7 +894,7 @@ static BOOL viewer_rawreopen(browser_winentry *winentry, window_info *winfo,
   return TRUE;
 }
 
-void viewer_reopen(browser_winentry *winentry,BOOL newtitle)
+void                viewer_reopen(browser_winentry *winentry,BOOL newtitle)
 {
   Debug_Printf("viewer_reopen");
 
@@ -944,7 +943,7 @@ void viewer_reopen(browser_winentry *winentry,BOOL newtitle)
   }
 }
 
-BOOL viewer_openevent(event_pollblock *event,void *reference)
+BOOL                viewer_openevent(event_pollblock *event,void *reference)
 {
   browser_winentry *winentry = reference;
   window_state wstate;
@@ -983,7 +982,7 @@ BOOL viewer_openevent(event_pollblock *event,void *reference)
   return TRUE;
 }
 
-BOOL viewer_closeevent(event_pollblock *event,void *reference)
+BOOL                viewer_closeevent(event_pollblock *event,void *reference)
 {
   browser_winentry *viewer;
   Debug_Printf("viewer_closeevent");
@@ -991,13 +990,15 @@ BOOL viewer_closeevent(event_pollblock *event,void *reference)
   viewer = (browser_winentry *)reference;
   viewer_close(viewer);
 
-  /* Refresh browser to reflect closed state of viewer */
-  browser_sorticons(viewer->browser,TRUE,FALSE,TRUE);
+  /* Refresh browser to reflect closed state of viewer   */
+  /* (so long as we're not just closing the icon picker) */
+  if (viewer->browser)
+    browser_sorticons(viewer->browser,TRUE,FALSE,TRUE);
 
   return TRUE;
 }
 
-BOOL preview_click(event_pollblock *event,void *reference)
+BOOL                preview_click(event_pollblock *event,void *reference)
 {
   Debug_Printf("preview_click");
 
@@ -1029,7 +1030,7 @@ BOOL preview_click(event_pollblock *event,void *reference)
   return TRUE;
 }
 
-BOOL preview_releasemenu(event_pollblock *event,void *reference)
+BOOL                preview_releasemenu(event_pollblock *event,void *reference)
 {
   Debug_Printf("preview_releasemenu");
 
@@ -1039,7 +1040,7 @@ BOOL preview_releasemenu(event_pollblock *event,void *reference)
   return TRUE;
 }
 
-BOOL preview_menuselect(event_pollblock *event,void *reference)
+BOOL                preview_menuselect(event_pollblock *event,void *reference)
 {
   Debug_Printf("preview_menuselect");
 
@@ -1092,7 +1093,7 @@ void viewer_roundopenblock(window_openblock *openblock)
 }
 */
 
-BOOL viewer_click(event_pollblock *event,void *reference)
+BOOL                viewer_click(event_pollblock *event,void *reference)
 {
   browser_winentry *winentry = reference;
 
@@ -1318,7 +1319,7 @@ BOOL viewer_click(event_pollblock *event,void *reference)
   return TRUE;
 }
 
-BOOL viewer_resizedrag(event_pollblock *event,void *reference)
+BOOL                viewer_resizedrag(event_pollblock *event,void *reference)
 {
   window_state wstate;
   wimp_point origin;
@@ -1362,7 +1363,7 @@ BOOL viewer_resizedrag(event_pollblock *event,void *reference)
   return FALSE;
 }
 
-void viewer_clearselection()
+void                viewer_clearselection()
 {
   window_info winfo;
   int icon;
@@ -1395,7 +1396,7 @@ void viewer_clearselection()
   Hourglass_Off();
 }
 
-static void viewer_canceldrag(viewer_cancelref vcr)
+static void         viewer_canceldrag(viewer_cancelref vcr)
 {
   char ptr_name[] = "ptr_default";
   mouse_block ptrinfo;
@@ -1435,7 +1436,7 @@ static void viewer_canceldrag(viewer_cancelref vcr)
   Error_Check(SWI(8, 0, SWI_Wimp_SPRITEOP, 36, 0, ptr_name, 1, 0, 0, 0, 0));
 }
 
-static BOOL viewer_canceldraghandler(event_pollblock *event,void *reference)
+static BOOL         viewer_canceldraghandler(event_pollblock *event,void *reference)
 {
   Debug_Printf("viewer_canceldraghandler");
 
@@ -1452,7 +1453,7 @@ static BOOL viewer_canceldraghandler(event_pollblock *event,void *reference)
   return FALSE;
 }
 
-BOOL viewer_moveonedrag(event_pollblock *event,void *reference)
+BOOL                viewer_moveonedrag(event_pollblock *event,void *reference)
 {
   mouse_block ptrinfo;
   wimp_box workarearect;
@@ -1520,9 +1521,9 @@ BOOL viewer_moveonedrag(event_pollblock *event,void *reference)
   return FALSE;
 }
 
-void viewer_newbounds(browser_winentry *winentry,int icon,
-     		      wimp_rect *newrect,wimp_rect *dragrect,
-     		      wimp_rect *startrect)
+void                viewer_newbounds(browser_winentry *winentry,int icon,
+     		                     wimp_rect *newrect,wimp_rect *dragrect,
+     		                     wimp_rect *startrect)
 {
   wimp_point size;
 
@@ -1545,9 +1546,9 @@ void viewer_newbounds(browser_winentry *winentry,int icon,
   newrect->max.y = newrect->min.y + size.y;
 }
 
-void viewer_copyselection(browser_winentry *source,browser_winentry *dest,
-     			  wimp_rect *oldrect,wimp_rect *newrect,
-     			  BOOL shift)
+void                viewer_copyselection(browser_winentry *source,browser_winentry *dest,
+     			                 wimp_rect *oldrect,wimp_rect *newrect,
+     			                 BOOL shift)
 {
   icon_handle icon, newicon;
   /* We don't want to carry on looping through the new selected icons we create */
@@ -1602,7 +1603,7 @@ void viewer_copyselection(browser_winentry *source,browser_winentry *dest,
   Hourglass_Off();
 }
 
-BOOL viewer_movemanydrag(event_pollblock *event,void *reference)
+BOOL                viewer_movemanydrag(event_pollblock *event,void *reference)
 {
   mouse_block ptrinfo;
   wimp_rect workarearect; /* Of where drag has finished */
@@ -1651,7 +1652,7 @@ BOOL viewer_movemanydrag(event_pollblock *event,void *reference)
   return FALSE;
 }
 
-BOOL viewer_scrolldrag(event_pollblock *event,window_handle window)
+BOOL                viewer_scrolldrag(event_pollblock *event,window_handle window)
 {
   window_state wstate;
   mouse_block ptrinfo;
@@ -1687,7 +1688,7 @@ BOOL viewer_scrolldrag(event_pollblock *event,window_handle window)
   return TRUE;
 }
 
-void viewer_resetscrollbars()
+void                viewer_resetscrollbars()
 {
   event_pollblock event;
 
@@ -1700,7 +1701,7 @@ void viewer_resetscrollbars()
   viewer_openevent(&event,viewer_dragref.winentry);
 }
 
-BOOL viewer_iconise(event_pollblock *event,browser_winentry *winentry)
+BOOL                viewer_iconise(event_pollblock *event,browser_winentry *winentry)
 {
   message_block message = event->data.message;
 
@@ -1730,7 +1731,7 @@ BOOL viewer_iconise(event_pollblock *event,browser_winentry *winentry)
   return TRUE;
 }
 
-BOOL viewer_menuselect(event_pollblock *event,void *reference)
+BOOL                viewer_menuselect(event_pollblock *event,void *reference)
 {
   mouse_block ptrinfo;
   wimp_point lastmenupos;
@@ -1837,7 +1838,7 @@ BOOL viewer_menuselect(event_pollblock *event,void *reference)
   return TRUE;
 }
 
-BOOL viewer_sublink(event_pollblock *event,void *reference)
+BOOL                viewer_sublink(event_pollblock *event,void *reference)
 {
   Debug_Printf("viewer_sublink");
 
@@ -1853,7 +1854,7 @@ BOOL viewer_sublink(event_pollblock *event,void *reference)
   return TRUE;
 }
 
-BOOL viewer_releasemenu(event_pollblock *event,void *reference)
+BOOL                viewer_releasemenu(event_pollblock *event,void *reference)
 {
   Debug_Printf("viewer_releasemenu");
 
@@ -1867,7 +1868,7 @@ BOOL viewer_releasemenu(event_pollblock *event,void *reference)
   return TRUE;
 }
 
-void viewer_numbermenu(int value)
+void                viewer_numbermenu(int value)
 {
   char buffer[32];
 
@@ -1887,7 +1888,7 @@ void viewer_numbermenu(int value)
   Icon_SetInteger(renum_dbox,2,value);
 }
 
-void viewer_iconmenufield(int value)
+void                viewer_iconmenufield(int value)
 {
   char buffer[32];
 
@@ -1898,7 +1899,7 @@ void viewer_iconmenufield(int value)
   Menu_SetText(viewer_parentmenu,viewer_ICON,buffer);
 }
 
-static void viewer_shademultisel()
+static void         viewer_shademultisel()
 {
   char buffer[64];
 
@@ -1910,7 +1911,7 @@ static void viewer_shademultisel()
   Menu_SetText(viewer_parentmenu,viewer_ICON,buffer);
 }
 
-static void viewer_selunshade()
+static void         viewer_selunshade()
 {
   Debug_Printf("viewer_selunshade");
 
@@ -1926,7 +1927,7 @@ static void viewer_selunshade()
   Menu_SetFlags(viewer_iconmenu,viewer_EDITICON,0,0);
 }
 
-void viewer_preparemenu(browser_winentry *winentry)
+void                viewer_preparemenu(browser_winentry *winentry)
 {
   int selections;
   int selected; /* logical icon */
@@ -1965,7 +1966,7 @@ void viewer_preparemenu(browser_winentry *winentry)
   }
 }
 
-static void viewer_openmenu_at(browser_winentry *winentry, int x, int y)
+static void         viewer_openmenu_at(browser_winentry *winentry, int x, int y)
 {
   Debug_Printf("viewer_openmenu_at");
 
@@ -1978,7 +1979,7 @@ static void viewer_openmenu_at(browser_winentry *winentry, int x, int y)
   help_claim_menu("VRM");
 }
 
-void viewer_openmenu(event_pollblock *event,browser_winentry *winentry)
+void                viewer_openmenu(event_pollblock *event,browser_winentry *winentry)
 {
   Debug_Printf("viewer_openmenu");
 
@@ -1993,7 +1994,7 @@ void viewer_openmenu(event_pollblock *event,browser_winentry *winentry)
   viewer_openmenu_at(winentry,event->data.mouse.pos.x,event->data.mouse.pos.y);
 }
 
-BOOL viewer_redraw(event_pollblock *event,void *reference)
+BOOL                viewer_redraw(event_pollblock *event,void *reference)
 {
   browser_winentry *winentry = reference;
   int icon;
@@ -2055,7 +2056,7 @@ BOOL viewer_redraw(event_pollblock *event,void *reference)
 }
 
 
-void viewcom_copy(browser_winentry *winentry,viewer_copydirection direction)
+void                viewcom_copy(browser_winentry *winentry,viewer_copydirection direction)
 {
   wimp_rect sourcerect,destrect;
   wimp_point size;
@@ -2105,7 +2106,7 @@ void viewcom_copy(browser_winentry *winentry,viewer_copydirection direction)
 }
 
 
-void viewcom_delete(browser_winentry *winentry)
+void                viewcom_delete(browser_winentry *winentry)
 {
   icon_handle icon;
 
@@ -2137,7 +2138,7 @@ void viewcom_delete(browser_winentry *winentry)
   Hourglass_Off();
 }
 
-void viewer_swapicons(browser_winentry *winentry,int icon,int value)
+void                viewer_swapicons(browser_winentry *winentry,int icon,int value)
 {
   icon_block swap;
   icon_createblock orig,with;
@@ -2174,7 +2175,7 @@ void viewer_swapicons(browser_winentry *winentry,int icon,int value)
   icnedit_forceredraw(winentry,value);
 }
 
-void viewcom_selectall(browser_winentry *winentry)
+void                viewcom_selectall(browser_winentry *winentry)
 {
   int icon;
 
@@ -2191,7 +2192,7 @@ void viewcom_selectall(browser_winentry *winentry)
   Hourglass_Off();
 }
 
-void viewcom_editicon(browser_winentry *winentry)
+void                viewcom_editicon(browser_winentry *winentry)
 {
   Debug_Printf("viewcom_editicon");
 
@@ -2208,7 +2209,7 @@ void viewcom_editicon(browser_winentry *winentry)
   }
 }
 
-void viewer_claimcaret(browser_winentry *winentry)
+void                viewer_claimcaret(browser_winentry *winentry)
 {
   caret_block caret;
 
@@ -2223,7 +2224,7 @@ void viewer_claimcaret(browser_winentry *winentry)
   Wimp_SetCaretPosition(&caret);
 }
 
-void viewer_moveselection(browser_winentry *winentry, int xby, int yby, BOOL snap)
+void                viewer_moveselection(browser_winentry *winentry, int xby, int yby, BOOL snap)
 {
   icon_handle i;
 
@@ -2248,7 +2249,7 @@ void viewer_moveselection(browser_winentry *winentry, int xby, int yby, BOOL sna
   browser_settitle(winentry->browser,0,TRUE);
 }
 
-static void viewer_movepointer(int x,int y)
+static void         viewer_movepointer(int x,int y)
 {
   Debug_Printf("viewer_movepointer");
 
@@ -2273,7 +2274,7 @@ static void viewer_movepointer(int x,int y)
   OS_Word(osword_DEFINEPOINTERANDMOUSE,&ptrblk);
 }
 
-BOOL viewer_hotkey(event_pollblock *event,void *reference)
+BOOL                viewer_hotkey(event_pollblock *event,void *reference)
 {
   browser_winentry *winentry = reference;
   int selections = count_selections(winentry->handle);
@@ -2440,8 +2441,8 @@ BOOL viewer_hotkey(event_pollblock *event,void *reference)
   return TRUE;
 }
 
-void viewer_responder(browser_winentry *winentry,
-                      choices_str *old,choices_str *new_ch)
+void                viewer_responder(browser_winentry *winentry,
+                                     choices_str *old,choices_str *new_ch)
 {
   window_state wstate;
 
@@ -2498,7 +2499,7 @@ void viewer_responder(browser_winentry *winentry,
   }
 }
 
-void viewer_forceusrsprt(browser_winentry *winentry)
+void                viewer_forceusrsprt(browser_winentry *winentry)
 {
   Debug_Printf("viewer_forceusrsprt");
 
@@ -2506,7 +2507,7 @@ void viewer_forceusrsprt(browser_winentry *winentry)
   viewer_reopen(winentry, FALSE);
 }
 
-void viewer_setselect(browser_winentry *winentry,int icon,BOOL state)
+void                viewer_setselect(browser_winentry *winentry,int icon,BOOL state)
 {
   Debug_Printf("viewer_setselect");
 
@@ -2519,7 +2520,7 @@ void viewer_setselect(browser_winentry *winentry,int icon,BOOL state)
     	(1<<21)|(1<<5));
 }
 
-void viewer_changefonts(browser_winentry *winentry)
+void                viewer_changefonts(browser_winentry *winentry)
 {
   int icon;
   window_info *winfo;

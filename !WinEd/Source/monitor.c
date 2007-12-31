@@ -217,8 +217,9 @@ BOOL monitor_update(event_pollblock *event,void *reference)
       {
         /* Extract icon name */
         strcpy(icname,""); /* Clear it first */
-        if (winentry->window->icon[ptrinfo.icon].flags.data.indirected)
-        /* Only worth trying if the icon is indirected */
+        if (  (winentry->window->icon[ptrinfo.icon].flags.data.indirected)
+           && (winentry->window->icon[ptrinfo.icon].flags.data.text) )
+        /* Only worth trying if the icon is indirected & text */
         {
           int valix;
           char *validstring = winentry->window->icon[ptrinfo.icon].data.indirecttext.validstring +
