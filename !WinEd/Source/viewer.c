@@ -615,12 +615,18 @@ void                viewer_claimeditevents(browser_winentry *winentry)
   Event_Claim(event_CLICK, winentry->handle,event_ANY, viewer_click,      winentry);
   Event_Claim(event_KEY,   winentry->handle,event_ANY, viewer_hotkey,     winentry);
   EventMsg_Claim(message_WINDOWINFO,winentry->handle, (event_handler) viewer_iconise,winentry);
-  Event_Claim(event_PTRLEAVE,winentry->handle,event_ANY, monitor_deactivate, winentry);
-  Event_Claim(event_PTRENTER,winentry->handle,event_ANY, monitor_activate,   winentry);
+
   if (winentry != &picker_winentry)
+  {
+    /* Only claim monitor updates if it's not te picker window */
+    Event_Claim(event_PTRLEAVE,winentry->handle,event_ANY, monitor_deactivate, winentry);
+    Event_Claim(event_PTRENTER,winentry->handle,event_ANY, monitor_activate,   winentry);
     help_claim_window(winentry->handle,"View");
+  }
   else
+  {
     help_claim_window(winentry->handle,"Pick");
+  }
 }
 
 BOOL                viewer_createwindow(browser_winentry *winentry, browser_winblock *winblock)

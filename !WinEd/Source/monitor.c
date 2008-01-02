@@ -3,6 +3,7 @@
 #include "common.h"
 
 #include "monitor.h"
+#include "picker.h"
 
 /* Icon names exported by WinEd */
 
@@ -55,6 +56,7 @@ void monitor_init()
 void monitor_open()
 {
   window_state wstate;
+  Debug_Printf("monitor_open");
 
   Wimp_GetWindowState(monitor_window,&wstate);
   wstate.openblock.behind = -1;
@@ -64,6 +66,7 @@ void monitor_open()
 
 BOOL monitor_close(event_pollblock *event,void *reference)
 {
+  Debug_Printf("monitor_close");
   Wimp_CloseWindow(monitor_window);
   monitor_isopen = FALSE;
   if (monitor_isactive)
@@ -73,12 +76,14 @@ BOOL monitor_close(event_pollblock *event,void *reference)
 
 void monitor_activeinc()
 {
+  Debug_Printf("monitor_activeinc");
   monitor_numactive++;
   monitor_open();
 }
 
 void monitor_activedec()
 {
+  Debug_Printf("monitor_activedec");
   if (--monitor_numactive <= 0)
   {
     monitor_numactive = 0;
@@ -88,6 +93,7 @@ void monitor_activedec()
 
 BOOL monitor_activate(event_pollblock *event,void *reference)
 {
+  Debug_Printf("monitor_activate");
   /* Set to winentry of viewer with pointer focus */
   monitor_winentry = reference;
   if (monitor_isopen && (!monitor_isactive))
@@ -106,6 +112,7 @@ BOOL monitor_activate(event_pollblock *event,void *reference)
 
 BOOL monitor_deactivate(event_pollblock *event,void *reference)
 {
+  Debug_Printf("monitor_deactivate");
   /* Check for the monitor_dragging flag as we want the monitor to stay active    */
   /* while we're dragging. This function gets called by a pointer-leave even when */
   /* a drag starts so would otherwise silence the monitor                         */
@@ -131,12 +138,19 @@ BOOL monitor_update(event_pollblock *event,void *reference)
   mouse_block ptrinfo;
   browser_winentry *winentry = reference;
   char buffer[16];
-  char icname[32]; /* Note: size of space in monitor template for icon name */
   wimp_point size;
   convert_block con;
   wimp_point new_pos, offset;
   wimp_rect final;
+  int sizeoficname;
+  icon_block istate;
 
+  /* Find size of icon name indirected icon data in monitor window */
+  Wimp_GetIconState(monitor_window, monitor_NAME, &istate);
+  if ((istate.flags.data.text) && (istate.flags.data.indirected))
+    sizeoficname = istate.data.indirecttext.bufflen;
+
+  /* Get info on icon under pointer */
   Wimp_GetPointerInfo(&ptrinfo);
 
   if (monitor_dragging)
@@ -186,7 +200,7 @@ BOOL monitor_update(event_pollblock *event,void *reference)
   }
   else
   {
-    if (ptrinfo.window == winentry->handle && ((ptrinfo.icon != monitor_lasticon) || monitor_moved))
+    if ( (ptrinfo.window == winentry->handle) && ((ptrinfo.icon != monitor_lasticon) || monitor_moved) )
     {
       monitor_moved = FALSE;
       if (ptrinfo.icon == -1) /* Show dimensions of visible part of WA */
@@ -215,6 +229,8 @@ BOOL monitor_update(event_pollblock *event,void *reference)
       }
       else
       {
+        char icname[sizeoficname];
+
         /* Extract icon name */
         strcpy(icname,""); /* Clear it first */
         if (  (winentry->window->icon[ptrinfo.icon].flags.data.indirected)
@@ -229,10 +245,8 @@ BOOL monitor_update(event_pollblock *event,void *reference)
           if (valix)
           {
             int n = 0;
-            int len;
-            len = sizeof(icname);
 
-            for (n = valix; validstring[n] > 31 && validstring[n] != ';' && n<len; ++n)
+            for (n = valix; (validstring[n] > 31) && (validstring[n] != ';') && (n-valix<sizeoficname); ++n)
               icname[n-valix] = validstring[n];
             icname[n-valix] = 0;
             Debug_Printf("Over icon named '%s'", icname);
@@ -241,14 +255,10 @@ BOOL monitor_update(event_pollblock *event,void *reference)
 
         Icon_SetInteger(monitor_window,monitor_ICON,ptrinfo.icon);
         Icon_SetText(monitor_window,monitor_NAME,icname);
-        Icon_SetInteger(monitor_window,monitor_XMIN,
-        		      winentry->window->icon[ptrinfo.icon].workarearect.min.x);
-        Icon_SetInteger(monitor_window,monitor_YMIN,
-        		      winentry->window->icon[ptrinfo.icon].workarearect.min.y);
-        Icon_SetInteger(monitor_window,monitor_XMAX,
-        		      winentry->window->icon[ptrinfo.icon].workarearect.max.x);
-        Icon_SetInteger(monitor_window,monitor_YMAX,
-        		      winentry->window->icon[ptrinfo.icon].workarearect.max.y);
+        Icon_SetInteger(monitor_window,monitor_XMIN, winentry->window->icon[ptrinfo.icon].workarearect.min.x);
+        Icon_SetInteger(monitor_window,monitor_YMIN, winentry->window->icon[ptrinfo.icon].workarearect.min.y);
+        Icon_SetInteger(monitor_window,monitor_XMAX, winentry->window->icon[ptrinfo.icon].workarearect.max.x);
+        Icon_SetInteger(monitor_window,monitor_YMAX, winentry->window->icon[ptrinfo.icon].workarearect.max.y);
         sprintf(buffer,"%d x %d",
         	      winentry->window->icon[ptrinfo.icon].workarearect.max.x -
         	      winentry->window->icon[ptrinfo.icon].workarearect.min.x,

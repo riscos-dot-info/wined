@@ -268,7 +268,8 @@ alphabetical order. The ordering in the physical template file will not be affec
 <p>Browser is the term for a window which displays a list of the
 window/dialogue box definitions in a file. Each entry is shown as a
 small icon depicting a dialogue box (with no scroll bars) or window
-(with scroll bars) next to its template identifier. The windows are
+(with scroll bars) next to its template identifier. The icons change to
+indicate whether the window is currently open. The windows are
 displayed either in alphabetical order or in the order they appear in the file, depending on the <code>Display templates sorted</code> option in the <a href="#choices">choices window</a>.</p>
 <p>If you click Adjust on a browser's close tool <em>WinEd</em> will attempt to
 open the directory the templates were last loaded or saved in, keeping
@@ -357,10 +358,15 @@ to right):</p>
 
 <a name="export"><h2>22. Exporting icon names</h2></a>
 <p>The last entry on the selected window(s) submenu of the browser menu
-leads to a Save as dialogue box for exporting icon names. An icon can
-be given a name in an N validation command. <em>WinEd</em> is configured to
-export the icon names either as sets of enum statements for the C programming
-language or as tokens for a <code>Messages</code> file, depending on the radio button selected. The precise output can be configured by editing <em>WinEd</em>'s <code>Messages</code> file. See
+leads to a &quot;Save as&quot; dialogue box for exporting icon names for all selected windows. An icon can
+be given a name using an <code>N</code> in its validation string.
+<em>WinEd</em> will export the icon names in text format if the <code>enum</code> or <code>Messages</code> options
+are chosen. The <code>enum</code> option is useful for including in C programs
+and the <code>Messages</code> option is intended for use for icon help text in an
+application's &quot;Messages&quot; file. If <code>Basic</code> is selected
+the output is written to a Basic file, for use in Basic
+programs. Note that the output of any of these options can be altered by editing
+<em>WinEd</em>'s <code>Messages</code> file. See
 the chapter on <a href="#custom">customisation</a>.</p>
 <p><a href="#contents">Return to contents</a></p>
 
@@ -511,13 +517,13 @@ tools are (left to right, top to bottom):</p>
 window flags documented in the PRM and other books. The names of the
 colours are abbreviated to save space. They are:</p>
 <p><table>
-<tr><td>TF</td><td>Title bar Foreground.</td></tr>
-<tr><td>TB</td><td>Title bar Background.</td></tr>
-<tr><td>WF</td><td>Work area Foreground.</td></tr>
-<tr><td>WB</td><td>Work area Background.</td></tr>
-<tr><td>SO</td><td>Scroll bar Outer.</td></tr>
-<tr><td>SI</td><td>Scroll bar Inner.</td></tr>
-<tr><td>IF</td><td>Input focus (the colour the title bar changes to when the window has input focus).</td></tr>
+<tr><td>Title F.</td><td>Title bar Foreground.</td></tr>
+<tr><td>Title B.</td><td>Title bar Background.</td></tr>
+<tr><td>Work F.</td><td>Work area Foreground.</td></tr>
+<tr><td>Work B</td><td>Work area Background.</td></tr>
+<tr><td>Scr. Out.</td><td>Scroll bar Outer.</td></tr>
+<tr><td>Scr. In.</td><td>Scroll bar Inner.</td></tr>
+<tr><td>Input Focus</td><td>Input focus (the colour the title bar changes to when the window has input focus).</td></tr>
 </table></p>
 
 <h3>Default</h3>
@@ -527,8 +533,8 @@ doesn't close the dialogue box.</p>
 <h3>GCOL colours</h3>
 <p>If set the above colours are taken to be GCOL values. This was
 originally intended for 256 colour modes and should not really be used.
- <em>WinEd</em> only supports colours in the usual range of 015 (and 255/1 for
-transparent).</p>
+ <em>WinEd</em> only supports colours in the usual range of 0-15 (and 255/1 for
+transparent). This option is unavailable if <code>24bit title colour</code> is chosen.</p>
 <p><a href="#contents">Return to contents</a></p>
 
 <a name="monitor"><h2>30. The monitor</h2></a>
@@ -539,8 +545,12 @@ the pointer, provided it is in a template loaded in <em>WinEd</em>.</p>
 <p>The identifier of the window under the pointer. A trailing * means it
 is an editable window, otherwise it is a preview window.</p>
 
-<h3>Icon</h3>
+<h3>Icon no.</h3>
 <p>The number of the icon under the pointer, or &quot;Work area&quot;.</p>
+
+<h3>Icon name</h3>
+<p>This displays the icon name (if present), as given by using the <code>N</code> validation
+option in an indirected icon's validation string.</p>
 
 <h3>Position</h3>
 <p>The work area coordinate of each edge of the icon.</p>
@@ -619,7 +629,7 @@ here.</p>
 <h3>Max text length</h3>
 <p>Enter the maximum allowed length (including terminator) of the text for
 indirected text icons. This can be set to the length of the string in
-the Txt/sprt field by clicking the Minimise button.</p>
+the Text/sprite field by clicking the Minimise button.</p>
 
 <h3>Outline font</h3>
 <p>If set the icon uses the outline font shown in the field below; fonts
@@ -922,14 +932,17 @@ messages as supplied; you should find them at the bottom of the file:</p>
 <p><code>
 <br>E_Preamble:/* Icon names exported by WinEd */\n\n
 <br>E_PreWin:/* Icons for window %0 */\ntypedef enum {\n
-<br>E_1stIcon:
+<br>E_1stIcon:  %0_%1 = %2,\n
 <br>E_Icon:  %0_%1 = %2,\n
-<br>E_OneIcon:
+<br>E_OneIcon:  %0_%1 = %2,\n
 <br>E_LastIcon:  %0_%1 = %2\n
 <br>E_PostWin:} %0_icons;\n\n
 <br>E_Postamble:\n
 </code></p>
-<p>(Note: two scripts can be used (starting <code>E_</code> or <code>M_</code> depending on the radio icons in the export save box.)</p>
+<p>(Note: there are three sets of messages, which are used depending on the radio
+icons in the export save box. The lines starting with <code>E_</code> or
+<code>M_</code> both produce plain text files and the <code>B_</code> lines are
+used to write a tokenised Basic file.)</p>
 <p>The string up to and including the colon at the beginning of each line
 is the tag used by the program to look up the message. The following
 text is the message that will be substituted. In each line, the
@@ -954,14 +967,14 @@ respectively. If a window has one icon, <code>E_OneIcon</code> is used.</p>
 <p><a href="#contents">Return to contents</a></p>
 
 <a name="bug"><h2>43. Bug reports &amp; suggestions</h2></a>
-<p>Although every effort has been made to iron out bugs, no application is completely bug free so you are aadvised to save your work regularly. Please report any bugs you find to <a href="mailto:riscos@snowstone.org.uk">Adam Richardson</a>.</p>
+<p>Although every effort has been made to iron out bugs, no application is completely bug free so you are advised to save your work regularly. Please report any bugs you find to <a href="mailto:riscos@snowstone.org.uk">Adam Richardson</a>.</p>
 <p><a href="#contents">Return to contents</a></p>
 
 <a name="acknowledgements"><h2>44. Acknowledgements</h2></a>
 <p><em>WinEd</em> was written originally written by Tony Houghton in C (compiled by Acorn C Release 5) with extensive
-use of <a href="http://www.riscos.info/index.php/DeskLib"><em>DeskLib</em></a>. This version has been managed using <a href="http://www.reallysmall.co.uk/Pages/normal/software/development/sourcery/sourcery.html"><em>Sourcery</em></a> and compiled using <a href="http://www.riscos.info/index.php/GCCSDK"><em>GCC</em></a>. <em>DeskLib</em> is a set of freeware C libraries written by Jason Williams and many others. All C programmers should consider this an essential replacement for <em>RISC_OSLib</em>.</p>
+use of <a href="http://www.riscos.info/index.php/DeskLib"><em>DeskLib</em></a>. This version has been compiled using <a href="http://www.riscos.info/index.php/GCCSDK"><em>GCC</em></a>. <em>DeskLib</em> is a set of freeware C libraries written by Jason Williams and many others. All C programmers should consider this an essential replacement for <em>RISC_OSLib</em>.</p>
 <p><em>Dr Smith's C Development Toolkit</em>, written by Julian Smith and marketed
-by WSS, was helpful for debugging.</p>
+by WSS, was helpful for debugging in early versions.</p>
 <p>The text editor used was <em>Zap</em>, an excellent PD program written by
 Dominic Symes with extensions by several other skilled programmers.</p>
 <p>The templates were initially created with <em>TemplEd</em>, a PD template
