@@ -607,7 +607,7 @@ void                viewer_modifyflags(window_block *window)
 
 void                viewer_claimeditevents(browser_winentry *winentry)
 {
-  Debug_Printf("viewer_claimeditevents");
+  Debug_Printf("viewer_claimeditevents: %s %d", winentry->identifier, winentry);
 
   Event_Claim(event_REDRAW,winentry->handle,event_ANY, viewer_redraw,     winentry);
   Event_Claim(event_OPEN,  winentry->handle,event_ANY, viewer_openevent,  winentry);
@@ -618,7 +618,7 @@ void                viewer_claimeditevents(browser_winentry *winentry)
 
   if (winentry != &picker_winentry)
   {
-    /* Only claim monitor updates if it's not te picker window */
+    /* Only claim monitor updates if it's not the picker window */
     Event_Claim(event_PTRLEAVE,winentry->handle,event_ANY, monitor_deactivate, winentry);
     Event_Claim(event_PTRENTER,winentry->handle,event_ANY, monitor_activate,   winentry);
     help_claim_window(winentry->handle,"View");
@@ -1711,10 +1711,11 @@ BOOL                viewer_iconise(event_pollblock *event,browser_winentry *wine
 {
   message_block message = event->data.message;
 
-  Debug_Printf("viewer_iconise");
+  Debug_Printf("viewer_iconise: %s, %d", winentry->identifier, winentry);
 
-  /*if (event->data.message.data.windowinfo.window != winentry->handle)
-    return FALSE;*/
+  if (event->data.message.data.windowinfo.window != winentry->handle)
+    /* Otherwise we just get the last-registered window */
+    return FALSE;
 
   message.header.size = sizeof(message_header) + sizeof(message_windowinfo);
   /* message.header.sender = 0; */

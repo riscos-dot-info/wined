@@ -1939,8 +1939,7 @@ static load_result browser_load_templat(browser_fileinfo *browser,
 
   #ifdef DeskLib_DEBUG
   strncpycr(reportertext, winentry->identifier, wimp_MAXNAME-1); /* it's CR terminated... */
-//  reportertext[wimp_MAXNAME] = '\0'; /* Or not terminated at all if 12 chars long */
-  Debug_Printf("\\d browser '%s' loaded. %d icons.", reportertext, winentry->window->window.numicons);
+  Debug_Printf("\\d window '%s' loaded. %d icons.", reportertext, winentry->window->window.numicons);
   #endif
 
   return load_OK;
