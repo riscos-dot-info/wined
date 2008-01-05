@@ -45,20 +45,13 @@ void browtools_init()
 void browtools_newpane(browser_fileinfo *browser)
 {
   Error_Check(Wimp_CreateWindow(browtools_template,&browser->pane));
-  Event_Claim(event_CLICK,browser->pane,browtools_CREATE,
-              browtools_create,browser);
-  Event_Claim(event_CLICK,browser->pane,browtools_SELALL,
-              browtools_selall,browser);
-  Event_Claim(event_CLICK,browser->pane,browtools_SAVE,
-              browtools_save,browser);
-  Event_Claim(event_CLICK,browser->pane,browtools_COPY,
-              browtools_copy,browser);
-  Event_Claim(event_CLICK,browser->pane,browtools_RENAME,
-              browtools_rename,browser);
-  Event_Claim(event_CLICK,browser->pane,browtools_DELETE,
-              browtools_delete,browser);
-  Event_Claim(event_CLICK,browser->pane,browtools_STATS,
-              browtools_stats,browser);
+  Event_Claim(event_CLICK,browser->pane,browtools_CREATE, browtools_create,browser);
+  Event_Claim(event_CLICK,browser->pane,browtools_SELALL, browtools_selall,browser);
+  Event_Claim(event_CLICK,browser->pane,browtools_SAVE, browtools_save,browser);
+  Event_Claim(event_CLICK,browser->pane,browtools_COPY, browtools_copy,browser);
+  Event_Claim(event_CLICK,browser->pane,browtools_RENAME, browtools_rename,browser);
+  Event_Claim(event_CLICK,browser->pane,browtools_DELETE, browtools_delete,browser);
+  Event_Claim(event_CLICK,browser->pane,browtools_STATS, browtools_stats,browser);
   help_claim_window(browser->pane,"BT");
 }
 

@@ -23,9 +23,9 @@ BOOL monitor_isactive;
 BOOL monitor_moved = FALSE;
 BOOL monitor_dragging = FALSE;
 
-static BOOL monitor_isopen;
+BOOL monitor_isopen;
 
-static window_handle monitor_window;
+window_handle monitor_window;
 
 browser_winentry *monitor_winentry;
 
@@ -142,7 +142,7 @@ BOOL monitor_update(event_pollblock *event,void *reference)
   convert_block con;
   wimp_point new_pos, offset;
   wimp_rect final;
-  int sizeoficname;
+  int sizeoficname = 0;
   icon_block istate;
 
   /* Find size of icon name indirected icon data in monitor window */
@@ -246,7 +246,7 @@ BOOL monitor_update(event_pollblock *event,void *reference)
           {
             int n = 0;
 
-            for (n = valix; (validstring[n] > 31) && (validstring[n] != ';') && (n-valix<sizeoficname); ++n)
+            for (n = valix; (validstring[n] > 31) && (validstring[n] != ';') && (n-valix<sizeoficname-1); ++n)
               icname[n-valix] = validstring[n];
             icname[n-valix] = 0;
             Debug_Printf("Over icon named '%s'", icname);

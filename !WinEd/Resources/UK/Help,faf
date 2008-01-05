@@ -275,7 +275,7 @@ displayed either in alphabetical order or in the order they appear in the file, 
 open the directory the templates were last loaded or saved in, keeping
 the browser open if you hold <code>Shift</code>. Iconising a browser (<code>Shift-Select</code>
 on the close tool) closes any windows which 'belong' to it, thus it can
-be used for a quick tidyup.</p>
+be used for a quick tidyup. De-iconising the browser will re-open the closed windows.</p>
 <p><a href="#contents">Return to contents</a></p>
 
 <a name="mouse"><h2>17. Mouse operations in browsers</h2></a>

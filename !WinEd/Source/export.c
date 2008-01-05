@@ -82,10 +82,10 @@ void export_puts_basic(FILE *fp, const char *string, int lineno)
 
 int export_scan(FILE *fp, const browser_winentry *winentry, BOOL write, const char *pre, int currentline)
 {
-  int icon; /* Note, first line is taken by PreWin token */
+  int icon, foundanicon = FALSE;
   char buffy[256];
 
-  Debug_Printf("export_scan");
+  Debug_Printf("export_scan, write:%d", write);
 
   for (icon = 0; icon < winentry->window->window.numicons; ++icon)
   {
@@ -105,7 +105,7 @@ int export_scan(FILE *fp, const browser_winentry *winentry, BOOL write, const ch
         char icnname[128];
         int n = 0;
 
-        for (n = valix; validstring[n] > 31 && validstring[n] != ';'; ++n)
+        for (n = valix; (validstring[n] > 31) && (validstring[n] != ';') && (n-valix<sizeof(icnname)-1); ++n)
           icnname[n-valix] = validstring[n];
         icnname[n-valix] = 0;
         if (icnname[0])
@@ -133,16 +133,16 @@ int export_scan(FILE *fp, const browser_winentry *winentry, BOOL write, const ch
             else
               export_puts_basic(fp, buffer, currentline++);
           }
-        }
-        else
-        {
-          Debug_Printf("Resetting linneno");
-          if (!write) currentline = 0; /* This is used by export_winentry where write==FALSE */
+          foundanicon = TRUE;
         }
       }
     }
   }
-  return currentline;
+  if (write)
+    return currentline;
+  else
+    /* This is used in first scan through to avoid writing an entry at all if there are no icons names */
+    return foundanicon;
 }
 
 int export_winentry(FILE *fp, const browser_winentry *winentry, const char *pre, int currentline)

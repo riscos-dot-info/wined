@@ -31,6 +31,7 @@ typedef struct {
   window_handle stats; /* Statistics window */
   int largest;		/* Largest buffer total for stats */
   char namesfile[256]; /* Icon names file name */
+  BOOL iconised;
 } browser_fileinfo;
 
 /* Template file header */

@@ -507,7 +507,6 @@ void                viewer_close(browser_winentry *winentry)
   /* Release handlers */
   EventMsg_ReleaseWindow(winentry->handle);
   Event_ReleaseWindow(winentry->handle);
-  //Debug_Printf("1 - handlers released:%d",winentry->handle);
 
   /* Get rid of all indirected data */
   /* Title */
@@ -522,7 +521,6 @@ void                viewer_close(browser_winentry *winentry)
     if (!istate.flags.data.deleted)
       icnedit_freeindirected(&istate.flags,&istate.data);
   }
-  //Debug_Printf("2 - freed icon data:%d",winentry->handle);
 
   /* Lose fonts */
   if (winentry->fontarray)
@@ -531,7 +529,6 @@ void                viewer_close(browser_winentry *winentry)
     flex_free((flex_ptr) &winentry->fontarray);
     winentry->fontarray = 0;
   }
-  //Debug_Printf("3 - lost fonts:%d",winentry->handle);
 
   if (selection_viewer == winentry)
   {
@@ -550,18 +547,15 @@ void                viewer_close(browser_winentry *winentry)
     if (choices->hotkeys)
       return_caret(winentry->handle, winentry->browser->window);
   }
-  //Debug_Printf("4 - picker & monitor closed:%d",winentry->handle);
 
   /* Delete window */
   Error_Check(Wimp_DeleteWindow(winentry->handle));
-  //Debug_Printf("5 - window deleted:%d",winentry->handle);
-
-  /* Clear up winentry */
-  winentry->status = status_CLOSED;
 
   /* Close any editing windows */
   viewer_closechildren(winentry);
-  //Debug_Printf("6 - viewer childeren (tool pane) closed:%d",winentry->handle);
+
+  /* Clear up winentry */
+  winentry->status = status_CLOSED;
 
   /* Close tool pane */
   if (choices->viewtools)
@@ -614,7 +608,7 @@ void                viewer_claimeditevents(browser_winentry *winentry)
   Event_Claim(event_CLOSE, winentry->handle,event_ANY, viewer_closeevent, winentry);
   Event_Claim(event_CLICK, winentry->handle,event_ANY, viewer_click,      winentry);
   Event_Claim(event_KEY,   winentry->handle,event_ANY, viewer_hotkey,     winentry);
-  EventMsg_Claim(message_WINDOWINFO,winentry->handle, (event_handler) viewer_iconise,winentry);
+  EventMsg_Claim(message_WINDOWINFO,winentry->handle, (event_handler) viewer_iconise, winentry);
 
   if (winentry != &picker_winentry)
   {
@@ -2448,8 +2442,7 @@ BOOL                viewer_hotkey(event_pollblock *event,void *reference)
   return TRUE;
 }
 
-void                viewer_responder(browser_winentry *winentry,
-                                     choices_str *old,choices_str *new_ch)
+void                viewer_responder(browser_winentry *winentry, choices_str *old,choices_str *new_ch)
 {
   window_state wstate;
 
@@ -2463,7 +2456,13 @@ void                viewer_responder(browser_winentry *winentry,
   {
     viewtools_newpane(winentry);
     Wimp_GetWindowState(winentry->handle,&wstate);
-    viewtools_open(&wstate.openblock,winentry->pane);
+    viewtools_open(&wstate.openblock,winentry->pane); /* This makes sure pane is positioned correctly */
+    if (winentry->browser->iconised)
+    {
+      /* Hide pane (& viewer) immediately if the browser is currently iconised */
+      Window_Hide(winentry->pane);
+      Window_Hide(winentry->handle);
+    }
   }
   if (old->hotkeys && !new_ch->hotkeys)
   {

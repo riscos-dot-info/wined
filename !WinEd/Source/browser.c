@@ -232,6 +232,10 @@ BOOL overwrite_check_selection;
 browser_fileinfo *overwrite_check_browser;
 BOOL overwrite_save_from_close = FALSE;
 
+/* externs used in browser_iconise */
+extern browser_winentry picker_winentry; /* Set up in picker.c */
+extern BOOL monitor_isopen; /* Set up in monitor.c */
+extern window_handle monitor_window; /* Set up in monitor.c */
 
 void               browser_createmenus()
 {
@@ -944,11 +948,10 @@ browser_fileinfo *browser_newbrowser()
 {
   browser_fileinfo *newfile;
   window_state wstate;
+  int index;
 /*
   int width,height;
 */
-  int index;
-
   Debug_Printf("browser_newbrowser");
 
   /* Create new info block */
@@ -965,6 +968,7 @@ browser_fileinfo *browser_newbrowser()
   newfile->numwindows = 0;
   newfile->numcolumns = DEFAULTNUMCOLUMNS;
   newfile->altered = FALSE;
+  newfile->iconised = FALSE;
   newfile->stats = 0;
   LinkList_AddToTail(&browser_list,&newfile->header);
   LinkList_Init(&newfile->winlist);
@@ -974,10 +978,8 @@ browser_fileinfo *browser_newbrowser()
   MsgTrans_Lookup(messages,"ExportLeaf",newfile->namesfile,256);
   browser_templat->title.indirecttext.buffer = newfile->title;
   browser_templat->workarearect.min.x = 0;
-  browser_templat->workarearect.min.y = - MARGIN -
-                 MINNUMROWS * (MARGIN + HEIGHT);
-  browser_templat->workarearect.max.x = MARGIN +
-  	MAXNUMCOLUMNS * (MARGIN + WIDTH);
+  browser_templat->workarearect.min.y = - MARGIN - MINNUMROWS * (MARGIN + HEIGHT);
+  browser_templat->workarearect.max.x = MARGIN + MAXNUMCOLUMNS * (MARGIN + WIDTH);
   browser_templat->workarearect.max.y = 0;
   if (choices->browtools)
     browser_templat->workarearect.min.y -= browtools_paneheight;
@@ -988,10 +990,8 @@ browser_fileinfo *browser_newbrowser()
   }
 
   /* Handlers, using browser_fileinfo block as reference */
-  Event_Claim(event_OPEN,newfile->window,event_ANY,browser_OpenWindow,
-              newfile);
-  Event_Claim(event_CLOSE,newfile->window,event_ANY,
-  	      browser_closeevent,newfile);
+  Event_Claim(event_OPEN,newfile->window,event_ANY,browser_OpenWindow, newfile);
+  Event_Claim(event_CLOSE,newfile->window,event_ANY, browser_closeevent,newfile);
   Event_Claim(event_CLICK,newfile->window,event_ANY,browser_click,newfile);
   Event_Claim(event_KEY,newfile->window,event_ANY,browser_hotkey,newfile);
   EventMsg_Claim(message_DATALOAD,newfile->window,browser_loadhandler, newfile);
@@ -1043,7 +1043,12 @@ browser_fileinfo *browser_newbrowser()
 BOOL              browser_OpenWindow(event_pollblock *event,void *reference)
 {
   browser_fileinfo *browser = reference;
+  BOOL opening_behind = FALSE;
   Debug_Printf("browser_OpenWindow");
+  Debug_Printf(" iconised:%d behind:%d", browser->iconised, event->data.openblock.behind);
+
+  if (event->data.openblock.behind < -1)
+    opening_behind = TRUE;
 
   int ncols = (event->data.openblock.screenrect.max.x -
   	event->data.openblock.screenrect.min.x) / (WIDTH + MARGIN);
@@ -1057,6 +1062,33 @@ BOOL              browser_OpenWindow(event_pollblock *event,void *reference)
   else
     Wimp_OpenWindow(&event->data.openblock);
 
+  /* Only worry about re-opening viewers if the browser was previously iconised and
+     is asked to be displayed visibly (e.g. not iconised or behind window stack) */
+  Debug_Printf(" iconised:%d behind:%d", browser->iconised, event->data.openblock.behind);
+  if (browser->iconised && (!opening_behind))
+  {
+    browser_winentry *winentry;
+    /* Open viewers, which were open before */
+    winentry = LinkList_NextItem(&browser->winlist);
+    while (winentry)
+    {
+      if (winentry->status)
+        Window_Show(winentry->handle, open_WHEREVER);
+      if (choices->viewtools)
+        Window_Show(winentry->pane, open_WHEREVER);
+      winentry = LinkList_NextItem(winentry);
+    }
+
+    /* Re-open monitor and picker, if were open */
+    if (monitor_isopen)
+      Window_Show(monitor_window, open_WHEREVER);
+    if (picker_winentry.status != status_CLOSED)
+      Window_Show(picker_winentry.handle, open_WHEREVER);
+
+    /* Reset iconised flag */
+    browser->iconised = FALSE;
+  }
+
   return TRUE;
 }
 
@@ -1069,9 +1101,9 @@ BOOL              browser_iconise(event_pollblock *event,void *reference)
 
   Debug_Printf("browser_iconise");
 
-  /* Ignore iconise messages for other windows
+  /* Ignore iconise messages for other windows */
   if (event->data.message.data.windowinfo.window != browser->window)
-    return FALSE;*/
+    return FALSE;
 
   message.header.size = sizeof(message_header) + sizeof(message_windowinfo);
   /* message.header.sender = 0; */
@@ -1088,18 +1120,32 @@ BOOL              browser_iconise(event_pollblock *event,void *reference)
   if (leaf[strlen(leaf) - 1] == '*')
     message.data.windowinfo.title[strlen(leaf) - 2] = 0;
   message.data.windowinfo.title[19] = 0;
-  Error_Check(Wimp_SendMessage(event_SEND,&message,
-                               event->data.message.header.sender,0));
+  Error_Check(Wimp_SendMessage(event_SEND,&message, event->data.message.header.sender,0));
 
-  /* Close all 'children' */
+  browser->iconised = TRUE;
+
+  /* Hide (not close) all 'children' */
   winentry = LinkList_NextItem(&browser->winlist);
   while (winentry)
   {
     if (winentry->status)
-      viewer_close(winentry);
+    {
+      Window_Hide(winentry->handle);
+      /* Close (permanently) all viewer dialogues */
+      viewer_closechildren(winentry);
+      /* Close (permanently) tool pane */
+      if (choices->viewtools)
+        Window_Hide(winentry->pane);
+    }
     winentry = LinkList_NextItem(winentry);
   }
   stats_close(browser);
+
+  /* Close monitor and picker, if open */
+  if (monitor_isopen)
+    Window_Hide(monitor_window);
+  if (picker_winentry.status != status_CLOSED)
+    Window_Hide(picker_winentry.handle);
 
   return TRUE;
 }
@@ -2067,8 +2113,7 @@ BOOL               browser_getfile(char *filename,int filesize,browser_fileinfo 
   return result ? FALSE : TRUE;
 }
 
-icon_handle        browser_newicon(browser_fileinfo *browser,int index,
-                            browser_winentry *winentry,int selected)
+icon_handle        browser_newicon(browser_fileinfo *browser,int index, browser_winentry *winentry,int selected)
 {
   icon_createblock newicdata;
   icon_handle newichandle;
@@ -2083,13 +2128,11 @@ icon_handle        browser_newicon(browser_fileinfo *browser,int index,
   row = index / browser->numcolumns;
   newicdata.window = browser->window;
   newicdata.icondata.workarearect.min.x = MARGIN + column * (MARGIN + WIDTH);
-  newicdata.icondata.workarearect.max.x =
-    newicdata.icondata.workarearect.min.x + WIDTH;
+  newicdata.icondata.workarearect.max.x = newicdata.icondata.workarearect.min.x + WIDTH;
   newicdata.icondata.workarearect.max.y = - MARGIN - row * (MARGIN + HEIGHT);
   if (choices->browtools)
     newicdata.icondata.workarearect.max.y -= browtools_paneheight;
-  newicdata.icondata.workarearect.min.y =
-    newicdata.icondata.workarearect.max.y - HEIGHT;
+  newicdata.icondata.workarearect.min.y = newicdata.icondata.workarearect.max.y - HEIGHT;
   newicdata.icondata.flags.value = 0;
   newicdata.icondata.flags.data.text = 1;
   newicdata.icondata.flags.data.sprite = 1;

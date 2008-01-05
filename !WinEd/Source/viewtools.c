@@ -56,30 +56,18 @@ void viewtools_newpane(browser_winentry *winentry)
 {
   Error_Check(Wimp_CreateWindow(viewtools_template,&winentry->pane));
   viewtools_shadeapp(winentry);
-  Event_Claim(event_CLICK,winentry->pane,viewtools_SELALL,
-              viewtools_selall,winentry);
-  Event_Claim(event_CLICK,winentry->pane,viewtools_WORKAREA,
-              viewtools_workarea,winentry);
-  Event_Claim(event_CLICK,winentry->pane,viewtools_VISAREA,
-              viewtools_visarea,winentry);
-  Event_Claim(event_CLICK,winentry->pane,viewtools_WINDOW,
-              viewtools_window,winentry);
-  Event_Claim(event_CLICK,winentry->pane,viewtools_TITLE,
-              viewtools_title,winentry);
-  Event_Claim(event_CLICK,winentry->pane,viewtools_DELETE,
-              viewtools_delete,winentry);
-  Event_Claim(event_CLICK,winentry->pane,viewtools_RENUM,
-              viewtools_renum,winentry);
-  Event_Claim(event_CLICK,winentry->pane,viewtools_ALIGN,
-              viewtools_align,winentry);
-  Event_Claim(event_CLICK,winentry->pane,viewtools_SPACE,
-              viewtools_space,winentry);
-  Event_Claim(event_CLICK,winentry->pane,viewtools_RESIZE,
-              viewtools_resize,winentry);
-  Event_Claim(event_CLICK,winentry->pane,viewtools_FRAME,
-              viewtools_frame,winentry);
-  Event_Claim(event_CLICK,winentry->pane,viewtools_COORDS,
-              viewtools_coords,winentry);
+  Event_Claim(event_CLICK,winentry->pane,viewtools_SELALL, viewtools_selall,winentry);
+  Event_Claim(event_CLICK,winentry->pane,viewtools_WORKAREA, viewtools_workarea,winentry);
+  Event_Claim(event_CLICK,winentry->pane,viewtools_VISAREA, viewtools_visarea,winentry);
+  Event_Claim(event_CLICK,winentry->pane,viewtools_WINDOW, viewtools_window,winentry);
+  Event_Claim(event_CLICK,winentry->pane,viewtools_TITLE, viewtools_title,winentry);
+  Event_Claim(event_CLICK,winentry->pane,viewtools_DELETE, viewtools_delete,winentry);
+  Event_Claim(event_CLICK,winentry->pane,viewtools_RENUM, viewtools_renum,winentry);
+  Event_Claim(event_CLICK,winentry->pane,viewtools_ALIGN, viewtools_align,winentry);
+  Event_Claim(event_CLICK,winentry->pane,viewtools_SPACE, viewtools_space,winentry);
+  Event_Claim(event_CLICK,winentry->pane,viewtools_RESIZE, viewtools_resize,winentry);
+  Event_Claim(event_CLICK,winentry->pane,viewtools_FRAME, viewtools_frame,winentry);
+  Event_Claim(event_CLICK,winentry->pane,viewtools_COORDS, viewtools_coords,winentry);
   help_claim_window(winentry->pane,"VT");
 }
 

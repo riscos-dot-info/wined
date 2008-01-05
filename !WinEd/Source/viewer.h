@@ -35,6 +35,9 @@ void viewer_changefonts(browser_winentry *winentry);
 /* Sets selection state, also temporarily setting fill flag */
 void viewer_setselect(browser_winentry *winentry,int icon,BOOL state);
 
+void viewer_closechildren(browser_winentry *winentry);
+/* Deletes all the sub-windows (e.g. resize, icon edit etc) of a viewer */
+
 extern BOOL viewer_selection_withmenu;
 
 extern BOOL monitor_dragging;
