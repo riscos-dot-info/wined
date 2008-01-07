@@ -72,6 +72,7 @@ typedef struct {
   window_handle pane;    /* Tool pane */
   browser_fileinfo *browser; /* Browser this window belongs to */
   int indsize;
+  BOOL iconised;
 } browser_winentry;
 
 #endif

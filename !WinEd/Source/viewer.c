@@ -950,8 +950,24 @@ BOOL                viewer_openevent(event_pollblock *event,void *reference)
 
   Debug_Printf("viewer_openevent");
 
+  /* This means we're really getting iconised rather than opened properly */
+  if (event->data.openblock.behind < -1)
+  {
+    winentry->iconised = TRUE;
+    Debug_Printf("Window '%s' iconised", winentry->identifier);
+  }
+  else
+  {
+    if (winentry->iconised)
+    {
+      Debug_Printf("Window '%s' deiconised", winentry->identifier);
+    }
+    winentry->iconised = FALSE;
+  }
+
   /* To see if window has moved */
   Wimp_GetWindowState(event->data.openblock.window,&wstate);
+
   viewer_roundopenblock(&event->data.openblock);
   if (choices->viewtools && winentry != &picker_winentry &&
   	winentry->status == status_EDITING)
@@ -1708,8 +1724,11 @@ BOOL                viewer_iconise(event_pollblock *event,browser_winentry *wine
   Debug_Printf("viewer_iconise: %s, %d", winentry->identifier, winentry);
 
   if (event->data.message.data.windowinfo.window != winentry->handle)
-    /* Otherwise we just get the last-registered window */
+  {
+    /* Otherwise we just get the last-registered window for some reason */
+    Debug_Printf("...ignored");
     return FALSE;
+  }
 
   message.header.size = sizeof(message_header) + sizeof(message_windowinfo);
   /* message.header.sender = 0; */
@@ -1724,10 +1743,12 @@ BOOL                viewer_iconise(event_pollblock *event,browser_winentry *wine
     strcpy(message.data.windowinfo.spritename,"dialog");
   strncpy(message.data.windowinfo.title,winentry->identifier,20);
   message.data.windowinfo.title[19] = 0;
-  Error_Check(Wimp_SendMessage(event_SEND,&message,
-                               event->data.message.header.sender,0));
+  Error_Check(Wimp_SendMessage(event_SEND,&message, event->data.message.header.sender,0));
 
   viewer_closechildren(winentry);
+
+  /* Set iconised flag (in fact, this gets done twice - once in viewer_openevent too */
+  winentry->iconised = TRUE;
 
   return TRUE;
 }

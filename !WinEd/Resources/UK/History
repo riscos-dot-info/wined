@@ -1,5 +1,6 @@
 3.10
 ~~~~
+- Adjusted Browser-Iconise behaviour
 - Added icon name/number export to Basic file
 - Added support for "numeric" icon flag
 - Added open-viewer indication in browser

@@ -1072,14 +1072,15 @@ BOOL              browser_OpenWindow(event_pollblock *event,void *reference)
     winentry = LinkList_NextItem(&browser->winlist);
     while (winentry)
     {
-      if (winentry->status)
-        Window_Show(winentry->handle, open_WHEREVER);
-      if (choices->viewtools)
-        Window_Show(winentry->pane, open_WHEREVER);
+      if (!winentry->iconised) /* Only open viewer automatically if it isn't already iconised */
+      {
+        if (winentry->status) Window_Show(winentry->handle, open_WHEREVER);
+        if (choices->viewtools) Window_Show(winentry->pane, open_WHEREVER);
+      }
       winentry = LinkList_NextItem(winentry);
     }
 
-    /* Re-open monitor and picker, if were open */
+    /* Re-open monitor and picker, if they were open */
     if (monitor_isopen)
       Window_Show(monitor_window, open_WHEREVER);
     if (picker_winentry.status != status_CLOSED)
@@ -1947,6 +1948,7 @@ static load_result browser_load_templat(browser_fileinfo *browser,
 
 
   winentry->status = status_CLOSED;
+  winentry->iconised = FALSE;
   winentry->fontarray = 0;
   winentry->browser = browser;
 
@@ -2891,6 +2893,7 @@ browser_winentry  *browser_copywindow(browser_fileinfo *browser,
   LinkList_AddToTail(&browser->winlist,&winentry->header);
 
   winentry->status = status_CLOSED;
+  winentry->iconised = FALSE;
   winentry->fontarray = 0;
   winentry->browser = browser;
 

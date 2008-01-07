@@ -14,8 +14,8 @@ gccflags =     -mlibscl -o $@
 	gcc $(gccflags) DragExt.o Error.o alndiag.o bordiag.o browser.o browtools.o choices.o coorddiag.o datatrans.o deskfont.o \
         diagutils.o drag.o export.o fontpick.o globals.o help.o icndiag.o icnedit.o minsize.o monitor.o \
         multiicon.o pane.o picker.o round.o rszdiag.o spcdiag.o stats.o tempfont.o templates.o terminator.o \
-        unsaved.o uri.o usersprt.o viewer.o viewtools.o visarea.o wadiag.o windiag.o wined.o DeskLib:o.DeskLib \
-        flexlib:o.flexlib-32 
+        unsaved.o uri.o usersprt.o viewer.o viewtools.o visarea.o wadiag.o windiag.o wined.o DeskLib:DeskLib.o \
+        flexlib:flexlib-32.o 
 
 
 
