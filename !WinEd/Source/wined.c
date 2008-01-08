@@ -30,6 +30,9 @@
 #include "MemCheck:MemCheck.h"
 #endif
 
+#ifdef DeskLib_DEBUG
+  #define WINED_DETAILEDDEBUG
+#endif
 #define app_VERSION "3.093 (Beta)"
 
 extern void __heap_checking_on_all_allocates(int);
