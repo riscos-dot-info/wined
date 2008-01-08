@@ -82,7 +82,7 @@ Debug_Printf("icnedit_findfont");
   return result;
 }
 
-void icnedit_losefont(font_handle font,font_array **fontarray)
+void        icnedit_losefont(font_handle font,font_array **fontarray)
 {
 #ifdef WINED_DETAILEDDEBUG
 Debug_Printf("icnedit_losefont");
@@ -96,7 +96,7 @@ Debug_Printf("icnedit_losefont");
   }
 }
 
-void icnedit_freeindirected(icon_flags *flags,icon_data *data)
+void        icnedit_freeindirected(icon_flags *flags,icon_data *data)
 {
 #ifdef WINED_DETAILEDDEBUG
 Debug_Printf("icnedit_freeindirected");
@@ -118,7 +118,7 @@ Debug_Printf("icnedit_freeindirected");
   }
 }
 
-void icnedit_makeeditableflags(browser_winentry *winentry, icon_flags *flags)
+void        icnedit_makeeditableflags(browser_winentry *winentry, icon_flags *flags)
 {
 #ifdef WINED_DETAILEDDEBUG
 Debug_Printf("icnedit_makeeditableflags");
@@ -134,7 +134,7 @@ Debug_Printf("icnedit_makeeditableflags");
     flags->data.border = 1;
 }
 
-BOOL icnedit_processicon(browser_winentry *winentry,
+BOOL        icnedit_processicon(browser_winentry *winentry,
      			 icon_flags *flags,icon_data *data,
      			 wimp_rect *workarearect,BOOL editable)
 {
@@ -230,13 +230,13 @@ BOOL icnedit_processicon(browser_winentry *winentry,
     icnedit_makeeditableflags(winentry, flags);
 
   #ifdef WINED_DETAILEDDEBUG
-  Debug_Printf("Size: %d, %d, %d, %d", workarearect->min.x, workarearect->min.y, workarearect->max.x, workarearect->max.y);
+  Debug_Printf("End of icnedit_processicon Size: %d, %d, %d, %d", workarearect->min.x, workarearect->min.y, workarearect->max.x, workarearect->max.y);
   #endif
 
   return TRUE;
 }
 
-void icnedit_unprocessicon(browser_winentry *winentry,
+void        icnedit_unprocessicon(browser_winentry *winentry,
      			   icon_flags *flags,icon_data *data)
 {
 #ifdef WINED_DETAILEDDEBUG
@@ -249,12 +249,12 @@ Debug_Printf("icnedit_unprocessicon");
   }
 }
 
-void icnedit_updatepointer(int after,int by,
+void        icnedit_updatepointer(int after,int by,
      			   icon_flags *flags,icon_data *data)
 {
-#ifdef WINED_DETAILEDDEBUG
+/*#ifdef WINED_DETAILEDDEBUG
 Debug_Printf("icnedit_updatepointer");
-#endif
+#endif*/
   if (!flags->data.indirected)
     return;
 
@@ -265,7 +265,7 @@ Debug_Printf("icnedit_updatepointer");
     data->indirecttext.validstring += by;
 }
 
-void icnedit_updatepointers(browser_winentry *winentry,int after,int by)
+void        icnedit_updatepointers(browser_winentry *winentry,int after,int by)
 {
   int icon;
 
@@ -281,7 +281,7 @@ Debug_Printf("icnedit_updatepointers");
     			           &winentry->window->icon[icon].data);
 }
 
-void icnedit_fulldeletephysical(window_handle window,icon_handle icon)
+void        icnedit_fulldeletephysical(window_handle window,icon_handle icon)
 {
   window_info winfo;
   icon_createblock block;
@@ -308,13 +308,15 @@ Debug_Printf("icnedit_fulldeletephysical");
   }
 }
 
-void icnedit_moveicon(browser_winentry *winentry,int icon,wimp_rect *box)
+void        icnedit_moveicon(browser_winentry *winentry,int icon,wimp_rect *box)
 {
   icon_createblock icblock;
   char *rindex;
 
 #ifdef WINED_DETAILEDDEBUG
-  Debug_Printf("icnedit_moveicon");
+  Debug_Printf("icnedit_moveicon %d", icon);
+  Debug_Printf(" box: %d, %d, %d, %d", box->min.x, box->min.y, box->max.x, box->max.y);
+
 #endif
 
   icblock.window = winentry->handle;
@@ -349,9 +351,12 @@ void icnedit_moveicon(browser_winentry *winentry,int icon,wimp_rect *box)
   /* Create and display new physical icon */
   Wimp_CreateIcon(&icblock,&icon);
   icnedit_forceredraw(winentry,icon);
+#ifdef WINED_DETAILEDDEBUG
+  Debug_Printf("End of icnedit_moveicon %d", icon);
+#endif
 }
 
-void icnedit_removeindirectstring(browser_winentry *winentry,int index)
+void        icnedit_removeindirectstring(browser_winentry *winentry,int index)
 {
 #ifdef WINED_DETAILEDDEBUG
 Debug_Printf("icnedit_removeindirectstring");
@@ -362,7 +367,7 @@ Debug_Printf("icnedit_removeindirectstring");
     icnedit_updatepointers(winentry,index,-by);
 }
 
-int icnedit_addindirectstring(browser_winentry *winentry,char *string)
+int         icnedit_addindirectstring(browser_winentry *winentry,char *string)
 {
   int index;
   int len;
@@ -389,7 +394,7 @@ Debug_Printf("icnedit_addindirectstring");
   return index;
 }
 
-void icnedit_rawdeleteind(browser_winentry *winentry,
+void        icnedit_rawdeleteind(browser_winentry *winentry,
      			  icon_data *data,icon_flags *flags)
 {
   int at;
@@ -416,7 +421,7 @@ Debug_Printf("icnedit_rawdeleteind");
   }
 }
 
-void icnedit_deleteindirected(browser_winentry *winentry,int icon)
+void        icnedit_deleteindirected(browser_winentry *winentry,int icon)
 {
 #ifdef WINED_DETAILEDDEBUG
 Debug_Printf("icnedit_deleteindirected");
@@ -429,7 +434,7 @@ Debug_Printf("icnedit_deleteindirected");
     			          &winentry->window->icon[icon].flags);
 }
 
-void icnedit_processnewicondata(browser_winentry *winentry,
+void        icnedit_processnewicondata(browser_winentry *winentry,
      				icon_flags *flags,icon_data *data)
 {
 #ifdef WINED_DETAILEDDEBUG
@@ -452,11 +457,10 @@ Debug_Printf("icnedit_processnewicondata");
   }
 }
 
-void icnedit_createphysical(browser_winentry *winentry,int icon,
-     			    icon_createblock *block)
+void        icnedit_createphysical(browser_winentry *winentry, int icon, icon_createblock *block)
 {
 #ifdef WINED_DETAILEDDEBUG
-Debug_Printf("icnedit_createphysical");
+Debug_Printf("icnedit_createphysical %d", icon);
 #endif
   if (icnedit_processicon(winentry,
       			  &block->icondata.flags,&block->icondata.data,
@@ -466,15 +470,17 @@ Debug_Printf("icnedit_createphysical");
     Wimp_CreateIcon(block,&icon);
     icnedit_forceredraw(winentry,icon);
   }
+#ifdef WINED_DETAILEDDEBUG
+Debug_Printf("End of icnedit_createphysical %d", icon);
+#endif
 }
 
-void icnedit_changedata(browser_winentry *winentry,int icon,
-     			icon_block *data)
+void        icnedit_changedata(browser_winentry *winentry, int icon, icon_block *data)
 {
   icon_createblock iblock;
 
 #ifdef WINED_DETAILEDDEBUG
-Debug_Printf("icnedit_changedata");
+Debug_Printf("icnedit_changedata %d", icon);
 #endif
   iblock.window = winentry->handle;
 
@@ -484,8 +490,7 @@ Debug_Printf("icnedit_changedata");
   		    &iblock.icondata); /* Info needed to unprocess icon */
   icnedit_deletephysical(winentry->handle,icon);
   icnedit_forceredraw(winentry,icon);
-  icnedit_unprocessicon(winentry,
-  			&iblock.icondata.flags,&iblock.icondata.data);
+  icnedit_unprocessicon(winentry, &iblock.icondata.flags, &iblock.icondata.data);
   /* ...logical */
   if (winentry->window->icon[icon].flags.data.font)
   {
@@ -504,10 +509,12 @@ Debug_Printf("icnedit_changedata");
 
   winentry->window->icon[icon] = iblock.icondata;
 
+  Debug_Printf("End of icnedit_changedata, creating, size: %d %d %d %d", iblock.icondata.workarearect.min.x, iblock.icondata.workarearect.min.y, iblock.icondata.workarearect.max.x, iblock.icondata.workarearect.max.y);
+
   icnedit_createphysical(winentry,icon,&iblock);
 }
 
-int icnedit_create(browser_winentry *winentry,icon_block *data)
+int         icnedit_create(browser_winentry *winentry,icon_block *data)
 {
   int at;
   icon_block *block;
@@ -553,12 +560,12 @@ Debug_Printf("icnedit_create");
   return icon;
 }
 
-void icnedit_deleteicon(browser_winentry *winentry,int icon)
+void        icnedit_deleteicon(browser_winentry *winentry,int icon)
 {
   icon_block istate;
 
 #ifdef WINED_DETAILEDDEBUG
-Debug_Printf("icnedit_deleteicon");
+Debug_Printf("icnedit_deleteicon %d", icon);
 #endif
   /* Get rid of physical icon */
   Wimp_GetIconState(winentry->handle,icon,&istate);
@@ -595,7 +602,7 @@ icon_handle icnedit_copyicon(browser_winentry *source,int icon,
   icon_handle newicon;
 
 #ifdef WINED_DETAILEDDEBUG
-Debug_Printf("icnedit_copyicon");
+Debug_Printf("icnedit_copyicon %d", icon);
 #endif
   /* Set up independent icon_block for icnedit_create */
   newdata = source->window->icon[icon];
@@ -636,15 +643,15 @@ Debug_Printf("icnedit_copyicon");
   return newicon;
 }
 
-char *icnedit_valid6(browser_winentry *winentry,int icon)
+char       *icnedit_valid6(browser_winentry *winentry,int icon)
 {
   char *valid;
   int rindex;
   icon_block *data;
 
-#ifdef WINED_DETAILEDDEBUG
-Debug_Printf("icnedit_valid6");
-#endif
+/*#ifdef WINED_DETAILEDDEBUG
+Debug_Printf("icnedit_valid6 %d", icon);
+#endif*/
   data = &winentry->window->icon[icon];
   if (data->flags.data.indirected && data->flags.data.text &&
       (int) data->data.indirecttext.validstring > 0)
@@ -658,14 +665,14 @@ Debug_Printf("icnedit_valid6");
   return 0;
 }
 
-int icnedit_bordertype(browser_winentry *winentry,int icon)
+int         icnedit_bordertype(browser_winentry *winentry,int icon)
 {
   char *valid;
   int rindex;
   icon_block *data;
 
 #ifdef WINED_DETAILEDDEBUG
-Debug_Printf("icnedit_bordertype");
+Debug_Printf("icnedit_bordertype %d", icon);
 #endif
   data = &winentry->window->icon[icon];
   if (data->flags.data.indirected && data->flags.data.text &&
@@ -680,10 +687,10 @@ Debug_Printf("icnedit_bordertype");
   return 0;
 }
 
-int icnedit_borderwidth(browser_winentry *winentry, int icon)
+int         icnedit_borderwidth(browser_winentry *winentry, int icon)
 {
 #ifdef WINED_DETAILEDDEBUG
-Debug_Printf("icnedit_borderwidth");
+Debug_Printf("icnedit_borderwidth %d", icon);
 #endif
   if (!winentry->window->icon[icon].flags.data.border)
     return 0;
@@ -701,12 +708,12 @@ Debug_Printf("icnedit_borderwidth");
   return 0;
 }
 
-void icnedit_forceredraw(browser_winentry *winentry,int icon)
+void        icnedit_forceredraw(browser_winentry *winentry,int icon)
 {
   window_redrawblock redraw;
 
 #ifdef WINED_DETAILEDDEBUG
-Debug_Printf("icnedit_forceredraw");
+Debug_Printf("icnedit_forceredraw %d, size: %d, %d, %d, %d", icon, winentry->window->icon[icon].workarearect.min.x, winentry->window->icon[icon].workarearect.min.y, winentry->window->icon[icon].workarearect.max.x, winentry->window->icon[icon].workarearect.max.y);
 #endif
   redraw.window = winentry->handle;
   redraw.rect.min.x = winentry->window->icon[icon].workarearect.min.x;
@@ -745,7 +752,7 @@ static char *icnedit_splitpoint(char *string, font_handle font, int width,
 /* Returns width of a string in OS units
    font == 0 means return larger of system font & deskfont
    Both dimensions are also stored in result if != 0 */
-int icnedit_count_indirected(browser_winentry *winentry,
+int         icnedit_count_indirected(browser_winentry *winentry,
     			     icon_data *data,icon_flags *flags)
 {
   int size;

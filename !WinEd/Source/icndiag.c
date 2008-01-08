@@ -157,6 +157,9 @@ BOOL icndiag_OpenWindow(event_pollblock *event, void *ref)
 {
   wimp_rect visarea;
   window_state panestate;
+
+  Debug_Printf("icndiag_OpenWindow");
+
   if (choices->editpanes)
   {
     visarea = event->data.openblock.screenrect;
@@ -630,6 +633,8 @@ BOOL icndiag_update(event_pollblock *event,void *reference)
 {
   icon_block iblock;
 
+  Debug_Printf("icndiag_update");
+
   if (!event->data.mouse.button.data.adjust &&
       !event->data.mouse.button.data.select)
     return FALSE;
@@ -670,16 +675,21 @@ BOOL icndiag_update(event_pollblock *event,void *reference)
     icnedit_minsize(icndiag_winentry,icndiag_icon,&minsize);
     if (iblock.workarearect.max.x - iblock.workarearect.min.x < minsize.x)
     {
+      Debug_Printf(" Too small maxx:%d minx:%d minsize:%d", iblock.workarearect.max.x,iblock.workarearect.min.x,minsize.x);
       resize = TRUE;
       iblock.workarearect.max.x = iblock.workarearect.min.x + minsize.x;
     }
     if (iblock.workarearect.max.y - iblock.workarearect.min.y < minsize.y)
     {
+      Debug_Printf(" here2");
       resize = TRUE;
       iblock.workarearect.max.y = iblock.workarearect.min.y + minsize.y;
     }
     if (resize)
+    {
+      Debug_Printf(" Resizerin'");
       icnedit_moveicon(icndiag_winentry,icndiag_icon,&iblock.workarearect);
+    }
   }
   if (event->data.mouse.button.data.select)
     icndiag_close();

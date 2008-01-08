@@ -63,6 +63,9 @@ os_error *Font_ScanString(font_handle handle,char *string,char **splitpoint,
 static int icnedit_stringwidth(char *string, font_handle font,
 	wimp_point *result)
 {
+  /* This function calculates the width of the string in the icon font, if it has a font.
+     If not, it calculates the width of the string in the desktop font and the system
+     font and returns the widest of the two. */
   font_handle tfont;
   wimp_point splitpoint;
   font_coordblock coordblock;
