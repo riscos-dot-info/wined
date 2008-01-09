@@ -79,6 +79,24 @@ void export_puts_basic(FILE *fp, const char *string, int lineno)
     }
   }
 }
+/*
+Use this if want to export upper case names...
+char              *upper_case(char *s)
+{
+//  Debug_Printf("lower_case");
+
+  char *ret = s;
+  if (s)
+  {
+    while (*s)
+    {
+      *s = toupper(*s);
+      s++;
+    }
+  }
+  return ret;
+}
+*/
 
 int export_scan(FILE *fp, const browser_winentry *winentry, BOOL write, const char *pre, int currentline)
 {

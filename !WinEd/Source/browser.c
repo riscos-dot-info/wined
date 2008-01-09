@@ -1345,7 +1345,7 @@ BOOL              browser_load(char *filename,int filesize,void *reference)
 {
   browser_fileinfo *browser;
 
-  Debug_Printf(" browser_load");
+  Debug_Printf("browser_load");
 
   browser = browser_newbrowser();
 

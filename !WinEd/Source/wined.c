@@ -25,6 +25,7 @@
 #include "picker.h"
 #include "uri.h"
 #include "usersprt.h"
+#include "shortcuts.h"
 
 #ifdef HAVE_MEMCHECK
 #include "MemCheck:MemCheck.h"
@@ -70,7 +71,6 @@ static BOOL wined_templatesopen;
 
 /* ProgInfo window */
 window_handle proginfo_window;
-
 
 /* -------------------- List of functions ------------------------- */
 
@@ -126,8 +126,17 @@ BOOL iconbar_click(event_pollblock *event,void *ref)
       EventMsg_Claim(message_MENUSDELETED,event_ANY,iconbar_closemenu,0);
       help_claim_menu("IBM");
       return TRUE;
-    case button_SELECT:
     case button_ADJUST:
+      if (File_Exists("Choices:WinEd.Shortcuts"))
+      {
+        /* If shortcuts_createmenu succeeds it'll display a menu. Otherwise, open new browser */
+        if (!shortcuts_createmenu(event->data.mouse.pos.x))
+          browser_newbrowser();
+      }
+      else
+        browser_newbrowser();
+      return TRUE;
+    case button_SELECT:
       #ifdef DeskLib_DEBUG
         browser_preselfquit();
        #else

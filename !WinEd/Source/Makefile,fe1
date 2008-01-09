@@ -3,18 +3,18 @@
 
 # Toolflags:
 #cc1flags =  -c -DDeskLib_DEBUG -DWINED_DETAILEDDEBUG -std=c99 -mlibscl -Wunused -Wall -fno-strict-aliasing -mapcs-32 -mfp=2 -mthrowback -mpoke-function-name
-cc1flags =  -c -DDeskLib_DEBUG -std=c99 -mlibscl -Wunused -Wall -fno-strict-aliasing -mapcs-32 -mfp=2 -mthrowback -mpoke-function-name
-#cc1flags =  -c -O3 -std=c99 -mlibscl -Wunused -Wuninitialized -Wall -fno-strict-aliasing -mapcs-32 -mfp=2 -mthrowback -mpoke-function-name
+#cc1flags =  -c -DDeskLib_DEBUG -std=c99 -mlibscl -Wunused -Wall -fno-strict-aliasing -mapcs-32 -mfp=2 -mthrowback -mpoke-function-name
+cc1flags =  -c -O3 -std=c99 -mlibscl -Wunused -Wuninitialized -Wall -fno-strict-aliasing -mapcs-32 -mfp=2 -mthrowback -mpoke-function-name
 gccflags =     -mlibscl -o $@ 
 
 # Final targets:
 ^.!RunImage : DragExt.o Error.o alndiag.o bordiag.o browser.o browtools.o choices.o coorddiag.o datatrans.o deskfont.o \
         diagutils.o drag.o export.o fontpick.o globals.o help.o icndiag.o icnedit.o minsize.o monitor.o \
-        multiicon.o pane.o picker.o round.o rszdiag.o spcdiag.o stats.o tempfont.o templates.o terminator.o \
+        multiicon.o pane.o picker.o round.o rszdiag.o shortcuts.o spcdiag.o stats.o tempfont.o templates.o terminator.o \
         unsaved.o uri.o usersprt.o viewer.o viewtools.o visarea.o wadiag.o windiag.o wined.o 
 	gcc $(gccflags) DragExt.o Error.o alndiag.o bordiag.o browser.o browtools.o choices.o coorddiag.o datatrans.o deskfont.o \
         diagutils.o drag.o export.o fontpick.o globals.o help.o icndiag.o icnedit.o minsize.o monitor.o \
-        multiicon.o pane.o picker.o round.o rszdiag.o spcdiag.o stats.o tempfont.o templates.o terminator.o \
+        multiicon.o pane.o picker.o round.o rszdiag.o shortcuts.o spcdiag.o stats.o tempfont.o templates.o terminator.o \
         unsaved.o uri.o usersprt.o viewer.o viewtools.o visarea.o wadiag.o windiag.o wined.o DeskLib:DeskLib.o \
         flexlib:flexlib-32.o 
 
@@ -75,6 +75,8 @@ rszdiag.o : rszdiag.c
 	gcc $(cc1flags) -o rszdiag.o rszdiag.c
 spcdiag.o : spcdiag.c
 	gcc $(cc1flags) -o spcdiag.o spcdiag.c
+shortcuts.o : shortcuts.c
+	gcc $(cc1flags) -o shortcuts.o shortcuts.c
 stats.o : stats.c
 	gcc $(cc1flags) -o stats.o stats.c
 tempfont.o : tempfont.c
