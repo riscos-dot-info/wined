@@ -31,7 +31,7 @@
 #include "MemCheck:MemCheck.h"
 #endif
 
-#define app_VERSION "3.093 (Beta)"
+#define app_VERSION "3.10 (Jan 08)"
 
 extern void __heap_checking_on_all_allocates(int);
 extern void __heap_checking_on_all_deallocates(int);

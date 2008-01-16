@@ -13,7 +13,4 @@
 /* Generate & open shortcuts menu */
 BOOL shortcuts_createmenu(int mousex);
 
-/* Respond to shortcuts menu select */
-BOOL shortcuts_menuselect(event_pollblock *event, void *ref);
-
 #endif

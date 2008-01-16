@@ -254,7 +254,7 @@ BOOL multiicon_update(event_pollblock *event,void *reference)
       multiicon_setflag(&flags, multiicon_SELECTED, icon_SELECTED);
       multiicon_setflag(&flags, multiicon_SHADED, icon_SHADED);
       multiicon_setflag(&flags, multiicon_DELETED, icon_DELETED);
-      multiicon_setflag(&flags, multiicon_NUMERIC, dl_icon_NUMERIC);
+      multiicon_setflag(&flags, multiicon_NUMERIC, icon_NUMERIC);
 
       if (Icon_GetSelect(multiicon_window, multiicon_BTNTYPEOPT))
       {

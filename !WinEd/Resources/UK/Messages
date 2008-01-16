@@ -20,7 +20,7 @@ NotWindow:Removing unrecognised object (type %1) from file '%0'
 LoadMem:Not enough memory to load file '%0'
 ContMem:File '%0' has only partially loaded due to lack of memory
 ContIcon:Window '%0' not loaded due to anomolous icon data.
-BadFilePart:File '%0' has only partially loaded because it is corrupted
+BadFilePart:File '%0' has only partially loaded because it is corrupted. Window definitions may be missing.
 BadFileFull:File '%0' can not be loaded because it is corrupted
 BadHeader:This file has an apparently invalid header and may not load correctly. Try anyway?
 CorruptInd:This file has invalid indirected data. Continue to load it?
@@ -96,6 +96,7 @@ CopyMenK:Down   ^2,Right  ^6,Left   ^4,Up     ^8
 CopyName:Copy
 Renumber:Renumber
 ConfirmDel:Please confirm that you want to delete the selected object(s).
+Shortcuts:File Shortcuts
 #
 #Interactive Help messages
 #

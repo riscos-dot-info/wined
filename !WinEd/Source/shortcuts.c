@@ -12,6 +12,9 @@
     - Max value list length 1024
 */
 
+/* Respond to shortcuts menu select */
+BOOL shortcuts_menuselect(event_pollblock *event, void *ref);
+
 /* Shortcuts menu */
 menu_ptr shortcuts_menu = NULL;
 char shortcut_values[10][shortcut_VALUELEN];
@@ -19,6 +22,7 @@ char shortcut_values[10][shortcut_VALUELEN];
 BOOL shortcuts_createmenu(int mousex)
 {
   char menudef[256], shortcutvals[1024];
+  char shortcutsmenu_title[40];
   msgtrans_filedesc *shortcuts;
   os_error *error;
   int i;
@@ -68,7 +72,11 @@ BOOL shortcuts_createmenu(int mousex)
     Event_Release(event_MENU,event_ANY,event_ANY,shortcuts_menuselect,NULL);
     Menu_SDispose(shortcuts_menu);
   }
-  shortcuts_menu = Menu_New("WinEd Shortcuts",menudef);
+  /* Look up menu title */
+  MsgTrans_Lookup(messages,"Shortcuts",shortcutsmenu_title,sizeof(shortcutsmenu_title));
+
+  /* Create menu */
+  shortcuts_menu = Menu_New(shortcutsmenu_title,menudef);
 
   if (!shortcuts_menu)
   {

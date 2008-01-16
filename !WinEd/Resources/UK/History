@@ -6,6 +6,8 @@
 - Added open-viewer indication in browser
 - Added support for new (RO4+) window flags
 - Added display of icon name in Monitor
+- Added file shortcuts feature (though no documentation)
+- Bug fixes
 
 3.07
 ~~~~
