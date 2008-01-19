@@ -810,8 +810,11 @@ void              browser_init(void)
   atexit(browser_safetynet);
   Screen_CacheModeInfo();
   browser_maxnumcolumns = (screen_size.x-MARGIN-32) / (WIDTH + MARGIN);
+
+  dont do this bit
+  /*
   if (screen_eig.y == 1)
-    strcat(filename,"22");
+    strcat(filename,"22");*/
   browser_sprites = Sprite_LoadFile(filename);
 
   LinkList_Init(&browser_list);
