@@ -801,7 +801,7 @@ static void       browser_safetynet()
 void              browser_init(void)
 {
   template_block templat;
-  char filename[64] = "WinEdRes:Sprites";
+  char filename[64] = "WinEdRes:Sprites22";
   char *tempind = NULL;
   int indsize;
 
@@ -811,11 +811,11 @@ void              browser_init(void)
   Screen_CacheModeInfo();
   browser_maxnumcolumns = (screen_size.x-MARGIN-32) / (WIDTH + MARGIN);
 
-  dont do this bit
-  /*
-  if (screen_eig.y == 1)
-    strcat(filename,"22");*/
   browser_sprites = Sprite_LoadFile(filename);
+  if (!browser_sprites)
+  {
+    Debug_Printf(" Problem loading %s", filename);
+  }
 
   LinkList_Init(&browser_list);
   browser_templat = templates_load("Browser",0,0,&browser_indirected_buffer,
@@ -1370,12 +1370,28 @@ BOOL              browser_load(char *filename,int filesize,void *reference)
       char *leaf;
       int size;
 
+      Debug_Printf(" in browser_load... autoloading sprites");
       strcpy(spritefile, filename);
       leaf = strrchr(spritefile,'.');
+      Debug_Printf(" leaf='%s'", leaf);
       if (leaf)
       {
         strcpy(leaf+1,"Sprites");
         usersprt_modfilename(spritefile);
+        Debug_Printf(" spritefile='%s'", spritefile);
+        if (!File_Exists(spritefile))
+        {
+          /* Try next level up in directory structure */
+          /* (e.g. sprites are in Resources.Sprites and Templates are in Resources.UK.Templates */
+          strcpy(leaf, "");
+          leaf = strrchr(spritefile,'.');
+          if (leaf)
+          {
+            strcpy(leaf+1,"Sprites");
+            usersprt_modfilename(spritefile);
+            Debug_Printf(" spritefile='%s' (second time lucky)", spritefile);
+          }
+        }
         size = File_Size(spritefile);
         if (size > 0)
           usersprt_merge(spritefile,size,0);
@@ -2280,7 +2296,7 @@ void               browser_sorticons(browser_fileinfo *browser, BOOL force, BOOL
 
   Debug_Printf("browser_sorticons");
 
-  if (choices->round)
+  if (choices->round) /* Note: this choice now means "sort browser icons alphabetically" */
   {
     /* Find list of window names */
     winentry = LinkList_NextItem(&browser->winlist);

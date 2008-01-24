@@ -329,7 +329,7 @@ void wined_initialise(int maxmem)
   Event_Initialise3(APPNAME,taskmanager_call,wined_wimpmessages);
   EventMsg_Initialise();
 
-  Debug_Initialise(dl_debug_REPORTER);
+  Debug_Initialise(debug_REPORTER);
 
   Debug_Printf("\\b");
   Debug_Printf("\\b WinEd starting up, \\t, %s. Wimp version:%d", app_VERSION, event_wimpversion);
