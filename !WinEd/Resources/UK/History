@@ -3,7 +3,7 @@
 - Adjusted Browser-Iconise behaviour
 - Added icon name/number export to Basic file
 - Added support for "numeric" icon flag
-- Added open-viewer indication in browser
+- Added open-viewer indication in browser (coloured icons)
 - Added support for new (RO4+) window flags
 - Added display of icon name in Monitor
 - Added file shortcuts feature (though no documentation)

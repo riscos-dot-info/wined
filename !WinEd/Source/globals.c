@@ -151,9 +151,7 @@ void WinEd_CreateMenu(menu_ptr m, int x, int y)
 
 void test_fn(void)
 {
-  char temp[100];
-  sprintf(temp, "try this: %d <-number. Again: %d. String: %s", 12345, 15, "hi");
-//  Error_Report(123, "try this: %d <-number. Again: %d. String: %s", 12345, 1.5, "hi");
-  Debug_Printf(temp);
-  Debug_Printf("try this: %d <-number. Again: %d. String: %s", 12345, 15, "hi");
+  char *val;
+  SWI(1, 1, 0x400F2, 2, &val);
+  Debug_Printf("val is %s", val);
 }

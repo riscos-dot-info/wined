@@ -62,23 +62,16 @@
 <p><em>WinEd</em> is a template editor. Its most attractive features are:
 <ul>
 <li>Main editing interfaces use dialogue boxes.
-<li>Icons can be dragged between windows, including a
-customisable 'Picker' window containing the most
-commonly used icons.
-<li>Multiple files can be loaded by one instantiation of
-<em>WinEd</em>.
+<li>Icons can be dragged between windows, including a customisable 'Picker' window containing the most commonly used icons.
+<li>Multiple files can be loaded by one instantiation of <em>WinEd</em>.
 <li>Conventions are based on Acorn's Style Guide.
-<li>Statistics are available on the size etc of template
-files.
-<li>Powerful features for positioning icons relative to
-each other.
-<li>Optional rounding of coordinates in high resolution
-modes to ensure low resolution compatibility.
-<li>Optional tool panes and keyboard short cuts enhance
-convenience.
+<li>Statistics are available on the size etc of template files.
+<li>Powerful features for positioning icons relative to each other.
+<li>Optional rounding of coordinates in high resolution modes to ensure low resolution compatibility.
+<li>Optional tool panes and keyboard short cuts enhance convenience.
 <li>Fast loading and saving.
 </ul></p>
-<p><em>WinEd</em> was originally written by Tony Houghton and the last release by him was <a href="http://www.snowstone.org.uk/riscos/realh/index.html#wined">version 2.87</a>. This version can be found here. This release of <em>WinEd</em> has been put together by Adam Richardson. Some changes have been made to this help file, but the majority of the text remains the work of Tony Houghton. Any comments should be made to <a href="mailto:riscos@snowstone.org.uk">Adam Richardson</a>
+<p><em>WinEd</em> was originally written by Tony Houghton and the last release by him was <a href="http://www.snowstone.org.uk/riscos/realh/index.html#wined">version 2.87</a>. This release of <em>WinEd</em> has been put together by Adam Richardson. Some changes have been made to this help file, but the majority of the text remains the work of Tony Houghton. Any comments should be made to <a href="mailto:riscos@snowstone.org.uk">Adam Richardson</a>
 <p><a href="#contents">Return to contents</a></p>
 
 <a name="requirements"><h2>2. Requirements</h2></a>
