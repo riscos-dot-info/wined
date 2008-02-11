@@ -60,9 +60,9 @@
 #ifndef __dl_window_h
 #include "DeskLib:Window.h"
 #endif
-
+#ifndef __dl_debug_h
 #include "DeskLib:Debug.h"
-
+#endif
 #ifndef __wined_globals_h
 #include "globals.h"
 #endif
@@ -75,5 +75,8 @@
 #ifndef __wined_templates_h
 #include "templates.h"
 #endif
-
+#ifdef FORTIFY
+#include "fortify.h"
+#include "PseudoFlex.h"
+#endif
 #endif

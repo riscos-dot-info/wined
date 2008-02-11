@@ -7,6 +7,7 @@
 #include "DeskLib:WimpSWIs.h"
 
 #include "globals.h"
+#include "common.h"
 #include "help.h"
 #include "monitor.h"
 

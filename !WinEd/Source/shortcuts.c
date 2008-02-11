@@ -1,8 +1,8 @@
 /* shortcuts.c */
 
 #include "shortcuts.h"
+#include "common.h"
 #include "browser.h"
-#include "DeskLib:Debug.h"
 
 /* This file constructs and responds to the shortcuts menus.
    Note current restrictions:

@@ -58,6 +58,10 @@ void WinEd_CreateMenu(menu_ptr, int x, int y);
 extern browser_fileinfo *selection_browser;
 extern browser_winentry *selection_viewer;
 
+/* Output function for fortify */
+void fort_out(const char *string);
+
+/* For debugging */
 void test_fn(void);
 
 /* For changing pointer shape when dragging */

@@ -3,6 +3,7 @@
 
 #include "choices.h"
 #include "common.h"
+#include "DeskLib:BackTrace.h"
 
 /* Set up in browser.c */
 extern window_handle overwrite_warn;
@@ -149,9 +150,17 @@ void WinEd_CreateMenu(menu_ptr m, int x, int y)
   overwrite_warn_open = FALSE;
 }
 
+void fort_out(const char *string)
+{
+  Debug_Printf("\\O%s",string+1);
+}
+
 void test_fn(void)
 {
-  char *val;
-  SWI(1, 1, 0x400F2, 2, &val);
-  Debug_Printf("val is %s", val);
+  BackTrace_functionlist *list;
+  Debug_Printf("Backtrace");
+  BackTrace_OutputToStdErr();
+
+//  list = BackTrace_GetCurrentFunctions();
+//  Debug_Printf("1) %s",list->functions[1]);
 }

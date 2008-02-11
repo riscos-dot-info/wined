@@ -1378,7 +1378,7 @@ BOOL              browser_load(char *filename,int filesize,void *reference)
       {
         strcpy(leaf+1,"Sprites");
         usersprt_modfilename(spritefile);
-        Debug_Printf(" spritefile='%s'", spritefile);
+        Debug_Printf(" Trying '%s'", spritefile);
         if (!File_Exists(spritefile))
         {
           /* Try next level up in directory structure */
@@ -1389,12 +1389,19 @@ BOOL              browser_load(char *filename,int filesize,void *reference)
           {
             strcpy(leaf+1,"Sprites");
             usersprt_modfilename(spritefile);
-            Debug_Printf(" spritefile='%s' (second time lucky)", spritefile);
+            Debug_Printf(" Trying '%s'", spritefile);
           }
         }
         size = File_Size(spritefile);
         if (size > 0)
+        {
+          Debug_Printf(" Sprites found.");
           usersprt_merge(spritefile,size,0);
+        }
+        else;
+        {
+          Debug_Printf(" No sprites found");
+        }
       }
     }
     return TRUE;

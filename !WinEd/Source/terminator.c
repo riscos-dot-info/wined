@@ -2,6 +2,7 @@
 
 #include <limits.h>
 
+#include "common.h"
 #include "tempdefs.h"
 
 static void term_string(char *str, char term, int len)

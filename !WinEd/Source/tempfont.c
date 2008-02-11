@@ -5,6 +5,7 @@
 #include "Mem.h"
 #include "DeskLib:Str.h"
 
+#include "common.h"
 #include "globals.h"
 #include "tempfont.h"
 

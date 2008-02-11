@@ -6,11 +6,11 @@
 #include "DeskLib:Error.h"
 #include "DeskLib:File.h"
 #include "DeskLib:MsgTrans.h"
-/*#include "DeskLib:Screen.h"*/
 #include "DeskLib:SWI.h"
 #include "DeskLib:WimpSWIs.h"
 #include "Mem.h"
 
+#include "common.h"
 #include "globals.h"
 #include "usersprt.h"
 

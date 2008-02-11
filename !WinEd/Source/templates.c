@@ -8,6 +8,7 @@
 #include "DeskLib:WimpSWIs.h"
 
 #include "globals.h"
+#include "common.h"
 #include "templates.h"
 
 window_block *templates_load(char *name,int *index,font_array *font,
@@ -22,7 +23,10 @@ window_block *templates_load(char *name,int *index,font_array *font,
     templat.font = font;
   else
     templat.font = (font_array *)-1;
-  strcpy(id,name);
+
+  strncpy(id,name,sizeof(id)-1);
+  id[sizeof(id)-1]='\0';
+
   templat.name = id;
   if (index)
     templat.index = *index;

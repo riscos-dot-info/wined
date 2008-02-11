@@ -3,6 +3,7 @@
 #include "DeskLib:Error.h"
 #include "DeskLib:WimpSWIs.h"
 
+#include "common.h"
 #include "pane.h"
 
 void pane_findoffset(window_handle parent,window_handle pane,

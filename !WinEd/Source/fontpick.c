@@ -9,6 +9,7 @@
 #include "DeskLib:SWI.h"
 
 #include "globals.h"
+#include "common.h"
 
 #ifndef SWI_Font_ListFonts
 #define SWI_Font_ListFonts 0x40091

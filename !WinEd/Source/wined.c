@@ -31,7 +31,7 @@
 #include "MemCheck:MemCheck.h"
 #endif
 
-#define app_VERSION "3.10 (January 2008)"
+#define app_VERSION "3.10 (February 2008)"
 
 extern void __heap_checking_on_all_allocates(int);
 extern void __heap_checking_on_all_deallocates(int);
@@ -282,6 +282,8 @@ window_handle proginfo_init()
   window_handle proginfo;
   window_block *windef;
 
+  Debug_Printf("proginfo_init");
+
   windef = templates_load("ProgInfo",0,0,0,0);
   Error_CheckFatal(Wimp_CreateWindow(windef,&proginfo));
   free(windef);
@@ -335,6 +337,10 @@ void wined_initialise(int maxmem)
   Debug_Printf("\\b WinEd starting up, \\t, %s. Wimp version:%d", app_VERSION, event_wimpversion);
   #ifdef WINED_DETAILEDDEBUG
     Debug_Printf("...detailed debugging");
+  #endif
+
+  #ifdef FORTIFY
+    Fortify_SetOutputFunc(fort_out);
   #endif
 
   strncpy(resource_pathname, "WinEdRes:", 30);

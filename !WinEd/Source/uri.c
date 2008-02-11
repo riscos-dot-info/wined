@@ -9,6 +9,7 @@
 #include "DeskLib:WimpSWIs.h"
 #include "DeskLib:Debug.h"
 
+#include "common.h"
 #include "globals.h"
 #include "uri.h"
 

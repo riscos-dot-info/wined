@@ -7,6 +7,7 @@
 #include "DeskLib:EventMsg.h"
 #include "DeskLib:SWI.h"
 
+#include "common.h"
 #include "deskfont.h"
 
 #define DeskFont_Name "Homerton.Medium"
