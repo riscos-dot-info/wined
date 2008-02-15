@@ -77,6 +77,5 @@
 #endif
 #ifdef FORTIFY
 #include "fortify.h"
-#include "PseudoFlex.h"
 #endif
 #endif

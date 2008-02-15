@@ -1,26 +1,26 @@
 # Makefile for WinEd
 
 
-objects = DragExt.o Error.o alndiag.o bordiag.o browser.o browtools.o choices.o coorddiag.o datatrans.o deskfont.o \
-          diagutils.o drag.o export.o fontpick.o fortify.o globals.o help.o icndiag.o icnedit.o minsize.o monitor.o \
-          multiicon.o pane.o picker.o PseudoFlex.o round.o rszdiag.o shortcuts.o spcdiag.o stats.o tempfont.o templates.o \
+objects = Error.o alndiag.o bordiag.o browser.o browtools.o choices.o coorddiag.o datatrans.o deskfont.o \
+          diagutils.o drag.o dragext.o export.o fontpick.o fortify.o globals.o help.o icndiag.o icnedit.o minsize.o monitor.o \
+          multiicon.o pane.o picker.o round.o rszdiag.o shortcuts.o spcdiag.o stats.o tempfont.o templates.o \
           terminator.o unsaved.o uri.o usersprt.o viewer.o viewtools.o visarea.o wadiag.o windiag.o wined.o
 
-libraries = flexlib:flexlib-32.o
+libraries = flexlib:flexlib-32.o DeskLib:DeskLib.o
 
-#compileflags = -c -DFORTIFY -DDeskLib_DEBUG -DWINED_DETAILEDDEBUG -std=c99 -mlibscl -Wunused -Wall -fno-strict-aliasing -mthrowback -mpoke-function-name
-compileflags = -c -DFORTIFY -DDeskLib_DEBUG -std=c99 -mlibscl -Wunused -Wall -fno-strict-aliasing -mthrowback -mpoke-function-name
-#compileflags = -c -O3 -std=c99 -mlibscl -Wunused -Wuninitialized -Wall -fno-strict-aliasing -mthrowback -mpoke-function-name
+compileflags = -DFORTIFY -DDeskLib_DEBUG -DWINED_DETAILEDDEBUG -std=c99 -mlibscl -Wunused -Wall -fno-strict-aliasing -mthrowback -mpoke-function-name -c
+#compileflags = -DFORTIFY -DDeskLib_DEBUG -std=c99 -mlibscl -Wunused -Wall -fno-strict-aliasing -mthrowback -mpoke-function-name -c
+#compileflags = -O3 -std=c99 -mlibscl -Wunused -Wuninitialized -Wall -fno-strict-aliasing -mthrowback -mpoke-function-name -c
 
-linkflags = -mlibscl -o $(objects) $(libraries)
+linkflags = -mlibscl -o ^.!RunImage
 
 # Default rule
 ^.!RunImage : $(objects) 
-	gcc $(linkflags) $(objects)
+	gcc $(linkflags) $(objects) $(libraries)
 
 
 # Static dependencies:
-DragExt.o : DragExt.s
+dragext.o : DragExt.s
 	gcc $(compileflags) DragExt.s
 Error.o : Error.c
 	gcc $(compileflags) Error.c
@@ -68,8 +68,6 @@ pane.o : pane.c
 	gcc $(compileflags) pane.c
 picker.o : picker.c
 	gcc $(compileflags) picker.c
-PseudoFlex.o : PseudoFlex.c
-	gcc $(compileflags) PseudoFlex.c
 round.o : round.c
 	gcc $(compileflags) round.c
 rszdiag.o : rszdiag.c
@@ -107,5 +105,5 @@ wined.o : wined.c
 
 .PHONY : clean
 clean:
-	wipe ^.!RunImage ~CVFR
-	wipe ^.Source.o ~CVFR
+	IfThere ^.!RunImage Then Wipe ^.!RunImage ~CR
+	IfThere o Then Wipe o ~CR

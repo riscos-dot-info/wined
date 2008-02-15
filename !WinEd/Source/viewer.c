@@ -668,7 +668,6 @@ BOOL                viewer_makewinblock(browser_winentry *winentry,
   /* Create replica of window info */
   *winblock = malloc(sizeof(window_block) +
   	     	     winentry->window->window.numicons * sizeof(icon_block));
-
   if (!*winblock)
   {
     MsgTrans_Report(messages,"ViewMem",FALSE);
@@ -676,12 +675,10 @@ BOOL                viewer_makewinblock(browser_winentry *winentry,
   }
   memcpy(*winblock,winentry->window,sizeof(window_block) +
   	 winentry->window->window.numicons * sizeof(icon_block));
-
   /* Make sure pane, furniture and back flags aren't set */
   (*winblock)->window.flags.data.pane = 0;
   (*winblock)->window.flags.data.backwindow = 0;
   (*winblock)->window.flags.data.childfurniture = 0;
-
   if (wineditable)
     viewer_modifyflags(&(*winblock)->window);
   else
@@ -697,7 +694,6 @@ BOOL                viewer_makewinblock(browser_winentry *winentry,
   (*winblock)->window.behind = -1;
   /*if ((*winblock)->window.spritearea != (unsigned int *) 1)*/
   (*winblock)->window.spritearea = (unsigned int *) user_sprites;
-
   /* Process icons */
   /* Title */
   if (!icnedit_processicon(winentry,

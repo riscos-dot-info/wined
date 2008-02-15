@@ -1,3 +1,4 @@
 Dir <Obey$Dir>
+IfThere ^.!RunImage Then Wipe ^.!RunImage ~C
 Make
-Filer_Run ^.!Run
+IfThere ^.!RunImage Then Filer_Run ^.!Run

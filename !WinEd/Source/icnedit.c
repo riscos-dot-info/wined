@@ -151,11 +151,11 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
   {
     int bufindex = (int) data->indirecttext.buffer;
     char *bufcont = (char *) ((int) winentry->window + bufindex);
-
     if (flags->data.text || (flags->data.sprite&&data->indirectsprite.nameisname))
     {
       #ifdef WINED_DETAILEDDEBUG
       Debug_Printf("  either data.text or data.sprite and indirectsprite.nameisname");
+      Debug_Printf("  bufflen: %d", data->indirecttext.bufflen);
       #endif
       if (data->indirecttext.bufflen > 0)
       {
@@ -168,7 +168,7 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
       if (data->indirecttext.buffer && bufindex > 0)
       {
         strncpycr(data->indirecttext.buffer,bufcont,data->indirecttext.bufflen);
-        #ifdef DEBUG_DETAILEDDEBUG
+        #ifdef WINED_DETAILEDDEBUG
         Debug_Printf("  value: %s", data->indirecttext.buffer);
         #endif
       }
@@ -201,7 +201,7 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
         /* Note that this means the "rounded" icons of Select/Adjust button types */
         /* R5, R6 get lost. Still visible on preview though.                      */
 
-        rindex = Validation_ScanString(data->indirecttext.validstring,'R');
+        rindex = Icon_ScanValidationString(data->indirecttext.validstring,'R');
         if (rindex)
         {
           switch (data->indirecttext.validstring[rindex])

@@ -157,10 +157,5 @@ void fort_out(const char *string)
 
 void test_fn(void)
 {
-  BackTrace_functionlist *list;
-  Debug_Printf("Backtrace");
-  BackTrace_OutputToStdErr();
 
-//  list = BackTrace_GetCurrentFunctions();
-//  Debug_Printf("1) %s",list->functions[1]);
 }
