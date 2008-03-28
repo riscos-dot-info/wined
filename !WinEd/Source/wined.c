@@ -15,6 +15,7 @@
 #include "DeskLib:SWI.h"
 #include "DeskLib:Time.h"
 #include "DeskLib:Debug.h"
+#include "DeskLib:Environment.h"
 
 #include "browser.h"
 #include "choices.h"
@@ -334,7 +335,8 @@ void wined_initialise(int maxmem)
   Debug_Initialise(debug_REPORTER);
 
   Debug_Printf("\\b");
-  Debug_Printf("\\b WinEd starting up, \\t, %s. Wimp version:%d", app_VERSION, event_wimpversion);
+  Debug_Printf("\\b WinEd starting up, \\t, %s.", app_VERSION);
+  Debug_Printf("\\b   OS:%d, DeskLib:%d, Wimp:%d", Environment_OSVersion(), DESKLIB_VERSION, event_wimpversion);
   #ifdef WINED_DETAILEDDEBUG
     Debug_Printf("...detailed debugging");
   #endif

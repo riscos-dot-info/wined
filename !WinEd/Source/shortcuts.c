@@ -70,7 +70,7 @@ BOOL shortcuts_createmenu(int mousex)
   {
     /* A shortcuts menu already exists, dispose of it */
     Event_Release(event_MENU,event_ANY,event_ANY,shortcuts_menuselect,NULL);
-    Menu_SDispose(shortcuts_menu);
+    Menu_FullDispose(shortcuts_menu);
   }
   /* Look up menu title */
   MsgTrans_Lookup(messages,"Shortcuts",shortcutsmenu_title,sizeof(shortcutsmenu_title));
