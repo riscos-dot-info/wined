@@ -38,6 +38,9 @@
 #define WIDTH 244
 #define HEIGHT 44
 
+/* Induce the Anni bug (define this, then load Anni template file) */
+//#define REGRESSION_ANNI
+
 /* Number of columns supported by current mode */
 static int browser_maxnumcolumns;
 
@@ -222,6 +225,8 @@ static window_handle copy_dbox;
 static BOOL copy_open = FALSE;
 static window_handle rename_dbox;
 static BOOL rename_open = FALSE;
+static window_handle goto_icon;
+//static BOOL goto_open = FALSE;
 
 /* Overwrite warning box */
 window_handle overwrite_warn;
@@ -411,7 +416,7 @@ static BOOL       release_copy_msg(event_pollblock *e, void *r)
 
 void              browcom_copy(BOOL submenu, int x, int y,void *reference)
 {
-  Debug_Printf("browcom_copy(");
+  Debug_Printf("browcom_copy");
 
   int index = -1;
   browser_fileinfo *browser = reference;
@@ -558,6 +563,10 @@ void              create_minidboxes()
   templat = templates_load("Overwrite",0,0,0,0);
   Error_CheckFatal(Wimp_CreateWindow(templat,&overwrite_warn));
   free(templat);
+
+  templat = templates_load("Goto",0,0,0,0);
+  Error_CheckFatal(Wimp_CreateWindow(templat,&goto_icon));
+  free(templat);
 }
 
 /* Convert all string terminators to CR or NULL */
@@ -580,11 +589,9 @@ static void       browser_cr(browser_fileinfo *browser)
     {
       int i;
 
-      for (i = 0;
-      	i < wimp_MAXNAME && winentry->window->window.title.text[i] > 31;
-      	++i);
-      if (i < wimp_MAXNAME)
-        winentry->window->window.title.text[i] = choices->formed ? 13 : 0;
+      for (i = 0;  i < wimp_MAXNAME && winentry->window->window.title.text[i] > 31;  ++i);
+        if (i < wimp_MAXNAME)
+          winentry->window->window.title.text[i] = choices->formed ? 13 : 0;
     }
     /* Check each icon */
     for (icon = 0; icon < winentry->window->window.numicons; ++icon)
@@ -593,12 +600,9 @@ static void       browser_cr(browser_fileinfo *browser)
       {
         int i;
 
-        for (i = 0;
-        	i < wimp_MAXNAME &&
-        		winentry->window->icon[icon].data.text[i] > 31;
-        	++i);
-        if (i < wimp_MAXNAME)
-          winentry->window->icon[icon].data.text[i] = choices->formed ? 13 : 0;
+        for (i = 0;  i < wimp_MAXNAME && winentry->window->icon[icon].data.text[i] > 31;  ++i);
+          if (i < wimp_MAXNAME)
+            winentry->window->icon[icon].data.text[i] = choices->formed ? 13 : 0;
       }
     }
     /* Indirected string pool */
@@ -636,7 +640,7 @@ static BOOL       browser_dosave(char *filename,browser_fileinfo *browser, BOOL 
   browser_winentry *winentry;
   int offset;
 
-  Debug_Printf("browser_dosave");
+  Debug_Printf("browser_dosave - saving to %s", filename);
 
   browser_cr(browser);
   Debug_Printf("cr checked");
@@ -672,7 +676,7 @@ static BOOL       browser_dosave(char *filename,browser_fileinfo *browser, BOOL 
        winentry = LinkList_NextItem(winentry))
     if (!selection || Icon_GetSelect(browser->window,winentry->icon))
       offset += sizeof(template_index);
-  offset += 4; /* Skip terminating zero */
+  offset += 4; /* Skip terminating zero word */
 
   /* Save index entry for each window */
   for (winentry = LinkList_NextItem(&browser->winlist); winentry;
@@ -1654,7 +1658,11 @@ static load_result browser_load_fonts(browser_fileinfo *browser,
 
   if (fontoffset != -1 && fontoffset < filesize)
   {
-    if (!flex_alloc((flex_ptr) newfontinfo,filesize - fontoffset))
+    int fonts;
+    fonts = (filesize - fontoffset) / sizeof(template_fontinfo);
+    Debug_Printf(" Loading font data (%d bytes = %d fonts)...", filesize - fontoffset, fonts);
+
+    if (!flex_alloc((flex_ptr) newfontinfo, filesize - fontoffset))
     {
       MsgTrans_ReportPS(messages,"LoadMem",FALSE,filename,0,0,0);
       return load_ReportedError;
@@ -1673,6 +1681,21 @@ static load_result browser_load_fonts(browser_fileinfo *browser,
       flex_free((flex_ptr) newfontinfo);
       return load_ReportedError;
     }
+    else
+    {
+      int i;
+      for (i = 0; i < fonts; i++)
+      {
+        Debug_Printf(" Font %d: %dx%d %s", i,
+         (*newfontinfo)[i].size.x / 16,
+         (*newfontinfo)[i].size.y / 16,
+         (*newfontinfo)[i].name);
+      }
+    }
+  }
+  else
+  {
+    Debug_Printf(" No font data found. Font memory not allocated.");
   }
   return load_OK;
 }
@@ -1800,7 +1823,6 @@ static load_result browser_all_indirected(browser_fileinfo *browser,
     }
     for (icon = 0; icon < winentry->window->window.numicons; icon++)
     {
-//      Debug_Printf("In loop, icon:%d", icon);
       result = browser_check_indirected(winentry,
                                         &winentry->window->icon[icon].flags,
                                         &winentry->window->icon[icon].data,
@@ -1818,9 +1840,9 @@ static load_result browser_all_indirected(browser_fileinfo *browser,
 
 /* Process font data; out of range font handles are reported,
    icon is converted to sys font in nasty colours */
-static void        browser_process_fonts(browser_fileinfo *browser,
-                                  browser_winentry *winentry,
-                                  template_fontinfo **newfontinfo)
+static void        browser_process_fonts(browser_fileinfo  *browser,
+                                         browser_winentry  *winentry,
+                                         template_fontinfo **newfontinfo)
 {
   BOOL reported = FALSE;
   int icon;
@@ -1829,10 +1851,12 @@ static void        browser_process_fonts(browser_fileinfo *browser,
 
   if (winentry->window->window.titleflags.data.font)
   {
+    Debug_Printf(" Title uses fonts");
     if (winentry->window->window.titleflags.font.handle *
         sizeof(template_fontinfo) >
         flex_size((flex_ptr) newfontinfo))
     {
+      Debug_Printf("  Bad title font: bigger than structure??");
       if (!reported)
       {
         MsgTrans_Report(messages,"BadFont",FALSE);
@@ -1843,19 +1867,24 @@ static void        browser_process_fonts(browser_fileinfo *browser,
     }
     else
     {
+      Debug_Printf("  Title font OK");
       winentry->window->window.titleflags.font.handle =
-        tempfont_findfont(browser,
-        &(*newfontinfo)[winentry->window->window.titleflags.font.handle-1]);
+        tempfont_findfont(browser, &(*newfontinfo)[winentry->window->window.titleflags.font.handle-1]);
     }
   }
-  for (icon = 0;icon < winentry->window->window.numicons;icon++)
+
+  Debug_Printf(" Checking for icon fonts (in all %d of them)...", winentry->window->window.numicons);
+  for (icon = 0; icon < winentry->window->window.numicons; icon++)
   {
     if (winentry->window->icon[icon].flags.data.font)
     {
+      Debug_Printf("  Icon %d uses fonts", icon);
+
       if (winentry->window->icon[icon].flags.font.handle *
           sizeof(template_fontinfo) >
           flex_size((flex_ptr) newfontinfo))
       {
+        Debug_Printf("  Badness. More font handles than fonts");
         if (!reported)
         {
           MsgTrans_Report(messages,"BadFont",FALSE);
@@ -1866,9 +1895,18 @@ static void        browser_process_fonts(browser_fileinfo *browser,
       }
       else
       {
-        winentry->window->icon[icon].flags.font.handle =
-        tempfont_findfont(browser,
-        &(*newfontinfo)[winentry->window->icon[icon].flags.font.handle-1]);
+        #ifdef REGRESSION_ANNI
+          /* For some reason this line resulted in the handle getting corrupted. */
+          /* Load the Anni template to see this problem. */
+          winentry->window->icon[icon].flags.font.handle =
+            tempfont_findfont(browser, &(*newfontinfo)[winentry->window->icon[icon].flags.font.handle-1]);
+        #else
+          unsigned int returned = 0;
+          returned = tempfont_findfont(browser, &(*newfontinfo)[winentry->window->icon[icon].flags.font.handle-1]);
+          winentry->window->icon[icon].flags.font.handle = returned;
+        #endif
+
+        Debug_Printf("  Actual font handle for icon %d: %d", icon, winentry->window->icon[icon].flags.font.handle);
       }
     }
   }
@@ -1880,14 +1918,14 @@ BOOL               validate_icon_data(icon_block icon)
   BOOL result = TRUE;
 
   #ifdef DeskLib_DEBUG
-  if (!icon.flags.data.indirected)
+  if ((icon.flags.data.text || icon.flags.data.sprite) && !icon.flags.data.indirected)
     Debug_Printf(" Icon data: %s", icon.data.text);
   #endif
 
   if (  (icon.workarearect.min.x > icon.workarearect.max.x)
      || (icon.workarearect.min.y > icon.workarearect.max.y) )
   {
-    Debug_Printf("\\r  Icon dimensions topsy turvy");
+    Debug_Printf("\\r Icon dimensions topsy turvy");
     result = FALSE;
   }
 
@@ -1896,6 +1934,8 @@ BOOL               validate_icon_data(icon_block icon)
 
 static load_result browser_verify_data(browser_winentry *winentry)
 {
+  /* This function is used to trap problems in original template, at load time. */
+
   load_result result = load_OK;
   int icon;
 
@@ -1922,6 +1962,7 @@ static load_result browser_load_templat(browser_fileinfo *browser,
   browser_winentry *winentry;
   load_result result;
   #ifdef DeskLib_DEBUG
+  int i;
   char reportertext[wimp_MAXNAME+1];
   #endif
 
@@ -1972,7 +2013,6 @@ static load_result browser_load_templat(browser_fileinfo *browser,
   }
 
 
-
   winentry->status = status_CLOSED;
   winentry->iconised = FALSE;
   winentry->fontarray = 0;
@@ -2012,6 +2052,13 @@ static load_result browser_load_templat(browser_fileinfo *browser,
   browser->numwindows++;
 
   #ifdef DeskLib_DEBUG
+  /* Check for anni bug */
+  for (i = 0; i < winentry->window->window.numicons; i++)
+  {
+    if ((winentry->window->icon[i].workarearect.min.x > 5000) || (winentry->window->icon[i].workarearect.min.x < -5000))
+      Debug_Printf("\\rThar she blows! Start of icon %d corrupted (probably - min x:%d)", i, winentry->window->icon[i].workarearect.min.x);
+  }
+
   strncpycr(reportertext, winentry->identifier, wimp_MAXNAME-1); /* it's CR terminated... */
   Debug_Printf("\\d window '%s' loaded. %d icons.", reportertext, winentry->window->window.numicons);
   #endif
@@ -2080,7 +2127,7 @@ static load_result browser_load_from_fp(browser_fileinfo *browser,
     /* Allows partial loading */
     if (index)
     {
-      if ((result == load_FileError))
+      if (result == load_FileError)
         MsgTrans_ReportPS(messages,"BadFilePart",FALSE,filename,0,0,0);
       else if (result == load_MemoryError)
         MsgTrans_ReportPS(messages,"ContMem",FALSE,filename,0,0,0);
@@ -2524,7 +2571,7 @@ BOOL               browser_save_check(char *filename, void *reference, BOOL sele
   char current_title[256];
   int title_length;
 
-  Debug_Printf("browser_save_check");
+  Debug_Printf("browser_save_check, filename: %s", filename);
 
   /* Save info to pass on to the overwrite handler */
   strncpy(overwrite_check_filename, filename, 1024);

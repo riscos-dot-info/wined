@@ -19,5 +19,5 @@ If "<WinEd$CarryOn>" = "True" Then Set Alias$@RunType_FEC /<WinEd$Dir>.!Run %%*0
 WimpSlot -min 512k -max 512k
 | First number below is max size of dynamic area in K
 | 0 = use WimpSlot instead, otherwise 4096 recommended
-If "<WinEd$CarryOn>" = "True" Then Run <WinEd$Dir>.!RunImage 0 %*0 2>Mem::Memphis.$.Stderr
+If "<WinEd$CarryOn>" = "True" Then Run <WinEd$Dir>.!RunImage 0 %*0 2>Mem::Memphis.$.WinEdStderr
 Unset Wined$CarryOn

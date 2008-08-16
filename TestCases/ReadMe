@@ -1,0 +1,57 @@
+Regression Tests / Bug Fixes
+~~~~~~~~~~ ~~~~~   ~~~ ~~~~~
+
+-> Fixed in version 3.01:
+Typing long leafname into savebox file icon then dragging to save caused
+name to be corrupted (12 chars copied, no terminator).
+
+Choose close on a modified template. A "save or discard" box appears,
+but doesn't respond to mouse clicks. This was due to event handlers
+being released by the routine triggered by closing of the preceding
+transient ("save or discard") window (via menusdeleted message).
+
+-> Fixed by 3.06:
+Previous versions of WinEd allowed illegal use of long (>11 characters,
+excluding terminator) template names. LongIdent template has example of
+illegal name and also includes an example of past corruption due to the
+Anni bug.
+
+-> Fixed by 3.07:
+Delete first window in list and the others don't shuffle up drag one
+window into another browser and overwrites entry in display
+(drag/reorder reveals it again)
+
+
+-> Fixed by 3.092:
+
+Clicking iconise put wrong window name and icon on iconised icon (&
+didn't close daughter viewers as per the manual)
+
+Steve Revill: "The main menu allows you to navigate into the selection
+submenu even when no icons are selected. This is a bug as none of the
+submenu items are of any use in this state (in fact, it just shows up
+that three of them are incorrectly not being shaded when there's no
+selection)."
+
+Do a right click "select all" then try and move through
+selection>submenu> items. Investigated: browser_releasemenus is being
+called somehow immediately after the menus are refreshed (following
+adjust mouse click) this releases the handlers (sublink in particular)
+so subsequent menu_warnings aren't caught. Can't work out what's causing
+the browser_releasemenus call. Perhaps the wimp's menus_deleted message
+getting delayed across wimp polls? Finally done with bodge use of
+global flag set when user clicks "select all".
+
+
+-> Fixed by 3.14:
+
+Anni Bug. This caused font handles to corrupt the start of the previous
+icon definition (e.g. manifests in strange minimum x extent). It occurs
+in template files which have different fonts in different windows. It
+appears when a font is processed which is in an icon which is not the
+first icon containing a font, but is the first occurance of that font
+(where "font" is a unique font name/size combination).
+The Anni template contains icons which cause this bug. Annok and Annok2
+are very similar to Anni but don't trigger the bug. Setting the
+REGRESSION_ANNI macro at the top of browser.c will reinstate the bug.
+

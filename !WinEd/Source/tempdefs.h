@@ -18,18 +18,18 @@ typedef struct {
 typedef struct {
   linklist_header header;
   window_handle window;
-  window_handle pane;    /* Tool pane */
+  window_handle pane;   /* Tool pane */
   int numwindows;
   int numcolumns;
   int estsize;		/* This is only used temporarily, don't use it */
   linklist_header winlist;
   BOOL altered;
   char title[256];
-  int numfonts;
+  unsigned int numfonts;
   template_fontinfo *fontinfo; /* Starting from 0 */
   char fontcount[255]; /* array (starting from 0) of usage of each font */
   window_handle stats; /* Statistics window */
-  int largest;		/* Largest buffer total for stats */
+  int largest;         /* Largest buffer total for stats */
   char namesfile[256]; /* Icon names file name */
   BOOL iconised;
 } browser_fileinfo;

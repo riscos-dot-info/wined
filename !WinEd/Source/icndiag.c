@@ -566,7 +566,7 @@ static void icndiag_readdbox(icon_block *iblock)
     		       	     Icon_GetDouble(icndiag_window,
     		       	     		    icndiag_FONTASPECT) / 100.0);
     iblock->flags.font.handle = tempfont_findfont(icndiag_winentry->browser,
-    			       			 &fontinfo);
+    			       			 &fontinfo, icndiag_winentry);
   }
   else
   {
@@ -681,7 +681,6 @@ BOOL icndiag_update(event_pollblock *event,void *reference)
     }
     if (iblock.workarearect.max.y - iblock.workarearect.min.y < minsize.y)
     {
-      Debug_Printf(" here2");
       resize = TRUE;
       iblock.workarearect.max.y = iblock.workarearect.min.y + minsize.y;
     }

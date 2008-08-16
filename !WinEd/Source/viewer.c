@@ -218,6 +218,7 @@ typedef enum {
   viewer_VISAREA,
   viewer_EDITWIN,
   viewer_EDITTITLE,
+  viewer_GOTO,
   viewer_CLOSE,
   viewer_PREVIEW,
 
@@ -1067,6 +1068,8 @@ BOOL                preview_menuselect(event_pollblock *event,void *reference)
   {
     case preview_CLOSE:
       viewer_close(winentry);
+      /* Refresh browser to reflect closed state of viewer */
+      browser_sorticons(winentry->browser,TRUE,FALSE,TRUE);
       break;
     case preview_SAVEPOS:
       Error_Check(Wimp_GetWindowState(winentry->handle,&wstate));
@@ -1837,6 +1840,9 @@ BOOL                viewer_menuselect(event_pollblock *event,void *reference)
       break;
     case viewer_EDITTITLE:
       viewcom_edittitle(winentry);
+      break;
+    case viewer_GOTO:
+//      viewcom_gotoicon(winentry);
       break;
     case viewer_CLOSE:
       viewer_close(winentry);

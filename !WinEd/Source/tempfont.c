@@ -25,9 +25,13 @@ void tempfont_diagnose(browser_fileinfo *browser)
 }
 */
 
-int tempfont_findfont(browser_fileinfo *browser,template_fontinfo *fontinfo)
+unsigned int tempfont_findfont(browser_fileinfo *browser,template_fontinfo *fontinfo)
 {
   int index;
+
+  #ifdef WINED_DETAILEDDEBUG
+  Debug_Printf("   tempfont_findfont - browser:%d, fontinfo:%d, size:%d, number:%d", browser, fontinfo, sizeof(template_fontinfo), browser->numfonts);
+  #endif
 
   /* If no fonts already, make for first time */
   if (browser->numfonts == 0)
@@ -38,28 +42,33 @@ int tempfont_findfont(browser_fileinfo *browser,template_fontinfo *fontinfo)
       MsgTrans_Report(messages,"FontMem",FALSE);
       return 0;
     }
+
     browser->fontinfo[0] = *fontinfo;
     browser->fontcount[1] = 1;
-/*Error_Report(0, "Made first font");*/
-    return browser->numfonts = 1;
+    browser->numfonts = 1;
+    Debug_Printf("  Made first font (returning handle %d): %dx%d %s",
+                    browser->numfonts, fontinfo->size.x / 16, fontinfo->size.y / 16, fontinfo->name);
+    return browser->numfonts;
   }
 
   /* Look for match; note returned font handle is index + 1 */
-  for (index = 0;index < browser->numfonts;index++)
+  for (index = 0; index < browser->numfonts; index++)
     if (!strcmpcr(browser->fontinfo[index].name,fontinfo->name) &&
         browser->fontinfo[index].size.x == fontinfo->size.x &&
         browser->fontinfo[index].size.y == fontinfo->size.y)
     {
       browser->fontcount[++index]++;
-/*Error_Report(0, "Found matching font");*/
+      Debug_Printf("  Found matching font (handle: %d): %dx%d %s", index, fontinfo->size.x / 16, fontinfo->size.y / 16, fontinfo->name);
       return index;
     }
+
   /* Not found, make it */
   if (browser->numfonts >= 255)
   {
     MsgTrans_Report(messages,"TMFonts",FALSE);
     return 0;
   }
+
   if (!flex_extend((flex_ptr) &browser->fontinfo,
       		     flex_size((flex_ptr) &browser->fontinfo) +
       		     sizeof(template_fontinfo)))
@@ -67,11 +76,13 @@ int tempfont_findfont(browser_fileinfo *browser,template_fontinfo *fontinfo)
     MsgTrans_Report(messages,"FontMem",FALSE);
     return 0;
   }
-  /* Old browser->numfonts indexes new fontinfo entry; new
-     browser->numfonts is font handle */
+
+  /* Old browser->numfonts indexes new fontinfo entry;
+     new browser->numfonts is font handle */
   browser->fontinfo[browser->numfonts] = *fontinfo;
   browser->fontcount[++browser->numfonts] = 1;
-/*Error_Report(0, "Adding new font");*/
+
+  Debug_Printf("   Adding new font (returning handle %d): %dx%d %s", browser->numfonts, fontinfo->size.x / 16, fontinfo->size.y / 16, fontinfo->name);
   return browser->numfonts;
 }
 

@@ -87,8 +87,8 @@ Preview:Preview
 PrevMen:Close,Store position,Store icon states,Edit template
 BType:Button type
 VMIcon:Icon
-ViewMen:Selection,Select all,Clear selection,Work area...,Visible area...,Edit window...,Edit title...,Close window,Preview window
-ViewMenK:Selection,Select all      ^A,Clear selection ^Z,Work area...    ^O,Visible area... ^V,Edit window...  ^W,Edit title...   ^T,Close window   ^F2,Preview window  ^P
+ViewMen:Selection,Select all,Clear selection,Work area...,Visible area...,Edit window...,Edit title...,Goto icon...,Close window,Preview window
+ViewMenK:Selection,Select all      ^A,Clear selection ^Z,Work area...    ^O,Visible area... ^V,Edit window...  ^W,Edit title...   ^T,Goto icon...  ^G,Close window   ^F2,Preview window  ^P
 IconMen:Delete,>Renumber nnn,Copy,Edit...,Align...,Space out...,Resize...,Coordinates...,Frame...
 IconMenK:Delete         ^K,>Renumber nnn   ^N,Copy,Edit...        ^E,Align...       ^L,Space out...   ^S,Resize...      ^R,Coordinates... ^D,Frame...       ^F
 CopyMen: Down,Right,Left,Up
