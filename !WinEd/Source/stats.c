@@ -177,7 +177,7 @@ BOOL stats_redraw(event_pollblock *event,void *reference)
   char total[13];
   browser_winentry *winentry;
 
-  MsgTrans_Lookup(messages,"Total",total,13);
+  MsgTrans_Lookup(messages,"Total",total,sizeof(total));
   redraw.window = browser->stats;
   Wimp_RedrawWindow(&redraw,&more);
   while (more)

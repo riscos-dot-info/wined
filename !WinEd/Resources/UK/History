@@ -1,6 +1,10 @@
 3.20
 ~~~~
 - Fixed bug causing corruption of some icons in some templates using fonts
+- Compressed size of stats window slightly
+- Added "goto icon" functionality
+- Added syslog logging
+- Enabled newlines and time in icon name Basic export
 
 3.10
 ~~~~
@@ -15,7 +19,7 @@
 
 3.07
 ~~~~
-- Implimented strict restriction on length of window names in templates
+- Implemented strict restriction on length of window names in templates
   to 11 characters or less (leaves room for required terminator)
 
 3.06

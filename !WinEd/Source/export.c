@@ -2,6 +2,7 @@
 #include "DeskLib:MsgTrans.h"
 #include "DeskLib:Validation.h"
 #include "DeskLib:Debug.h"
+#include "DeskLib:Time.h"
 
 #include "globals.h"
 #include "export.h"
@@ -17,8 +18,8 @@ void export_puts(FILE *fp, const char *string)
   {
     switch (*string)
     {
-      case '\\':
-        switch (*++string)
+      case '\\': /* E.g. it's a single slash character */
+        switch (*++string) /* Check next character */
         {
           case 'n':
             putc('\n', fp);
@@ -40,7 +41,26 @@ void export_puts(FILE *fp, const char *string)
   }
 }
 
-void export_puts_basic(FILE *fp, const char *string, int lineno)
+void export_puts_basic(FILE *fp, char *string, int *lineno)
+{
+  char *newline;
+  char *previous;
+
+  previous = string;
+
+  do
+  {
+    newline = strstr(previous, "\\n");                /* Find newline character */
+    if (newline)                                      /* Insert terminator if there's another section to write out */
+      *newline = '\0';
+    if (strlen(previous) > 0)                         /* Don't write blank lines */
+      export_puts_basic_line(fp, previous, *lineno);  /* Write first (and possibly last) section */
+    (*lineno)++;                                      /* Increment output line number */
+    previous = newline + 2;                           /* Skip past the actual "\n" */
+  } while (newline);
+}
+
+void export_puts_basic_line(FILE *fp, const char *string, int lineno)
 {
   char *ptr;
 
@@ -48,35 +68,16 @@ void export_puts_basic(FILE *fp, const char *string, int lineno)
 
   ptr = (char *)&lineno;
 
-  putc(13, fp);               /* Start with a CR */
-  putc(ptr[1], fp);           /* High byte of lineno */
-  putc(ptr[0], fp);           /* Low byte of lineno */
-  putc(strlen(string)+4, fp); /* Length of string + line header */
+  putc(13, fp);                 /* Start with a CR */
+  putc(ptr[1], fp);             /* High byte of lineno */
+  putc(ptr[0], fp);             /* Low byte of lineno */
+  putc(strlen(string) + 4, fp); /* Length of string + line header */
 
   for (;;++string)
   {
-    switch (*string)
-    {
-      case '\\':
-        switch (*++string)
-        {
-          case 'n':
-            putc('\n', fp);
-            break;
-          case 't':
-            putc('\t', fp);
-            break;
-          default:
-            putc(*string, fp);
-            break;
-        }
-        break;
-      default:
-        if (*string < 32)
-          return;
-        putc(*string, fp);
-        break;
-    }
+    if (*string < 32)
+      return;
+    putc(*string, fp);
   }
 }
 /*
@@ -133,6 +134,8 @@ int export_scan(FILE *fp, const browser_winentry *winentry, BOOL write, const ch
           {
             char icnnum[8];
             char *tag;
+            unsigned char ro_time[5];
+            char thetime[256];
 
             sprintf(icnnum, "%d", icon);
             if (winentry->window->window.numicons == 1)
@@ -143,13 +146,18 @@ int export_scan(FILE *fp, const browser_winentry *winentry, BOOL write, const ch
               tag = "1stIcon";
             else
               tag = "Icon";
+
             snprintf(buffy, 256, "%s%s", pre, tag);
+
+            Time_ReadClock(ro_time);
+            Time_ConvertDateAndTime(ro_time, thetime, sizeof(thetime), "%ce%yr/%mn/%dy, %24:%mi");
+
             MsgTrans_LookupPS(messages, buffy, buffer, sizeof(buffer),
-            	(char *) winentry->identifier, icnname, icnnum, 0);
+            	(char *) winentry->identifier, icnname, icnnum, thetime);
             if (strcmp(pre, "B_"))
               export_puts(fp, buffer);
             else
-              export_puts_basic(fp, buffer, currentline++);
+              export_puts_basic(fp, buffer, &currentline);
           }
           foundanicon = TRUE;
         }
@@ -165,27 +173,36 @@ int export_scan(FILE *fp, const browser_winentry *winentry, BOOL write, const ch
 
 int export_winentry(FILE *fp, const browser_winentry *winentry, const char *pre, int currentline)
 {
-  char buffy[256];
+  char buffy[256], thetime[256];
+  unsigned char ro_time[5];
 
   Debug_Printf("export_winentry: %s", winentry->identifier);
 
   if (export_scan(fp, winentry, FALSE, pre, 1)) /* Here, currentline isn't used or updated and        */
   {                                             /* the return value is used as a boolean check rather */
     snprintf(buffy, 256, "%sPreWin", pre);      /* than as a line counter                             */
+
+    Time_ReadClock(ro_time);
+    Time_ConvertDateAndTime(ro_time, thetime, sizeof(thetime), "%ce%yr/%mn/%dy, %24:%mi");
+
     MsgTrans_LookupPS(messages, buffy, buffer, sizeof(buffer),
-    	(char *) winentry->identifier, 0, 0, 0);
+    	(char *) winentry->identifier, 0, 0, thetime);
     if (strcmp(pre, "B_"))
       export_puts(fp, buffer);
     else
-      export_puts_basic(fp, buffer, currentline++);
+      export_puts_basic(fp, buffer, &currentline);
     currentline = export_scan(fp, winentry, TRUE, pre, currentline);
     snprintf(buffy, 256, "%sPostWin", pre);
+
+    Time_ReadClock(ro_time);
+    Time_ConvertDateAndTime(ro_time, thetime, sizeof(thetime), "%ce%yr/%mn/%dy, %24:%mi");
+
     MsgTrans_LookupPS(messages, buffy, buffer, sizeof(buffer),
-    	(char *) winentry->identifier, 0, 0, 0);
+    	(char *) winentry->identifier, 0, 0, thetime);
     if (strcmp(pre, "B_"))
       export_puts(fp, buffer);
     else
-      export_puts_basic(fp, buffer, currentline++);
+      export_puts_basic(fp, buffer, &currentline);
   }
 
   return currentline;

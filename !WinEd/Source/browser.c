@@ -11,6 +11,7 @@
 #include "DeskLib:Kbd.h"
 #include "DeskLib:KeyCodes.h"
 #include "DeskLib:Environment.h"
+#include "DeskLib:Time.h"
 
 #include "browser.h"
 #include "browtools.h"
@@ -226,7 +227,7 @@ static BOOL copy_open = FALSE;
 static window_handle rename_dbox;
 static BOOL rename_open = FALSE;
 static window_handle goto_icon;
-//static BOOL goto_open = FALSE;
+static BOOL goto_open = FALSE;
 
 /* Overwrite warning box */
 window_handle overwrite_warn;
@@ -3357,7 +3358,8 @@ BOOL               browser_export(char *filename, void *ref, BOOL selection)
   int index = -1, type = 0, linecounter = 1;
   browser_winentry *winentry;
   FILE *fp;
-  char buffer[256], pre[3], buffy[256];
+  unsigned char ro_time[5];
+  char buffer[256], pre[3], buffy[256], thetime[256];
 
   Debug_Printf("browser_export");
 
@@ -3385,12 +3387,16 @@ BOOL               browser_export(char *filename, void *ref, BOOL selection)
   Hourglass_On();
 
   snprintf(buffy, 256, "%sPreamble", pre);
-  MsgTrans_Lookup(messages, buffy, buffer, sizeof(buffer));
+
+  Time_ReadClock(ro_time);
+  Time_ConvertDateAndTime(ro_time, thetime, sizeof(thetime), "%ce%yr/%mn/%dy, %24:%mi");
+
+  MsgTrans_LookupPS(messages, buffy, buffer, sizeof(buffer), 0, 0, 0, thetime);
 
   if (strcmp(pre, "B_"))
     export_puts(fp, buffer);
   else
-    export_puts_basic(fp, buffer, linecounter++);
+    export_puts_basic(fp, buffer, &linecounter);
 
   do
   {
@@ -3402,13 +3408,17 @@ BOOL               browser_export(char *filename, void *ref, BOOL selection)
   while (index != -1);
 
   snprintf(buffy, 256, "%sPostamble", pre);
-  MsgTrans_Lookup(messages, buffy, buffer, sizeof(buffer));
+
+  Time_ReadClock(ro_time);
+  Time_ConvertDateAndTime(ro_time, thetime, sizeof(thetime), "%ce%yr/%mn/%dy, %24:%mi");
+
+  MsgTrans_LookupPS(messages, buffy, buffer, sizeof(buffer), 0, 0, 0, thetime);
 
   if (strcmp(pre, "B_"))
     export_puts(fp, buffer);
   else
   {
-    export_puts_basic(fp, buffer, linecounter++);
+    export_puts_basic(fp, buffer, &linecounter);
     /* Terminate basic file */
     putc(13, fp);
     putc(255, fp);

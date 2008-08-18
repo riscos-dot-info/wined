@@ -944,12 +944,15 @@ following parameters can be substituted:</p>
 <tr><td>%0</td><td>Window template name</td></tr>
 <tr><td>%1</td><td>Icon name</td></tr>
 <tr><td>%2</td><td>Icon number</td></tr>
+<tr><td>%3</td><td>Date and time</td></tr>
 </table></p>
 <p>Note that <code>%1</code> and <code>%2</code> are undefined for <code>E_Preamble</code>, <code>E_PreWin</code>, <code>E_PostWin</code> and <code>E_Postamble</code>, and <code>%0</code> is undefined for <code>E_Preamble</code> and <code>E_Postamble</code>. You need not use all the substitutions available for any message.</p>
-<p>A newline character is substituted for <code>\n</code> and a tab for <code>\t</code>. Any other
-character following a backslash will be written, but cause the
+<p>In text-based exports, a tab character is substituted for a <code>\t</code>. Other
+characters following a backslash will be written, but cause the
 backslash to be ignored, so you can use <code>\\</code> to include a backslash in
-your messages. However, to allow a % character to be included in a
+your messages.</p>
+<p>In both text-based and tokenised Basic outputs, a new line will be inserted when a
+<code>\n</code> is encountered. Finally, to allow a % character to be included in a
 message you must type <code>%%</code>.</p>
 <p><code>E_Preamble</code> is a message that will appear at the top of an icon names
 file, and <code>E_Postamble</code> will appear at the end. <code>E_PreWin</code> appears at the
