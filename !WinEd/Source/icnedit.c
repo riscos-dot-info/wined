@@ -632,7 +632,7 @@ Debug_Printf("icnedit_copyicon %d", icon);
   /* Copy logical font if necessary */
   if (newdata.flags.data.font)
     newdata.flags.font.handle = tempfont_findfont(dest->browser,
-      &source->browser->fontinfo[newdata.flags.font.handle-1], source);
+      &source->browser->fontinfo[newdata.flags.font.handle-1]);
 
   /* Physical data may contain R1 instead of R6, check */
   border = icnedit_bordertype(source,icon);

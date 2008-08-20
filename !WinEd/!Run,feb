@@ -16,7 +16,7 @@ RMEnsure SharedCLibrary 5.34 UnSet WinEd$CarryOn
 
 If "<WinEd$CarryOn>" = "True" Then Set Alias$@RunType_FEC /<WinEd$Dir>.!Run %%*0
 
-WimpSlot -min 512k -max 512k
+WimpSlot -min 640k -max 640k
 | First number below is max size of dynamic area in K
 | 0 = use WimpSlot instead, otherwise 4096 recommended
 If "<WinEd$CarryOn>" = "True" Then Run <WinEd$Dir>.!RunImage 0 %*0 2>Mem::Memphis.$.WinEdStderr

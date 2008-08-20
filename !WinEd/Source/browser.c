@@ -2788,12 +2788,10 @@ BOOL               browser_menuselect(event_pollblock *event,void *reference)
           index = -1;
           winentry = browser_findselection(browser,&index,browser->numwindows);
           if (winentry->status)
-          {
             viewer_close(winentry);
-            /* Refresh browser to reflect closed state of viewer */
-            browser_sorticons(winentry->browser,TRUE,FALSE,TRUE);
-          }
           viewer_open(winentry,event->data.selection[1] == submenu_EDIT);
+          /* Refresh browser to reflect changed state of viewer */
+          browser_sorticons(winentry->browser,TRUE,FALSE,TRUE);
           break;
       }
       break;

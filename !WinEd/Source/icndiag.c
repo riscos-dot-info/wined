@@ -565,8 +565,7 @@ static void icndiag_readdbox(icon_block *iblock)
     fontinfo.size.x = (int) ((double) fontinfo.size.y *
     		       	     Icon_GetDouble(icndiag_window,
     		       	     		    icndiag_FONTASPECT) / 100.0);
-    iblock->flags.font.handle = tempfont_findfont(icndiag_winentry->browser,
-    			       			 &fontinfo, icndiag_winentry);
+    iblock->flags.font.handle = tempfont_findfont(icndiag_winentry->browser, &fontinfo);
   }
   else
   {

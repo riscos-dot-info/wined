@@ -84,7 +84,7 @@ Selection/BMSel:Selection
 BrowSub:>Copy,>Rename,Delete,Edit,Preview,>Export icon names
 BrowSubK:>Copy              ^C,>Rename            ^N,Delete            ^K,Edit              ^E,Preview           ^P,>Export icon names
 Preview:Preview
-PrevMen:Close,Store position,Store icon states,Edit template
+PrevMen:Close            ^F2,Store position    ^P,Store icon states ^I,Edit template     ^E
 BType:Button type
 VMIcon:Icon
 ViewMen:Selection,Select all,Clear selection,Work area...,Visible area...,Edit window...,Edit title...,Goto icon...,Close window,Preview window

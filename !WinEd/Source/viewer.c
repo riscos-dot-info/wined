@@ -88,6 +88,7 @@ BOOL viewer_click(event_pollblock *event,void *reference);
 
 /* Hot keys */
 BOOL viewer_hotkey(event_pollblock *event,void *reference);
+BOOL preview_hotkey(event_pollblock *event,void *reference);
 
 /* Mouse click handler */
 BOOL preview_click(event_pollblock *event,void *reference);
@@ -733,6 +734,7 @@ static void         viewer_claimpreviewevents(browser_winentry *winentry)
   Event_Claim(event_OPEN,   winentry->handle, event_ANY, viewer_openevent,   winentry);
   Event_Claim(event_CLOSE,  winentry->handle, event_ANY, viewer_closeevent,  winentry);
   Event_Claim(event_CLICK,  winentry->handle, event_ANY, preview_click,      winentry);
+  Event_Claim(event_KEY,    winentry->handle, event_ANY, preview_hotkey,     winentry);
   EventMsg_Claim(message_WINDOWINFO,winentry->handle, (event_handler) viewer_iconise, winentry);
   Event_Claim(event_PTRLEAVE, winentry->handle, event_ANY, monitor_deactivate, winentry);
   Event_Claim(event_PTRENTER, winentry->handle, event_ANY, monitor_activate,   winentry);
@@ -2464,6 +2466,48 @@ BOOL                viewer_hotkey(event_pollblock *event,void *reference)
   }
   return TRUE;
 }
+
+
+BOOL                preview_hotkey(event_pollblock *event,void *reference)
+{
+  browser_winentry *winentry = reference;
+  window_state wstate;
+  int icon;
+
+  Debug_Printf("preview_hotkey");
+
+  switch (event->data.key.code)
+  {
+    case keycode_CTRL_F2:
+      viewer_close(winentry);
+      /* Refresh browser to reflect closed state of viewer */
+      browser_sorticons(winentry->browser,TRUE,FALSE,TRUE);
+      break;
+    case 'P' - 'A' + 1:
+      Error_Check(Wimp_GetWindowState(winentry->handle,&wstate));
+      viewer_roundopenblock(&wstate.openblock);
+      Error_Check(Wimp_OpenWindow(&wstate.openblock));
+      Error_Check(Wimp_GetWindowState(winentry->handle,&wstate));
+      winentry->window->window.screenrect = wstate.openblock.screenrect;
+      winentry->window->window.scroll = wstate.openblock.scroll;
+      browser_settitle(winentry->browser,NULL,TRUE);
+      break;
+    case 'I' - 'A' + 1:
+      for (icon = 0;icon < winentry->window->window.numicons;icon++)
+        winentry->window->icon[icon].flags.data.selected =
+          Icon_GetSelect(winentry->handle,icon);
+      browser_settitle(winentry->browser,NULL,TRUE);
+      break;
+    case 'E' - 'A' + 1:
+      viewer_view(winentry,TRUE);;
+      break;
+    default:
+      Wimp_ProcessKey(event->data.key.code);
+      break;
+  }
+  return TRUE;
+}
+
 
 void                viewer_responder(browser_winentry *winentry, choices_str *old,choices_str *new_ch)
 {
