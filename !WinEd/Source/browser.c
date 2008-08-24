@@ -226,8 +226,6 @@ static window_handle copy_dbox;
 static BOOL copy_open = FALSE;
 static window_handle rename_dbox;
 static BOOL rename_open = FALSE;
-static window_handle goto_icon;
-static BOOL goto_open = FALSE;
 
 /* Overwrite warning box */
 window_handle overwrite_warn;
@@ -563,10 +561,6 @@ void              create_minidboxes()
 
   templat = templates_load("Overwrite",0,0,0,0);
   Error_CheckFatal(Wimp_CreateWindow(templat,&overwrite_warn));
-  free(templat);
-
-  templat = templates_load("Goto",0,0,0,0);
-  Error_CheckFatal(Wimp_CreateWindow(templat,&goto_icon));
   free(templat);
 }
 

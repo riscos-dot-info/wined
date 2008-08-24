@@ -43,8 +43,14 @@ void viewcom_delete(browser_winentry *winentry);
 /* Open renumber dbox */
 void viewcom_renum(BOOL submenu, int x, int y, browser_winentry *winentry);
 
+/* Open goto dbox */
+void viewcom_goto(BOOL submenu, int x, int y, browser_winentry *winentry);
+
 /* Renumber with current value */
 void viewcom_quickrenum(browser_winentry *winentry);
+
+/* Goto specified icon */
+void viewcom_quickgoto(browser_winentry *winentry);
 
 /* Select all icons */
 void viewcom_selectall(browser_winentry *winentry);

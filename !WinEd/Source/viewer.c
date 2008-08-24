@@ -1,5 +1,6 @@
 /* viewer.c */
 
+#include <math.h>
 #include "common.h"
 
 #include "DeskLib:Coord.h"
@@ -10,8 +11,12 @@
 #include "DeskLib:KernelSWIs.h"
 #include "DeskLib:KeyCodes.h"
 #include "DeskLib:Kbd.h"
+#include "DeskLib:Str.h"
 #include "DeskLib:Screen.h"
 #include "DeskLib:Wimp.h"
+#include "DeskLib:Time.h"
+#include "DeskLib:WimpSWIs.h"
+#include "DeskLib:Pointer.h"
 
 #include "alndiag.h"
 #include "bordiag.h"
@@ -250,6 +255,9 @@ static char viewer_dbvalid[] = "R2";
 /* Renumber mini-dbox */
 static window_handle renum_dbox;
 static BOOL renum_open = FALSE;
+/* Goto mini-dbox */
+static window_handle goto_dbox;
+static BOOL goto_open = FALSE;
 
 void                viewcom_quickrenum(browser_winentry *winentry)
 {
@@ -379,6 +387,164 @@ void                viewcom_renum(BOOL submenu, int x, int y,browser_winentry *r
   renum_open = TRUE;
 }
 
+void                viewcom_quickgoto(browser_winentry *winentry)
+{
+  int icon_number;
+  char *text;
+
+  Debug_Printf("viewcom_quickgotoicon");
+
+  icon_number = Icon_GetInteger(goto_dbox, 2);  /* Get direct icon number if possible */
+  text = Icon_GetTextPtr(goto_dbox, 2); /* Get raw text too */
+
+  if ((icon_number == 0) && strcmp(text, "0")) /* icon_number returns 0 for text values and for a numeric 0 */
+  {
+    char icname[100];
+    int i, n, valix;
+    char *validstring;
+
+    icon_number = -1; /* Assume we're stuffed */
+
+    for (i = 0; i < winentry->window->window.numicons; i++)
+    {
+      if (  (winentry->window->icon[i].flags.data.indirected)
+         && (winentry->window->icon[i].flags.data.text) )
+      /* Only worth trying if the icon is indirected & text */
+      {
+        validstring = winentry->window->icon[i].data.indirecttext.validstring + (int) winentry->window;
+
+        valix = Validation_ScanString(validstring, 'N');
+        if (valix)
+        {
+
+          for (n = valix; (validstring[n] > 31) && (validstring[n] != ';') && (n-valix<sizeof(icname)-1); ++n)
+            icname[n-valix] = validstring[n];
+          icname[n-valix] = 0;
+
+          if (!stricmp(icname, text))
+          {
+            Debug_Printf("Caught a bugger - %d", i);
+            icon_number = i; /* This is the icon we're after */
+            i = winentry->window->window.numicons; /* Skip out of for loop */
+          }
+        }
+      }
+    }
+  }
+
+  if ((icon_number == -1) || (icon_number >= winentry->window->window.numicons))
+  {
+    Debug_Printf("No corresponding icon found");
+    Sound_SysBeep();
+  }
+  else
+  {
+    wimp_rect pos;
+    wimp_point endpos, gap, old;
+    mouse_block mousenow;
+    unsigned int starttime, time, span = 40 /* centiseconds to take */;
+
+    Wimp_GetPointerInfo(&mousenow);
+    Icon_ScreenPos(winentry->handle, icon_number, &pos);
+
+    endpos.x = (pos.min.x + pos.max.x) / 2;
+    endpos.y = (pos.min.y + pos.max.y) / 2;
+
+    gap.x = endpos.x - mousenow.pos.x;
+    gap.y = endpos.y - mousenow.pos.y;
+
+    Debug_Printf("x- start:%d end:%d gap:%d", mousenow.pos.x, endpos.x, gap.x);
+    Debug_Printf("y- start:%d end:%d gap:%d", mousenow.pos.y, endpos.y, gap.y);
+
+    starttime = Time_Monotonic();
+
+    do
+    {
+      double interim;
+      time = Time_Monotonic() - starttime;
+      interim = (time-(span/2))/((span/2)/1.5);
+      endpos.x = (sin((time-(span/2.0))/((span/2.0)/1.5))+1.0) * (gap.x/2.0) + mousenow.pos.x;
+      endpos.y = (sin((time-(span/2.0))/((span/2.0)/1.5))+1.0) * (gap.y/2.0) + mousenow.pos.y;
+
+      if ((old.x != endpos.x) || (old.y != endpos.y))
+      {
+        Debug_Printf("time:%d", time);
+        Debug_Printf("x:%d", endpos.x);
+        Debug_Printf("y:%d", endpos.y);
+        Pointer_SetPosition(endpos);
+        old = endpos;
+      }
+    } while (time <= span);
+
+  }
+}
+
+
+static BOOL         goto_clicked(event_pollblock *event,void *reference)
+{
+  if (event->type == event_KEY && event->data.key.code != 13)
+  {
+    Wimp_ProcessKey(event->data.key.code);
+    return TRUE;
+  }
+  if (event->type == event_CLICK && event->data.mouse.button.data.menu)
+    return FALSE;
+  if (event->type == event_KEY || event->data.mouse.button.data.select)
+    WinEd_CreateMenu(0, -1, -1);
+
+  viewcom_quickgoto(reference);
+
+  return TRUE;
+}
+
+static void         release_goto()
+{
+  Debug_Printf("release_goto");
+
+  EventMsg_ReleaseWindow(goto_dbox);
+  Event_ReleaseWindow(goto_dbox);
+  help_release_window(goto_dbox);
+  goto_open = FALSE;
+}
+
+static BOOL         release_goto_msg(event_pollblock *e, void *r)
+{
+  Debug_Printf("release_goto_msg");
+
+  release_goto();
+  EventMsg_Release(message_MENUSDELETED, event_ANY, release_goto_msg);
+  return TRUE;
+}
+
+void                viewcom_goto(BOOL submenu, int x, int y,browser_winentry *reference)
+{
+  Debug_Printf("viewcom_goto");
+
+  if (goto_open)
+    release_goto();
+  if (!submenu)
+  {
+    mouse_block ptrinfo;
+    Wimp_GetPointerInfo(&ptrinfo);
+    x = ptrinfo.pos.x - 64;
+    y = ptrinfo.pos.y + 64;
+  }
+  if (submenu)
+    Wimp_CreateSubMenu((menu_ptr) goto_dbox, x, y);
+  else
+  {
+    WinEd_CreateMenu((menu_ptr) goto_dbox, x, y);
+    EventMsg_Claim(message_MENUSDELETED, event_ANY, release_goto_msg, 0);
+  }
+  Event_Claim(event_CLICK, goto_dbox, 0,         goto_clicked,       reference);
+  Event_Claim(event_KEY,   goto_dbox, 2,         goto_clicked,       reference);
+  Event_Claim(event_CLICK, goto_dbox, 1,         kill_menus,         reference);
+  Event_Claim(event_OPEN,  goto_dbox, event_ANY, Handler_OpenWindow, 0);
+  Event_Claim(event_CLOSE, goto_dbox, event_ANY, kill_menus,         0);
+  help_claim_window(goto_dbox, "GOT");
+  goto_open = TRUE;
+}
+
 void                viewer_createmenus()
 {
   char menutext[256], title[64];
@@ -440,7 +606,12 @@ void                viewer_init()
   		    viewer_renumbuffer,5,viewer_renumvalid);*/
   /* Preview menu */
   MsgTrans_Lookup(messages,"Preview",menutitle,32);
-  MsgTrans_Lookup(messages,"PrevMen",menutext,256);
+
+  if (choices->hotkeys)
+    MsgTrans_Lookup(messages,"PrevMenK",menutext,256);
+  else
+    MsgTrans_Lookup(messages,"PrevMen",menutext,256);
+
   preview_menu = Menu_New(menutitle,menutext);
   if (!preview_menu)
     MsgTrans_Report(messages,"NoMenu",TRUE);
@@ -462,6 +633,9 @@ void                viewer_init()
   viewtools_init();
   templat = templates_load("Renumber",0,0,0,0);
   Error_CheckFatal(Wimp_CreateWindow(templat,&renum_dbox));
+  free(templat);
+  templat = templates_load("Goto",0,0,0,0);
+  Error_CheckFatal(Wimp_CreateWindow(templat,&goto_dbox));
   free(templat);
 
   /* Dummy border icon */
@@ -1843,9 +2017,6 @@ BOOL                viewer_menuselect(event_pollblock *event,void *reference)
     case viewer_EDITTITLE:
       viewcom_edittitle(winentry);
       break;
-    case viewer_GOTO:
-//      viewcom_gotoicon(winentry);
-      break;
     case viewer_CLOSE:
       viewer_close(winentry);
       /* Refresh browser to reflect closed state of viewer */
@@ -1874,6 +2045,11 @@ BOOL                viewer_sublink(event_pollblock *event,void *reference)
     viewcom_renum(TRUE, event->data.message.data.menuwarn.openpos.x,
       	  	event->data.message.data.menuwarn.openpos.y, reference);
   }
+  else if (event->data.message.data.menuwarn.selection[0] == viewer_GOTO)
+  {
+    viewcom_goto(TRUE, event->data.message.data.menuwarn.openpos.x,
+      	  	event->data.message.data.menuwarn.openpos.y, reference);
+  }
 
   /*menu_destroy = FALSE;*/
 
@@ -1891,6 +2067,8 @@ BOOL                viewer_releasemenu(event_pollblock *event,void *reference)
   viewer_menuopen = FALSE;
   if (/*!menu_destroy && */renum_open)
     release_renum();
+  if (goto_open)
+    release_goto();
   return TRUE;
 }
 
@@ -2416,6 +2594,9 @@ BOOL                viewer_hotkey(event_pollblock *event,void *reference)
         else
           viewcom_renum(FALSE, 0, 0, reference);
       }
+      break;
+    case 'G' - 'A' +1:
+      viewcom_goto(FALSE, 0, 0, reference);
       break;
     case 'E' - 'A' + 1:
       if (selections)

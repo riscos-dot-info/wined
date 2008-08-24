@@ -84,11 +84,12 @@ Selection/BMSel:Selection
 BrowSub:>Copy,>Rename,Delete,Edit,Preview,>Export icon names
 BrowSubK:>Copy              ^C,>Rename            ^N,Delete            ^K,Edit              ^E,Preview           ^P,>Export icon names
 Preview:Preview
-PrevMen:Close            ^F2,Store position    ^P,Store icon states ^I,Edit template     ^E
+PrevMen:Close,Store position,Store icon states,Edit template
+PrevMenK:Close            ^F2,Store position    ^P,Store icon states ^I,Edit template     ^E
 BType:Button type
 VMIcon:Icon
 ViewMen:Selection,Select all,Clear selection,Work area...,Visible area...,Edit window...,Edit title...,Goto icon...,Close window,Preview window
-ViewMenK:Selection,Select all      ^A,Clear selection ^Z,Work area...    ^O,Visible area... ^V,Edit window...  ^W,Edit title...   ^T,Goto icon...  ^G,Close window   ^F2,Preview window  ^P
+ViewMenK:Selection,Select all      ^A,Clear selection ^Z,Work area...    ^O,Visible area... ^V,Edit window...  ^W,Edit title...   ^T,>Goto icon     ^G,Close window   ^F2,Preview window  ^P
 IconMen:Delete,>Renumber nnn,Copy,Edit...,Align...,Space out...,Resize...,Coordinates...,Frame...
 IconMenK:Delete         ^K,>Renumber nnn   ^N,Copy,Edit...        ^E,Align...       ^L,Space out...   ^S,Resize...      ^R,Coordinates... ^D,Frame...       ^F
 CopyMen: Down,Right,Left,Up
@@ -348,6 +349,7 @@ H_CRE:Use this dialogue box to enter a name for your new \w.
 H_COP:Use this dialogue box to enter a name for the copy of the slected \w.
 H_REN:Use this dialogue box to enter a new name for the selected \w.
 H_NUM:Use this dialogue box to enter a number to start renumbering the selected icon(s) from.
+H_GOT:Use this dialogue box to send the pointer to an icon name or number.
 H_CRD:Use this dialogue box to alter the selected icon's coordinates.
 H_CRD_02:\Tcoordinate of the selected icon's left edge.
 H_CRD_03:\Sdecrease the coordinate of the selected icon's left edge.

@@ -4,6 +4,7 @@
 #include "choices.h"
 #include "common.h"
 #include "DeskLib:BackTrace.h"
+#include "DeskLib:SWI.h"
 
 /* Set up in browser.c */
 extern window_handle overwrite_warn;
@@ -157,5 +158,16 @@ void fort_out(const char *string)
 
 void test_fn(void)
 {
+  unsigned char block[5];
+  int x=300, y=400;
 
+  block[0] = 3;
+  block[1] = x & 0xff;
+  block[2] = (x & 0xff<<8) >>8;
+  block[3] = y & 0xff;
+  block[4] = (y & 0xff<<8) >>8;
+
+  Debug_Printf("testing 123...");
+
+  SWI(2, 0, SWI_OS_Word, 21, &block);
 }
