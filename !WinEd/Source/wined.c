@@ -327,8 +327,8 @@ void wined_initialise(int maxmem)
   Environment_LogInitialise(APPNAME);
 
   Debug_Printf("\\b");
-  Log(log_NOTICE, " WinEd starting up, \\t, %s.", app_VERSION);
-  Log(log_NOTICE, "   OS:%d, DeskLib:%d, Wimp:%d", Environment_OSVersion(), DESKLIB_VERSION, event_wimpversion);
+  Log(log_NOTICE, "WinEd starting up, \\t, %s.", app_VERSION);
+  Log(log_NOTICE, "  OS:%d, DeskLib:%d, Wimp:%d", Environment_OSVersion(), DESKLIB_VERSION, event_wimpversion);
   Log(log_TEDIOUS, "...detailed debugging");
 
   #ifdef FORTIFY

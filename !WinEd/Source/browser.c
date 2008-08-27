@@ -955,7 +955,7 @@ browser_fileinfo *browser_newbrowser()
 /*
   int width,height;
 */
-  Log(log_DEBUG, "browser_newbrowser");
+  Log(log_INFORMATION, "browser_newbrowser - creating new browser");
 
   /* Create new info block */
   newfile = malloc(sizeof(browser_fileinfo));
@@ -1347,6 +1347,7 @@ BOOL              browser_savehandler(event_pollblock *event,void *reference)
 BOOL              browser_load(char *filename,int filesize,void *reference)
 {
   browser_fileinfo *browser;
+  BOOL returnvalue;
 
   Log(log_INFORMATION, "browser_load - loading template %s", filename);
 
@@ -2473,7 +2474,7 @@ BOOL               browser_prequit(event_pollblock *event,void *reference)
     browser = LinkList_NextItem(browser);
   }
 
-  Log(log_INFORMATION, "WinEd shutting down (external request), \\t");
+  Log(log_NOTICE, "WinEd shutting down (external request), \\t");
 
   return TRUE;
 }
@@ -2518,7 +2519,7 @@ void               browser_preselfquit()
     browser = LinkList_NextItem(browser);
   }
 
-  Log(log_INFORMATION, "WinEd shutting down (user request), \\t");
+  Log(log_NOTICE, "WinEd shutting down (user request), \\t");
 
   exit(0);
 }
@@ -2935,7 +2936,7 @@ browser_winentry  *browser_copywindow(browser_fileinfo *browser,
   browser_winentry *winentry;
   int icon;
 
-  Log(log_DEBUG, "browser_copywindow");
+  Log(log_INFORMATION, "browser_copywindow - copying window %s", identifier);
 
   if (!browser_overwrite(browser,identifier))
     return NULL;
