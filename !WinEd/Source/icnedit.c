@@ -42,9 +42,7 @@ font_handle icnedit_findfont(template_fontinfo *fontinfo,
   font_handle result;
   wimp_point dpi;
 
-#ifdef WINED_DETAILEDDEBUG
-Debug_Printf("icnedit_findfont");
-#endif
+  Log(log_TEDIOUS, "icnedit_findfont");
 
   Screen_CacheModeInfo();
   dpi.x = 180 >> screen_eig.x;
@@ -60,7 +58,7 @@ Debug_Printf("icnedit_findfont");
 
     if (!flex_alloc((flex_ptr) fontarray,sizeof(font_array)))
     {
-      MsgTrans_Report(messages,"FontMem",FALSE);
+      WinEd_MsgTrans_Report(messages,"FontMem",FALSE);
       Font_LoseFont(result);
       return 0;
     }
@@ -71,7 +69,7 @@ Debug_Printf("icnedit_findfont");
 
   if ((*fontarray)->fonts[result] == 255)
   {
-    MsgTrans_Report(messages,"TMFonts",FALSE);
+    WinEd_MsgTrans_Report(messages,"TMFonts",FALSE);
     Font_LoseFont(result);
     (*fontarray)->fonts[result] = 255;
     return 0;
@@ -84,11 +82,10 @@ Debug_Printf("icnedit_findfont");
 
 void        icnedit_losefont(font_handle font,font_array **fontarray)
 {
-#ifdef WINED_DETAILEDDEBUG
-Debug_Printf("icnedit_losefont");
-#endif
+  Log(log_TEDIOUS, "icnedit_losefont");
+
   if (!(*fontarray)->fonts[font])
-    MsgTrans_Report(messages,"BadFont",FALSE);
+    WinEd_MsgTrans_Report(messages,"BadFont",FALSE);
   else
   {
     Font_LoseFont(font);
@@ -98,9 +95,8 @@ Debug_Printf("icnedit_losefont");
 
 void        icnedit_freeindirected(icon_flags *flags,icon_data *data)
 {
-#ifdef WINED_DETAILEDDEBUG
-Debug_Printf("icnedit_freeindirected");
-#endif
+  Log(log_TEDIOUS, "icnedit_freeindirected");
+
   if (!flags->data.indirected)
   {
     return;
@@ -120,9 +116,8 @@ Debug_Printf("icnedit_freeindirected");
 
 void        icnedit_makeeditableflags(browser_winentry *winentry, icon_flags *flags)
 {
-#ifdef WINED_DETAILEDDEBUG
-Debug_Printf("icnedit_makeeditableflags");
-#endif
+  Log(log_TEDIOUS, "icnedit_makeeditableflags");
+
   flags->data.buttontype = iconbtype_DOUBLECLICKDRAG;
   flags->data.esg = 1;
   flags->data.selected =
@@ -138,9 +133,8 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
      			 icon_flags *flags,icon_data *data,
      			 wimp_rect *workarearect,BOOL editable)
 {
-  #ifdef WINED_DETAILEDDEBUG
-  Debug_Printf("icnedit_processicon");
-  #endif
+  Log(log_TEDIOUS, "icnedit_processicon");
+
   /* Font */
   if (flags->data.font)
     flags->font.handle =
@@ -154,10 +148,9 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
 
     if (flags->data.text || (flags->data.sprite&&data->indirectsprite.nameisname))
     {
-      #ifdef WINED_DETAILEDDEBUG
-      Debug_Printf("  type: either data.text or (data.sprite and indirectsprite.nameisname)");
-      Debug_Printf("  bufflen: %d", data->indirecttext.bufflen);
-      #endif
+      Log(log_TEDIOUS, "  type: either data.text or (data.sprite and indirectsprite.nameisname)");
+      Log(log_TEDIOUS, "  bufflen: %d", data->indirecttext.bufflen);
+
       if (data->indirecttext.bufflen > 0)
       {
         data->indirecttext.buffer = malloc(data->indirecttext.bufflen);
@@ -169,9 +162,7 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
       if (data->indirecttext.buffer && bufindex > 0)
       {
         strncpycr(data->indirecttext.buffer,bufcont,data->indirecttext.bufflen);
-        #ifdef WINED_DETAILEDDEBUG
-        Debug_Printf("  value: %s", data->indirecttext.buffer);
-        #endif
+        Log(log_TEDIOUS, "  value: %s", data->indirecttext.buffer);
       }
       else if (data->indirecttext.buffer)
         *data->indirecttext.buffer = 0;
@@ -182,9 +173,7 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
       int validindex = (int) data->indirecttext.validstring;
       char *validcont = (char *) ((int) winentry->window + validindex);
 
-      #ifdef WINED_DETAILEDDEBUG
-        Debug_Printf("  type: data.text");
-      #endif
+      Log(log_TEDIOUS, "  type: data.text");
 
       if (validindex > 0)
         data->indirecttext.validstring = malloc(strlencr(validcont) + 1);
@@ -197,9 +186,7 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
       }
       if (validindex > 0)
       {
-        #ifdef WINED_DETAILEDDEBUG
-          Debug_Printf("  validation: %s", validcont);
-        #endif
+        Log(log_TEDIOUS, "  validation: %s", validcont);
         strcpycr(data->indirecttext.validstring,validcont);
       }
       else
@@ -228,9 +215,7 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
               break;
           }
         }
-        #ifdef WINED_DETAILEDDEBUG
-          Debug_Printf("  validation (processed): %s", data->indirecttext.validstring);
-        #endif
+        Log(log_TEDIOUS, "  validation (processed): %s", data->indirecttext.validstring);
       }
     }
     else if (flags->data.sprite)
@@ -243,13 +228,15 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
   if (editable)
     icnedit_makeeditableflags(winentry, flags);
 
-  #ifdef WINED_DETAILEDDEBUG
-    Debug_Printf("End of icnedit_processicon");
+    Log(log_TEDIOUS, "End of icnedit_processicon");
     if (workarearect) /* Some icons (e.g. title) don't have a work area */
-      Debug_Printf(" Size: %d, %d, %d, %d", workarearect->min.x, workarearect->min.y, workarearect->max.x, workarearect->max.y);
+    {
+      Log(log_TEDIOUS, " Size: %d, %d, %d, %d", workarearect->min.x, workarearect->min.y, workarearect->max.x, workarearect->max.y);
+    }
     else
-      Debug_Printf(" Size: none");
-  #endif
+    {
+      Log(log_TEDIOUS, " Size: none");
+    }
 
   return TRUE;
 }
@@ -257,9 +244,8 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
 void        icnedit_unprocessicon(browser_winentry *winentry,
      			   icon_flags *flags,icon_data *data)
 {
-  #ifdef WINED_DETAILEDDEBUG
-    Debug_Printf("icnedit_unprocessicon");
-  #endif
+  Log(log_TEDIOUS, "icnedit_unprocessicon");
+
   icnedit_freeindirected(flags,data);
   if (flags->data.font)
   {
@@ -284,9 +270,8 @@ void        icnedit_updatepointers(browser_winentry *winentry,int after,int by)
 {
   int icon;
 
-  #ifdef WINED_DETAILEDDEBUG
-    Debug_Printf("icnedit_updatepointers");
-  #endif
+  Log(log_TEDIOUS, "icnedit_updatepointers");
+
   /* Title */
   icnedit_updatepointer(after,by,&winentry->window->window.titleflags,
   			         &winentry->window->window.title);
@@ -302,9 +287,8 @@ void        icnedit_fulldeletephysical(window_handle window,icon_handle icon)
   icon_createblock block;
   BOOL shift = FALSE;
 
-  #ifdef WINED_DETAILEDDEBUG
-    Debug_Printf("icnedit_fulldeletephysical");
-  #endif
+  Log(log_TEDIOUS, "icnedit_fulldeletephysical");
+
   icnedit_deletephysical(window,icon);
   Window_GetInfo3(window,&winfo);
   block.window = window;
@@ -328,10 +312,8 @@ void        icnedit_moveicon(browser_winentry *winentry,int icon,wimp_rect *box)
   icon_createblock icblock;
   char *rindex;
 
-  #ifdef WINED_DETAILEDDEBUG
-    Debug_Printf("icnedit_moveicon %d", icon);
-    Debug_Printf(" box: %d, %d, %d, %d", box->min.x, box->min.y, box->max.x, box->max.y);
-  #endif
+  Log(log_TEDIOUS, "icnedit_moveicon %d", icon);
+  Log(log_TEDIOUS, " box: %d, %d, %d, %d", box->min.x, box->min.y, box->max.x, box->max.y);
 
   icblock.window = winentry->handle;
   Wimp_GetIconState(winentry->handle,icon,&icblock.icondata);
@@ -365,16 +347,14 @@ void        icnedit_moveicon(browser_winentry *winentry,int icon,wimp_rect *box)
   /* Create and display new physical icon */
   Wimp_CreateIcon(&icblock,&icon);
   icnedit_forceredraw(winentry,icon);
-  #ifdef WINED_DETAILEDDEBUG
-    Debug_Printf("End of icnedit_moveicon %d", icon);
-  #endif
+
+  Log(log_TEDIOUS, "End of icnedit_moveicon %d", icon);
 }
 
 void        icnedit_removeindirectstring(browser_winentry *winentry,int index)
 {
-  #ifdef WINED_DETAILEDDEBUG
-    Debug_Printf("icnedit_removeindirectstring");
-  #endif
+  Log(log_TEDIOUS, "icnedit_removeindirectstring");
+
   int by = strlencr((char *) ((int) winentry->window + index)) + 1;
 
   if (flex_midextend((flex_ptr) &winentry->window,index + by,-by))
@@ -386,9 +366,8 @@ int         icnedit_addindirectstring(browser_winentry *winentry,char *string)
   int index;
   int len;
 
-  #ifdef WINED_DETAILEDDEBUG
-    Debug_Printf("icnedit_addindirectstring");
-  #endif
+  Log(log_TEDIOUS, "icnedit_addindirectstring");
+
   index = flex_size((flex_ptr) &winentry->window);
   if ((int) string <= 0)
     len = 0;
@@ -396,7 +375,7 @@ int         icnedit_addindirectstring(browser_winentry *winentry,char *string)
     len = strlencr(string);
   if (!flex_midextend((flex_ptr) &winentry->window,index,len + 1))
   {
-    MsgTrans_Report(messages,"IndMem",FALSE);
+    WinEd_MsgTrans_Report(messages,"IndMem",FALSE);
     return 0;
   }
 
@@ -413,9 +392,8 @@ void        icnedit_rawdeleteind(browser_winentry *winentry,
 {
   int at;
 
-  #ifdef WINED_DETAILEDDEBUG
-    Debug_Printf("icnedit_rawdeleteind");
-  #endif
+  Log(log_TEDIOUS, "icnedit_rawdeleteind");
+
   if (!flags->data.indirected)
     return;
   if (flags->data.text || /* Second expression only evaluated if not text */
@@ -437,9 +415,8 @@ void        icnedit_rawdeleteind(browser_winentry *winentry,
 
 void        icnedit_deleteindirected(browser_winentry *winentry,int icon)
 {
-  #ifdef WINED_DETAILEDDEBUG
-    Debug_Printf("icnedit_deleteindirected");
-  #endif
+  Log(log_TEDIOUS, "icnedit_deleteindirected");
+
   if (icon == -1)
     icnedit_rawdeleteind(winentry,&winentry->window->window.title,
     			          &winentry->window->window.titleflags);
@@ -451,9 +428,8 @@ void        icnedit_deleteindirected(browser_winentry *winentry,int icon)
 void        icnedit_processnewicondata(browser_winentry *winentry,
      				icon_flags *flags,icon_data *data)
 {
-  #ifdef WINED_DETAILEDDEBUG
-    Debug_Printf("icnedit_processnewicondata");
-  #endif
+  Log(log_TEDIOUS, "icnedit_processnewicondata");
+
   /* Add new data to winentry */
   if (!flags->data.indirected)
     return;
@@ -473,9 +449,8 @@ void        icnedit_processnewicondata(browser_winentry *winentry,
 
 void        icnedit_createphysical(browser_winentry *winentry, int icon, icon_createblock *block)
 {
-  #ifdef WINED_DETAILEDDEBUG
-    Debug_Printf("icnedit_createphysical %d", icon);
-  #endif
+  Log(log_TEDIOUS, "icnedit_createphysical %d", icon);
+
   if (icnedit_processicon(winentry,
       			  &block->icondata.flags,&block->icondata.data,
       			  &block->icondata.workarearect,
@@ -484,18 +459,15 @@ void        icnedit_createphysical(browser_winentry *winentry, int icon, icon_cr
     Wimp_CreateIcon(block,&icon);
     icnedit_forceredraw(winentry,icon);
   }
-  #ifdef WINED_DETAILEDDEBUG
-    Debug_Printf("End of icnedit_createphysical %d", icon);
-  #endif
+  Log(log_TEDIOUS, "End of icnedit_createphysical %d", icon);
 }
 
 void        icnedit_changedata(browser_winentry *winentry, int icon, icon_block *data)
 {
   icon_createblock iblock;
 
-  #ifdef WINED_DETAILEDDEBUG
-    Debug_Printf("icnedit_changedata %d", icon);
-  #endif
+  Log(log_TEDIOUS, "icnedit_changedata %d", icon);
+
   iblock.window = winentry->handle;
 
   /* Get rid of all stuff associated with old icon... */
@@ -523,7 +495,7 @@ void        icnedit_changedata(browser_winentry *winentry, int icon, icon_block 
 
   winentry->window->icon[icon] = iblock.icondata;
 
-  Debug_Printf("End of icnedit_changedata, creating, size: %d %d %d %d", iblock.icondata.workarearect.min.x, iblock.icondata.workarearect.min.y, iblock.icondata.workarearect.max.x, iblock.icondata.workarearect.max.y);
+  Log(log_DEBUG, "End of icnedit_changedata, creating, size: %d %d %d %d", iblock.icondata.workarearect.min.x, iblock.icondata.workarearect.min.y, iblock.icondata.workarearect.max.x, iblock.icondata.workarearect.max.y);
 
   icnedit_createphysical(winentry,icon,&iblock);
 }
@@ -535,9 +507,7 @@ int         icnedit_create(browser_winentry *winentry,icon_block *data)
   icon_createblock cblock;
   int icon;
 
-#ifdef WINED_DETAILEDDEBUG
-Debug_Printf("icnedit_create");
-#endif
+  Log(log_TEDIOUS, "icnedit_create");
 
   /* Find where to insert icon block */
   icon = winentry->window->window.numicons++;
@@ -548,7 +518,7 @@ Debug_Printf("icnedit_create");
       		     at,sizeof(icon_block)))
   {
     winentry->window->window.numicons--;
-    MsgTrans_Report(messages,"IconMem",FALSE);
+    WinEd_MsgTrans_Report(messages,"IconMem",FALSE);
     return -1;
   }
 
@@ -578,9 +548,8 @@ void        icnedit_deleteicon(browser_winentry *winentry,int icon)
 {
   icon_block istate;
 
-#ifdef WINED_DETAILEDDEBUG
-Debug_Printf("icnedit_deleteicon %d", icon);
-#endif
+  Log(log_TEDIOUS, "icnedit_deleteicon %d", icon);
+
   /* Get rid of physical icon */
   Wimp_GetIconState(winentry->handle,icon,&istate);
   icnedit_fulldeletephysical(winentry->handle,icon);
@@ -615,9 +584,8 @@ icon_handle icnedit_copyicon(browser_winentry *source,int icon,
   int border;
   icon_handle newicon;
 
-#ifdef WINED_DETAILEDDEBUG
-Debug_Printf("icnedit_copyicon %d", icon);
-#endif
+  Log(log_TEDIOUS, "icnedit_copyicon %d", icon);
+
   /* Set up independent icon_block for icnedit_create */
   newdata = source->window->icon[icon];
   newdata.workarearect = *bounds;
@@ -663,9 +631,6 @@ char       *icnedit_valid6(browser_winentry *winentry,int icon)
   int rindex;
   icon_block *data;
 
-/*#ifdef WINED_DETAILEDDEBUG
-Debug_Printf("icnedit_valid6 %d", icon);
-#endif*/
   data = &winentry->window->icon[icon];
   if (data->flags.data.indirected && data->flags.data.text &&
       (int) data->data.indirecttext.validstring > 0)
@@ -685,9 +650,8 @@ int         icnedit_bordertype(browser_winentry *winentry,int icon)
   int rindex;
   icon_block *data;
 
-#ifdef WINED_DETAILEDDEBUG
-Debug_Printf("icnedit_bordertype %d", icon);
-#endif
+  Log(log_TEDIOUS, "icnedit_bordertype %d", icon);
+
   data = &winentry->window->icon[icon];
   if (data->flags.data.indirected && data->flags.data.text &&
       (int) data->data.indirecttext.validstring > 0)
@@ -703,9 +667,8 @@ Debug_Printf("icnedit_bordertype %d", icon);
 
 int         icnedit_borderwidth(browser_winentry *winentry, int icon)
 {
-#ifdef WINED_DETAILEDDEBUG
-Debug_Printf("icnedit_borderwidth %d", icon);
-#endif
+  Log(log_TEDIOUS, "icnedit_borderwidth %d", icon);
+
   if (!winentry->window->icon[icon].flags.data.border)
     return 0;
   switch (icnedit_bordertype(winentry,icon))
@@ -726,9 +689,8 @@ void        icnedit_forceredraw(browser_winentry *winentry,int icon)
 {
   window_redrawblock redraw;
 
-#ifdef WINED_DETAILEDDEBUG
-Debug_Printf("icnedit_forceredraw %d, size: %d, %d, %d, %d", icon, winentry->window->icon[icon].workarearect.min.x, winentry->window->icon[icon].workarearect.min.y, winentry->window->icon[icon].workarearect.max.x, winentry->window->icon[icon].workarearect.max.y);
-#endif
+  Log(log_TEDIOUS, "icnedit_forceredraw %d, size: %d, %d, %d, %d", icon, winentry->window->icon[icon].workarearect.min.x, winentry->window->icon[icon].workarearect.min.y, winentry->window->icon[icon].workarearect.max.x, winentry->window->icon[icon].workarearect.max.y);
+
   redraw.window = winentry->handle;
   redraw.rect.min.x = winentry->window->icon[icon].workarearect.min.x;
   redraw.rect.min.y = winentry->window->icon[icon].workarearect.min.y;
@@ -771,9 +733,8 @@ int         icnedit_count_indirected(browser_winentry *winentry,
 {
   int size;
 
-#ifdef WINED_DETAILEDDEBUG
-Debug_Printf("icnedit_count_indirected");
-#endif
+  Log(log_TEDIOUS, "icnedit_count_indirected");
+
   if (!flags->data.indirected)
     return 0;
 

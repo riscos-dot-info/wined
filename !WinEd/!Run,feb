@@ -14,6 +14,9 @@ RMEnsure SharedCLibrary 5.17 IfThere System:Modules.Clib Then RMLoad System:Modu
 RMEnsure SharedCLibrary 5.34 WinEdRes:MultiError -l WinEd -t WinEdRes:Templates -m WinEdRes:Messages -k run_minclib
 RMEnsure SharedCLibrary 5.34 UnSet WinEd$CarryOn
 
+| Use SysLog if possible.
+If "<SysLog$Dir>" <> "" Then RMEnsure SysLog 0.17 IfThere <SysLog$Dir>.!Run Then Run <SysLog$Dir>.!Run
+
 If "<WinEd$CarryOn>" = "True" Then Set Alias$@RunType_FEC /<WinEd$Dir>.!Run %%*0
 
 WimpSlot -min 640k -max 640k

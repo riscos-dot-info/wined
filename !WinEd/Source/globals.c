@@ -4,7 +4,9 @@
 #include "choices.h"
 #include "common.h"
 #include "DeskLib:BackTrace.h"
+#include "DeskLib:MsgTrans.h"
 #include "DeskLib:SWI.h"
+#include "DeskLib:Environment.h"
 
 /* Set up in browser.c */
 extern window_handle overwrite_warn;
@@ -17,6 +19,9 @@ event_handler menuhandler;
 linklist_header browser_list;
 
 char APPNAME[] = "WinEd";
+
+char log_buffer[1020]; /* A bit smaller than 1K to allow for \\r etc below */
+char log_final[1024];
 
 void transient_centre(window_handle window)
 {
@@ -156,18 +161,60 @@ void fort_out(const char *string)
   Debug_Printf("\\O%s",string+1);
 }
 
+void Log(int level, const char *format, ...)
+{
+  va_list argptr;
+
+  va_start(argptr, format);
+  vsnprintf(log_buffer, sizeof(log_buffer), format, argptr);
+  va_end(argptr);
+
+  /* If the output string runs over the end of the buffer, it will be
+     truncated but not null-terminated, so have to account for that: */
+  log_buffer[sizeof(log_buffer)-1] = '\0';
+
+  /* If debugging, output colour-coded reporter text */
+  if      (level <= log_ERROR)       snprintf(log_final, sizeof(log_final), "\\r%s", log_buffer); /* red    */
+  else if (level <= log_WARNING)     snprintf(log_final, sizeof(log_final), "\\o%s", log_buffer); /* orange */
+  else if (level <= log_NOTICE)      snprintf(log_final, sizeof(log_final), "\\b%s", log_buffer); /* blue   */
+  else if (level <= log_INFORMATION) snprintf(log_final, sizeof(log_final), "%s",    log_buffer); /* black  */
+  else                               snprintf(log_final, sizeof(log_final), "\\f%s", log_buffer); /* grey   */
+  Debug_Print(log_final);
+
+  /* Log message (without Reporter colours) with syslog */
+  Environment_LogMessage(level, log_buffer);
+}
+
+os_error *WinEd_MsgTrans_ReportPS(msgtrans_filedesc *filedesc, char *token,
+                            BOOL fatal,
+                            const char *p0,
+                            const char *p1,
+                            const char *p2,
+                            const char *p3)
+{
+  os_error *swierr;
+  char buffer[252];
+
+  swierr = MsgTrans_LookupPS(filedesc, token, buffer, sizeof(buffer), p0, p1, p2, p3);
+
+  if (swierr)
+    return (swierr);
+
+  if (fatal)
+  {
+    Log(log_CRITICAL, buffer);
+    Error_ReportFatal(0, buffer);
+  }
+  else
+  {
+    Log(log_NOTICE, buffer);
+    Error_Report(0, buffer);
+  }
+
+  return NULL;
+}
+
 void test_fn(void)
 {
-  unsigned char block[5];
-  int x=300, y=400;
-
-  block[0] = 3;
-  block[1] = x & 0xff;
-  block[2] = (x & 0xff<<8) >>8;
-  block[3] = y & 0xff;
-  block[4] = (y & 0xff<<8) >>8;
-
-  Debug_Printf("testing 123...");
-
-  SWI(2, 0, SWI_OS_Word, 21, &block);
+  Environment_SysBeep();
 }

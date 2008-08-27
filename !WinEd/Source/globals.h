@@ -10,6 +10,7 @@
 #include "DeskLib:Wimp.h"
 #include <stdarg.h>
 
+#include "common.h"
 #include "tempdefs.h"
 
 /* Application name for task manager and menus */
@@ -18,6 +19,9 @@ extern char APPNAME[];
 /* Filetypes we may want to load */
 #define FILETYPE_Template 0xfec
 #define FILETYPE_Sprites 0xff9
+
+/* An extra logging level */
+#define log_TEDIOUS 240
 
 /* For control of Messages file */
 extern msgtrans_filedesc *messages;
@@ -60,6 +64,19 @@ extern browser_winentry *selection_viewer;
 
 /* Output function for fortify */
 void fort_out(const char *string);
+
+/* Syslog (& debug) output */
+void Log(int level, const char *format, ...);
+
+#define WinEd_MsgTrans_Report(filedesc, token, fatal) \
+  WinEd_MsgTrans_ReportPS((filedesc),(token),(fatal),0,0,0,0)
+
+extern os_error *WinEd_MsgTrans_ReportPS(msgtrans_filedesc *filedesc, char *token,
+                                   BOOL fatal,
+                                   const char *p0,
+                                   const char *p1,
+                                   const char *p2,
+                                   const char *p3);
 
 /* For debugging */
 void test_fn(void);

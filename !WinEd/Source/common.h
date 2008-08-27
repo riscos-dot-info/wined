@@ -30,6 +30,9 @@
 #ifndef __dl_handler_h
 #include "DeskLib:Handler.h"
 #endif
+#ifndef __dl_environment_h
+#include "DeskLib:Environment.h"
+#endif
 #ifndef __dl_icon_h
 #include "DeskLib:Icon.h"
 #endif

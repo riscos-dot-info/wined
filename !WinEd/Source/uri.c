@@ -26,7 +26,7 @@ static BOOL uri_noack(event_pollblock *event, void *handle)
   		event->data.message.data.bytes);
   if (!getenv(workstr))
   {
-    MsgTrans_Report(messages, "NoURI", FALSE);
+    WinEd_MsgTrans_Report(messages, "NoURI", FALSE);
     return TRUE;
   }
   strcat(workstr, " ");
@@ -37,7 +37,7 @@ static BOOL uri_noack(event_pollblock *event, void *handle)
 
 void uri_init(void)
 {
-  Debug_Printf("uri_init");
+  Log(log_DEBUG, "uri_init");
   Event_Claim(event_ACK, event_ANY, event_ANY, uri_noack, 0);
 }
 

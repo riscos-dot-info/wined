@@ -62,7 +62,7 @@ menu_ptr fontpick_makemenu(char *fontname)
     fontpick_menudata = malloc(menusize);
     if (!fontpick_menudata)
     {
-      MsgTrans_Report(messages,"NoMenu",FALSE);
+      WinEd_MsgTrans_Report(messages,"NoMenu",FALSE);
       fontpick_menusize = 0;
       if (fontpick_inddata)
       {
@@ -79,7 +79,7 @@ menu_ptr fontpick_makemenu(char *fontname)
     fontpick_inddata = malloc(indsize);
     if (!fontpick_inddata)
     {
-      MsgTrans_Report(messages,"NoMenu",FALSE);
+      WinEd_MsgTrans_Report(messages,"NoMenu",FALSE);
       free(fontpick_menudata);
       fontpick_menudata = 0;
       fontpick_menusize = 0;
@@ -99,7 +99,7 @@ menu_ptr fontpick_makemenu(char *fontname)
   	      	      fontpick_indsize, /* size of indirected data */
   	      	      (int) fontname))) /* identifier to tick */
   {
-    MsgTrans_Report(messages,"NoMenu",FALSE);
+    WinEd_MsgTrans_Report(messages,"NoMenu",FALSE);
     free(fontpick_menudata);
     fontpick_menudata = 0;
     fontpick_menusize = 0;

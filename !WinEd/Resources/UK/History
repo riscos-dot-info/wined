@@ -3,7 +3,8 @@
 - Fixed bug causing corruption of some icons in some templates using fonts
 - Compressed size of stats window slightly
 - Added "goto icon" functionality
-- Added syslog logging
+- Added SysLog logging
+- Added shortcuts to preview menu
 - Enabled newlines and time in icon name Basic export
 
 3.10

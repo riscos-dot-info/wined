@@ -177,7 +177,7 @@ BOOL spcdiag_clickspace(event_pollblock *event,void *reference)
     table = malloc((selections + 1) * sizeof(icon_handle));
     if (!table)
     {
-      MsgTrans_Report(0,"NoStore",FALSE);
+      WinEd_MsgTrans_Report(0,"NoStore",FALSE);
       return TRUE;
     }
     Wimp_WhichIcon(spcdiag_winentry->handle,table,icon_SELECTED,icon_SELECTED);

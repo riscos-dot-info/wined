@@ -34,12 +34,12 @@ window_block *templates_load(char *name,int *index,font_array *font,
     templat.index = 0;
   Error_CheckFatal(Wimp_LoadTemplate(&templat));
   if (!templat.index)
-    MsgTrans_ReportPS(messages,"NoTemp",TRUE,name,0,0,0);
+    WinEd_MsgTrans_ReportPS(messages,"NoTemp",TRUE,name,0,0,0);
 
   /* Allocate memory */
   templat.buffer = malloc((int) templat.buffer);
   if (!templat.buffer)
-    MsgTrans_ReportPS(messages,"TempMem",TRUE,name,0,0,0);
+    WinEd_MsgTrans_ReportPS(messages,"TempMem",TRUE,name,0,0,0);
   templat.workend = templat.workfree;
   /* Return size of ind data here, while we know it */
   if (indsize)
@@ -48,7 +48,7 @@ window_block *templates_load(char *name,int *index,font_array *font,
   {
     templat.workfree = malloc((int) templat.workend);
     if (!templat.workfree)
-    MsgTrans_ReportPS(messages,"TempMem",TRUE,name,0,0,0);
+    WinEd_MsgTrans_ReportPS(messages,"TempMem",TRUE,name,0,0,0);
   }
   else
     templat.workfree = 0;

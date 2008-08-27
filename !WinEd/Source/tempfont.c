@@ -29,9 +29,7 @@ unsigned int tempfont_findfont(browser_fileinfo *browser,template_fontinfo *font
 {
   int index;
 
-  #ifdef WINED_DETAILEDDEBUG
-  Debug_Printf("   tempfont_findfont - browser:%d, fontinfo:%d, size:%d, number:%d", browser, fontinfo, sizeof(template_fontinfo), browser->numfonts);
-  #endif
+  Log(log_TEDIOUS, "   tempfont_findfont - browser:%d, fontinfo:%d, size:%d, number:%d", browser, fontinfo, sizeof(template_fontinfo), browser->numfonts);
 
   /* If no fonts already, make for first time */
   if (browser->numfonts == 0)
@@ -39,14 +37,14 @@ unsigned int tempfont_findfont(browser_fileinfo *browser,template_fontinfo *font
     if (!flex_alloc((flex_ptr) &browser->fontinfo,
                    sizeof(template_fontinfo)))
     {
-      MsgTrans_Report(messages,"FontMem",FALSE);
+      WinEd_MsgTrans_Report(messages,"FontMem",FALSE);
       return 0;
     }
 
     browser->fontinfo[0] = *fontinfo;
     browser->fontcount[1] = 1;
     browser->numfonts = 1;
-    Debug_Printf("  Made first font (returning handle %d): %dx%d %s",
+    Log(log_DEBUG, "  Made first font (returning handle %d): %dx%d %s",
                     browser->numfonts, fontinfo->size.x / 16, fontinfo->size.y / 16, fontinfo->name);
     return browser->numfonts;
   }
@@ -58,14 +56,14 @@ unsigned int tempfont_findfont(browser_fileinfo *browser,template_fontinfo *font
         browser->fontinfo[index].size.y == fontinfo->size.y)
     {
       browser->fontcount[++index]++;
-      Debug_Printf("  Found matching font (handle: %d): %dx%d %s", index, fontinfo->size.x / 16, fontinfo->size.y / 16, fontinfo->name);
+      Log(log_DEBUG, "  Found matching font (handle: %d): %dx%d %s", index, fontinfo->size.x / 16, fontinfo->size.y / 16, fontinfo->name);
       return index;
     }
 
   /* Not found, make it */
   if (browser->numfonts >= 255)
   {
-    MsgTrans_Report(messages,"TMFonts",FALSE);
+    WinEd_MsgTrans_Report(messages,"TMFonts",FALSE);
     return 0;
   }
 
@@ -73,7 +71,7 @@ unsigned int tempfont_findfont(browser_fileinfo *browser,template_fontinfo *font
       		     flex_size((flex_ptr) &browser->fontinfo) +
       		     sizeof(template_fontinfo)))
   {
-    MsgTrans_Report(messages,"FontMem",FALSE);
+    WinEd_MsgTrans_Report(messages,"FontMem",FALSE);
     return 0;
   }
 
@@ -82,7 +80,7 @@ unsigned int tempfont_findfont(browser_fileinfo *browser,template_fontinfo *font
   browser->fontinfo[browser->numfonts] = *fontinfo;
   browser->fontcount[++browser->numfonts] = 1;
 
-  Debug_Printf("   Adding new font (returning handle %d): %dx%d %s", browser->numfonts, fontinfo->size.x / 16, fontinfo->size.y / 16, fontinfo->name);
+  Log(log_DEBUG, "   Adding new font (returning handle %d): %dx%d %s", browser->numfonts, fontinfo->size.x / 16, fontinfo->size.y / 16, fontinfo->name);
   return browser->numfonts;
 }
 

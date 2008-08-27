@@ -97,7 +97,7 @@ void diagutils_init()
   Error_CheckFatal(MsgTrans_Lookup(messages,"BType",tag,32));
   diagutils_menu = Menu_New(tag,buffer);
   if (!diagutils_menu)
-    MsgTrans_Report(messages,"NoMenu",TRUE);
+    WinEd_MsgTrans_Report(messages,"NoMenu",TRUE);
 }
 
 void diagutils_bumpers(window_handle window,icon_handle field,
@@ -108,7 +108,7 @@ void diagutils_bumpers(window_handle window,icon_handle field,
 
   block = malloc(sizeof(diagutils_block));
   if (!block)
-    MsgTrans_Report(0,"NoStore",TRUE);
+    WinEd_MsgTrans_Report(0,"NoStore",TRUE);
   block->encoder = Icon_SetInteger;
   block->decoder = Icon_GetInteger;
   block->window = window;
@@ -126,7 +126,7 @@ void diagutils_colour(window_handle window,icon_handle field,BOOL none)
 
   block = malloc(sizeof(diagutils_block));
   if (!block)
-    MsgTrans_Report(0,"NoStore",TRUE);
+    WinEd_MsgTrans_Report(0,"NoStore",TRUE);
   block->decoder = diagutils_readcolour;
   block->encoder = diagutils_writecolour;
   block->window = window;
@@ -149,7 +149,7 @@ void diagutils_btype(window_handle window,icon_handle field)
 
   block = malloc(sizeof(diagutils_block));
   if (!block)
-    MsgTrans_Report(0,"NoStore",TRUE);
+    WinEd_MsgTrans_Report(0,"NoStore",TRUE);
   block->decoder = diagutils_readbtype;
   block->encoder = diagutils_writebtype;
   block->window = window;

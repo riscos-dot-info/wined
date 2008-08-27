@@ -32,7 +32,7 @@
 #include "MemCheck:MemCheck.h"
 #endif
 
-#define app_VERSION "3.14ß (August 2008)"
+#define app_VERSION "3.15ß (September 2008)"
 
 extern void __heap_checking_on_all_allocates(int);
 extern void __heap_checking_on_all_deallocates(int);
@@ -44,16 +44,6 @@ extern void __heap_checking_on_all_deallocates(int);
 #define proginfo_USER 1
 #define proginfo_EMAIL 8
 #define proginfo_WEB 9
-
-#ifndef SWI_TaskManager_EnumerateTasks
-#define SWI_TaskManager_EnumerateTasks 0x42681
-#endif
-typedef struct {
-  task_handle handle;
-  char *name;
-  int size;
-  int flags;
-} taskmanager_data;
 
 /* ------------------ Globals not used elsewhere ------------------ */
 
@@ -246,7 +236,7 @@ BOOL iconbar_dataopen(event_pollblock *event,void *reference)
     if (size)
       browser_load(event->data.message.data.dataload.filename,size,0);
     else
-      MsgTrans_ReportPS(messages,"NotFile",FALSE,
+      WinEd_MsgTrans_ReportPS(messages,"NotFile",FALSE,
       			event->data.message.data.dataload.filename,0,0,0);
 
     if (!strcmp(message.data.dataload.filename,"<Wimp$Scrap>"))
@@ -283,7 +273,7 @@ window_handle proginfo_init()
   window_handle proginfo;
   window_block *windef;
 
-  Debug_Printf("proginfo_init");
+  Log(log_DEBUG, "proginfo_init");
 
   windef = templates_load("ProgInfo",0,0,0,0);
   Error_CheckFatal(Wimp_CreateWindow(windef,&proginfo));
@@ -305,6 +295,7 @@ void wined_initialise(int maxmem)
   char buffer[256], buffy[256];
   int taskmanager_call;
   icon_handle baricon;
+  os_error *error;
   int wined_wimpmessages[] = {message_DATALOAD,message_DATALOADACK,
                               message_DATASAVE,message_DATASAVEACK,
                               message_DATAOPEN,
@@ -333,13 +324,12 @@ void wined_initialise(int maxmem)
   EventMsg_Initialise();
 
   Debug_Initialise(debug_REPORTER);
+  Environment_LogInitialise(APPNAME);
 
   Debug_Printf("\\b");
-  Debug_Printf("\\b WinEd starting up, \\t, %s.", app_VERSION);
-  Debug_Printf("\\b   OS:%d, DeskLib:%d, Wimp:%d", Environment_OSVersion(), DESKLIB_VERSION, event_wimpversion);
-  #ifdef WINED_DETAILEDDEBUG
-    Debug_Printf("...detailed debugging");
-  #endif
+  Log(log_NOTICE, " WinEd starting up, \\t, %s.", app_VERSION);
+  Log(log_NOTICE, "   OS:%d, DeskLib:%d, Wimp:%d", Environment_OSVersion(), DESKLIB_VERSION, event_wimpversion);
+  Log(log_TEDIOUS, "...detailed debugging");
 
   #ifdef FORTIFY
     Fortify_SetOutputFunc(fort_out);
@@ -357,28 +347,15 @@ void wined_initialise(int maxmem)
   MsgTrans_Lookup(messages,"MsgFrom:Message from WinEd",error_title,40);
 
   /* Check we're not already loaded */
-  taskmanager_call = 0;
-  do
+  if (Environment_TaskIsActive(APPNAME))
   {
-    taskmanager_data *entry,*end_of_entries;
-
-    entry = (taskmanager_data *) buffer;
-    SWI(3,2,SWI_TaskManager_EnumerateTasks,taskmanager_call,entry,256,
-    	&taskmanager_call,&end_of_entries);
-    while ((int) entry < (int) end_of_entries)
-    {
-      if (!strcmpcr(entry->name,APPNAME))
-      {
-        MsgTrans_Lookup(messages, "Already", buffer, 256);
-        /* Launch multitasking error box if we're already active */
-        sprintf(buffy, "WinEdRes:MultiError -t WinEdRes:Templates -e %s", buffer);
-        Wimp_StartTask(buffy);
-        Hourglass_Smash();
-        exit(EXIT_FAILURE);
-      }
-      entry++;
-    }
-  } while (taskmanager_call >= 0);
+    MsgTrans_Lookup(messages, "Already", buffer, sizeof(buffer));
+    /* Launch multitasking error box if we're already active */
+    snprintf(buffy, sizeof(buffy), "WinEdRes:MultiError -t WinEdRes:Templates -e %s", buffer);
+    Wimp_StartTask(buffy);
+    Hourglass_Off();
+    exit(EXIT_FAILURE);
+  }
 
   flex_init("WinEd",NULL,maxmem); /* Old WinEd used Castle flex. This version uses ROL flex */
 
@@ -387,7 +364,6 @@ void wined_initialise(int maxmem)
 
   deskfont_init();
 
-  Debug_Printf("Opening templates");
   /* Open templates */
   sprintf(buffer,"%sTemplates",resource_pathname);
   Error_CheckFatal(Wimp_OpenTemplate(buffer));
@@ -404,13 +380,12 @@ void wined_initialise(int maxmem)
   /* Close templates */
   Wimp_CloseTemplate();
   wined_templatesopen = FALSE;
-  Debug_Printf("Templates closed");
 
   /* Icon bar menu */
-  MsgTrans_Lookup(messages,"IBMenu",buffer,256);
+  error = MsgTrans_Lookup(messages,"IBMenu",buffer,256);
   iconbar_menu = Menu_New(APPNAME,buffer);
-  if (!iconbar_menu)
-    MsgTrans_Report(messages,"NoMenu",TRUE);
+  if (!iconbar_menu || error)
+    WinEd_MsgTrans_Report(messages,"NoMenu",TRUE);
   Menu_AddSubMenu(iconbar_menu,ibmenu_INFO,(menu_ptr) proginfo_window);
 
   /* Put icon on icon bar */
@@ -468,6 +443,8 @@ int main(int argc,char **argv)
     browser_load(argv[2],File_Size(argv[2]),0);
 
   Hourglass_Off();
+
+  Log(log_INFORMATION, "WinEd intialised...");
 
   while (TRUE)
   {

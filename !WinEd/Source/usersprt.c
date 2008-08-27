@@ -43,7 +43,7 @@ void usersprt_init()
   if (!flex_alloc((flex_ptr)
    &user_sprites,
   sizeof(sprite_areainfo)))
-    MsgTrans_Report(messages,"SprtArea",TRUE);
+    WinEd_MsgTrans_Report(messages,"SprtArea",TRUE);
 
   user_sprites->areasize = sizeof(sprite_areainfo);
   /* user_sprites->numsprites = 0; */
@@ -142,7 +142,7 @@ BOOL usersprt_merge(char *filename,int size,void *reference)
   memsize = flex_size((flex_ptr) &user_sprites);
   if (!flex_midextend((flex_ptr) &user_sprites,memsize,size))
   {
-    MsgTrans_Report(messages,"SprtArea",FALSE);
+    WinEd_MsgTrans_Report(messages,"SprtArea",FALSE);
     return FALSE;
   }
 

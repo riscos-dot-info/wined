@@ -336,9 +336,7 @@ void icnedit_minsize(browser_winentry *winentry,icon_handle icon,
     textsize.x = 0;
     textsize.y = 0;
   }
-#ifdef WINED_DETAILEDDEBUG
-Debug_Printf("Text size = %d,%d\n", textsize.x, textsize.y);
-#endif
+  Log(log_DEBUG, "Text size = %d,%d\n", textsize.x, textsize.y);
 
   /* Find size of sprite */
   if (logblock->flags.data.sprite)
@@ -348,9 +346,7 @@ Debug_Printf("Text size = %d,%d\n", textsize.x, textsize.y);
     spritesize.x = 0;
     spritesize.y = 0;
   }
-#ifdef WINED_DETAILEDDEBUG
-Debug_Printf("Sprite size = %d,%d\n", spritesize.x, spritesize.y);
-#endif
+  Log(log_DEBUG, "Sprite size = %d,%d\n", spritesize.x, spritesize.y);
 
   /* Decide whether size depends on text or sprite or both */
   if (logblock->flags.data.text && !logblock->flags.data.sprite)
@@ -379,14 +375,10 @@ Debug_Printf("Sprite size = %d,%d\n", spritesize.x, spritesize.y);
     size->x = 0;
     size->y = 0;
   }
-#ifdef WINED_DETAILEDDEBUG
-Debug_Printf("Size without border is %d,%d\n", size->x, size->y);
-#endif
+  Log(log_DEBUG, "Size without border is %d,%d\n", size->x, size->y);
 
   minsize_border(logblock, winentry, icon, size);
-#ifdef WINED_DETAILEDDEBUG
-Debug_Printf("Size with border is %d,%d\n", size->x, size->y);
-#endif
+  Log(log_DEBUG, "Size with border is %d,%d\n", size->x, size->y);
 
   if (size->x < 8) size->x = 8;
   if (size->y < 8) size->y = 8;

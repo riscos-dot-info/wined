@@ -12,7 +12,7 @@ static  char buffer[256];
 void export_puts(FILE *fp, const char *string)
 {
 
-  Debug_Printf("Writing to text file, string: '%s'", string);
+  Log(log_DEBUG, "export_puts - Writing to text file, string: '%s'", string);
 
   for (;;++string)
   {
@@ -64,7 +64,7 @@ void export_puts_basic_line(FILE *fp, const char *string, int lineno)
 {
   char *ptr;
 
-  Debug_Printf("Writing to basic file (line %d), string: '%s'", lineno, string);
+  Log(log_DEBUG, "export_puts_basic_line - Writing to basic file (line %d), string: '%s'", lineno, string);
 
   ptr = (char *)&lineno;
 
@@ -84,7 +84,7 @@ void export_puts_basic_line(FILE *fp, const char *string, int lineno)
 Use this if want to export upper case names...
 char              *upper_case(char *s)
 {
-//  Debug_Printf("lower_case");
+//  Log(log_DEBUG, "lower_case");
 
   char *ret = s;
   if (s)
@@ -104,11 +104,11 @@ int export_scan(FILE *fp, const browser_winentry *winentry, BOOL write, const ch
   int icon, foundanicon = FALSE;
   char buffy[256];
 
-  Debug_Printf("export_scan, write:%d", write);
+  Log(log_DEBUG, "export_scan, write:%d", write);
 
   for (icon = 0; icon < winentry->window->window.numicons; ++icon)
   {
-    Debug_Printf("Checking icon %d", icon);
+    Log(log_DEBUG, "Checking icon %d", icon);
     if (winentry->window->icon[icon].flags.data.indirected &&
     	winentry->window->icon[icon].flags.data.text &&
     	(int) winentry->window->icon[icon].data.indirecttext.validstring >= 0)
@@ -129,7 +129,7 @@ int export_scan(FILE *fp, const browser_winentry *winentry, BOOL write, const ch
         icnname[n-valix] = 0;
         if (icnname[0])
         {
-          Debug_Printf("Icon name: '%s'", icnname);
+          Log(log_DEBUG, "Icon name: '%s'", icnname);
           if (write)
           {
             char icnnum[8];
@@ -176,7 +176,7 @@ int export_winentry(FILE *fp, const browser_winentry *winentry, const char *pre,
   char buffy[256], thetime[256];
   unsigned char ro_time[5];
 
-  Debug_Printf("export_winentry: %s", winentry->identifier);
+  Log(log_DEBUG, "export_winentry: %p", winentry->identifier);
 
   if (export_scan(fp, winentry, FALSE, pre, 1)) /* Here, currentline isn't used or updated and        */
   {                                             /* the return value is used as a boolean check rather */

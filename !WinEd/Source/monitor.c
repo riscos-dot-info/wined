@@ -38,7 +38,7 @@ BOOL monitor_close(event_pollblock *event,void *reference);
 void monitor_init()
 {
   window_block *templat;
-  Debug_Printf("monitor_init");
+  Log(log_DEBUG, "monitor_init");
 
   templat = templates_load("monitor",0,0,0,0);
   Error_CheckFatal(Wimp_CreateWindow(templat,&monitor_window));
@@ -56,7 +56,7 @@ void monitor_init()
 void monitor_open()
 {
   window_state wstate;
-  Debug_Printf("monitor_open");
+  Log(log_DEBUG, "monitor_open");
 
   Wimp_GetWindowState(monitor_window,&wstate);
   wstate.openblock.behind = -1;
@@ -66,7 +66,7 @@ void monitor_open()
 
 BOOL monitor_close(event_pollblock *event,void *reference)
 {
-  Debug_Printf("monitor_close");
+  Log(log_DEBUG, "monitor_close");
   Wimp_CloseWindow(monitor_window);
   monitor_isopen = FALSE;
   if (monitor_isactive)
@@ -76,14 +76,14 @@ BOOL monitor_close(event_pollblock *event,void *reference)
 
 void monitor_activeinc()
 {
-  Debug_Printf("monitor_activeinc");
+  Log(log_DEBUG, "monitor_activeinc");
   monitor_numactive++;
   monitor_open();
 }
 
 void monitor_activedec()
 {
-  Debug_Printf("monitor_activedec");
+  Log(log_DEBUG, "monitor_activedec");
   if (--monitor_numactive <= 0)
   {
     monitor_numactive = 0;
@@ -93,7 +93,7 @@ void monitor_activedec()
 
 BOOL monitor_activate(event_pollblock *event,void *reference)
 {
-  Debug_Printf("monitor_activate");
+  Log(log_DEBUG, "monitor_activate");
   /* Set to winentry of viewer with pointer focus */
   monitor_winentry = reference;
   if (monitor_isopen && (!monitor_isactive))
@@ -112,7 +112,7 @@ BOOL monitor_activate(event_pollblock *event,void *reference)
 
 BOOL monitor_deactivate(event_pollblock *event,void *reference)
 {
-  Debug_Printf("monitor_deactivate");
+  Log(log_DEBUG, "monitor_deactivate");
   /* Check for the monitor_dragging flag as we want the monitor to stay active    */
   /* while we're dragging. This function gets called by a pointer-leave even when */
   /* a drag starts so would otherwise silence the monitor                         */
@@ -249,7 +249,7 @@ BOOL monitor_update(event_pollblock *event,void *reference)
             for (n = valix; (validstring[n] > 31) && (validstring[n] != ';') && (n-valix<sizeoficname-1); ++n)
               icname[n-valix] = validstring[n];
             icname[n-valix] = 0;
-            Debug_Printf("Over icon named '%s'", icname);
+            Log(log_DEBUG, "Over icon named '%s'", icname);
           }
         }
 

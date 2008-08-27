@@ -16,7 +16,7 @@ void picker_init()
   char *indirected;
   browser_winblock *templat;
   int i; /* Sorry, but I'm using this for lots of different things */
-  Debug_Printf("picker_init");
+  Log(log_DEBUG, "picker_init");
 
   picker_knownactive = 0;
 
@@ -35,7 +35,7 @@ void picker_init()
   i = sizeof(window_block) + templat->window.numicons * sizeof(icon_block);
   if (!flex_alloc((flex_ptr) &picker_winentry.window,i))
   {
-    MsgTrans_Report(messages,"PickMem",FALSE);
+    WinEd_MsgTrans_Report(messages,"PickMem",FALSE);
     free(templat);
     free(indirected);
     return;

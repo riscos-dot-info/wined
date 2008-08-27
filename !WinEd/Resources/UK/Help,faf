@@ -1,5 +1,5 @@
 <html><head>
-<title>Mimeman</title>
+<title>WinEd Manual</title>
 <meta name="description" content="WinEd is a template editor for RISC OS.">
 <link rel="stylesheet" type="text/css" href="../Styles">
 </head>
@@ -39,6 +39,7 @@
 <li><a href="#select">Selected icon(s) submenu</a>
 <li><a href="#edittool">The editable window tool bar</a>
 <li><a href="#editwindow">Edit window dialogue box</a>
+<li><a href="#goto">Goto icon menu option</a>
 <li><a href="#monitor">The monitor</a>
 <li><a href="#creatingicons">Creating icons: the Icon picker</a>
 <li><a href="#workarea">Work area dialogue box</a>
@@ -530,7 +531,10 @@ originally intended for 256 colour modes and should not really be used.
 transparent). This option is unavailable if <code>24bit title colour</code> is chosen.</p>
 <p><a href="#contents">Return to contents</a></p>
 
-<a name="monitor"><h2>30. The monitor</h2></a>
+<a name="goto"><h2>30. Goto icon menu option</h2></a>
+<p>Moving the mouse to the right over the <em>Goto icon</em> menu option will allow you to enter an icon name or number. If a corresponding icon is found in the current viewer the mouse will be placed in the centre of the icon (even if it's not currently showing on screen).</p>
+
+<a name="monitor"><h2>31. The monitor</h2></a>
 <p>The monitor shows the following information about any window/icon under
 the pointer, provided it is in a template loaded in <em>WinEd</em>.</p>
 
@@ -560,7 +564,7 @@ is optional) when any editable or preview windows are opened and closes
 when no editable or preview windows are open.</p>
 <p><a href="#contents">Return to contents</a></p>
 
-<a name="creatingicons"><h2>31. Creating icons: the Icon picker</h2></a>
+<a name="creatingicons"><h2>32. Creating icons: the Icon picker</h2></a>
 <p>The icon picker is a convenient alternative to creating icons from a
 menu. You simply drag one or more icons from the picker to where you
 want them in an editable window. It behaves rather like an editable
@@ -575,7 +579,7 @@ closes when no editable or preview windows are open.</p>
 but it can be customised. See the section on Customising <em>WinEd</em>.</p>
 <p><a href="#contents">Return to contents</a></p>
 
-<a name="workarea"><h2>32. Work area dialogue box</h2></a>
+<a name="workarea"><h2>33. Work area dialogue box</h2></a>
 <p>The work area coordinates are shown in formation. Note that it is
 usual to have the origin of the window (0) at the top, and the bottom
 coordinate is negative.</p>
@@ -599,7 +603,7 @@ will be determined by the size of the title bar and window tools. The
 Maximise button sets the values to the current size of the window.</p>
 <p><a href="#contents">Return to contents</a></p>
 
-<a name="visiblearea"><h2>33. Visible area dialogue box</h2></a>
+<a name="visiblearea"><h2>34. Visible area dialogue box</h2></a>
 <p>This allows you to specify the position, size and scroll offsets of a
 window as it will appear on screen when first opened. All values are
 usually positive, except for the vertical scroll offset (V Scroll),
@@ -608,7 +612,7 @@ which should be negative.</p>
 
 <p><a href="#contents">Return to contents</a></p>
 
-<a name="editicon"><h2>34. Edit icon/title dialogue box</h2></a>
+<a name="editicon"><h2>35. Edit icon/title dialogue box</h2></a>
 <p>Most of the entries in this window correspond to icon flags and
 properties described in the PRM or other books.</p>
 
@@ -645,7 +649,7 @@ box. Update also resizes the icon if it is currently too small to
 display its data (see Resize icons dialogue box).</p>
 <p><a href="#contents">Return to contents</a></p>
 
-<a name="editicons"><h2>35. Edit multiple icons dialogue box</h2></a>
+<a name="editicons"><h2>36. Edit multiple icons dialogue box</h2></a>
 <p><em>WinEd</em> can apply changes to a subset of the icon flags to a selection of
 icons simultaneously; only those which do not affect icon data or
 outline fonts can be changed for a multiple selection.</p>
@@ -656,7 +660,7 @@ the option button on the left to enable a value to be entered for all
 selected icons, otherwise they will not be affected.</p>
 <p><a href="#contents">Return to contents</a></p>
 
-<a name="align"><h2>36. Align dialogue box</h2></a>
+<a name="align"><h2>37. Align dialogue box</h2></a>
 <p>This is opened from an editable window menu tree. It is for aligning
 groups of icons with each other. The top group of radio icons
 determines along which edge the icons will be aligned. If only one
@@ -713,7 +717,7 @@ window is chosen as the reference point instead of one of the icons,
 and it only allows alignment of centres, not edges.</p>
 <p><a href="#contents">Return to contents</a></p>
 
-<a name="space"><h2>37. Space out dialogue box</h2></a>
+<a name="space"><h2>38. Space out dialogue box</h2></a>
 <p>Opened from an editable window menu tree, the Space out dialogue box
 can either be used to space a group of icons out from each other or a
 single icon from the edge of the visible area.</p>
@@ -727,7 +731,7 @@ right.</p>
 visible area corresponding to the direction radio icons.</p>
 <p><a href="#contents">Return to contents</a></p>
 
-<a name="resize"><h2>38. Resize icons dialogue box</h2></a>
+<a name="resize"><h2>39. Resize icons dialogue box</h2></a>
 <p>This dialogue box is for changing the size of icons, either making a
 group all the same size, making a single icon or group just large
 enough to display its data, or a single icon a specified size. The
@@ -771,14 +775,14 @@ useful for sets of action buttons where the default action button is
 the same size as the others with an additional trench around it.</p>
 <p><a href="#contents">Return to contents</a></p>
 
-<a name="coords"><h2>39. Coordinates dialogue box</h2></a>
+<a name="coords"><h2>40. Coordinates dialogue box</h2></a>
 <p>This allows you to enter the position (relative to the window's work
 area) and size coordinates of an icon. The Top entry is usually
 negative.</p>
 <p>The bumper buttons cause the sizes to change in units of 4, unless the <code>Shift</code> or <code>Ctrl</code> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p> 
 <p><a href="#contents">Return to contents</a></p>
 
-<a name="frame"><h2>40. Frame dialogue box</h2></a>
+<a name="frame"><h2>41. Frame dialogue box</h2></a>
 <p>This is for placing a frame around the selected icons. The frame can
 consist of the window's visible area or an empty bordered icon (group
 box) with a lower number than any of the selected icons.</p>
@@ -815,7 +819,7 @@ relation to objects outside them and resized when their contents have
 been entered.</p>
 <p><a href="#contents">Return to contents</a></p>
 
-<a name="hints"><h2>41. Hints &amp; tips</h2></a>
+<a name="hints"><h2>42. Hints &amp; tips</h2></a>
 
 <h3>Size of dialogue boxes</h3>
 <p>When designing dialogue boxes and nonscrollable windows, try to make
@@ -879,7 +883,7 @@ renumbered to 'fill the gap'.</p>
 can cause confusion when using other template editors.</p>
 <p><a href="#contents">Return to contents</a></p>
 
-<a name="custom"><h2>42. Customising <em>WinEd</em></h2></a>
+<a name="custom"><h2>43. Customising <em>WinEd</em></h2></a>
 <p>As well as the Choices dialogue box <em>WinEd</em> can be customised by editing
 its own template file; this is the file called <code>Templates</code> within the
 <em>WinEd</em> resources directory.</p>
@@ -962,11 +966,11 @@ messages for the first, last and any other icon in each window
 respectively. If a window has one icon, <code>E_OneIcon</code> is used.</p>
 <p><a href="#contents">Return to contents</a></p>
 
-<a name="bug"><h2>43. Bug reports &amp; suggestions</h2></a>
+<a name="bug"><h2>44. Bug reports &amp; suggestions</h2></a>
 <p>Although every effort has been made to iron out bugs, no application is completely bug free so you are advised to save your work regularly. Please report any bugs you find to <a href="mailto:riscos@snowstone.org.uk">Adam Richardson</a>.</p>
 <p><a href="#contents">Return to contents</a></p>
 
-<a name="acknowledgements"><h2>44. Acknowledgements</h2></a>
+<a name="acknowledgements"><h2>45. Acknowledgements</h2></a>
 <p><em>WinEd</em> was written originally written by Tony Houghton in C (compiled by Acorn C Release 5) with extensive
 use of <a href="http://www.riscos.info/index.php/DeskLib"><em>DeskLib</em></a>. This version has been compiled using <a href="http://www.riscos.info/index.php/GCCSDK"><em>GCC</em></a>. <em>DeskLib</em> is a set of freeware C libraries written by Jason Williams and many others. All C programmers should consider this an essential replacement for <em>RISC_OSLib</em>.</p>
 <p><em>Dr Smith's C Development Toolkit</em>, written by Julian Smith and marketed

@@ -28,26 +28,26 @@ BOOL shortcuts_createmenu(int mousex)
   int i;
   char *p;
 
-  Debug_Printf("shortcuts_createmenu");
+  Log(log_DEBUG, "shortcuts_createmenu");
 
-  /* Load Messages file */
+  /* Load messages-format shortcuts file */
   error = MsgTrans_LoadFile(&shortcuts,"Choices:WinEd.Shortcuts");
   if (error)
   {
-    Debug_Printf(" Error opening shortcuts file");
+    Log(log_INFORMATION, " Error opening shortcuts file"); /* Could just be it's not there */
     return FALSE;
   }
 
   /* Load tokens */
   error             = MsgTrans_Lookup(shortcuts, "Menu",   menudef,      sizeof(menudef));
-  Debug_Printf(" Menu definition: %s", menudef);
+  Log(log_DEBUG, " Menu definition: %s", menudef);
   if (!error) error = MsgTrans_Lookup(shortcuts, "Values", shortcutvals, sizeof(shortcutvals));
-  Debug_Printf(" Values: %s", shortcutvals);
+  Log(log_DEBUG, " Values: %s", shortcutvals);
   MsgTrans_LoseFile(shortcuts);
 
   if (error)
   {
-    Debug_Printf(" Error looking up tokens");
+    Log(log_WARNING, " Error looking up tokens"); /* File isn't of correct format */
     return FALSE;
   }
 
@@ -56,7 +56,7 @@ BOOL shortcuts_createmenu(int mousex)
   p = strtok(shortcutvals, ",");
   while (p && (i<10))
   {
-    Debug_Printf(" ->%s", p);
+    Log(log_DEBUG, " ->%s", p);
     strncpy(shortcut_values[i], p, shortcut_VALUELEN);
     i++;
     p = strtok(NULL, ",");
@@ -80,7 +80,7 @@ BOOL shortcuts_createmenu(int mousex)
 
   if (!shortcuts_menu)
   {
-    Debug_Printf(" Error creating shortcuts menu");
+    Log(log_WARNING, " Error creating shortcuts menu");
     return FALSE;
   }
 
@@ -96,15 +96,16 @@ BOOL shortcuts_menuselect(event_pollblock *event, void *ref)
   mouse_block ptrinfo;
   int size;
 
-  Debug_Printf("shortcuts_menuselect, file=%s", shortcut_values[event->data.selection[0]]);
+  Log(log_DEBUG, "shortcuts_menuselect, file=%s", shortcut_values[event->data.selection[0]]);
 
   if (menu_currentopen != shortcuts_menu)
     return FALSE;
 
   size = File_Size(shortcut_values[event->data.selection[0]]);
-  Debug_Printf("size: %d", size);
   if (size != -1)
     browser_load(shortcut_values[event->data.selection[0]],size,0);
+  else
+    Log(log_WARNING, "Problem loading file - doesn't exist?");
 
   Wimp_GetPointerInfo(&ptrinfo);
 

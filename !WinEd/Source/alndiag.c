@@ -250,7 +250,7 @@ BOOL alndiag_fillselectedtable(icon_handle **table)
            	  (count_selections(alndiag_winentry->handle) + 1));
   if (!*table)
   {
-    MsgTrans_Report(0,"NoStore",FALSE);
+    WinEd_MsgTrans_Report(0,"NoStore",FALSE);
     return FALSE;
   }
 
