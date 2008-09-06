@@ -685,8 +685,8 @@ static BOOL       browser_dosave(char *filename,browser_fileinfo *browser, BOOL 
       index.offset = offset;
       index.size = flex_size((flex_ptr) &winentry->window);
       index.type = 1;
-      /* Don't use strcpycr, we need to keep original terminator */
-      for (i = 0; i < 12; i++) /* Titles can only be 12 chars long */
+      /* Don't use strcpycr, we need to choose between terminators */
+      for (i = 0; i < 12; i++) /* Titles can only be 11 chars long + terminator */
       {
         index.identifier[i] = winentry->identifier[i];
         if (index.identifier[i] < 32)
@@ -1437,11 +1437,13 @@ BOOL              browser_merge(char *filename,int filesize,void *reference)
 }
 
 typedef enum {
-  load_OK,
-  load_MemoryError,
-  load_FileError,
+  load_OK = 0,
+  load_MemoryError,     /* Stop loading file, maybe discard completely */
+  load_FileError,       /* Some significant file structure error - stop loading file, maybe discard completely */
   load_ReportedError,
-  load_IconError
+  load_IconError,       /* Error in icon definitions, skip window */
+  load_DefinitionError, /* Error in window structure, skip window */
+  load_Finished
 } load_result;
 
 /* Lengths exclude terminators */
@@ -1631,23 +1633,20 @@ static load_result browser_load_header(browser_fileinfo *browser,
   Log(log_DEBUG, "browser_load_header");
 
   if (File_ReadBytes(fp,&header,sizeof(template_header)))
-  {
     return load_FileError;
-  }
+
   if (header.dummy[0] || header.dummy[1] || header.dummy[2])
   {
     os_error err;
+
     if (Error_Check(MsgTrans_Lookup(messages,"BadHeader",err.errmess,252)))
-    {
       return load_ReportedError;
-    }
+
     err.errnum = 0;
-    if (Wimp_ReportErrorR(&err, 11 /* OK, Cancel, no prompt */, event_taskname)
-    	== 2)
-    {
+    if (Wimp_ReportErrorR(&err, 11 /* OK, Cancel, no prompt */, event_taskname) == 2)
       return load_ReportedError;
-    }
   }
+
   *fontoffset = header.fontoffset;
   return load_OK;
 }
@@ -1670,17 +1669,20 @@ static load_result browser_load_fonts(browser_fileinfo *browser,
       WinEd_MsgTrans_ReportPS(messages,"LoadMem",FALSE,filename,0,0,0);
       return load_ReportedError;
     }
+
     if (Error_Check(File_Seek(fp,fontoffset)))
     {
       flex_free((flex_ptr) newfontinfo);
       return load_ReportedError;
     }
+
     if (File_ReadBytes(fp,*newfontinfo,filesize - fontoffset))
     {
       if (file_lasterror)
         Error_Check(file_lasterror);
       else
         WinEd_MsgTrans_ReportPS(messages,"BadFileFull",FALSE,filename,0,0,0);
+
       flex_free((flex_ptr) newfontinfo);
       return load_ReportedError;
     }
@@ -1700,6 +1702,7 @@ static load_result browser_load_fonts(browser_fileinfo *browser,
   {
     Log(log_INFORMATION, " No font data found. Font memory not allocated.");
   }
+
   return load_OK;
 }
 
@@ -1709,18 +1712,13 @@ static load_result browser_load_index_entry(template_index *entry, int index,
   Log(log_DEBUG, "browser_load_index_entry");
 
   /* Find index'th index entry in file */
-  if (Error_Check(File_Seek(fp,sizeof(template_header) +
-                            index * sizeof(template_index))))
-  {
+  if (Error_Check(File_Seek(fp,sizeof(template_header) + index * sizeof(template_index))))
     return load_ReportedError;
-  }
 
   /* Read index entry */
-  if (File_ReadBytes(fp,entry,sizeof(template_index)) >=
-      sizeof(template_index))
-  {
+  if (File_ReadBytes(fp,entry,sizeof(template_index)) >= sizeof(template_index))
     return load_FileError;
-  }
+
   return load_OK;
 }
 
@@ -1962,6 +1960,11 @@ static load_result browser_load_templat(browser_fileinfo *browser,
 {
   browser_winentry *winentry;
   load_result result;
+  char identifier[wimp_MAXNAME], origname[wimp_MAXNAME + 1];
+  browser_winentry *tempitem;
+  BOOL repeatedname;
+  int counter = 1, tries = 1000;
+
   #ifdef DeskLib_DEBUG
   int i;
   char reportertext[wimp_MAXNAME+1];
@@ -1969,37 +1972,76 @@ static load_result browser_load_templat(browser_fileinfo *browser,
 
   Log(log_DEBUG, "browser_load_templat");
 
-  /* Delete this entry if it already exists */
-  winentry = browser_findnamedentry(browser,entry->identifier);
-  if (winentry)
-  {
-    browser_deletewindow(winentry);
-  }
-
   /* Create new window entry block for it */
   winentry = malloc(sizeof(browser_winentry));
   if (!winentry)
-  {
     return load_MemoryError;
-  }
+
   LinkList_AddToTail(&browser->winlist,&winentry->header);
 
-  if (strlencr(entry->identifier) >= wimp_MAXNAME)
+  /* Store (pos. 12 char) original with terminator for use in messages to user etc */
+  snprintf(origname, sizeof(origname), entry->identifier);
+
+  /* Store correct-length name in temporary place - might need to muck around with it */
+  snprintf(identifier, sizeof(identifier), entry->identifier);
+
+  if (strlencr(entry->identifier) >= wimp_MAXNAME) /* Illegal name */
+    WinEd_MsgTrans_ReportPS(messages,"LongIdent",FALSE,origname,identifier,0,0);
+
+  /* Check for duplicates (possibly we've re-named to a pre-existing name) */
+
+  /* Set temporary name */
+  snprintf(winentry->identifier, sizeof(winentry->identifier), "~WinEdNULL~");
+
+  Log(log_DEBUG, "Checking for duplicates of: %s", identifier);
+
+  /* Loop through all existing names */
+  tempitem = LinkList_FirstItem(&browser->winlist);
+
+  while (tempitem && (counter < tries)) /* Give up after 1000 tries! */
   {
-    char buffer[48];
-    strncpycr(buffer, entry->identifier, sizeof(buffer)-1);
-    buffer[sizeof(buffer)-1] = '\0';
-    WinEd_MsgTrans_ReportPS(messages,"LongIdent",FALSE,buffer,0,0,0);
+    Log(log_DEBUG, " checking:%s", tempitem->identifier);
+    repeatedname = FALSE;
+    if (!strcmpcr(identifier, tempitem->identifier))
+    {
+      snprintf(identifier, sizeof(identifier), "%d~%s", counter++, origname);
+      Log(log_INFORMATION, "Identifier is not unique. Trying '%s'", identifier);
+      repeatedname = TRUE;
+    }
+
+    if (repeatedname)
+    {
+      /* Go back to start and try again */
+      tempitem = LinkList_FirstItem(&browser->winlist);
+      Log(log_DEBUG, "Back to the start...");
+    }
+    else
+      /* Carry on to check next item */
+      tempitem = LinkList_NextItem(tempitem);
   }
 
-  strncpycr(winentry->identifier, entry->identifier, sizeof(winentry->identifier) - 1);
-  winentry->identifier[sizeof(winentry->identifier) - 1] = '\0';
+  if (counter > 1) /* We had to change the name */
+  {
+    if (counter >= tries) /* Couldn't find a unique name */
+    {
+      /* Free this window */
+      LinkList_Unlink(&browser->winlist,&winentry->header);
+      free(winentry);
+      return load_DefinitionError;
+    }
+    else
+      /* Inform user of changed name */
+      WinEd_MsgTrans_ReportPS(messages,"DupeName",FALSE,origname,identifier,0,0);
+  }
+
+  snprintf(winentry->identifier, sizeof(winentry->identifier), identifier);
 
   winentry->icon = -1;
 
   /* Allocate memory and load window/icon data */
   if (!flex_alloc((flex_ptr) &winentry->window,entry->size))
   {
+    /* Free whole browser */
     LinkList_Unlink(&browser->header,&winentry->header);
     free(winentry);
     return load_MemoryError;
@@ -2007,6 +2049,7 @@ static load_result browser_load_templat(browser_fileinfo *browser,
   if (File_Seek(fp,entry->offset) ||
       File_ReadBytes(fp,winentry->window,entry->size))
   {
+    /* Free whole browser */
     flex_free((flex_ptr) &winentry->window);
     LinkList_Unlink(&browser->header,&winentry->header);
     free(winentry);
@@ -2022,13 +2065,13 @@ static load_result browser_load_templat(browser_fileinfo *browser,
   /* Check for old format flags */
   if (!winentry->window->window.flags.data.newflags)
   {
-    Log(log_NOTICE, "\\B Old format flags found");
+    Log(log_NOTICE, "Old format flags found");
     browser_make_flags_new(winentry);
   }
 
   /* Check indirected data */
   result = browser_all_indirected(browser, winentry, entry);
-  if (result)
+  if (result) /* Could be load_MemoryError or load_ReportedError */
   {
     flex_free((flex_ptr) &winentry->window);
     LinkList_Unlink(&browser->winlist,&winentry->header);
@@ -2038,8 +2081,9 @@ static load_result browser_load_templat(browser_fileinfo *browser,
 
   /* Verify template data */
   result = browser_verify_data(winentry);
-  if (result)
+  if (result == load_IconError)
   {
+    /* Free this window */
     flex_free((flex_ptr) &winentry->window);
     LinkList_Unlink(&browser->winlist,&winentry->header);
     free(winentry);
@@ -2067,6 +2111,7 @@ static load_result browser_load_templat(browser_fileinfo *browser,
   return load_OK;
 }
 
+
 static load_result browser_load_from_fp(browser_fileinfo *browser,
                                         file_handle fp, int filesize,
                                         char *filename)
@@ -2082,40 +2127,72 @@ static load_result browser_load_from_fp(browser_fileinfo *browser,
   browser_badind_reported = FALSE;
   result = browser_load_header(browser, &fontoffset, fp);
   if (result)
+    /* Could be: load_ReportedError, load_FileError */
     return result;
 
-  result = browser_load_fonts(browser, &newfontinfo, fontoffset, filesize,
-                              fp, filename);
+  result = browser_load_fonts(browser, &newfontinfo, fontoffset, filesize, fp, filename);
   if (result)
+    /* Could be: load_ReportedError */
     return result;
 
-  for (index = 0; ; ++index)
+  for (index = 0; !result; ++index)
   {
     result = browser_load_index_entry(&entry, index, fp, filename);
-    if (result)
-      break;
+    /* Could be load_ReportedError or load_FileError */
 
     if (entry.offset == 0) /* Finished */
-      break;
+      result = load_Finished;
 
-    if (entry.type != 1)
+    if (!result) /* Don't bother with this section if there's already been a problem or we've finished loading */
     {
-      char num[8];
-
-      sprintf(num,"%d",entry.type);
-      WinEd_MsgTrans_ReportPS(messages,"NotWindow",FALSE,filename,num,0,0);
-    }
-    else
-    {
-      result = browser_load_templat(browser, &entry, &newfontinfo,
-                                     fp, filename);
-      if (result)
+      if (entry.type != 1)
       {
+        char num[8];
+
+        snprintf(num, sizeof(num), "%d", entry.type);
+        WinEd_MsgTrans_ReportPS(messages,"NotWindow",FALSE,filename,num,0,0);
+      }
+      else
+      {
+        char temp_winident[wimp_MAXNAME];
+
+        /* Store identifier for potential use later, if window memory is freed in browser_load_templat */
+        strncpycr(temp_winident, entry.identifier, sizeof(temp_winident));
+        temp_winident[sizeof(temp_winident) - 1] = '\0';
+
+Debug_Printf("its start:%s and %s", temp_winident, entry.identifier);
+        result = browser_load_templat(browser, &entry, &newfontinfo, fp, filename);
+        /* Result could be:
+           1) Drop individual window:         load_DefinitionError, load_IconError
+           2) Drop remaining browser windows: load_MemoryError, load_FileError
+           3) Disaster. Scrap whole browser:  load_ReportedError
+        */
+
         if (result == load_IconError)
-          /* This error might just be this window so carry on loading... */
-          WinEd_MsgTrans_ReportPS(messages,"ContIcon",FALSE,entry.identifier,0,0,0);
-        else
-          break; /* Stop loading windows */
+        {
+          /* Tell user */
+          WinEd_MsgTrans_ReportPS(messages, "ContIcon", FALSE, temp_winident, 0, 0, 0);
+          /* Reset result to allow for loop to continue */
+          result = load_OK;
+        }
+        else if (result == load_DefinitionError)
+        {
+          Debug_Printf("its:%s and %s", temp_winident, entry.identifier);
+
+          WinEd_MsgTrans_ReportPS(messages, "DupeNameFail", FALSE, temp_winident, 0, 0, 0);
+          result = load_OK;
+        }
+        /* Remaining clauses (including implied "else") leave result as true, so the loop exits */
+        else if (result == load_FileError)
+        {
+          if (index) /* Don't tell user we've loaded something if we haven't */
+            WinEd_MsgTrans_ReportPS(messages, "BadFilePart", FALSE, filename, 0, 0, 0);
+        }
+        else if (result == load_MemoryError)
+        {
+          if (index)
+            WinEd_MsgTrans_ReportPS(messages, "ContMem", FALSE, filename, 0, 0, 0);
+        }
       }
     }
   }
@@ -2123,18 +2200,13 @@ static load_result browser_load_from_fp(browser_fileinfo *browser,
   if (newfontinfo)
     flex_free((flex_ptr) &newfontinfo);
 
-  if (result)
-  {
-    /* Allows partial loading */
-    if (index)
-    {
-      if (result == load_FileError)
-        WinEd_MsgTrans_ReportPS(messages,"BadFilePart",FALSE,filename,0,0,0);
-      else if (result == load_MemoryError)
-        WinEd_MsgTrans_ReportPS(messages,"ContMem",FALSE,filename,0,0,0);
-      return load_OK;
-    }
-  }
+  if (!index) /* E.g. failed to load anything at all and no warning issued yet */
+    return result;
+
+  if (result != load_ReportedError)
+    /* We can't cope with ReportedError. All others should be OKish so pass back load_OK to browser_getfile */
+    result = load_OK;
+
   return result;
 }
 
@@ -2167,6 +2239,8 @@ BOOL               browser_getfile(char *filename,int filesize,browser_fileinfo 
   }
 
   result = browser_load_from_fp(browser, fp, filesize, filename);
+  /* Results could be: load_OK                                              - all dandy
+                       load_ReportedError, load_FileError, load_MemoryError - abandon whole browser */
 
   File_Close(fp);
   Hourglass_Off();
@@ -2182,10 +2256,14 @@ BOOL               browser_getfile(char *filename,int filesize,browser_fileinfo 
     case load_MemoryError:
       WinEd_MsgTrans_ReportPS(messages,"LoadMem",FALSE,filename,0,0,0);
       break;
+    case load_ReportedError:
+      WinEd_MsgTrans_ReportPS(messages,"LoadRep",FALSE,filename,0,0,0);
+      break;
     default:
-      break; /* Here to suppress compiler warning about not using load_OK and load_ReportedError */
+      break; /* Here to suppress compiler warning about not using load_OK etc */
   }
 
+  /* If we return FALSE, the browser is abandoned using browser_close */
   return result ? FALSE : TRUE;
 }
 
@@ -2348,7 +2426,7 @@ void               browser_sorticons(browser_fileinfo *browser, BOOL force, BOOL
   if (choices->round) /* Note: this choice now means "sort browser icons alphabetically" */
   {
     /* Find list of window names */
-    winentry = LinkList_NextItem(&browser->winlist);
+    winentry = LinkList_FirstItem(&browser->winlist);
     while (winentry)
     {
       strncpycr(names[index], winentry->identifier, wimp_MAXNAME);

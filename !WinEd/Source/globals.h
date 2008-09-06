@@ -68,9 +68,11 @@ void fort_out(const char *string);
 /* Syslog (& debug) output */
 void Log(int level, const char *format, ...);
 
+/* The same as DeskLib, except syslogs the message */
 #define WinEd_MsgTrans_Report(filedesc, token, fatal) \
   WinEd_MsgTrans_ReportPS((filedesc),(token),(fatal),0,0,0,0)
 
+/* The same as DeskLib, except syslogs the message */
 extern os_error *WinEd_MsgTrans_ReportPS(msgtrans_filedesc *filedesc, char *token,
                                    BOOL fatal,
                                    const char *p0,

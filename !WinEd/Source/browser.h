@@ -18,6 +18,25 @@ browser_fileinfo *browser_newbrowser(void);
 /* Load a file in a new window; reference is there just for internal
    consistency */
 BOOL browser_load(char *filename,int filesize,void *reference);
+/*
+   Load Templates Process
+   ---- --------- -------
+
+   Templates are loaded using the following functions. Errors and messages are generated as the loading
+   proceeds. If one function returns anything other than load_OK, then it's calling function will
+   terminate or truncate the loading of the template, as appropriate. Within each function, bad results
+   can be dealt with and then the load_result reset to load_OK.
+
+   browser_load - returns nothing interesting
+                - calls browser_close if gets FALSE back from:
+     browser_getfile - returns BOOL based on load_result. Calls fopen, fclose.
+                     - Issues user total failure messages based on load_result from:
+       calls browser_load_from_fp - returns load_result based on results of browser_load_templat. Loads complete file.
+                                  - issues partial failure messages based on load_result from:
+         calls browser_load_templat - returns load_result based on window contents. Loads individual windows.
+                                    - issues rename errors info which still allows the window to load
+*/
+
 
 /* Save a file (in entirety or selection only) */
 BOOL browser_save(char *filename,void *ref,BOOL selection);

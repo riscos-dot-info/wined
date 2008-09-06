@@ -4,8 +4,10 @@
 - Compressed size of stats window slightly
 - Added "goto icon" functionality
 - Added SysLog logging
-- Added shortcuts to preview menu
+- Added keyboard shortcuts to preview menu
 - Enabled newlines and time in icon name Basic export
+- Allow loading of templates containing duplicate window names
+- Fixed minor user message bug
 
 3.10
 ~~~~
