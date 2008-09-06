@@ -48,16 +48,21 @@ void export_puts_basic(FILE *fp, char *string, int *lineno)
 
   previous = string;
 
-  do
+  if (strlen(string) > 0 ) /* Don't write blank lines */
   {
-    newline = strstr(previous, "\\n");                /* Find newline character */
-    if (newline)                                      /* Insert terminator if there's another section to write out */
-      *newline = '\0';
-    if (strlen(previous) > 0)                         /* Don't write blank lines */
-      export_puts_basic_line(fp, previous, *lineno);  /* Write first (and possibly last) section */
-    (*lineno)++;                                      /* Increment output line number */
-    previous = newline + 2;                           /* Skip past the actual "\n" */
-  } while (newline);
+    if (strcmp(string, "\\n") == 0)
+      *previous = '\0'; /* Special case - allow a lonely "\n" to mean "print one blank line" */
+
+    do
+    {
+      newline = strstr(previous, "\\n");                /* Find newline character */
+      if (newline)                                      /* Insert terminator if there's another section to write out */
+        *newline = '\0';
+        export_puts_basic_line(fp, previous, *lineno);  /* Write first (and possibly last) section */
+      (*lineno)++;                                      /* Increment output line number */
+      previous = newline + 2;                           /* Skip past the actual "\n" */
+    } while (newline);
+  }
 }
 
 void export_puts_basic_line(FILE *fp, const char *string, int lineno)

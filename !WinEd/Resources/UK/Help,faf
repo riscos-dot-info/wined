@@ -955,9 +955,8 @@ following parameters can be substituted:</p>
 characters following a backslash will be written, but cause the
 backslash to be ignored, so you can use <code>\\</code> to include a backslash in
 your messages.</p>
-<p>In both text-based and tokenised Basic outputs, a new line will be inserted when a
-<code>\n</code> is encountered. Finally, to allow a % character to be included in a
-message you must type <code>%%</code>.</p>
+<p>In both text-based and tokenised Basic outputs, an extra newline will be inserted when a
+<code>\n</code> is encountered. Finally, to allow a % character to be included in any output you must type <code>%%</code>.</p>
 <p><code>E_Preamble</code> is a message that will appear at the top of an icon names
 file, and <code>E_Postamble</code> will appear at the end. <code>E_PreWin</code> appears at the
 start of each window and <code>E_PostWin</code> at the end; they will not be written
