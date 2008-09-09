@@ -6,21 +6,20 @@ Typing long leafname into savebox file icon then dragging to save caused
 name to be corrupted (12 chars copied, no terminator).
 
 Choose close on a modified template. A "save or discard" box appears,
-but doesn't respond to mouse clicks. This was due to event handlers
-being released by the routine triggered by closing of the preceding
-transient ("save or discard") window (via menusdeleted message).
+but then the save box doesn't respond to mouse clicks. This was due to
+event handlers being released by the routine triggered by closing of the
+preceding transient ("save or discard") window (via menusdeleted message).
+
+-> Fixed by 3.05:
+Delete first window in list and the others don't shuffle up drag one
+window into another browser and overwrites entry in display
+(drag/reorder reveals it again)
 
 -> Fixed by 3.06:
 Previous versions of WinEd allowed illegal use of long (>11 characters,
 excluding terminator) template names. LongIdent template has example of
 illegal name and also includes an example of past corruption due to the
 Anni bug.
-
--> Fixed by 3.07:
-Delete first window in list and the others don't shuffle up drag one
-window into another browser and overwrites entry in display
-(drag/reorder reveals it again)
-
 
 -> Fixed by 3.092:
 

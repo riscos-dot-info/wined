@@ -1440,7 +1440,7 @@ typedef enum {
   load_OK = 0,
   load_MemoryError,     /* Stop loading file, maybe discard completely */
   load_FileError,       /* Some significant file structure error - stop loading file, maybe discard completely */
-  load_ReportedError,
+  load_FatalError,      /* Bad thing. Corrupt file header, font data, indirected data etc. Abandon whole file. */
   load_IconError,       /* Error in icon definitions, skip window */
   load_DefinitionError, /* Error in window structure, skip window */
   load_Finished
@@ -1614,11 +1614,8 @@ static load_result browser_check_indirected(browser_winentry *winentry,
   if (!browser_badind_reported)
   {
     browser_badind_reported = TRUE;
-    err.errnum = 0;
-    if (Error_Check(MsgTrans_Lookup(messages,"CorruptInd",err.errmess,252)))
-      return load_ReportedError;
-    return (Wimp_ReportErrorR(&err, 11, event_taskname) == 2)
-           ? load_ReportedError : load_OK;
+    Log(log_ERROR, "This file has invalid indirected data and cannot be loaded. Please report the problem to the WinEd maintainer.");
+    return load_FatalError;
   }
   return load_OK;
 }
@@ -1637,14 +1634,9 @@ static load_result browser_load_header(browser_fileinfo *browser,
 
   if (header.dummy[0] || header.dummy[1] || header.dummy[2])
   {
-    os_error err;
-
-    if (Error_Check(MsgTrans_Lookup(messages,"BadHeader",err.errmess,252)))
-      return load_ReportedError;
-
-    err.errnum = 0;
-    if (Wimp_ReportErrorR(&err, 11 /* OK, Cancel, no prompt */, event_taskname) == 2)
-      return load_ReportedError;
+    char buffer[256];
+    Log(log_ERROR, "This file has an apparently invalid header and cannot be loaded. Please report the problem to the WinEd maintainer.");
+    return load_FatalError;
   }
 
   *fontoffset = header.fontoffset;
@@ -1667,13 +1659,13 @@ static load_result browser_load_fonts(browser_fileinfo *browser,
     if (!flex_alloc((flex_ptr) newfontinfo, filesize - fontoffset))
     {
       WinEd_MsgTrans_ReportPS(messages,"LoadMem",FALSE,filename,0,0,0);
-      return load_ReportedError;
+      return load_FatalError;
     }
 
     if (Error_Check(File_Seek(fp,fontoffset)))
     {
       flex_free((flex_ptr) newfontinfo);
-      return load_ReportedError;
+      return load_FatalError;
     }
 
     if (File_ReadBytes(fp,*newfontinfo,filesize - fontoffset))
@@ -1684,7 +1676,7 @@ static load_result browser_load_fonts(browser_fileinfo *browser,
         WinEd_MsgTrans_ReportPS(messages,"BadFileFull",FALSE,filename,0,0,0);
 
       flex_free((flex_ptr) newfontinfo);
-      return load_ReportedError;
+      return load_FatalError;
     }
     else
     {
@@ -1713,7 +1705,7 @@ static load_result browser_load_index_entry(template_index *entry, int index,
 
   /* Find index'th index entry in file */
   if (Error_Check(File_Seek(fp,sizeof(template_header) + index * sizeof(template_index))))
-    return load_ReportedError;
+    return load_FatalError;
 
   /* Read index entry */
   if (File_ReadBytes(fp,entry,sizeof(template_index)) >= sizeof(template_index))
@@ -1819,6 +1811,7 @@ static load_result browser_all_indirected(browser_fileinfo *browser,
                                       indtable, -1, pass);
     if (result)
     {
+      /* Could be: load_FatalError, load_MemoryError */
       free(indtable);
       return result;
     }
@@ -1830,6 +1823,7 @@ static load_result browser_all_indirected(browser_fileinfo *browser,
                                         indtable, icon, pass);
       if (result)
       {
+        /* Could be: load_FatalError, load_MemoryError */
         free(indtable);
         return result;
       }
@@ -2071,7 +2065,7 @@ static load_result browser_load_templat(browser_fileinfo *browser,
 
   /* Check indirected data */
   result = browser_all_indirected(browser, winentry, entry);
-  if (result) /* Could be load_MemoryError or load_ReportedError */
+  if (result) /* Could be load_MemoryError or load_FatalError */
   {
     flex_free((flex_ptr) &winentry->window);
     LinkList_Unlink(&browser->winlist,&winentry->header);
@@ -2127,18 +2121,18 @@ static load_result browser_load_from_fp(browser_fileinfo *browser,
   browser_badind_reported = FALSE;
   result = browser_load_header(browser, &fontoffset, fp);
   if (result)
-    /* Could be: load_ReportedError, load_FileError */
+    /* Could be: load_FileError, load_FatalError */
     return result;
 
   result = browser_load_fonts(browser, &newfontinfo, fontoffset, filesize, fp, filename);
   if (result)
-    /* Could be: load_ReportedError */
+    /* Could be: load_FatalError */
     return result;
 
   for (index = 0; !result; ++index)
   {
     result = browser_load_index_entry(&entry, index, fp, filename);
-    /* Could be load_ReportedError or load_FileError */
+    /* Could be load_FatalError or load_FileError */
 
     if (entry.offset == 0) /* Finished */
       result = load_Finished;
@@ -2160,12 +2154,11 @@ static load_result browser_load_from_fp(browser_fileinfo *browser,
         strncpycr(temp_winident, entry.identifier, sizeof(temp_winident));
         temp_winident[sizeof(temp_winident) - 1] = '\0';
 
-Debug_Printf("its start:%s and %s", temp_winident, entry.identifier);
         result = browser_load_templat(browser, &entry, &newfontinfo, fp, filename);
         /* Result could be:
            1) Drop individual window:         load_DefinitionError, load_IconError
            2) Drop remaining browser windows: load_MemoryError, load_FileError
-           3) Disaster. Scrap whole browser:  load_ReportedError
+           3) Disaster. Scrap whole browser:  load_FatalError
         */
 
         if (result == load_IconError)
@@ -2203,8 +2196,8 @@ Debug_Printf("its start:%s and %s", temp_winident, entry.identifier);
   if (!index) /* E.g. failed to load anything at all and no warning issued yet */
     return result;
 
-  if (result != load_ReportedError)
-    /* We can't cope with ReportedError. All others should be OKish so pass back load_OK to browser_getfile */
+  if (result != load_FatalError)
+    /* We can't cope with FatalError. All others should be OKish so pass back load_OK to browser_getfile */
     result = load_OK;
 
   return result;
@@ -2239,8 +2232,8 @@ BOOL               browser_getfile(char *filename,int filesize,browser_fileinfo 
   }
 
   result = browser_load_from_fp(browser, fp, filesize, filename);
-  /* Results could be: load_OK                                              - all dandy
-                       load_ReportedError, load_FileError, load_MemoryError - abandon whole browser */
+  /* Results could be: load_OK                                           - all dandy
+                       load_FatalError, load_FileError, load_MemoryError - abandon whole browser */
 
   File_Close(fp);
   Hourglass_Off();
@@ -2256,7 +2249,7 @@ BOOL               browser_getfile(char *filename,int filesize,browser_fileinfo 
     case load_MemoryError:
       WinEd_MsgTrans_ReportPS(messages,"LoadMem",FALSE,filename,0,0,0);
       break;
-    case load_ReportedError:
+    case load_FatalError:
       WinEd_MsgTrans_ReportPS(messages,"LoadRep",FALSE,filename,0,0,0);
       break;
     default:

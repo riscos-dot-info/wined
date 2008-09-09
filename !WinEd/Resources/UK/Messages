@@ -25,8 +25,8 @@ ContMem:File '%0' has only partially loaded due to lack of memory
 ContIcon:Window '%0' not loaded due to anomolous icon data.
 BadFilePart:File '%0' has only partially loaded because it is corrupted. Window definitions may be missing.
 BadFileFull:File '%0' cannot be loaded because it is corrupted
-BadHeader:This file has an apparently invalid header and may not load correctly. Try anyway?
-CorruptInd:This file has invalid indirected data. Continue to load it?
+#BadHeader:This file has an apparently invalid header and cannot be loaded. Please report the problem to the WinEd maintainer.
+CorruptInd:This file has invalid indirected data and cannot be loaded. Please report the problem to the WinEd maintainer.
 QuitWarn:WinEd contains templates which have not been saved after editing
 CloseWarn:These templates have not been saved after editing
 CantSave:Unable to save file '%0'
