@@ -60,7 +60,7 @@ BOOL ok_report(os_error *message)
   char title[64];
 
   MsgTrans_Lookup(messages,"MsgFrom",title,64);
-  if (Wimp_ReportErrorR(message,0x13,title) == 1)
+  if (WinEd_Wimp_ReportErrorR(message,0x13,title) == 1)
     return TRUE;
 
   return FALSE;
@@ -212,6 +212,13 @@ os_error *WinEd_MsgTrans_ReportPS(msgtrans_filedesc *filedesc, char *token,
   }
 
   return NULL;
+}
+
+/* Just logs the error as well as calling Wimp_ReportError */
+int WinEd_Wimp_ReportErrorR(os_error *error, int flags, const char *name)
+{
+  Log(log_NOTICE, error->errmess);
+  return Wimp_ReportErrorR(error, flags, name);
 }
 
 void test_fn(void)

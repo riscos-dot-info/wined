@@ -80,6 +80,9 @@ extern os_error *WinEd_MsgTrans_ReportPS(msgtrans_filedesc *filedesc, char *toke
                                    const char *p2,
                                    const char *p3);
 
+/* Just logs the message, then passes it straight on to Wimp_ReportError */
+int WinEd_Wimp_ReportErrorR(os_error *error, int flags, const char *name);
+
 /* For debugging */
 void test_fn(void);
 

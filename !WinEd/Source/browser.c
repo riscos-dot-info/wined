@@ -12,6 +12,7 @@
 #include "DeskLib:KeyCodes.h"
 #include "DeskLib:Environment.h"
 #include "DeskLib:Time.h"
+#include "DeskLib:Filing.h"
 
 #include "browser.h"
 #include "browtools.h"
@@ -524,7 +525,8 @@ void              browcom_rename(BOOL submenu, int x, int y,void *reference)
     y = ptrinfo.pos.y + 64;
   }
   Icon_SetText(rename_dbox, 2,
-  	browser_findselection(browser,&index,browser->numwindows)->identifier);
+               browser_findselection(browser, &index,browser->numwindows)->identifier);
+
   if (submenu)
     Wimp_CreateSubMenu((menu_ptr) rename_dbox, x, y);
   else
@@ -629,16 +631,32 @@ static void       browser_cr(browser_fileinfo *browser)
   }
 }
 
-static BOOL       browser_dosave(char *filename,browser_fileinfo *browser, BOOL selection,file_handle fp)
+static BOOL       browser_dosave(char *filename, browser_fileinfo *browser, BOOL selection, file_handle fp)
 {
   template_header header;
   browser_winentry *winentry;
-  int offset;
+  int offset, windowcount = 0;
+  #ifdef DeskLib_DEBUG
+  int corrupt_type = 0;
+  #endif
 
   Log(log_DEBUG, "browser_dosave - saving to %s", filename);
 
+  #ifdef DeskLib_DEBUG
+    /* Only provide functionality to output dodgy test files if we're debugging */
+    if (!strncmp("~WinEdCorrupt~", Filing_FindLeafname(filename), 14))
+      /* Find type of file to generate, based on final digit */
+      corrupt_type = atoi(&filename[strlen(filename) - 1]);
+      /*
+          1: Corrupt header          (header magic numbers not magic)
+          2: (Not used)
+          3: Corrupt fonts           (font offset larger than file)
+          4: Exotic window           (first window has type = -99)
+      */
+  #endif
+
   browser_cr(browser);
-  Log(log_DEBUG, "cr checked");
+
   /* Save header */
   if (browser->fontinfo)
   {
@@ -650,10 +668,28 @@ static BOOL       browser_dosave(char *filename,browser_fileinfo *browser, BOOL 
         offset += sizeof(template_index) +
                   flex_size((flex_ptr) &winentry->window);
     header.fontoffset = offset + 4; /* Skip terminating zero */
+
+    #ifdef DeskLib_DEBUG
+      if (corrupt_type == 3)
+      {
+        Log(log_NOTICE, "Corrupting font data!");
+        header.fontoffset += 1000000;
+      }
+    #endif
   }
   else
     header.fontoffset = -1;
+
   header.dummy[0] = header.dummy[1] = header.dummy[2] = 0;
+
+  #ifdef DeskLib_DEBUG
+    if (corrupt_type == 1)
+    {
+      Log(log_NOTICE, "Corrupting header magic number!");
+      header.dummy[1] = -99;
+    }
+  #endif
+
   if (File_WriteBytes(fp,&header,sizeof(template_header)))
   {
     if (file_lasterror)
@@ -663,7 +699,7 @@ static BOOL       browser_dosave(char *filename,browser_fileinfo *browser, BOOL 
     return FALSE;
   }
 
-  Log(log_DEBUG, "header written");
+  Log(log_DEBUG, " header written");
 
   /* Work out eventual offset for start off window data */
   offset = sizeof(template_header);
@@ -682,9 +718,20 @@ static BOOL       browser_dosave(char *filename,browser_fileinfo *browser, BOOL 
       template_index index;
       int i;
 
+      windowcount++;
+
       index.offset = offset;
       index.size = flex_size((flex_ptr) &winentry->window);
       index.type = 1;
+
+      #ifdef DeskLib_DEBUG
+        if ((corrupt_type == 4) && (windowcount == 1))
+        {
+          Log(log_NOTICE, "Corrupting object type!");
+          index.type = -99;
+        }
+      #endif
+
       /* Don't use strcpycr, we need to choose between terminators */
       for (i = 0; i < 12; i++) /* Titles can only be 11 chars long + terminator */
       {
@@ -695,6 +742,7 @@ static BOOL       browser_dosave(char *filename,browser_fileinfo *browser, BOOL 
           break;
         }
       }
+
       if (File_WriteBytes(fp,&index,sizeof(template_index)))
       {
         if (file_lasterror)
@@ -713,11 +761,15 @@ static BOOL       browser_dosave(char *filename,browser_fileinfo *browser, BOOL 
     return FALSE;
   }
 
-  Log(log_DEBUG, "Index written");
+  Log(log_DEBUG, " index written");
 
   /* Save actual data for each window */
+  windowcount = 0;
   for (winentry = LinkList_NextItem(&browser->winlist); winentry;
        winentry = LinkList_NextItem(winentry))
+  {
+    windowcount++;
+
     if (!selection || Icon_GetSelect(browser->window,winentry->icon))
     {
       browser_changesparea(winentry->window, (void *) 1);
@@ -733,6 +785,7 @@ static BOOL       browser_dosave(char *filename,browser_fileinfo *browser, BOOL 
       }
       browser_changesparea(winentry->window, user_sprites);
     }
+  }
 
   /* Save font data */
   if (browser->fontinfo)
@@ -1510,8 +1563,10 @@ static load_result browser_check_indirected(browser_winentry *winentry,
                                             ind_table *indtable,
                                             int icon, BOOL justbuild)
 {
-  os_error err;
   BOOL broken = FALSE;
+  #ifdef DeskLib_DEBUG
+    os_error error;
+  #endif
 
   ++icon;     /* title is first entry in table, so simply inc index */
 
@@ -1611,10 +1666,16 @@ static load_result browser_check_indirected(browser_winentry *winentry,
 
   if (!broken)
     return load_OK;
+
   if (!browser_badind_reported)
   {
     browser_badind_reported = TRUE;
     Log(log_ERROR, "This file has invalid indirected data and cannot be loaded. Please report the problem to the WinEd maintainer.");
+    #ifdef DeskLib_DEBUG
+      snprintf(error.errmess, sizeof(error.errmess), "Debug: Problem with indirected data - load anyway?");
+      if (WinEd_Wimp_ReportErrorR(&error, 11, event_taskname) == 1/* OK */)
+        return load_OK;
+    #endif
     return load_FatalError;
   }
   return load_OK;
@@ -1626,6 +1687,9 @@ static load_result browser_load_header(browser_fileinfo *browser,
                                        file_handle fp)
 {
   template_header header;
+  #ifdef DeskLib_DEBUG
+    os_error error;
+  #endif
 
   Log(log_DEBUG, "browser_load_header");
 
@@ -1634,8 +1698,17 @@ static load_result browser_load_header(browser_fileinfo *browser,
 
   if (header.dummy[0] || header.dummy[1] || header.dummy[2])
   {
-    char buffer[256];
-    Log(log_ERROR, "This file has an apparently invalid header and cannot be loaded. Please report the problem to the WinEd maintainer.");
+    Log(log_ERROR, "This file has an apparently invalid header (%d:%d:%d) and cannot be loaded. Please report the problem to the WinEd maintainer.", header.dummy[0], header.dummy[1], header.dummy[2]);
+
+    #ifdef DeskLib_DEBUG
+      snprintf(error.errmess, sizeof(error.errmess), "Debug: Corrupt header - load anyway?");
+      if (WinEd_Wimp_ReportErrorR(&error, 11, event_taskname) == 1/* OK */)
+      {
+        *fontoffset = header.fontoffset;
+        return load_OK;
+      }
+    #endif
+
     return load_FatalError;
   }
 
@@ -1650,44 +1723,52 @@ static load_result browser_load_fonts(browser_fileinfo *browser,
 {
   Log(log_DEBUG, "browser_load_fonts");
 
-  if (fontoffset != -1 && fontoffset < filesize)
+  if (fontoffset != -1)
   {
-    int fonts;
-    fonts = (filesize - fontoffset) / sizeof(template_fontinfo);
-    Log(log_INFORMATION, " Loading font data (%d bytes = %d fonts)...", filesize - fontoffset, fonts);
-
-    if (!flex_alloc((flex_ptr) newfontinfo, filesize - fontoffset))
+    if ((fontoffset < filesize) && fontoffset > 0)
     {
-      WinEd_MsgTrans_ReportPS(messages,"LoadMem",FALSE,filename,0,0,0);
-      return load_FatalError;
-    }
+      int fonts;
+      fonts = (filesize - fontoffset) / sizeof(template_fontinfo);
+      Log(log_INFORMATION, " Loading font data (%d bytes = %d fonts)...", filesize - fontoffset, fonts);
 
-    if (Error_Check(File_Seek(fp,fontoffset)))
-    {
-      flex_free((flex_ptr) newfontinfo);
-      return load_FatalError;
-    }
+      if (!flex_alloc((flex_ptr) newfontinfo, filesize - fontoffset))
+      {
+        WinEd_MsgTrans_ReportPS(messages,"LoadMem",FALSE,filename,0,0,0);
+        return load_FatalError;
+      }
 
-    if (File_ReadBytes(fp,*newfontinfo,filesize - fontoffset))
-    {
-      if (file_lasterror)
-        Error_Check(file_lasterror);
+      if (Error_Check(File_Seek(fp,fontoffset)))
+      {
+        flex_free((flex_ptr) newfontinfo);
+        return load_FatalError;
+      }
+
+      if (File_ReadBytes(fp,*newfontinfo,filesize - fontoffset))
+      {
+        if (file_lasterror)
+          Error_Check(file_lasterror);
+        else
+          WinEd_MsgTrans_ReportPS(messages,"BadFileFull",FALSE,filename,0,0,0);
+
+        flex_free((flex_ptr) newfontinfo);
+        return load_FatalError;
+      }
       else
-        WinEd_MsgTrans_ReportPS(messages,"BadFileFull",FALSE,filename,0,0,0);
-
-      flex_free((flex_ptr) newfontinfo);
-      return load_FatalError;
+      {
+        int i;
+        for (i = 0; i < fonts; i++)
+        {
+          Log(log_DEBUG, " Font %d: %dx%d %s", i,
+           (*newfontinfo)[i].size.x / 16,
+           (*newfontinfo)[i].size.y / 16,
+           (*newfontinfo)[i].name);
+        }
+      }
     }
     else
     {
-      int i;
-      for (i = 0; i < fonts; i++)
-      {
-        Log(log_DEBUG, " Font %d: %dx%d %s", i,
-         (*newfontinfo)[i].size.x / 16,
-         (*newfontinfo)[i].size.y / 16,
-         (*newfontinfo)[i].name);
-      }
+      Log(log_ERROR, " Invalid font offset: %d", fontoffset);
+      return load_FatalError;
     }
   }
   else
@@ -2142,11 +2223,21 @@ static load_result browser_load_from_fp(browser_fileinfo *browser,
       if (entry.type != 1)
       {
         char num[8];
+        #ifdef DeskLib_DEBUG
+          os_error error;
+        #endif
 
         snprintf(num, sizeof(num), "%d", entry.type);
-        WinEd_MsgTrans_ReportPS(messages,"NotWindow",FALSE,filename,num,0,0);
+        #ifdef DeskLib_DEBUG
+           snprintf(error.errmess, sizeof(error.errmess), "Debug: Unknown object type (%d) - load as window?", entry.type);
+           if (WinEd_Wimp_ReportErrorR(&error, 11, event_taskname) == 1/* OK */)
+             entry.type = 1;
+         #else
+           WinEd_MsgTrans_ReportPS(messages, "NotWindow", FALSE, filename, num, 0, 0);
+        #endif
       }
-      else
+
+      if (entry.type == 1)
       {
         char temp_winident[wimp_MAXNAME];
 

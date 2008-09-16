@@ -8,8 +8,8 @@ objects = Error.o alndiag.o bordiag.o browser.o browtools.o choices.o coorddiag.
 
 libraries = flexlib:flexlib-32.o DeskLib:DeskLib.o
 
-#compileflags = -DFORTIFY -DDeskLib_DEBUG -std=c99 -mlibscl -Wunused -Wall -fno-strict-aliasing -mthrowback -mpoke-function-name -c
-compileflags = -O3 -std=c99 -mlibscl -Wunused -Wuninitialized -Wall -fno-strict-aliasing -mthrowback -mpoke-function-name -c
+compileflags = -DFORTIFY -DDeskLib_DEBUG -std=c99 -mlibscl -Wunused -Wall -fno-strict-aliasing -mthrowback -mpoke-function-name -c
+#compileflags = -O3 -std=c99 -mlibscl -Wunused -Wuninitialized -Wall -fno-strict-aliasing -mthrowback -mpoke-function-name -c
 
 linkflags = -mlibscl -o ^.!RunImage
 
