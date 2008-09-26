@@ -47,3 +47,4 @@
 46,"Resize-icons window","Add cancel button","c"
 47,"Remove repeated strings","As per FormED","z"
 48,"Add template metadata","Add metadata to template files (e.g. author, program&version used etc) - using non-window object?","c"
+49,"Menu templates","Add menu creation/editing mode","z"

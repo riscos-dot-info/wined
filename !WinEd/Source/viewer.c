@@ -870,6 +870,7 @@ BOOL                viewer_makewinblock(browser_winentry *winentry,
   (*winblock)->window.spritearea = (unsigned int *) user_sprites;
   /* Process icons */
   /* Title */
+  Log(log_TEDIOUS, " processing title");
   if (!icnedit_processicon(winentry,
       			   &(*winblock)->window.titleflags,
       			   &(*winblock)->window.title,0,wineditable))
@@ -880,6 +881,7 @@ BOOL                viewer_makewinblock(browser_winentry *winentry,
   /* Icons */
   for (icon = 0; icon < (*winblock)->window.numicons; icon++)
   {
+    Log(log_TEDIOUS, "  processing icon %d", icon);
     if (!icnedit_processicon(winentry,&(*winblock)->icon[icon].flags,
     			    &(*winblock)->icon[icon].data,
     			    &(*winblock)->icon[icon].workarearect,

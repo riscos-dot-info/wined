@@ -179,6 +179,7 @@ void Log(int level, const char *format, ...)
   else if (level <= log_NOTICE)      snprintf(log_final, sizeof(log_final), "\\b%s", log_buffer); /* blue   */
   else if (level <= log_INFORMATION) snprintf(log_final, sizeof(log_final), "%s",    log_buffer); /* black  */
   else                               snprintf(log_final, sizeof(log_final), "\\f%s", log_buffer); /* grey   */
+
   Debug_Print(log_final);
 
   /* Log message (without Reporter colours) with syslog */

@@ -228,15 +228,16 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
   if (editable)
     icnedit_makeeditableflags(winentry, flags);
 
-    Log(log_TEDIOUS, "End of icnedit_processicon");
     if (workarearect) /* Some icons (e.g. title) don't have a work area */
     {
-      Log(log_TEDIOUS, " Size: %d, %d, %d, %d", workarearect->min.x, workarearect->min.y, workarearect->max.x, workarearect->max.y);
+      Log(log_TEDIOUS, " Size: %d, %d, %d, %d", workarearect->min.x, workarearect->min.y,
+                                                workarearect->max.x, workarearect->max.y);
     }
     else
     {
       Log(log_TEDIOUS, " Size: none");
     }
+    Log(log_TEDIOUS, "End of icnedit_processicon");
 
   return TRUE;
 }
