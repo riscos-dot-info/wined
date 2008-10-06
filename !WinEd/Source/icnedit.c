@@ -133,6 +133,7 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
      			 icon_flags *flags,icon_data *data,
      			 wimp_rect *workarearect,BOOL editable)
 {
+  int i;
   Log(log_TEDIOUS, "icnedit_processicon");
 
   /* Font */
@@ -176,21 +177,43 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
       Log(log_TEDIOUS, "  type: data.text");
 
       if (validindex > 0)
+      {
+        Log(log_TEDIOUS, "  validindex > 0. Allocating %d bytes for string: '%s'", strlencr(validcont) + 1, validcont);
         data->indirecttext.validstring = malloc(strlencr(validcont) + 1);
+
+        fprintf(stderr, "Test value of validstring...\n");
+        fprintf(stderr, "As string: %s\n", validcont);
+        for (i=0; i < 22; i++)
+          fprintf(stderr, "%c", validcont[i]);
+        fprintf(stderr, "\n");
+      }
       else
+      {
+        Log(log_TEDIOUS, "  validindex <= 0. Allocating 1 byte");
         data->indirecttext.validstring = malloc(1);
+      }
+
       if (!data->indirecttext.validstring)
       {
-        free(data->indirecttext.buffer);
+        Log(log_WARNING, "  Malloc failed in icnedit_processicon. Freeing...");
+        free(data->indirecttext.buffer); /*why freeing buffer not validstring??*/
         return FALSE;
       }
+      else
+      {
+        Log(log_TEDIOUS, "   malloc OK");
+      }
+
+      Log(log_TEDIOUS, "   OK, try this: R7;Pptr_write;A0-9/");
+
       if (validindex > 0)
       {
         Log(log_TEDIOUS, "  validation: %s", validcont);
-        strcpycr(data->indirecttext.validstring,validcont);
+        strcpycr(data->indirecttext.validstring, validcont);
       }
       else
         *data->indirecttext.validstring = 0;
+
       if (editable && workarearect && validindex > 0)
       {
         int rindex;
