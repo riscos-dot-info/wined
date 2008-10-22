@@ -133,14 +133,12 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
      			 icon_flags *flags,icon_data *data,
      			 wimp_rect *workarearect,BOOL editable)
 {
-  int i;
-  Log(log_TEDIOUS, "icnedit_processicon");
+  Log(log_TEDIOUS, " icnedit_processicon");
 
   /* Font */
   if (flags->data.font)
     flags->font.handle =
-      icnedit_findfont(&winentry->browser->fontinfo[flags->font.handle-1],
-      		       &winentry->fontarray);
+      icnedit_findfont(&winentry->browser->fontinfo[flags->font.handle-1], &winentry->fontarray);
 
   if (flags->data.indirected)
   {
@@ -180,12 +178,6 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
       {
         Log(log_TEDIOUS, "  validindex > 0. Allocating %d bytes for string: '%s'", strlencr(validcont) + 1, validcont);
         data->indirecttext.validstring = malloc(strlencr(validcont) + 1);
-
-        fprintf(stderr, "Test value of validstring...\n");
-        fprintf(stderr, "As string: %s\n", validcont);
-        for (i=0; i < 22; i++)
-          fprintf(stderr, "%c", validcont[i]);
-        fprintf(stderr, "\n");
       }
       else
       {
@@ -196,7 +188,7 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
       if (!data->indirecttext.validstring)
       {
         Log(log_WARNING, "  Malloc failed in icnedit_processicon. Freeing...");
-        free(data->indirecttext.buffer); /*why freeing buffer not validstring??*/
+        free(data->indirecttext.validstring);
         return FALSE;
       }
       else
@@ -204,11 +196,10 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
         Log(log_TEDIOUS, "   malloc OK");
       }
 
-      Log(log_TEDIOUS, "   OK, try this: R7;Pptr_write;A0-9/");
-
       if (validindex > 0)
       {
         Log(log_TEDIOUS, "  validation: %s", validcont);
+        fprintf(stderr, "it's '%s'", validcont);
         strcpycr(data->indirecttext.validstring, validcont);
       }
       else

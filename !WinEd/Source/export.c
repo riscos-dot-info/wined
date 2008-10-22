@@ -106,67 +106,52 @@ char              *upper_case(char *s)
 
 int export_scan(FILE *fp, const browser_winentry *winentry, BOOL write, const char *pre, int currentline)
 {
-  int icon, foundanicon = FALSE;
-  char buffy[256];
+  int valid, icon, foundanicon = FALSE;
+  char buffy[256], icnname[128];
 
   Log(log_DEBUG, "export_scan, write:%d", write);
 
   for (icon = 0; icon < winentry->window->window.numicons; ++icon)
   {
     Log(log_DEBUG, "Checking icon %d", icon);
-    if (winentry->window->icon[icon].flags.data.indirected &&
-    	winentry->window->icon[icon].flags.data.text &&
-    	(int) winentry->window->icon[icon].data.indirecttext.validstring >= 0)
+
+    valid = extract_iconname((browser_winentry *)winentry, icon, icnname, sizeof(icnname));
+
+    if (valid)
     {
-      int valix;
-      char *validstring =
-      	winentry->window->icon[icon].data.indirecttext.validstring +
-      	(int) winentry->window;
+      Log(log_DEBUG, "Icon name: '%s'", icnname);
 
-      valix = Validation_ScanString(validstring, 'N');
-      if (valix)
+      if (write)
       {
-        char icnname[128];
-        int n = 0;
+        char icnnum[8];
+        char *tag;
+        unsigned char ro_time[5];
+        char thetime[256];
 
-        for (n = valix; (validstring[n] > 31) && (validstring[n] != ';') && (n-valix<sizeof(icnname)-1); ++n)
-          icnname[n-valix] = validstring[n];
-        icnname[n-valix] = 0;
-        if (icnname[0])
-        {
-          Log(log_DEBUG, "Icon name: '%s'", icnname);
-          if (write)
-          {
-            char icnnum[8];
-            char *tag;
-            unsigned char ro_time[5];
-            char thetime[256];
+        sprintf(icnnum, "%d", icon);
+        if (winentry->window->window.numicons == 1)
+          tag = "OneIcon";
+        else if (icon == winentry->window->window.numicons-1)
+          tag = "LastIcon";
+        else if (icon == 0)
+          tag = "1stIcon";
+        else
+          tag = "Icon";
 
-            sprintf(icnnum, "%d", icon);
-            if (winentry->window->window.numicons == 1)
-              tag = "OneIcon";
-            else if (icon == winentry->window->window.numicons-1)
-              tag = "LastIcon";
-            else if (icon == 0)
-              tag = "1stIcon";
-            else
-              tag = "Icon";
+        snprintf(buffy, 256, "%s%s", pre, tag);
 
-            snprintf(buffy, 256, "%s%s", pre, tag);
+        Time_ReadClock(ro_time);
+        Time_ConvertDateAndTime(ro_time, thetime, sizeof(thetime), "%ce%yr/%mn/%dy, %24:%mi");
 
-            Time_ReadClock(ro_time);
-            Time_ConvertDateAndTime(ro_time, thetime, sizeof(thetime), "%ce%yr/%mn/%dy, %24:%mi");
-
-            MsgTrans_LookupPS(messages, buffy, buffer, sizeof(buffer),
-            	(char *) winentry->identifier, icnname, icnnum, thetime);
-            if (strcmp(pre, "B_"))
-              export_puts(fp, buffer);
-            else
-              export_puts_basic(fp, buffer, &currentline);
-          }
-          foundanicon = TRUE;
-        }
+        MsgTrans_LookupPS(messages, buffy, buffer, sizeof(buffer),
+        	(char *) winentry->identifier, icnname, icnnum, thetime);
+        if (strcmp(pre, "B_"))
+          export_puts(fp, buffer);
+        else
+          export_puts_basic(fp, buffer, &currentline);
       }
+
+      foundanicon = TRUE;
     }
   }
   if (write)

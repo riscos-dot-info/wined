@@ -1185,7 +1185,7 @@ BOOL                viewer_closeevent(event_pollblock *event,void *reference)
   return TRUE;
 }
 
-BOOL                preview_click(event_pollblock *event,void *reference)
+BOOL                preview_click(event_pollblock *event, void *reference)
 {
   Log(log_DEBUG, "preview_click");
 
@@ -1197,21 +1197,48 @@ BOOL                preview_click(event_pollblock *event,void *reference)
     		 preview_releasemenu,reference);
     help_claim_menu("PRM");
   }
-  else if (event->data.mouse.button.data.dragselect && Kbd_KeyDown(inkey_CTRL))
+  else if (Kbd_KeyDown(inkey_CTRL))
   {
-    drag_block drag;
+    if (event->data.mouse.button.data.dragselect)
+    {
+      drag_block drag;
 
-    drag.window = event->data.mouse.window;
-    drag.type = drag_MOVEWINDOW;
-    Wimp_DragBox(&drag);
+      drag.window = event->data.mouse.window;
+      drag.type = drag_MOVEWINDOW;
+      Wimp_DragBox(&drag);
+    }
+    else if (event->data.mouse.button.data.dragadjust)
+    {
+      drag_block drag;
+
+      drag.window = event->data.mouse.window;
+      drag.type = drag_RESIZEWINDOW;
+      Wimp_DragBox(&drag);
+    }
   }
-  else if (event->data.mouse.button.data.dragadjust && Kbd_KeyDown(inkey_CTRL))
+  else
   {
-    drag_block drag;
+    char eventdesc[100], iconname[128];
+    browser_winentry *viewer = (browser_winentry *)reference;
 
-    drag.window = event->data.mouse.window;
-    drag.type = drag_RESIZEWINDOW;
-    Wimp_DragBox(&drag);
+    if      (event->data.mouse.button.data.adjust)
+      snprintf(eventdesc, sizeof(eventdesc), "adjust click");
+    else if (event->data.mouse.button.data.menu)
+      snprintf(eventdesc, sizeof(eventdesc), "menu click");
+    else if (event->data.mouse.button.data.select)
+      snprintf(eventdesc, sizeof(eventdesc), "select click");
+    else if (event->data.mouse.button.data.dragadjust)
+      snprintf(eventdesc, sizeof(eventdesc), "adjust drag");
+    else if (event->data.mouse.button.data.dragselect)
+      snprintf(eventdesc, sizeof(eventdesc), "select drag");
+    else if (event->data.mouse.button.data.clickadjust)
+      snprintf(eventdesc, sizeof(eventdesc), "adjust click (drag button)");
+    else if (event->data.mouse.button.data.clickselect)
+      snprintf(eventdesc, sizeof(eventdesc), "select click (drag button)");
+
+    extract_iconname(viewer, event->data.mouse.icon, iconname, sizeof(iconname));
+    Debug_Printf("Send a message! Window:%s, Icon number:%d, Icon name:%s, Event:%s",
+                 viewer->identifier, event->data.mouse.icon, iconname, eventdesc);
   }
 
   return TRUE;

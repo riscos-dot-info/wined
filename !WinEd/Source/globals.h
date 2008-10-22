@@ -83,6 +83,9 @@ extern os_error *WinEd_MsgTrans_ReportPS(msgtrans_filedesc *filedesc, char *toke
 /* Just logs the message, then passes it straight on to Wimp_ReportError */
 int WinEd_Wimp_ReportErrorR(os_error *error, int flags, const char *name);
 
+/* Extract icon name from icon definition */
+int extract_iconname(browser_winentry *winentry, int icon, char *buffer, int buflen);
+
 /* For debugging */
 void test_fn(void);
 

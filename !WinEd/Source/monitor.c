@@ -229,42 +229,28 @@ BOOL monitor_update(event_pollblock *event,void *reference)
       }
       else
       {
+        int retlen;
         char icname[sizeoficname];
 
-        /* Extract icon name */
-        strcpy(icname,""); /* Clear it first */
-        if (  (winentry->window->icon[ptrinfo.icon].flags.data.indirected)
-           && (winentry->window->icon[ptrinfo.icon].flags.data.text) )
-        /* Only worth trying if the icon is indirected & text */
+        retlen = extract_iconname(winentry, ptrinfo.icon, icname, sizeoficname);
+
+        if (retlen)
         {
-          int valix;
-          char *validstring = winentry->window->icon[ptrinfo.icon].data.indirecttext.validstring +
-        	                    (int) winentry->window;
-
-          valix = Validation_ScanString(validstring, 'N');
-          if (valix)
-          {
-            int n = 0;
-
-            for (n = valix; (validstring[n] > 31) && (validstring[n] != ';') && (n-valix<sizeoficname-1); ++n)
-              icname[n-valix] = validstring[n];
-            icname[n-valix] = 0;
-            Log(log_DEBUG, "Over icon named '%s'", icname);
-          }
+          Log(log_DEBUG, "Over icon named '%s' (name length:%d)", icname, retlen);
         }
 
-        Icon_SetInteger(monitor_window,monitor_ICON,ptrinfo.icon);
-        Icon_SetText(monitor_window,monitor_NAME,icname);
-        Icon_SetInteger(monitor_window,monitor_XMIN, winentry->window->icon[ptrinfo.icon].workarearect.min.x);
-        Icon_SetInteger(monitor_window,monitor_YMIN, winentry->window->icon[ptrinfo.icon].workarearect.min.y);
-        Icon_SetInteger(monitor_window,monitor_XMAX, winentry->window->icon[ptrinfo.icon].workarearect.max.x);
-        Icon_SetInteger(monitor_window,monitor_YMAX, winentry->window->icon[ptrinfo.icon].workarearect.max.y);
+        Icon_SetInteger(monitor_window, monitor_ICON, ptrinfo.icon);
+        Icon_SetText(monitor_window    ,monitor_NAME, icname);
+        Icon_SetInteger(monitor_window, monitor_XMIN, winentry->window->icon[ptrinfo.icon].workarearect.min.x);
+        Icon_SetInteger(monitor_window, monitor_YMIN, winentry->window->icon[ptrinfo.icon].workarearect.min.y);
+        Icon_SetInteger(monitor_window, monitor_XMAX, winentry->window->icon[ptrinfo.icon].workarearect.max.x);
+        Icon_SetInteger(monitor_window, monitor_YMAX, winentry->window->icon[ptrinfo.icon].workarearect.max.y);
         sprintf(buffer,"%d x %d",
         	      winentry->window->icon[ptrinfo.icon].workarearect.max.x -
         	      winentry->window->icon[ptrinfo.icon].workarearect.min.x,
         	      winentry->window->icon[ptrinfo.icon].workarearect.max.y -
         	      winentry->window->icon[ptrinfo.icon].workarearect.min.y);
-        Icon_SetText(monitor_window,monitor_SIZE,buffer);
+        Icon_SetText(monitor_window,    monitor_SIZE, buffer);
       }
       monitor_lasticon = ptrinfo.icon;
     }

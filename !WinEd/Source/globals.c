@@ -169,10 +169,6 @@ void Log(int level, const char *format, ...)
   vsnprintf(log_buffer, sizeof(log_buffer), format, argptr);
   va_end(argptr);
 
-  /* If the output string runs over the end of the buffer, it will be
-     truncated but not null-terminated, so have to account for that: */
-  log_buffer[sizeof(log_buffer)-1] = '\0';
-
   /* If debugging, output colour-coded reporter text */
   if      (level <= log_ERROR)       snprintf(log_final, sizeof(log_final), "\\r%s", log_buffer); /* red    */
   else if (level <= log_WARNING)     snprintf(log_final, sizeof(log_final), "\\o%s", log_buffer); /* orange */
@@ -183,7 +179,7 @@ void Log(int level, const char *format, ...)
   Debug_Print(log_final);
 
   /* Log message (without Reporter colours) with syslog */
-  Environment_LogMessage(level, log_buffer);
+  Environment_LogMessage(level, "%s", log_buffer);
 }
 
 os_error *WinEd_MsgTrans_ReportPS(msgtrans_filedesc *filedesc, char *token,
@@ -222,7 +218,43 @@ int WinEd_Wimp_ReportErrorR(os_error *error, int flags, const char *name)
   return Wimp_ReportErrorR(error, flags, name);
 }
 
+/* Extract icon name from icon definition (returns 0 if no name, otherwise length of it) */
+int extract_iconname(browser_winentry *winentry, int icon, char *buffer, int buflen)
+{
+  int valix, n = 0;
+
+  if (  (winentry->window->icon[icon].flags.data.indirected)
+     && (winentry->window->icon[icon].flags.data.text) )
+  /* Only worth trying if the icon is indirected & text */
+  {
+    char *validstring = winentry->window->icon[icon].data.indirecttext.validstring +
+  	               (int) winentry->window;
+
+    valix = Validation_ScanString(validstring, 'N');
+    if (valix)
+    {
+
+      for (n = valix; (validstring[n] > 31) && (validstring[n] != ';') && (n-valix<buflen-1); ++n)
+        buffer[n-valix] = validstring[n];
+
+      buffer[n-valix] = 0;
+    }
+    else
+      return 0;
+  }
+  else
+    return 0;
+
+  /* Return length of name copied over */
+  return n - valix;
+}
+
+#include "DeskLib:WimpMsg.h"
+
 void test_fn(void)
 {
-  Environment_SysBeep();
+  char bling[50] = "this is a message";
+  int ref;
+
+  ref = WimpMsg_Broadcast(event_SENDWANTACK, 0x601, (void *)bling, sizeof(bling));
 }
