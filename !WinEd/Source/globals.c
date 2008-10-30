@@ -234,7 +234,7 @@ int extract_iconname(browser_winentry *winentry, int icon, char *buffer, int buf
     if (valix)
     {
 
-      for (n = valix; (validstring[n] > 31) && (validstring[n] != ';') && (n-valix<buflen-1); ++n)
+      for (n = valix; (validstring[n] > 31) && (validstring[n] != ';') && (n-valix<buflen-1); n++)
         buffer[n-valix] = validstring[n];
 
       buffer[n-valix] = 0;
@@ -250,11 +250,12 @@ int extract_iconname(browser_winentry *winentry, int icon, char *buffer, int buf
 }
 
 #include "DeskLib:WimpMsg.h"
+#include "ide.h"
 
 void test_fn(void)
 {
   char bling[50] = "this is a message";
   int ref;
 
-  ref = WimpMsg_Broadcast(event_SENDWANTACK, 0x601, (void *)bling, sizeof(bling));
+  ref = WimpMsg_Broadcast(event_SENDWANTACK, message_WinEd_IDE_BROADCAST, (void *)bling, sizeof(bling));
 }

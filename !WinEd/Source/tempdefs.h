@@ -32,6 +32,7 @@ typedef struct {
   int largest;         /* Largest buffer total for stats */
   char namesfile[256]; /* Icon names file name */
   BOOL iconised;
+  task_handle idetask;
 } browser_fileinfo;
 
 /* Template file header */
@@ -74,5 +75,37 @@ typedef struct {
   int indsize;
   BOOL iconised;
 } browser_winentry;
+
+/* IDE message data structures */
+
+/* Broadcast & acknowledgement structure */
+typedef struct
+{
+  window_handle handle;
+  char filename[232];
+} ide_handshake;
+
+/* These must add up to 228 bytes each */
+typedef struct
+{
+  button_state button; /*   4 */
+  icon_handle icon;    /*   4 */
+  char identifier[16]; /*  16 */
+  char iconname[204];  /* 204 */
+} ide_click_block;
+
+typedef union
+{
+  ide_click_block click;
+  char bytes[228];
+} ide_synthetic_data;
+
+typedef struct
+{
+  window_handle handle;
+  int event;
+  ide_synthetic_data data;
+} ide_event;
+
 
 #endif

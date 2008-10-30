@@ -43,6 +43,7 @@
 #include "visarea.h"
 #include "wadiag.h"
 #include "windiag.h"
+#include "ide.h"
 
 #define windowcol_TITLEFORE 0 /* AR Added by me because I can't be bothered to work out where it should come from in DeskLib */
 
@@ -189,6 +190,13 @@ static void         viewer_view(browser_winentry *winentry,BOOL editable)
   if (winentry->status)
     viewer_close(winentry);
   viewer_open(winentry,editable);
+
+
+  if (!editable)
+    /* Try and find an IDE app to work with */
+    ide_broadcast(winentry->browser);
+
+
 }
 
 /* Data needed when drag is completed */
@@ -1218,27 +1226,8 @@ BOOL                preview_click(event_pollblock *event, void *reference)
   }
   else
   {
-    char eventdesc[100], iconname[128];
     browser_winentry *viewer = (browser_winentry *)reference;
-
-    if      (event->data.mouse.button.data.adjust)
-      snprintf(eventdesc, sizeof(eventdesc), "adjust click");
-    else if (event->data.mouse.button.data.menu)
-      snprintf(eventdesc, sizeof(eventdesc), "menu click");
-    else if (event->data.mouse.button.data.select)
-      snprintf(eventdesc, sizeof(eventdesc), "select click");
-    else if (event->data.mouse.button.data.dragadjust)
-      snprintf(eventdesc, sizeof(eventdesc), "adjust drag");
-    else if (event->data.mouse.button.data.dragselect)
-      snprintf(eventdesc, sizeof(eventdesc), "select drag");
-    else if (event->data.mouse.button.data.clickadjust)
-      snprintf(eventdesc, sizeof(eventdesc), "adjust click (drag button)");
-    else if (event->data.mouse.button.data.clickselect)
-      snprintf(eventdesc, sizeof(eventdesc), "select click (drag button)");
-
-    extract_iconname(viewer, event->data.mouse.icon, iconname, sizeof(iconname));
-    Debug_Printf("Send a message! Window:%s, Icon number:%d, Icon name:%s, Event:%s",
-                 viewer->identifier, event->data.mouse.icon, iconname, eventdesc);
+    ide_sendinfo(viewer, event);
   }
 
   return TRUE;

@@ -2,14 +2,15 @@
 
 
 objects = Error.o alndiag.o bordiag.o browser.o browtools.o choices.o coorddiag.o datatrans.o deskfont.o \
-          diagutils.o drag.o dragext.o export.o fontpick.o fortify.o globals.o help.o icndiag.o icnedit.o minsize.o monitor.o \
-          multiicon.o pane.o picker.o round.o rszdiag.o shortcuts.o spcdiag.o stats.o tempfont.o templates.o \
-          terminator.o unsaved.o uri.o usersprt.o viewer.o viewtools.o visarea.o wadiag.o windiag.o wined.o
+          diagutils.o drag.o dragext.o export.o fontpick.o fortify.o globals.o help.o icndiag.o icnedit.o \
+          ide.o minsize.o monitor.o multiicon.o pane.o picker.o round.o rszdiag.o shortcuts.o spcdiag.o \
+          stats.o tempfont.o templates.o terminator.o unsaved.o uri.o usersprt.o viewer.o viewtools.o \
+          visarea.o wadiag.o windiag.o wined.o
 
 libraries = flexlib:flexlib-32.o DeskLib:DeskLib.o
 
-compileflags = -DFORTIFY -DDeskLib_DEBUG -std=c99 -mlibscl -Wunused -Wall -fno-strict-aliasing -mthrowback -mpoke-function-name -c
-#compileflags = -O3 -std=c99 -mlibscl -Wunused -Wuninitialized -Wall -fno-strict-aliasing -mthrowback -mpoke-function-name -c
+#compileflags = -DFORTIFY -DDeskLib_DEBUG -std=c99 -mlibscl -Wunused -Wall -fno-strict-aliasing -mthrowback -mpoke-function-name -c
+compileflags = -O3 -std=c99 -mlibscl -Wunused -Wuninitialized -Wall -fno-strict-aliasing -mthrowback -mpoke-function-name -c
 
 linkflags = -mlibscl -o ^.!RunImage
 
@@ -57,6 +58,8 @@ icndiag.o : icndiag.c
 	gcc $(compileflags) icndiag.c
 icnedit.o : icnedit.c
 	gcc $(compileflags) icnedit.c
+ide.o : ide.c
+	gcc $(compileflags) ide.c	
 minsize.o : minsize.c
 	gcc $(compileflags) minsize.c
 monitor.o : monitor.c

@@ -31,6 +31,7 @@
 #include "usersprt.h"
 #include "viewer.h"
 #include "windiag.h"
+#include "ide.h"
 
 /* Dimensions in browser */
 #define DEFAULTNUMCOLUMNS 4
@@ -1026,6 +1027,7 @@ browser_fileinfo *browser_newbrowser()
   newfile->altered = FALSE;
   newfile->iconised = FALSE;
   newfile->stats = 0;
+  newfile->idetask = 0; /* 0 used to indicate no registered IDE app */
   LinkList_AddToTail(&browser_list,&newfile->header);
   LinkList_Init(&newfile->winlist);
 
@@ -1045,14 +1047,15 @@ browser_fileinfo *browser_newbrowser()
     return 0;
   }
 
-  /* Handlers, using browser_fileinfo block as reference */
-  Event_Claim(event_OPEN,newfile->window,event_ANY,browser_OpenWindow, newfile);
-  Event_Claim(event_CLOSE,newfile->window,event_ANY, browser_closeevent,newfile);
-  Event_Claim(event_CLICK,newfile->window,event_ANY,browser_click,newfile);
-  Event_Claim(event_KEY,newfile->window,event_ANY,browser_hotkey,newfile);
-  EventMsg_Claim(message_DATALOAD,newfile->window,browser_loadhandler, newfile);
-  EventMsg_Claim(message_DATASAVE,newfile->window,browser_savehandler, newfile);
-  EventMsg_Claim(message_WINDOWINFO,newfile->window,browser_iconise,newfile);
+  /* Handlers, using browser_fileinfo block as reference. */
+  /* These are all released in browser_close() */
+  Event_Claim(event_OPEN,  newfile->window, event_ANY, browser_OpenWindow, newfile);
+  Event_Claim(event_CLOSE, newfile->window, event_ANY, browser_closeevent, newfile);
+  Event_Claim(event_CLICK, newfile->window, event_ANY, browser_click,      newfile);
+  Event_Claim(event_KEY,   newfile->window, event_ANY, browser_hotkey,     newfile);
+  EventMsg_Claim(message_DATALOAD,              newfile->window, browser_loadhandler, newfile);
+  EventMsg_Claim(message_DATASAVE,              newfile->window, browser_savehandler, newfile);
+  EventMsg_Claim(message_WINDOWINFO,            newfile->window, browser_iconise,     newfile);
   help_claim_window(newfile->window,"Brow");
 
   /* Create tool pane if wanted */
@@ -1216,7 +1219,6 @@ void              browser_close(browser_fileinfo *browser)
   /* Check for unsaved data */
   if (browser->altered)
   {
-
     overwrite_save_from_close = TRUE;
     unsaved_close(browser_forceclose,browser_save_check,browser);
     return;

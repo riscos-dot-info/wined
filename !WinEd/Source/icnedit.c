@@ -199,7 +199,6 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
       if (validindex > 0)
       {
         Log(log_TEDIOUS, "  validation: %s", validcont);
-        fprintf(stderr, "it's '%s'", validcont);
         strcpycr(data->indirecttext.validstring, validcont);
       }
       else

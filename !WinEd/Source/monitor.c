@@ -238,6 +238,9 @@ BOOL monitor_update(event_pollblock *event,void *reference)
         {
           Log(log_DEBUG, "Over icon named '%s' (name length:%d)", icname, retlen);
         }
+        else
+          /* Clear icon name if no name was found */
+          icname[0] = 0;
 
         Icon_SetInteger(monitor_window, monitor_ICON, ptrinfo.icon);
         Icon_SetText(monitor_window    ,monitor_NAME, icname);
