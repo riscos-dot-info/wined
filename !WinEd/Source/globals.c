@@ -113,7 +113,7 @@ BOOL kill_menus(event_pollblock *event, void *ref)
   if (event->type == event_CLICK &&
   	event->data.mouse.button.value == button_MENU)
     return FALSE;
-  WinEd_CreateMenu(0,-1,-1);
+  WinEd_CreateMenu(-1,0,0);
   return TRUE;
 }
 
