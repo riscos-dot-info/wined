@@ -3,12 +3,12 @@ WinEd
 
 WinEd is a template editor.
 
-It was originally written by Tony Houghton and the last release by him was
-version 2.87. Up to and including the release of version 3.22a, it was
+It was originally written by Tony Houghton and his last release was version
+2.87. Up to and including the release of version 3.22a, the application was
 developed by Adam Richardson. Since then, some work to allow the code to be
-built for modern systems has been done by Steve Fryatt. Some changes have
-been made to this help file, but the majority of the text remains the work of
-Tony Houghton. Any comments should be made to Steve:
+built for modern systems has been done by Steve Fryatt.
+
+Any comments about this release should be made to Steve:
 
   info@stevefryatt.org.uk
 
@@ -32,10 +32,10 @@ iconbar menu.
 Conditions of use and distribution
 ----------------------------------
 
-WinEd is released under the GNU General Public Licence. For details of what
-this means, see the Copyright file inside the download.
+WinEd is released under Version 2 of the GNU General Public Licence. For
+details of what this means, see the Copyright file inside the download.
 
-The source code for WinEd is available from the svn repository on riscos.info
+The source code for WinEd is available from the SVN repository on riscos.info
 -- check it out from
 
   svn://svn.riscos.info/wined
