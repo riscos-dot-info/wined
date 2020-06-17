@@ -32,7 +32,9 @@
 #include "MemCheck:MemCheck.h"
 #endif
 
-#define app_VERSION "3.21a (October 2008)"
+#ifndef app_VERSION
+#define app_VERSION "3.21b (17 June 2020)"
+#endif
 
 extern void __heap_checking_on_all_allocates(int);
 extern void __heap_checking_on_all_deallocates(int);
@@ -258,7 +260,7 @@ BOOL save_handler(event_pollblock *event,void *ref)
 
 static BOOL proginfo_email(event_pollblock *event,void *ref)
 {
-  uri_send("mailto:riscos@snowstone.org.uk");
+  uri_send("mailto:info@stevefryatt.org.uk");
   return TRUE;
 }
 

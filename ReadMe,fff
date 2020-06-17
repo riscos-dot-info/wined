@@ -1,0 +1,41 @@
+WinEd
+=====
+
+WinEd is a template editor.
+
+It was originally written by Tony Houghton and his last release was version
+2.87. Up to and including the release of version 3.22a, the application was
+developed by Adam Richardson. Since then, some work to allow the code to be
+built for modern systems has been done by Steve Fryatt.
+
+Any comments about this release should be made to Steve:
+
+  info@stevefryatt.org.uk
+
+
+Requirements
+------------
+
+This release of WinEd requires RISC OS 4.0 or later. It may well work on
+earlier systems if you manually alter the !Run file, but this is not
+supported.
+
+
+Documentation
+-------------
+
+For the full documentation, click Menu over the !WinEd application and choose
+"App. '!WinEd' -> Help" from the menu, or choose "Help" from the WinEd
+iconbar menu.
+
+
+Conditions of use and distribution
+----------------------------------
+
+WinEd is released under Version 2 of the GNU General Public Licence. For
+details of what this means, see the Copyright file inside the download.
+
+The source code for WinEd is available from the SVN repository on riscos.info
+-- check it out from
+
+  svn://svn.riscos.info/wined

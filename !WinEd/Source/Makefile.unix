@@ -1,0 +1,176 @@
+# Makefile for WinEd
+#
+# For use when cross-compiling under the GCCSDK.
+
+.PHONY : application clean release
+
+# Targets.
+
+ARCHIVE ?= wined
+APP ?= !WinEd
+RUNIMAGE = !RunImage,ff8
+README ?= ReadMe,fff
+LICENSE ?= Copyright,fff
+
+# Object Files.
+
+OBJECTS = Error.o alndiag.o bordiag.o browser.o browtools.o choices.o coorddiag.o datatrans.o deskfont.o \
+          diagutils.o drag.o dragext.o export.o fontpick.o fortify.o globals.o help.o icndiag.o icnedit.o \
+          ide.o minsize.o monitor.o multiicon.o pane.o picker.o round.o rszdiag.o shortcuts.o spcdiag.o \
+          stats.o tempfont.o templates.o terminator.o unsaved.o uri.o usersprt.o viewer.o viewtools.o \
+          visarea.o wadiag.o windiag.o wined.o
+
+# Build Directories
+
+OUTDIR = ../..
+
+# Libraries and Included Files
+
+LIBRARIES = -L$(GCCSDK_INSTALL_ENV)/lib -lDesk-scl -lFlexLib32
+INCLUDES := -I$(GCCSDK_INSTALL_ENV)/include
+
+# Flags and Options
+
+# Additional flags for compiling include -DFORTIFY and -DDeskLib_DEBUG
+
+COMPILEFLAGS = -O3 -std=c99 -mlibscl -Wunused -Wuninitialized -Wall -fno-strict-aliasing -mthrowback -mpoke-function-name -c
+LINKFLAGS = -mlibscl -Wl,--allow-multiple-definition -o ../!RunImage,ff8
+ZIPFLAGS := -x "*/.svn/*" -x "*/Source/*" -r -, -9
+
+# Build Tools
+
+RM := rm -rf
+CD := cd
+CC := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*gcc)
+AS := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*asasm)
+ZIP := $(GCCSDK_INSTALL_ENV)/bin/zip
+
+# The build date.
+
+BUILD_DATE := $(shell date "+%d %b %Y")
+
+# Construct version or revision information.
+
+ifeq ($(VERSION),)
+  RELEASE := $(shell svnversion --no-newline)
+  VERSION := r$(RELEASE)
+else
+  RELEASE := $(subst .,,$(VERSION))
+endif
+
+# The information for the Info Dialogue
+
+BUILD_INFO = -D'app_VERSION="$(VERSION) ($(BUILD_DATE))"'
+
+# The archives to assemble the release files, sources and backups in.
+# If $(RELEASE) is set, then the file can be given a version number suffix.
+
+ZIPFILE := $(ARCHIVE)$(RELEASE).zip
+
+# Build the application and its supporting binary files.
+
+application: $(OUTDIR)/$(APP)/$(RUNIMAGE)
+
+# Build the !RunImage file.
+
+$(OUTDIR)/$(APP)/$(RUNIMAGE) : $(OBJECTS) 
+	$(CC) $(LINKFLAGS) $(OBJECTS) $(LIBRARIES)
+
+# Building the original source files.
+
+dragext.o : DragExt.s
+	$(AS) -o dragext.o DragExt.s
+Error.o : Error.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) Error.c
+alndiag.o : alndiag.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) alndiag.c
+bordiag.o : bordiag.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) bordiag.c
+browser.o : browser.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) browser.c
+browtools.o : browtools.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) browtools.c
+choices.o : choices.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) choices.c
+coorddiag.o : coorddiag.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) coorddiag.c
+datatrans.o : datatrans.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) datatrans.c
+deskfont.o : deskfont.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) deskfont.c
+diagutils.o : diagutils.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) diagutils.c
+drag.o : drag.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) drag.c
+export.o : export.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) export.c
+fontpick.o : fontpick.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) fontpick.c
+fortify.o : fortify.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) fortify.c
+globals.o : globals.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) globals.c
+help.o : help.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) help.c
+icndiag.o : icndiag.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) icndiag.c
+icnedit.o : icnedit.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) icnedit.c
+ide.o : ide.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) ide.c	
+minsize.o : minsize.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) minsize.c
+monitor.o : monitor.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) monitor.c
+multiicon.o : multiicon.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) multiicon.c
+pane.o : pane.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) pane.c
+picker.o : picker.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) picker.c
+round.o : round.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) round.c
+rszdiag.o : rszdiag.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) rszdiag.c
+spcdiag.o : spcdiag.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) spcdiag.c
+shortcuts.o : shortcuts.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) shortcuts.c
+stats.o : stats.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) stats.c
+tempfont.o : tempfont.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) tempfont.c
+templates.o : templates.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) templates.c
+terminator.o : terminator.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) terminator.c
+unsaved.o : unsaved.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) unsaved.c
+uri.o : uri.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) uri.c
+usersprt.o : usersprt.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) usersprt.c
+viewer.o : viewer.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) viewer.c
+viewtools.o : viewtools.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) viewtools.c
+visarea.o : visarea.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) visarea.c
+wadiag.o : wadiag.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) wadiag.c
+windiag.o : windiag.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) windiag.c
+wined.o : wined.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) wined.c
+
+# Build the release Zip file.
+
+release: clean application
+	$(RM) $(OUTDIR)/../$(ZIPFILE)
+	($(CD) $(OUTDIR) ; $(ZIP) $(ZIPFLAGS) ../$(ZIPFILE) $(APP) $(README) $(LICENSE) )
+
+# Clean targets
+
+clean:
+	$(RM) $(OUTDIR)/$(APP)/$(RUNIMAGE)
+	$(RM) *.o
