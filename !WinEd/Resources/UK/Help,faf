@@ -54,7 +54,6 @@
 <li><a href="#hints">Hints &amp; tips</a></li>
 <li><a href="#custom">Customising WinEd</a></li>
 <li><a href="#bug">Bug reports &amp; suggestions</a></li>
-<li><a href="#source">Source code</a></li>
 <li><a href="#acknowledgements">Acknowledgements</a></li>
 </ol>
 </p>
@@ -73,7 +72,7 @@
 <li>Optional tool panes and keyboard short cuts enhance convenience.
 <li>Fast loading and saving.
 </ul></p>
-<p><em>WinEd</em> was originally written by Tony Houghton and the last release by him was <a href="http://www.snowstone.org.uk/riscos/realh/index.html#wined">version 2.87</a>. Up to and including the release of version 3.22a, <em>WinEd</em> was developed by <a href="http://www.snowstone.org.uk/riscos/"> Adam Richardson</a>. Since then, some work to allow the code to be built for modern systems has been done by Steve Fryatt Some changes have been made to this help file, but the majority of the text remains the work of Tony Houghton. Any comments should be made to <a href="mailto:info@stevefryatt.org.uk">Steve Fryatt</a>.
+<p><em>WinEd</em> was originally written by Tony Houghton and the last release by him was <a href="http://www.snowstone.org.uk/riscos/realh/index.html#wined">version 2.87</a>. Up to and including the release of version 3.22a, <em>WinEd</em> was developed by <a href="http://www.snowstone.org.uk/riscos/"> Adam Richardson</a>. Since then, some work to allow the code to be built for modern systems has been done by Steve Fryatt. Some changes have been made to this help file, but the majority of the text remains the work of Tony Houghton. Any comments should be made to <a href="mailto:info@stevefryatt.org.uk">Steve Fryatt</a>.
 <p><a href="#contents">Return to contents</a></p>
 
 <a name="requirements"><h2>2. Requirements</h2></a>
@@ -970,11 +969,7 @@ respectively. If a window has one icon, <code>E_OneIcon</code> is used.</p>
 <p>Although every effort has been made to iron out bugs, no application is completely bug free so you are advised to save your work regularly. Please report any bugs you find to <a href="mailto:info@stevefryatt.org.uk">Steve Fryatt</a>.</p>
 <p><a href="#contents">Return to contents</a></p>
 
-<a name="source"><h2>45. Source code</h2></a>
-<p>WinEd is written in C, using DeskLib. The source code can be obtained from the <a href="http://www.riscos.info/websvn/listing.php?repname=wined">RISC OS.info Subversion Repository</a>.</p>
-<p><a href="#contents">Return to contents</a></p>
-
-<a name="acknowledgements"><h2>46. Acknowledgements</h2></a>
+<a name="acknowledgements"><h2>45. Acknowledgements</h2></a>
 <p><em>WinEd</em> was written originally written by Tony Houghton in C (compiled by Acorn C Release 5) with extensive
 use of <a href="http://www.riscos.info/index.php/DeskLib"><em>DeskLib</em></a>. This version has been compiled using <a href="http://www.riscos.info/index.php/GCCSDK"><em>GCCSDK</em></a>. <em>DeskLib</em> is a set of freeware C libraries written by Jason Williams and many others. All C programmers should consider this an essential replacement for <em>RISC_OSLib</em>.</p>
 <p><em>Dr Smith's C Development Toolkit</em>, written by Julian Smith and marketed
