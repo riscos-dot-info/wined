@@ -32,7 +32,9 @@
 #include "MemCheck:MemCheck.h"
 #endif
 
+#ifndef app_VERSION
 #define app_VERSION "3.21b (17 June 2020)"
+#endif
 
 extern void __heap_checking_on_all_allocates(int);
 extern void __heap_checking_on_all_deallocates(int);
