@@ -10,51 +10,52 @@
 <a name="contents"><h2>Contents</h2></a>
 <p>
 <ol>
-<li><a href="#about">About WinEd</a>
-<li><a href="#requirements">Requirements</a>
-<li><a href="#conditions">License</a>
-<li><a href="#install">Installation</a>
-<li><a href="#disclaimer">Disclaimer</a>
-<li><a href="#units">Units used</a>
-<li><a href="#mode">Mode independence</a>
-<li><a href="#dialogue">WinEd's dialogue boxes</a>
-<li><a href="#error">Error handling</a>
-<li><a href="#help">Interactive help</a>
-<li><a href="#loading">Loading and creating templates</a>
-<li><a href="#keyboard">Keyboard control of the pointer</a>
-<li><a href="#sprite">Sprite files and sprite areas</a>
-<li><a href="#iconbar">The icon bar menu</a>
-<li><a href="#choices">The Choices dialogue box</a>
-<li><a href="#browsers">Browsers</a>
-<li><a href="#mouse">Mouse operations in browsers</a>
-<li><a href="#browsermenu">The browser menu</a>
-<li><a href="#save">Saving templates</a>
-<li><a href="#stats">Statistics windows</a>
-<li><a href="#browsertool">The browser tool bar</a>
-<li><a href="#export">Exporting icon names</a>
-<li><a href="#preview">Preview windows</a>
-<li><a href="#previewmenu">The preview menu</a>
-<li><a href="#edit">Editable windows</a>
-<li><a href="#mouseedit">Mouse operations in editable windows</a>
-<li><a href="#select">Selected icon(s) submenu</a>
-<li><a href="#edittool">The editable window tool bar</a>
-<li><a href="#editwindow">Edit window dialogue box</a>
-<li><a href="#goto">Goto icon menu option</a>
-<li><a href="#monitor">The monitor</a>
-<li><a href="#creatingicons">Creating icons: the Icon picker</a>
-<li><a href="#workarea">Work area dialogue box</a>
-<li><a href="#visiblearea">Visible area dialogue box</a>
-<li><a href="#editicon">Edit icon/title dialogue box</a>
-<li><a href="#editicons">Edit multiple icons dialogue box</a>
-<li><a href="#align">Align dialogue box</a>
-<li><a href="#space">Space out dialogue box</a>
-<li><a href="#resize">Resize icons dialogue box</a>
-<li><a href="#coords">Coordinates dialogue box</a>
-<li><a href="#frame">Frame dialogue box</a>
-<li><a href="#hints">Hints &amp; tips</a>
-<li><a href="#custom">Customising WinEd</a>
-<li><a href="#bug">Bug reports &amp; suggestions</a>
-<li><a href="#acknowledgements">Acknowledgements</a>
+<li><a href="#about">About WinEd</a></li>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#conditions">License</a></li>
+<li><a href="#install">Installation</a></li>
+<li><a href="#disclaimer">Disclaimer</a></li>
+<li><a href="#units">Units used</a></li>
+<li><a href="#mode">Mode independence</a></li>
+<li><a href="#dialogue">WinEd's dialogue boxes</a></li>
+<li><a href="#error">Error handling</a></li>
+<li><a href="#help">Interactive help</a></li>
+<li><a href="#loading">Loading and creating templates</a></li>
+<li><a href="#keyboard">Keyboard control of the pointer</a></li>
+<li><a href="#sprite">Sprite files and sprite areas</a></li>
+<li><a href="#iconbar">The icon bar menu</a></li>
+<li><a href="#choices">The Choices dialogue box</a></li>
+<li><a href="#browsers">Browsers</a></li>
+<li><a href="#mouse">Mouse operations in browsers</a></li>
+<li><a href="#browsermenu">The browser menu</a></li>
+<li><a href="#save">Saving templates</a></li>
+<li><a href="#stats">Statistics windows</a></li>
+<li><a href="#browsertool">The browser tool bar</a></li>
+<li><a href="#export">Exporting icon names</a></li>
+<li><a href="#preview">Preview windows</a></li>
+<li><a href="#previewmenu">The preview menu</a></li>
+<li><a href="#edit">Editable windows</a></li>
+<li><a href="#mouseedit">Mouse operations in editable windows</a></li>
+<li><a href="#select">Selected icon(s) submenu</a></li>
+<li><a href="#edittool">The editable window tool bar</a></li>
+<li><a href="#editwindow">Edit window dialogue box</a></li>
+<li><a href="#goto">Goto icon menu option</a></li>
+<li><a href="#monitor">The monitor</a></li>
+<li><a href="#creatingicons">Creating icons: the Icon picker</a></li>
+<li><a href="#workarea">Work area dialogue box</a></li>
+<li><a href="#visiblearea">Visible area dialogue box</a></li>
+<li><a href="#editicon">Edit icon/title dialogue box</a></li>
+<li><a href="#editicons">Edit multiple icons dialogue box</a></li>
+<li><a href="#align">Align dialogue box</a></li>
+<li><a href="#space">Space out dialogue box</a></li>
+<li><a href="#resize">Resize icons dialogue box</a></li>
+<li><a href="#coords">Coordinates dialogue box</a></li>
+<li><a href="#frame">Frame dialogue box</a></li>
+<li><a href="#hints">Hints &amp; tips</a></li>
+<li><a href="#custom">Customising WinEd</a></li>
+<li><a href="#bug">Bug reports &amp; suggestions</a></li>
+<li><a href="#source">Source code</a></li>
+<li><a href="#acknowledgements">Acknowledgements</a></li>
 </ol>
 </p>
 <p><a href="#contents">Return to contents</a></p>
@@ -72,7 +73,7 @@
 <li>Optional tool panes and keyboard short cuts enhance convenience.
 <li>Fast loading and saving.
 </ul></p>
-<p><em>WinEd</em> was originally written by Tony Houghton and the last release by him was <a href="http://www.snowstone.org.uk/riscos/realh/index.html#wined">version 2.87</a>. This release of <em>WinEd</em> has been put together by Adam Richardson. Some changes have been made to this help file, but the majority of the text remains the work of Tony Houghton. Any comments should be made to <a href="mailto:riscos@snowstone.org.uk">Adam Richardson</a>
+<p><em>WinEd</em> was originally written by Tony Houghton and the last release by him was <a href="http://www.snowstone.org.uk/riscos/realh/index.html#wined">version 2.87</a>. Up to and including the release of version 3.22a, <em>WinEd</em> was developed by <a href="http://www.snowstone.org.uk/riscos/"> Adam Richardson</a>. Since then, some work to allow the code to be built for modern systems has been done by Steve Fryatt Some changes have been made to this help file, but the majority of the text remains the work of Tony Houghton. Any comments should be made to <a href="mailto:info@stevefryatt.org.uk">Steve Fryatt</a>.
 <p><a href="#contents">Return to contents</a></p>
 
 <a name="requirements"><h2>2. Requirements</h2></a>
@@ -966,12 +967,16 @@ respectively. If a window has one icon, <code>E_OneIcon</code> is used.</p>
 <p><a href="#contents">Return to contents</a></p>
 
 <a name="bug"><h2>44. Bug reports &amp; suggestions</h2></a>
-<p>Although every effort has been made to iron out bugs, no application is completely bug free so you are advised to save your work regularly. Please report any bugs you find to <a href="mailto:riscos@snowstone.org.uk">Adam Richardson</a>.</p>
+<p>Although every effort has been made to iron out bugs, no application is completely bug free so you are advised to save your work regularly. Please report any bugs you find to <a href="mailto:info@stevefryatt.org.uk">Steve Fryatt</a>.</p>
 <p><a href="#contents">Return to contents</a></p>
 
-<a name="acknowledgements"><h2>45. Acknowledgements</h2></a>
+<a name="source"><h2>45. Source code</h2></a>
+<p>WinEd is written in C, using DeskLib. The source code can be obtained from the <a href="http://www.riscos.info/websvn/listing.php?repname=wined">RISC OS.info Subversion Repository</a>.</p>
+<p><a href="#contents">Return to contents</a></p>
+
+<a name="acknowledgements"><h2>46. Acknowledgements</h2></a>
 <p><em>WinEd</em> was written originally written by Tony Houghton in C (compiled by Acorn C Release 5) with extensive
-use of <a href="http://www.riscos.info/index.php/DeskLib"><em>DeskLib</em></a>. This version has been compiled using <a href="http://www.riscos.info/index.php/GCCSDK"><em>GCC</em></a>. <em>DeskLib</em> is a set of freeware C libraries written by Jason Williams and many others. All C programmers should consider this an essential replacement for <em>RISC_OSLib</em>.</p>
+use of <a href="http://www.riscos.info/index.php/DeskLib"><em>DeskLib</em></a>. This version has been compiled using <a href="http://www.riscos.info/index.php/GCCSDK"><em>GCCSDK</em></a>. <em>DeskLib</em> is a set of freeware C libraries written by Jason Williams and many others. All C programmers should consider this an essential replacement for <em>RISC_OSLib</em>.</p>
 <p><em>Dr Smith's C Development Toolkit</em>, written by Julian Smith and marketed
 by WSS, was helpful for debugging in early versions.</p>
 <p>The text editor used was <em>Zap</em>, an excellent PD program written by
