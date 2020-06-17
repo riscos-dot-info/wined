@@ -258,7 +258,7 @@ BOOL save_handler(event_pollblock *event,void *ref)
 
 static BOOL proginfo_email(event_pollblock *event,void *ref)
 {
-  uri_send("mailto:riscos@snowstone.org.uk");
+  uri_send("mailto:info@stevefryatt.org.uk");
   return TRUE;
 }
 
