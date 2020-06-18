@@ -182,7 +182,7 @@ H_CLO_03:\Skeep this file.
 H_ALN:\Ticon alignment dialogue box.
 H_ALN_00:\Salign the selected icons.
 H_SPC_01/H_WAD_01/H_COL_01/H_ICC_02/H_BOR_01/H_ALN_01/H_WEC_01/H_CHO_01
-H_CRD_17/H_VSA_17/H_SAVE_01/H_MIE_61/H_EXP_01:\Sclose this dialogue box.
+H_CRD_17/H_VSA_17/H_RSZ_12/H_SAVE_01/H_MIE_61/H_EXP_01:\Sclose this dialogue box.
 H_ALN_02/H_ALN_04/H_ALN_05/H_ALN_06/H_ALN_07/H_ALN_08/H_ALN_09
 H_ALN_10:Select which way you want to align the selected icons from these options.
 H_ALN_03/H_ALN_13/H_ALN_14
@@ -316,6 +316,7 @@ H_RSZ_07:\Smake all the selected icons as wide as the widest one selected.
 H_RSZ_08:\Smake all the selected icons as wide as the narrowest one selected.
 H_RSZ_09:\Smake all the selected icons as tall as the tallest one selected.
 H_RSZ_10:\Smake all the selected icons as tall as the shortest one selected.
+H_RSZ_12:\S
 H_BTM:This is the button-type menu.
 H_BTM_09:'Menu' button type will act the same as 'Click' for work areas.
 H_BTM_14:Do not use the Writable/Drag button type for work areas.

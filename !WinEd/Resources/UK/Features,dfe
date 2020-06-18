@@ -44,7 +44,7 @@
 43,"Field widths calculation","Add option to ignore system font when calculating minimum icon widths. Specify a specific ""backup"" font instead (e.g. Homerton Bold)","b",,40
 44,"Sprite loading","Change code to handle three different sprite types (for buttons). Add modechange handler to free and load relevant sprites.","c"
 45,"Iconbar menu","Change picker and monitor options to be tickable + re-choosing them closes windows","c"
-46,"Resize-icons window","Add cancel button","c"
+46,"Resize-icons window","Add cancel button","Done","r69"
 47,"Remove repeated strings","As per FormED","z"
 48,"Add template metadata","Add metadata to template files (e.g. author, program&version used etc) - using non-window object?","c"
 49,"Menu templates","Add menu creation/editing mode","z"

@@ -19,12 +19,14 @@ typedef enum {
   rszdiag_NARROWEST,
   rszdiag_TALLEST,
   rszdiag_SHORTEST,
-  rszdiag_EXCBORDER
+  rszdiag_EXCBORDER,
+  rszdiag_CANCEL
 } rszdiag_icons;
 
 /* Button handlers */
 BOOL rszdiag_clickminimise(event_pollblock *event,void *reference);
 BOOL rszdiag_clickmakesame(event_pollblock *event,void *reference);
+BOOL rszdiag_clickcancel(event_pollblock *event,void *reference);
 
 
 window_handle rszdiag_window;
@@ -40,6 +42,8 @@ void rszdiag_init()
   rszdiag_winentry = 0;
   Event_Claim(event_OPEN,rszdiag_window,event_ANY,Handler_OpenWindow,0);
   Event_Claim(event_CLOSE,rszdiag_window,event_ANY,Handler_CloseWindow,0);
+  Event_Claim(event_CLICK,rszdiag_window,rszdiag_CANCEL,
+  	      rszdiag_clickcancel,0);
   Event_Claim(event_CLICK,rszdiag_window,rszdiag_MINWIDTH,
   	      rszdiag_clickminimise,0);
   Event_Claim(event_CLICK,rszdiag_window,rszdiag_MINHEIGHT,
@@ -211,6 +215,14 @@ BOOL rszdiag_clickmakesame(event_pollblock *event,void *reference)
   if (event->data.mouse.button.data.select)
     rszdiag_close();
 
+  return TRUE;
+}
+
+BOOL rszdiag_clickcancel(event_pollblock *event,void *reference)
+{
+  if (event->data.mouse.button.data.select ||
+      event->data.mouse.button.data.adjust)
+    rszdiag_close();
   return TRUE;
 }
 
