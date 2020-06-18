@@ -2747,8 +2747,10 @@ BOOL               browser_save_check(char *filename, void *reference, BOOL sele
   if (!strcmp(&current_title[title_length-2], " *"))
     current_title[title_length-2] = '\0';
 
-  /* Check whether filename has changed and exists already */
-  if (strcmpcr(current_title, filename) && File_Exists(filename))
+  /* Check whether filename has changed and exists already
+     We don't check if the target is <Wimp$Scrap>, as we can assume that anything
+     there shouldn't have been left after use and is therefore safe to delete. */
+  if (strcmpcr(current_title, filename) && strcmpcr("<Wimp$Scrap>", filename) && File_Exists(filename))
   {
     /* Open the question window as a menu-come-window */
     transient_centre(overwrite_warn);
