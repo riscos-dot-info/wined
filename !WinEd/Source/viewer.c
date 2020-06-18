@@ -340,7 +340,7 @@ static BOOL         renum_clicked(event_pollblock *event,void *reference)
   if (event->type == event_CLICK && event->data.mouse.button.data.menu)
     return FALSE;
   if (event->type == event_KEY || event->data.mouse.button.data.select)
-    WinEd_CreateMenu(0, -1, -1);
+    WinEd_CreateMenu((menu_ptr) -1,0,0);
 
   viewcom_quickrenum(reference);
 
@@ -495,7 +495,7 @@ static BOOL         goto_clicked(event_pollblock *event,void *reference)
   if (event->type == event_CLICK && event->data.mouse.button.data.menu)
     return FALSE;
   if (event->type == event_KEY || event->data.mouse.button.data.select)
-    WinEd_CreateMenu(0, -1, -1);
+    WinEd_CreateMenu((menu_ptr) -1,0,0);
 
   viewcom_quickgoto(reference);
 

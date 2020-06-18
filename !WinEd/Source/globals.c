@@ -113,7 +113,7 @@ BOOL kill_menus(event_pollblock *event, void *ref)
   if (event->type == event_CLICK &&
   	event->data.mouse.button.value == button_MENU)
     return FALSE;
-  WinEd_CreateMenu(-1,0,0);
+  WinEd_CreateMenu((menu_ptr) -1,0,0);
   return TRUE;
 }
 
@@ -137,6 +137,14 @@ browser_winentry *selection_viewer = NULL;
 
 void WinEd_CreateMenu(menu_ptr m, int x, int y)
 {
+  /* Belt & Braces, to avoid any problems with DeskLib. Ensure that all attempts to close
+     the menu tree use "(menu_ptr) -1", and pass X and Y as 0,0. This will prevent
+     DeskLib from trying to interpret the NULL pointer if Y is -1. */
+  if (m == (menu_ptr) -1 || m == NULL) {
+    m = (menu_ptr) -1;
+    x = 0;
+    y = 0;
+  }
   /* This is a bodge to avoid mysterious problems with receiving menusdeleted messages which
      result in the overwrite-warning dialogue getting closed but other problems arising when
      the overwrite_warn transient is closed but the close-handler (overwrite_checkanswer) isn't

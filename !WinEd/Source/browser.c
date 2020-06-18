@@ -304,7 +304,7 @@ static BOOL       create_clicked(event_pollblock *event,void *reference)
   }
 
   if (event->type == event_KEY || event->data.mouse.button.data.select)
-    WinEd_CreateMenu(0, -1, -1);
+    WinEd_CreateMenu((menu_ptr) -1,0,0);
   return TRUE;
 }
 
@@ -392,7 +392,7 @@ static BOOL       copy_clicked(event_pollblock *event,void *reference)
   }
 
   if (event->type == event_KEY || event->data.mouse.button.data.select)
-    WinEd_CreateMenu(0, -1, -1);
+    WinEd_CreateMenu((menu_ptr) -1,0,0);
   return TRUE;
 }
 
@@ -465,7 +465,7 @@ static BOOL       rename_clicked(event_pollblock *event,void *reference)
   if (event->type == event_CLICK && event->data.mouse.button.data.menu)
     return FALSE;
   if (event->type == event_KEY || event->data.mouse.button.data.select)
-    WinEd_CreateMenu(0, -1, -1);
+    WinEd_CreateMenu((menu_ptr) -1,0,0);
   Icon_GetText(rename_dbox, 2, buffer);
   if (!buffer[0])
   {
