@@ -23,6 +23,9 @@ extern char APPNAME[];
 /* An extra logging level */
 #define log_TEDIOUS 240
 
+/* The size of a standard window scroll lump, is OS units. */
+#define globals_WINDOW_SCROLL 20
+
 /* For control of Messages file */
 extern msgtrans_filedesc *messages;
 
@@ -85,6 +88,12 @@ int WinEd_Wimp_ReportErrorR(os_error *error, int flags, const char *name);
 
 /* Extract icon name from icon definition. Returns length of string, or 0 if no name */
 int extract_iconname(browser_winentry *winentry, int icon, char *buffer, int buflen);
+
+/* Handle scroll events generically. */
+BOOL globals_scrollevent(event_pollblock *event,void *reference);
+
+/* Handle scrolling in a window. */
+void scroll_window(event_pollblock *event, int col_size, int row_size, int pane_size);
 
 /* For debugging */
 void test_fn(void);

@@ -257,6 +257,82 @@ int extract_iconname(browser_winentry *winentry, int icon, char *buffer, int buf
   return n - valix;
 }
 
+BOOL globals_scrollevent(event_pollblock *event,void *reference)
+{
+  scroll_window(event, globals_WINDOW_SCROLL, globals_WINDOW_SCROLL, 0);
+  return TRUE;
+}
+
+/**
+ * Handle scrolling in a window.
+ *
+ * \param *event      Pointer to the event_pollblock for the scroll.
+ * \param col_size    The size of a horizontal scroll, in OS units.
+ * \param row_size    The size of a vertical scroll, in OS units.
+ * \param top_margin  The size of the pane/margin at the top of the window, in OS units.
+ */
+void scroll_window(event_pollblock *event, int col_size, int row_size, int top_margin)
+{
+  scroll_rq *scroll = &(event->data.scroll);
+  int width, height, error;
+
+  /* Add in the X scroll offset. */
+
+  width = scroll->openblock.screenrect.max.x - scroll->openblock.screenrect.min.x;
+
+  switch (scroll->direction.x)
+  {
+    case -1:
+      scroll->openblock.scroll.x -= col_size;
+      break;
+
+    case 1:
+      scroll->openblock.scroll.x += col_size;
+      break;
+
+    case -2:
+      scroll->openblock.scroll.x -= width;
+      break;
+
+    case 2:
+      scroll->openblock.scroll.x += width;
+      break;
+  }
+
+  /* Add in the Y scroll offset. */
+
+  height = (scroll->openblock.screenrect.max.y - scroll->openblock.screenrect.min.y) - top_margin;
+
+    switch (scroll->direction.y)
+    {
+    case 1:
+      scroll->openblock.scroll.y += row_size;
+      if ((error = ((scroll->openblock.scroll.y) % row_size)))
+        scroll->openblock.scroll.y -= row_size + error;
+      break;
+
+    case -1:
+      scroll->openblock.scroll.y -= row_size;
+      if ((error = ((scroll->openblock.scroll.y - height) % row_size)))
+        scroll->openblock.scroll.y -= error;
+      break;
+
+    case 2:
+      scroll->openblock.scroll.y += height;
+      if ((error = ((scroll->openblock.scroll.y) % row_size)))
+        scroll->openblock.scroll.y -= row_size + error;
+      break;
+
+    case -2:
+      scroll->openblock.scroll.y -= height;
+      if ((error = ((scroll->openblock.scroll.y - height) % row_size)))
+        scroll->openblock.scroll.y -= error;
+      break;
+    }
+
+    Wimp_OpenWindow(&(scroll->openblock));
+}
+
 #include "DeskLib:WimpMsg.h"
 #include "ide.h"
 

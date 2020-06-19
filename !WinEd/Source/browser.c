@@ -117,6 +117,9 @@ BOOL browser_click(event_pollblock *event,void *reference);
 /* Handle keyboard events in browser */
 BOOL browser_hotkey(event_pollblock *event,void *reference);
 
+/* Handle scroll events in browser */
+BOOL browser_scrollevent(event_pollblock *event,void *reference);
+
 /* Delete a window definition (doesn't remove icon from browser) */
 void browser_delwindow(browser_winentry *winentry);
 
@@ -1049,10 +1052,11 @@ browser_fileinfo *browser_newbrowser()
 
   /* Handlers, using browser_fileinfo block as reference. */
   /* These are all released in browser_close() */
-  Event_Claim(event_OPEN,  newfile->window, event_ANY, browser_OpenWindow, newfile);
-  Event_Claim(event_CLOSE, newfile->window, event_ANY, browser_closeevent, newfile);
-  Event_Claim(event_CLICK, newfile->window, event_ANY, browser_click,      newfile);
-  Event_Claim(event_KEY,   newfile->window, event_ANY, browser_hotkey,     newfile);
+  Event_Claim(event_OPEN,   newfile->window, event_ANY, browser_OpenWindow,  newfile);
+  Event_Claim(event_CLOSE,  newfile->window, event_ANY, browser_closeevent,  newfile);
+  Event_Claim(event_CLICK,  newfile->window, event_ANY, browser_click,       newfile);
+  Event_Claim(event_KEY,    newfile->window, event_ANY, browser_hotkey,      newfile);
+  Event_Claim(event_SCROLL, newfile->window, event_ANY, browser_scrollevent, newfile);
   EventMsg_Claim(message_DATALOAD,              newfile->window, browser_loadhandler, newfile);
   EventMsg_Claim(message_DATASAVE,              newfile->window, browser_savehandler, newfile);
   EventMsg_Claim(message_WINDOWINFO,            newfile->window, browser_iconise,     newfile);
@@ -3381,6 +3385,12 @@ BOOL               browser_hotkey(event_pollblock *event,void *reference)
       Wimp_ProcessKey(event->data.key.code);
       break;
   }
+  return TRUE;
+}
+
+BOOL browser_scrollevent(event_pollblock *event,void *reference)
+{
+  scroll_window(event, MARGIN + WIDTH, MARGIN + HEIGHT, MARGIN + ((choices->browtools) ? browtools_paneheight : 0));
   return TRUE;
 }
 

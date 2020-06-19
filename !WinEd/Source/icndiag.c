@@ -78,7 +78,7 @@ BOOL icndiag_update(event_pollblock *event,void *reference);
 /* Update icons in icndiag window */
 void icndiag_seticons(browser_winentry *winentry,int icon);
 
-/* Affects any flags which depend on others; suitable as handler for
+/* Affects any flags which depend on others; suitable as handler for
    affecting icons */
 BOOL icndiag_affect(event_pollblock *event,void *reference);
 
@@ -119,6 +119,7 @@ void icndiag_init()
   free(templat);
   Event_Claim(event_OPEN,icndiag_window,event_ANY,icndiag_OpenWindow,0);
   Event_Claim(event_CLOSE,icndiag_window,event_ANY,icndiag_CloseWindow,0);
+  Event_Claim(event_SCROLL,icndiag_window,event_ANY,globals_scrollevent,0);
   Event_Claim(event_CLICK,icndiag_window,icndiag_UPDATE,icndiag_update,0);
   Event_Claim(event_CLICK,icndiag_window,icndiag_DONTRESIZE,icndiag_update,0);
   Event_Claim(event_CLICK,icndiag_window,icndiag_CANCEL,icndiag_clickcancel,0);

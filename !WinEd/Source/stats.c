@@ -31,6 +31,7 @@ typedef enum {
 /* Event handlers */
 BOOL stats_redraw(event_pollblock *event,void *reference);
 BOOL stats_closeevent(event_pollblock *event,void *reference);
+BOOL stats_scrollevent(event_pollblock *event,void *reference);
 
 /* Redraw necessary elements of a row */
 void stats_drawline(int line,wimp_rect *rect,char *id,int numicons,
@@ -94,6 +95,7 @@ void stats_open(browser_fileinfo *browser)
     Event_Claim(event_REDRAW,browser->stats,event_ANY,stats_redraw,browser);
     Event_Claim(event_OPEN,browser->stats,event_ANY,Handler_OpenWindow,0);
     Event_Claim(event_CLOSE,browser->stats,event_ANY,stats_closeevent,browser);
+    Event_Claim(event_SCROLL,browser->stats,event_ANY,stats_scrollevent,browser);
     help_claim_window(browser->stats,"STAT");
   }
 
@@ -230,6 +232,12 @@ BOOL stats_redraw(event_pollblock *event,void *reference)
 BOOL stats_closeevent(event_pollblock *event,void *reference)
 {
   stats_close(reference);
+  return TRUE;
+}
+
+BOOL stats_scrollevent(event_pollblock *event,void *reference)
+{
+  scroll_window(event, stats_height, stats_height, 0);
   return TRUE;
 }
 
