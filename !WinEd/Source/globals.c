@@ -274,61 +274,83 @@ BOOL globals_scrollevent(event_pollblock *event,void *reference)
 void scroll_window(event_pollblock *event, int col_size, int row_size, int top_margin)
 {
   scroll_rq *scroll = &(event->data.scroll);
-  int width, height, error;
+  int width, height, error, distance;
 
   /* Add in the X scroll offset. */
 
+  distance = 0;
   width = scroll->openblock.screenrect.max.x - scroll->openblock.screenrect.min.x;
 
   switch (scroll->direction.x)
   {
-    case -1:
-      scroll->openblock.scroll.x -= col_size;
+    case 1: /* One Column Right */
+      distance = +col_size;
       break;
 
-    case 1:
-      scroll->openblock.scroll.x += col_size;
+    case -1: /* One Column Left */
+      distance = -col_size;
       break;
 
-    case -2:
-      scroll->openblock.scroll.x -= width;
+    case 2: /* One Page Right */
+      distance = +width;
       break;
 
-    case 2:
-      scroll->openblock.scroll.x += width;
+    case -2: /* One Page Left */
+      distance = -width;
       break;
+
+    case 3:
+    case -3:
+      /* We don't support Auto Scroll. */
+      break;
+
+    default: /* Extended Scroll */
+      if (scroll->direction.x > 0)
+        distance = (scroll->direction.x >> 2) * col_size;
+      else if (scroll->direction.x < 0)
+        distance = ((-scroll->direction.x) >> 2) * col_size;
   }
+
+  scroll->openblock.scroll.x += distance;
 
   /* Add in the Y scroll offset. */
 
+  distance = 0;
   height = (scroll->openblock.screenrect.max.y - scroll->openblock.screenrect.min.y) - top_margin;
 
     switch (scroll->direction.y)
     {
-    case 1:
-      scroll->openblock.scroll.y += row_size;
-      if ((error = ((scroll->openblock.scroll.y) % row_size)))
-        scroll->openblock.scroll.y -= row_size + error;
+    case 1: /* One Rown Down */
+      distance = +row_size;
       break;
 
-    case -1:
-      scroll->openblock.scroll.y -= row_size;
-      if ((error = ((scroll->openblock.scroll.y - height) % row_size)))
-        scroll->openblock.scroll.y -= error;
+    case -1: /* One Row Up. */
+      distance = -row_size;
       break;
 
-    case 2:
-      scroll->openblock.scroll.y += height;
-      if ((error = ((scroll->openblock.scroll.y) % row_size)))
-        scroll->openblock.scroll.y -= row_size + error;
+    case 2: /* One Page Down */
+      distance = +height;
       break;
 
-    case -2:
-      scroll->openblock.scroll.y -= height;
-      if ((error = ((scroll->openblock.scroll.y - height) % row_size)))
-        scroll->openblock.scroll.y -= error;
+    case -2: /* One Page Up */
+      distance = -height;
       break;
+
+    case 3:
+    case -3:
+      /* We don't support Auto Scroll. */
+      break;
+
+    default: /* Extended Scroll */
+      if (scroll->direction.y > 0)
+        distance = (scroll->direction.y >> 2) * row_size;
+      else if (scroll->direction.y < 0)
+        distance = ((-scroll->direction.y) >> 2) * row_size;
     }
+
+    scroll->openblock.scroll.y += distance;
+    if ((error = ((scroll->openblock.scroll.y) % row_size)))
+      scroll->openblock.scroll.y -= ((distance > 0) ? row_size : 0) + error;
 
     Wimp_OpenWindow(&(scroll->openblock));
 }
