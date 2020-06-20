@@ -54,4 +54,5 @@
 53,"Add scroll handlers","Add scroll handlers for WinDiag, IcnEdit, Browser and Stats windows","Done","r70",,"Reported by Martin Avison"
 54,"Export Spaces","Export icon names uses spaces and other invalid characters",,,,"Reported by Martin Avison"
 55,"Export Enum","Exporting icon names as a C enum includes a trailing comma if the last icon in the window has no name",,,,"Reported by Martin Avison"
-56,"Extended Scroll Events","Add support for extended scroll events to the scroll handler.","Done","r71"
+56,"Extended Scroll Events","Add support for extended scroll events to the scroll handler.","Done","r71-r72"
+57,"Batch Editing of Icons","Make it possible to be able to batch alter icons eg: mass alter the text length validation of icons etc",,,,"Requested by Kevin Wells"
