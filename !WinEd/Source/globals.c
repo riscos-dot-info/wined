@@ -308,7 +308,8 @@ void scroll_window(event_pollblock *event, int col_size, int row_size, int top_m
       if (scroll->direction.x > 0)
         distance = (scroll->direction.x >> 2) * col_size;
       else if (scroll->direction.x < 0)
-        distance = ((-scroll->direction.x) >> 2) * col_size;
+        distance = -((-scroll->direction.x) >> 2) * col_size;
+      break;
   }
 
   scroll->openblock.scroll.x += distance;
@@ -345,7 +346,8 @@ void scroll_window(event_pollblock *event, int col_size, int row_size, int top_m
       if (scroll->direction.y > 0)
         distance = (scroll->direction.y >> 2) * row_size;
       else if (scroll->direction.y < 0)
-        distance = ((-scroll->direction.y) >> 2) * row_size;
+        distance = -((-scroll->direction.y) >> 2) * row_size;
+      break;
     }
 
     scroll->openblock.scroll.y += distance;
