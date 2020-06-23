@@ -1,26 +1,20 @@
 Building WinEd
 ==============
 
-As of June 2020, this version of WinEd is known to build using the GCCSDK environment, using the following information. In theory it should still build using GCC on RISC OS, but although no changes have knowingly been made to the source to prevent this, it has not tested.
+As of June 2020, this version of WinEd is known to build using the GCCSDK environment, using the following information. In theory it should still build using GCC on RISC OS, but although no changes have knowingly been made to the source to prevent this, it has not been tested.
 
 
 DeskLib
 -------
 
-You will need a copy of the SCL version of DeskLib. The easiest way to achieve this in the GCCSDK is to get the Autobuilder to download and build a copy using the following commands at the prompt (but see note below).
+You will need a copy of the SCL version of DeskLib. The easiest way to obtain this in the GCCSDK is to get the Autobuilder to download and build a copy using the following commands at the prompt.
 
   cd ~/gccsdk/build
   ../autobuilder/build -v desklib-scl
 
-Alternatively, it is possible to check the sources out from the SVN repository at riscos.info and biild direct. From the folder you wish to download DeskLib to:
+Alternatively, it is possible to check the sources out from the SVN repository at riscos.info and build direct. From the folder you wish to download DeskLib to:
 
   svn co svn://svn.riscos.info/DeskLib/trunk DeskLib
-  cd DeskLib/\!DLSources
-  make -f Makefile.unix install SCL=true
-
-NB. At the time of writing, WinEd requires a modification to DeskLib which is not in trunk. Until this has been merged, it will therefore be necessary to check out a branch and build manually from that:
-
-  svn co svn://svn.riscos.info/DeskLib/branches/wined DeskLib
   cd DeskLib/\!DLSources
   make -f Makefile.unix install SCL=true
 
