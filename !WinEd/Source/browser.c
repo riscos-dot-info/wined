@@ -1767,7 +1767,7 @@ static load_result browser_load_fonts(browser_fileinfo *browser,
           Log(log_DEBUG, " Font %d: %dx%d %s", i,
            (*newfontinfo)[i].size.x / 16,
            (*newfontinfo)[i].size.y / 16,
-           (*newfontinfo)[i].name);
+           LogPreBuffer((*newfontinfo)[i].name));
         }
       }
     }
@@ -2001,7 +2001,7 @@ BOOL               validate_icon_data(icon_block icon)
 
   #ifdef DeskLib_DEBUG
   if ((icon.flags.data.text || icon.flags.data.sprite) && !icon.flags.data.indirected)
-    Log(log_DEBUG, " Icon data: %s", icon.data.text);
+    Log(log_DEBUG, " Icon data: %s", LogPreBuffer(icon.data.text));
   #endif
 
   if (  (icon.workarearect.min.x > icon.workarearect.max.x)
@@ -2048,7 +2048,6 @@ static load_result browser_load_templat(browser_fileinfo *browser,
 
   #ifdef DeskLib_DEBUG
   int i;
-  char reportertext[wimp_MAXNAME+1];
   #endif
 
   Log(log_DEBUG, "browser_load_templat");
@@ -2074,19 +2073,19 @@ static load_result browser_load_templat(browser_fileinfo *browser,
   /* Set temporary name */
   snprintf(winentry->identifier, sizeof(winentry->identifier), "~WinEdNULL~");
 
-  Log(log_DEBUG, "Checking for duplicates of: %s", identifier);
+  Log(log_DEBUG, "Checking for duplicates of: %s", LogPreBuffer(identifier));
 
   /* Loop through all existing names */
   tempitem = LinkList_FirstItem(&browser->winlist);
 
   while (tempitem && (counter < tries)) /* Give up after 1000 tries! */
   {
-    Log(log_DEBUG, " checking:%s", tempitem->identifier);
+    Log(log_DEBUG, " checking:%s", LogPreBuffer(tempitem->identifier));
     repeatedname = FALSE;
     if (!strcmpcr(identifier, tempitem->identifier))
     {
       snprintf(identifier, sizeof(identifier), "%d~%s", counter++, origname);
-      Log(log_INFORMATION, "Identifier is not unique. Trying '%s'", identifier);
+      Log(log_INFORMATION, "Identifier is not unique. Trying '%s'", LogPreBuffer(identifier));
       repeatedname = TRUE;
     }
 
@@ -2185,8 +2184,7 @@ static load_result browser_load_templat(browser_fileinfo *browser,
       Log(log_ERROR, "Thar she blows! Start of icon %d corrupted (probably - min x:%d)", i, winentry->window->icon[i].workarearect.min.x);
   }
 
-  strncpycr(reportertext, winentry->identifier, wimp_MAXNAME-1); /* it's CR terminated... */
-  Log(log_NOTICE, " window '%s' loaded. %d icons.", reportertext, winentry->window->window.numicons);
+  Log(log_NOTICE, " window '%s' loaded. %d icons.", LogPreBuffer(winentry->identifier), winentry->window->window.numicons);
   #endif
 
   return load_OK;
@@ -3106,7 +3104,7 @@ browser_winentry  *browser_copywindow(browser_fileinfo *browser,
   browser_winentry *winentry;
   int icon;
 
-  Log(log_INFORMATION, "browser_copywindow - copying window %s", identifier);
+  Log(log_INFORMATION, "browser_copywindow - copying window %s", LogPreBuffer(identifier));
 
   if (!browser_overwrite(browser,identifier))
     return NULL;

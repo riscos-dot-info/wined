@@ -68,6 +68,15 @@ extern browser_winentry *selection_viewer;
 /* Output function for fortify */
 void fort_out(const char *string);
 
+/* Take possibly ctrl-terminated strings and copy them into a separate buffer
+ * for use with the Log() function. The pre-buffer is reset when Log() is called.
+ * 
+ * \param *text   Pointer to a possibly ctrl-terminated string.
+ * \return        Pointer to a zero-terminated string which will be valid until
+ *                Log() has been called.
+ */
+char *LogPreBuffer(char *text);
+
 /* Syslog (& debug) output */
 void Log(int level, const char *format, ...);
 

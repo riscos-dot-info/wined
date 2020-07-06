@@ -236,7 +236,7 @@ BOOL monitor_update(event_pollblock *event,void *reference)
 
         if (retlen)
         {
-          Log(log_DEBUG, "Over icon named '%s' (name length:%d)", icname, retlen);
+          Log(log_DEBUG, "Over icon named '%s' (name length:%d)", LogPreBuffer(icname), retlen);
         }
         else
           /* Clear icon name if no name was found */

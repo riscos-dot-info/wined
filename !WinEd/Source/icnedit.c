@@ -161,7 +161,7 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
       if (data->indirecttext.buffer && bufindex > 0)
       {
         strncpycr(data->indirecttext.buffer,bufcont,data->indirecttext.bufflen);
-        Log(log_TEDIOUS, "  value: %s", data->indirecttext.buffer);
+        Log(log_TEDIOUS, "  value: %s", LogPreBuffer(data->indirecttext.buffer));
       }
       else if (data->indirecttext.buffer)
         *data->indirecttext.buffer = 0;
@@ -176,7 +176,7 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
 
       if (validindex > 0)
       {
-        Log(log_TEDIOUS, "  validindex > 0. Allocating %d bytes for string: '%s'", strlencr(validcont) + 1, validcont);
+        Log(log_TEDIOUS, "  validindex > 0. Allocating %d bytes for string: '%s'", strlencr(validcont) + 1, LogPreBuffer(validcont));
         data->indirecttext.validstring = malloc(strlencr(validcont) + 1);
       }
       else
@@ -198,7 +198,7 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
 
       if (validindex > 0)
       {
-        Log(log_TEDIOUS, "  validation: %s", validcont);
+        Log(log_TEDIOUS, "  validation: %s", LogPreBuffer(validcont));
         strcpycr(data->indirecttext.validstring, validcont);
       }
       else
@@ -228,7 +228,7 @@ BOOL        icnedit_processicon(browser_winentry *winentry,
               break;
           }
         }
-        Log(log_TEDIOUS, "  validation (processed): %s", data->indirecttext.validstring);
+        Log(log_TEDIOUS, "  validation (processed): %s", LogPreBuffer(data->indirecttext.validstring));
       }
     }
     else if (flags->data.sprite)

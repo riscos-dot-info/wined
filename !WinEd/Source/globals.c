@@ -22,6 +22,7 @@ char APPNAME[] = "WinEd";
 
 char log_buffer[1020]; /* A bit smaller than 1K to allow for \\r etc below */
 char log_final[1024];
+int log_prebuffer = 0;
 
 void transient_centre(window_handle window)
 {
@@ -169,13 +170,51 @@ void fort_out(const char *string)
   Debug_Printf("\\O%s",string+1);
 }
 
+/* Take possibly ctrl-terminated strings and copy them into a separate buffer
+ * for use with the Log() function. The pre-buffer is reset when Log() is called.
+ * 
+ * \param *text   Pointer to a possibly ctrl-terminated string.
+ * \return        Pointer to a zero-terminated string which will be valid until
+ *                Log() has been called.
+ */
+char *LogPreBuffer(char *text)
+{
+  char *start = log_final + log_prebuffer;
+
+  if (text == NULL)
+    return NULL;
+
+  while (*text >= ' ' && log_prebuffer < (sizeof(log_final) - 1))
+    log_final[log_prebuffer++] = *text++;
+
+  log_final[log_prebuffer++] = '\0';
+
+  return start;
+}
+
 void Log(int level, const char *format, ...)
 {
   va_list argptr;
+  int zero_len;
+  BOOL bad_terminator = FALSE;
 
   va_start(argptr, format);
   vsnprintf(log_buffer, sizeof(log_buffer), format, argptr);
   va_end(argptr);
+
+  /* Reset the prebuffer now that we've built the log string. */
+  log_prebuffer = 0;
+
+  /* Scan the buffer to see if there are any control characters before the terminator. */
+  for (zero_len = 0; zero_len < sizeof(log_buffer) && log_buffer[zero_len] != '\0'; zero_len++)
+    if (log_buffer[zero_len] < ' ')
+      bad_terminator = TRUE;
+
+  if (bad_terminator == TRUE) {
+    char *message = "A bad string termintor was found in the following log message.";
+    Debug_Printf("\\R%s", message);
+    Environment_LogMessage(log_ERROR, message);
+  }
 
   /* If debugging, output colour-coded reporter text */
   if      (level <= log_ERROR)       snprintf(log_final, sizeof(log_final), "\\r%s", log_buffer); /* red    */

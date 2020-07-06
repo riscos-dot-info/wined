@@ -783,7 +783,7 @@ void                viewer_modifyflags(window_block *window)
 
 void                viewer_claimeditevents(browser_winentry *winentry)
 {
-  Log(log_DEBUG, "viewer_claimeditevents: %s %p", winentry->identifier, winentry);
+  Log(log_DEBUG, "viewer_claimeditevents: %s %p", LogPreBuffer(winentry->identifier), winentry);
 
   Event_Claim(event_REDRAW,winentry->handle,event_ANY, viewer_redraw,     winentry);
   Event_Claim(event_OPEN,  winentry->handle,event_ANY, viewer_openevent,  winentry);
@@ -845,7 +845,7 @@ BOOL                viewer_makewinblock(browser_winentry *winentry,
   BOOL sofar = TRUE;
   int icon;
 
-  Log(log_DEBUG, "viewer_makewinblock - %s", winentry->identifier);
+  Log(log_DEBUG, "viewer_makewinblock - %s", LogPreBuffer(winentry->identifier));
 
   /* Create replica of window info */
   *winblock = malloc(sizeof(window_block) +
@@ -1133,13 +1133,13 @@ BOOL                viewer_openevent(event_pollblock *event,void *reference)
   if (event->data.openblock.behind < -1)
   {
     winentry->iconised = TRUE;
-    Log(log_DEBUG, "Window '%s' iconised", winentry->identifier);
+    Log(log_DEBUG, "Window '%s' iconised", LogPreBuffer(winentry->identifier));
   }
   else
   {
     if (winentry->iconised)
     {
-      Log(log_DEBUG, "Window '%s' deiconised", winentry->identifier);
+      Log(log_DEBUG, "Window '%s' deiconised", LogPreBuffer(winentry->identifier));
     }
     winentry->iconised = FALSE;
   }
@@ -1910,7 +1910,7 @@ BOOL                viewer_iconise(event_pollblock *event,browser_winentry *wine
 {
   message_block message = event->data.message;
 
-  Log(log_DEBUG, "viewer_iconise: %s, %d", winentry->identifier, winentry);
+  Log(log_DEBUG, "viewer_iconise: %s, %d", LogPreBuffer(winentry->identifier), winentry);
 
   if (event->data.message.data.windowinfo.window != winentry->handle)
   {
