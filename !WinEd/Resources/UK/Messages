@@ -77,7 +77,7 @@ BType15:Writable
 #
 #Menus
 #
-IBMenu:Info|Help,Icon picker,Monitor,Choices...,Clear sprites|Quit
+IBMenu:Info|Help...,Icon picker,Monitor,Choices...,Clear sprites|Quit
 BrowMen:>Create,Window '123456789012',Select all,Clear selection,>Save,Statistics
 BrowMenK:>Create             ^R,Window '123456789012',Select all         ^A,Clear selection    ^Z,>Save               F3,Statistics         ^S
 BMTemp:Window
@@ -424,14 +424,14 @@ M_LastIcon:%0_%1:\n
 M_PostWin:
 M_Postamble:\n
 
-B_Preamble:ô Icon names exported by WinEd on %3\n\nÝ òiconnumbers\n
-B_PreWin:ô Icons for window %0
+B_Preamble:ï¿½ Icon names exported by WinEd on %3\n\nï¿½ ï¿½iconnumbers\n
+B_PreWin:ï¿½ Icons for window %0
 B_1stIcon:%0_%1%%=%2
 B_Icon:%0_%1%%=%2
 B_OneIcon:%0_%1%%=%2
 B_LastIcon:%0_%1%%=%2
 B_PostWin:\n
-B_Postamble:á
+B_Postamble:ï¿½
 
 NoExport:Unable to export icon names to file '%0'
 
