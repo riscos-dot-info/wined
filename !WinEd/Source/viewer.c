@@ -206,6 +206,7 @@ static struct {
   wimp_point scroll;  /* Scroll offsets before dragging */
   BOOL shift;         /* Whether shift pressed at start of drag */
   wimp_rect startbox; /* Work area coords of start of drag */
+  BOOL active;        /* Whether a drag is active. */
 } viewer_dragref;
 
 /* Preview menu */
@@ -643,6 +644,9 @@ void                viewer_init()
   templat = templates_load("Goto",0,0,0,0);
   Error_CheckFatal(Wimp_CreateWindow(templat,&goto_dbox));
   free(templat);
+
+  /* We're not dragging anything at present. */
+  viewer_dragref.active = FALSE;
 
   /* Dummy border icon */
   viewer_dummyborder.flags.value = icon_TEXT | icon_BORDER | icon_FILLED |
@@ -1376,6 +1380,7 @@ BOOL                viewer_click(event_pollblock *event,void *reference)
         viewer_dragref.icon = event->data.mouse.icon;
         viewer_dragref.scroll = wstate.openblock.scroll;
         viewer_dragref.shift = Kbd_KeyDown(inkey_SHIFT);
+        viewer_dragref.active = TRUE;
         if (Kbd_KeyDown(inkey_ALT))
         {
           wimp_rect srect;
@@ -1475,6 +1480,7 @@ BOOL                viewer_click(event_pollblock *event,void *reference)
         viewer_dragref.winentry = winentry;
         viewer_dragref.icon = event->data.mouse.icon;
         viewer_dragref.shift = Kbd_KeyDown(inkey_SHIFT);
+        viewer_dragref.active = TRUE;
         drag_resizeicon(winentry,event);
         Event_Claim(event_USERDRAG,event_ANY,event_ANY,
         	    viewer_resizedrag,reference);
@@ -1608,6 +1614,8 @@ static void         viewer_canceldrag(viewer_cancelref vcr)
   browser_winentry *destination;
 
   Log(log_DEBUG, "viewer_canceldrag");
+
+  viewer_dragref.active = FALSE;
 
   Event_Release(event_USERDRAG,event_ANY,event_ANY, vcr.handler,viewer_dragref.winentry);
 
@@ -2442,11 +2450,28 @@ void                viewer_claimcaret(browser_winentry *winentry)
   Wimp_SetCaretPosition(&caret);
 }
 
+/**
+ * Move the currently-selected icons immediately, as a response to a
+ * press of one of the cursor keys.
+ * 
+ * This action is disabled if the user has not ticked the option in
+ * choices, or if a drag is currently in progress. The latter avoids
+ * the two operations fighting each other.
+ * 
+ * \param *winentry  The target window.
+ * \param xby        The number of OS units to move in the X direction.
+ * \param yby        The number of OS units to move in the Y direction.
+ * \param snap       TRUE to snap the nudged icon to the coarse grid.
+ */
 void                viewer_moveselection(browser_winentry *winentry, int xby, int yby, BOOL snap)
 {
   icon_handle i;
 
   Log(log_DEBUG, "viewcom_moveselection");
+
+  /* Don't nudge if the user has disabled the action or there's a drag in progress. */
+  if (choices->mouseless_move == FALSE || viewer_dragref.active == TRUE)
+    return;
 
   for (i = 0; i < winentry->window->window.numicons; i++)
   {
@@ -2504,63 +2529,67 @@ BOOL                viewer_hotkey(event_pollblock *event,void *reference)
     /* Move by 4 pixels a shot */
     case keycode_CURSORLEFT:
     {
-      if (selections && choices->mouseless_move) viewer_moveselection(winentry, -4, 0, TRUE);
+      if (selections)
+        viewer_moveselection(winentry, -4, 0, TRUE);
       viewer_movepointer(-4, 0);
       return TRUE;
     }
     case keycode_CURSORRIGHT:
-      if (selections && choices->mouseless_move) viewer_moveselection(winentry, 4, 0, TRUE);
+      if (selections)
+        viewer_moveselection(winentry, 4, 0, TRUE);
       viewer_movepointer(4, 0);
       return TRUE;
     case keycode_CURSORUP:
-      if (selections && choices->mouseless_move) viewer_moveselection(winentry, 0, 4, TRUE);
+      if (selections)
+        viewer_moveselection(winentry, 0, 4, TRUE);
       viewer_movepointer(0, 4);
       return TRUE;
     case keycode_CURSORDOWN:
-      if (selections && choices->mouseless_move) viewer_moveselection(winentry, 0, -4, TRUE);
+      if (selections)
+        viewer_moveselection(winentry, 0, -4, TRUE);
       viewer_movepointer(0, -4);
       return TRUE;
 
     /* Move by 2 pixels a shot */
     case keycode_SHIFT_CURSORLEFT:
-      if (selections && choices->mouseless_move)
+      if (selections)
         viewer_moveselection(winentry, -2, 0, FALSE);
       viewer_movepointer(-2, 0);
       return TRUE;
     case keycode_SHIFT_CURSORRIGHT:
-      if (selections && choices->mouseless_move)
+      if (selections)
         viewer_moveselection(winentry, 2, 0, FALSE);
       viewer_movepointer(2, 0);
       return TRUE;
     case keycode_SHIFT_CURSORUP:
-      if (selections && choices->mouseless_move)
+      if (selections)
         viewer_moveselection(winentry, 0, 2, FALSE);
       viewer_movepointer(0, 2);
       return TRUE;
     case keycode_SHIFT_CURSORDOWN:
-      if (selections && choices->mouseless_move)
+      if (selections)
         viewer_moveselection(winentry, 0, -2, FALSE);
       viewer_movepointer(0, -2);
       return TRUE;
 
     /* Move by 1 pixel a shot */
     case keycode_CTRL_CURSORLEFT:
-      if (selections && choices->mouseless_move)
+      if (selections)
         viewer_moveselection(winentry, -1, 0, FALSE);
       viewer_movepointer(-1, 0);
       return TRUE;
     case keycode_CTRL_CURSORRIGHT:
-      if (selections && choices->mouseless_move)
+      if (selections)
         viewer_moveselection(winentry, 1, 0, FALSE);
       viewer_movepointer(1, 0);
       return TRUE;
     case keycode_CTRL_CURSORUP:
-      if (selections && choices->mouseless_move)
+      if (selections)
         viewer_moveselection(winentry, 0, 1, FALSE);
       viewer_movepointer(0, 1);
       return TRUE;
     case keycode_CTRL_CURSORDOWN:
-      if (selections && choices->mouseless_move)
+      if (selections)
         viewer_moveselection(winentry, 0, -1, FALSE);
       viewer_movepointer(0, -1);
       return TRUE;
