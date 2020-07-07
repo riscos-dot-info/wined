@@ -1474,7 +1474,7 @@ BOOL                viewer_click(event_pollblock *event,void *reference)
 
         viewer_dragref.winentry = winentry;
         viewer_dragref.icon = event->data.mouse.icon;
-	viewer_dragref.shift = Kbd_KeyDown(inkey_SHIFT);
+        viewer_dragref.shift = Kbd_KeyDown(inkey_SHIFT);
         drag_resizeicon(winentry,event);
         Event_Claim(event_USERDRAG,event_ANY,event_ANY,
         	    viewer_resizedrag,reference);
