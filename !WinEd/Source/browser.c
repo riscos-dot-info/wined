@@ -2449,6 +2449,7 @@ browser_winentry  *browser_findnamedentry(browser_fileinfo *browser,char *id)
 
 void               browser_setextent(browser_fileinfo *browser)
 {
+  window_info info;
   wimp_rect extent;
   Log(log_DEBUG, "browser_setextent");
 
@@ -2463,6 +2464,19 @@ void               browser_setextent(browser_fileinfo *browser)
   if (choices->browtools)
     extent.min.y -= browtools_paneheight;
   Wimp_SetExtent(browser->window,&extent);
+
+  /* Adjust the extent of the toolbar to match. */
+
+  if (choices->browtools)
+  {
+    info.window = browser->pane;
+    Wimp_GetWindowInfoNoIcons(&info);
+    extent.min.x = info.block.workarearect.min.x;
+    extent.min.y = info.block.workarearect.min.y;
+    extent.max.x = extent.min.x + MARGIN + MAXNUMCOLUMNS * (WIDTH + MARGIN);
+    extent.max.y = info.block.workarearect.max.y;
+    Wimp_SetExtent(browser->pane,&extent);
+  }
 }
 
 int                alphacomp(const void *one, const void *two)
