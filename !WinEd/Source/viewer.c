@@ -2525,27 +2525,17 @@ void                viewer_moveselection(browser_winentry *winentry, int xby, in
 
 static void         viewer_movepointer(int x,int y)
 {
+  wimp_point position;
+
   Log(log_DEBUG, "viewer_movepointer");
 
-  struct {
-    char reason;
-    char x_lsb,x_msb,y_lsb,y_msb;
-  } ptrblk;
-  short int xpos,ypos;
+  if (Pointer_GetPosition(&position) != NULL)
+    return;
 
-  ptrblk.reason = 6;  /* Read pointer */
-  OS_Word(osword_DEFINEPOINTERANDMOUSE,&ptrblk);
+  position.x += x;
+  position.y += y;
 
-  xpos = ptrblk.x_lsb + (ptrblk.x_msb << 8) + x;
-  ypos = ptrblk.y_lsb + (ptrblk.y_msb << 8) + y;
-
-  ptrblk.x_lsb = xpos & 0xff;
-  ptrblk.x_msb = xpos >> 8;
-  ptrblk.y_lsb = ypos & 0xff;
-  ptrblk.y_msb = ypos >> 8;
-
-  ptrblk.reason = 3;  /* Set mouse */
-  OS_Word(osword_DEFINEPOINTERANDMOUSE,&ptrblk);
+  Pointer_SetPosition(position);
 }
 
 BOOL                viewer_hotkey(event_pollblock *event,void *reference)
