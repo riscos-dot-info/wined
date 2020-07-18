@@ -56,7 +56,7 @@
 55,"Export Enum","Exporting icon names as a C enum includes a trailing comma if the last icon in the window has no name",,,,"Reported by Martin Avison"
 56,"Extended Scroll Events","Add support for extended scroll events to the scroll handler.","Done","r71-r72"
 57,"Batch Editing of Icons","Make it possible to be able to batch alter icons eg: mass alter the text length validation of icons etc",,,,"Requested by Kevin Wells"
-58,"Don't Resize","Swap the default action from Update to Don't Resize in the Edit Icon dialogue",,,,"Requested by Martin Avison"
+58,"Don't Resize","Swap the default action from Update to Don't Resize in the Edit Icon dialogue","Done","r81",,"Requested by Martin Avison"
 59,"Design Report","Report on the design of the templates in a file, looking for those which have icons too small, etc"
 60,"Log Message Termination","Messages passed to Log() might have invalid termination when strings from template files are included","Done","r76",,"Reported by Hilary Phillips"
 61,"Icon Move Error","When moving multiple icons by click-cursor key, the icons jump position on release","Done","r78",,"Reported by Martin Avison" 

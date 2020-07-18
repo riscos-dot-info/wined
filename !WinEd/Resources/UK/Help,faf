@@ -643,9 +643,9 @@ Validate button reads the colours from the fields in the dialogue box
 and ensures the validation string contains the correct L command,
 forcing the indirected flag on if necessary.</p>
 
-<h3>Don't resize / Update</h3>
+<h3>Update / Adjust size</h3>
 <p>These both update the template data with settings from the dialogue
-box. Update also resizes the icon if it is currently too small to
+box. Adjust size also resizes the icon if it is currently too small to
 display its data (see Resize icons dialogue box).</p>
 <p><a href="#contents">Return to contents</a></p>
 

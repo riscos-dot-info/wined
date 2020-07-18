@@ -237,8 +237,8 @@ H_WEC_61/H_ICC_41/H_ICC_46:\Schoose a new colour for this item.
 H_WEC_62:\Sset all the colours to their recommended default values.
 H_WEC_63:If this option is selected the \w will use GCOL colours instead of Wimp colours.
 H_ICC:\Ticon/title editing dialogue box.
-H_ICC_00:\Supdate the icon/title, ensuring the icon is large enough to hold the data.
-H_ICC_01:\Supdate the icon without checking its size.
+H_ICC_00:\Supdate the icon/title.|MThe icon's dimensions are not checked against the content.
+H_ICC_01:\Supdate the icon, ensuring that the icon is large enough to hold the data and resizing it if not.
 H_ICC_06:Enter the text or the sprite name of the icon here.
 H_ICC_07:This flag indicates the icon contains text.
 H_ICC_08:This flag indicates the icon contains a sprite.
