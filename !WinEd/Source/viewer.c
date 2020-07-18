@@ -1208,6 +1208,7 @@ BOOL                viewer_scrollevent(event_pollblock *event,void *reference)
       winentry->window->window.scroll = event->data.scroll.openblock.scroll;
     }
   }
+
   return TRUE;
 }
 
