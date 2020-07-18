@@ -358,42 +358,42 @@ void scroll_window(event_pollblock *event, int col_size, int row_size, int top_m
   distance = 0;
   height = (scroll->openblock.screenrect.max.y - scroll->openblock.screenrect.min.y) - top_margin;
 
-    switch (scroll->direction.y)
-    {
-    case 1: /* One Rown Down */
-      distance = +row_size;
-      break;
+  switch (scroll->direction.y)
+  {
+  case 1: /* One Rown Down */
+    distance = +row_size;
+    break;
 
-    case -1: /* One Row Up. */
-      distance = -row_size;
-      break;
+  case -1: /* One Row Up. */
+    distance = -row_size;
+    break;
 
-    case 2: /* One Page Down */
-      distance = +height;
-      break;
+  case 2: /* One Page Down */
+    distance = +height;
+    break;
 
-    case -2: /* One Page Up */
-      distance = -height;
-      break;
+  case -2: /* One Page Up */
+    distance = -height;
+    break;
 
-    case 3:
-    case -3:
-      /* We don't support Auto Scroll. */
-      break;
+  case 3:
+  case -3:
+    /* We don't support Auto Scroll. */
+    break;
 
-    default: /* Extended Scroll */
-      if (scroll->direction.y > 0)
-        distance = (scroll->direction.y >> 2) * row_size;
-      else if (scroll->direction.y < 0)
-        distance = -((-scroll->direction.y) >> 2) * row_size;
-      break;
-    }
+  default: /* Extended Scroll */
+    if (scroll->direction.y > 0)
+      distance = (scroll->direction.y >> 2) * row_size;
+    else if (scroll->direction.y < 0)
+      distance = -((-scroll->direction.y) >> 2) * row_size;
+    break;
+  }
 
-    scroll->openblock.scroll.y += distance;
-    if ((error = ((scroll->openblock.scroll.y) % row_size)))
-      scroll->openblock.scroll.y -= ((distance > 0) ? row_size : 0) + error;
+  scroll->openblock.scroll.y += distance;
+  if ((error = ((scroll->openblock.scroll.y) % row_size)))
+    scroll->openblock.scroll.y -= ((distance > 0) ? row_size : 0) + error;
 
-    Wimp_OpenWindow(&(scroll->openblock));
+  Wimp_OpenWindow(&(scroll->openblock));
 }
 
 #include "DeskLib:WimpMsg.h"
