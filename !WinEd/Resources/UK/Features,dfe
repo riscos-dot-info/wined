@@ -59,4 +59,5 @@
 58,"Don't Resize","Swap the default action from Update to Don't Resize in the Edit Icon dialogue","Done","r81",,"Requested by Martin Avison"
 59,"Design Report","Report on the design of the templates in a file, looking for those which have icons too small, etc"
 60,"Log Message Termination","Messages passed to Log() might have invalid termination when strings from template files are included","Done","r76",,"Reported by Hilary Phillips"
-61,"Icon Move Error","When moving multiple icons by click-cursor key, the icons jump position on release","Done","r78",,"Reported by Martin Avison" 
+61,"Icon Move Error","When moving multiple icons by click-cursor key, the icons jump position on release","Done","r78",,"Reported by Martin Avison"
+62,"Template Scroll Handler","Add support for extended scroll requests in the template editor and preview windows","Done","r83"

@@ -89,6 +89,9 @@ BOOL viewer_closeevent(event_pollblock *event,void *reference);
 /* Round window during open events */
 BOOL viewer_openevent(event_pollblock *event,void *reference);
 
+/* Process scroll events. */
+BOOL viewer_scrollevent(event_pollblock *event,void *reference);
+
 /* Handle mouse events */
 BOOL viewer_click(event_pollblock *event,void *reference);
 
@@ -755,8 +758,9 @@ void                viewer_modifyflags(window_block *window)
   window->flags.data.moveable = 1;
   window->flags.data.autoredraw = 0;
   window->flags.data.nobounds = 0;
-  window->flags.data.scrollrq = 0;
+  window->flags.data.scrollrq = 1;
   window->flags.data.scrollrqdebounced = 0;
+  window->colours.cols.extendedscroll = 1;
   window->flags.data.hotkeys = 0;
   window->flags.data.keeponscreen = 0;
   window->flags.data.ignoreright = 0;
@@ -789,11 +793,12 @@ void                viewer_claimeditevents(browser_winentry *winentry)
 {
   Log(log_DEBUG, "viewer_claimeditevents: %s %p", LogPreBuffer(winentry->identifier), winentry);
 
-  Event_Claim(event_REDRAW,winentry->handle,event_ANY, viewer_redraw,     winentry);
-  Event_Claim(event_OPEN,  winentry->handle,event_ANY, viewer_openevent,  winentry);
-  Event_Claim(event_CLOSE, winentry->handle,event_ANY, viewer_closeevent, winentry);
-  Event_Claim(event_CLICK, winentry->handle,event_ANY, viewer_click,      winentry);
-  Event_Claim(event_KEY,   winentry->handle,event_ANY, viewer_hotkey,     winentry);
+  Event_Claim(event_REDRAW, winentry->handle, event_ANY, viewer_redraw,      winentry);
+  Event_Claim(event_OPEN,   winentry->handle, event_ANY, viewer_openevent,   winentry);
+  Event_Claim(event_CLOSE,  winentry->handle, event_ANY, viewer_closeevent,  winentry);
+  Event_Claim(event_CLICK,  winentry->handle, event_ANY, viewer_click,       winentry);
+  Event_Claim(event_KEY,    winentry->handle, event_ANY, viewer_hotkey,      winentry);
+  Event_Claim(event_SCROLL, winentry->handle, event_ANY, viewer_scrollevent, winentry);
   EventMsg_Claim(message_WINDOWINFO,winentry->handle, (event_handler) viewer_iconise, winentry);
 
   if (winentry != &picker_winentry)
@@ -919,6 +924,7 @@ static void         viewer_claimpreviewevents(browser_winentry *winentry)
   Event_Claim(event_CLOSE,  winentry->handle, event_ANY, viewer_closeevent,  winentry);
   Event_Claim(event_CLICK,  winentry->handle, event_ANY, preview_click,      winentry);
   Event_Claim(event_KEY,    winentry->handle, event_ANY, preview_hotkey,     winentry);
+  Event_Claim(event_SCROLL, winentry->handle, event_ANY, viewer_scrollevent, winentry);
   EventMsg_Claim(message_WINDOWINFO,winentry->handle, (event_handler) viewer_iconise, winentry);
   Event_Claim(event_PTRLEAVE, winentry->handle, event_ANY, monitor_deactivate, winentry);
   Event_Claim(event_PTRENTER, winentry->handle, event_ANY, monitor_activate,   winentry);
@@ -1178,6 +1184,30 @@ BOOL                viewer_openevent(event_pollblock *event,void *reference)
     }
   }
 
+  return TRUE;
+}
+
+BOOL                viewer_scrollevent(event_pollblock *event,void *reference)
+{
+  browser_winentry *winentry = reference;
+  window_state wstate;
+
+  Log(log_DEBUG, "viewer_scrollevent");
+
+  scroll_window(event, globals_WINDOW_SCROLL, globals_WINDOW_SCROLL, 0);
+
+  if (winentry->status == status_EDITING)
+  {
+    if (event->data.scroll.openblock.scroll.x != wstate.openblock.scroll.x ||
+          event->data.scroll.openblock.scroll.y != wstate.openblock.scroll.y)
+    {
+      /* Change data in stored template */
+      if (winentry != &picker_winentry)
+        browser_settitle(winentry->browser,NULL,TRUE);
+      winentry->window->window.screenrect = event->data.scroll.openblock.screenrect;
+      winentry->window->window.scroll = event->data.scroll.openblock.scroll;
+    }
+  }
   return TRUE;
 }
 
