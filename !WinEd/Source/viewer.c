@@ -465,6 +465,9 @@ void                viewcom_quickgoto(browser_winentry *winentry)
     gap.x = endpos.x - mousenow.pos.x;
     gap.y = endpos.y - mousenow.pos.y;
 
+    old.x = mousenow.pos.x;
+    old.y = mousenow.pos.y;
+
     Log(log_DEBUG, "x- start:%d end:%d gap:%d", mousenow.pos.x, endpos.x, gap.x);
     Log(log_DEBUG, "y- start:%d end:%d gap:%d", mousenow.pos.y, endpos.y, gap.y);
 
@@ -472,9 +475,7 @@ void                viewcom_quickgoto(browser_winentry *winentry)
 
     do
     {
-      double interim;
       time = Time_Monotonic() - starttime;
-      interim = (time-(span/2))/((span/2)/1.5);
       endpos.x = (sin((time-(span/2.0))/((span/2.0)/1.5))+1.0) * (gap.x/2.0) + mousenow.pos.x;
       endpos.y = (sin((time-(span/2.0))/((span/2.0)/1.5))+1.0) * (gap.y/2.0) + mousenow.pos.y;
 
@@ -484,7 +485,6 @@ void                viewcom_quickgoto(browser_winentry *winentry)
         old = endpos;
       }
     } while (time <= span);
-
   }
 }
 
