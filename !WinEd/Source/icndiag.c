@@ -15,7 +15,7 @@
 
 typedef enum {
   icndiag_UPDATE,
-  icndiag_ADJUSTSIZE,
+  icndiag_ALTUPDATE,
   icndiag_CANCEL,
   icndiag_STRING = 6,
   icndiag_TEXT,
@@ -121,10 +121,10 @@ void icndiag_init()
   Event_Claim(event_CLOSE,icndiag_window,event_ANY,icndiag_CloseWindow,0);
   Event_Claim(event_SCROLL,icndiag_window,event_ANY,globals_scrollevent,0);
   Event_Claim(event_CLICK,icndiag_window,icndiag_UPDATE,icndiag_update,0);
-  Event_Claim(event_CLICK,icndiag_window,icndiag_ADJUSTSIZE,icndiag_update,0);
+  Event_Claim(event_CLICK,icndiag_window,icndiag_ALTUPDATE,icndiag_update,0);
   Event_Claim(event_CLICK,icndiag_window,icndiag_CANCEL,icndiag_clickcancel,0);
   Event_Claim(event_CLICK,icndiag_pane,icndiag_UPDATE,icndiag_update,0);
-  Event_Claim(event_CLICK,icndiag_pane,icndiag_ADJUSTSIZE,icndiag_update,0);
+  Event_Claim(event_CLICK,icndiag_pane,icndiag_ALTUPDATE,icndiag_update,0);
   Event_Claim(event_CLICK,icndiag_pane,icndiag_CANCEL,icndiag_clickcancel,0);
   Event_Claim(event_KEY,icndiag_window,event_ANY,icndiag_keypress,0);
   Event_Claim(event_CLICK,icndiag_window,icndiag_TEXT,icndiag_affect,0);
@@ -219,15 +219,24 @@ void icndiag_open(browser_winentry *winentry,icon_handle icon)
   if (icndiag_icon == -1)
   {
     MsgTrans_Lookup(messages,"IcnDgTT",buffer,16);
-    Icon_Shade(icndiag_window,icndiag_ADJUSTSIZE);
+    Icon_Shade(icndiag_window,icndiag_ALTUPDATE);
+    Icon_Shade(icndiag_pane,icndiag_ALTUPDATE);
   }
   else
   {
     sprintf(numstring,"%d",icon);
     MsgTrans_LookupPS(messages,"IcnDgTI",buffer,16,numstring,0,0,0);
-    Icon_Unshade(icndiag_window,icndiag_ADJUSTSIZE);
+    Icon_Unshade(icndiag_window,icndiag_ALTUPDATE);
+    Icon_Unshade(icndiag_pane,icndiag_ALTUPDATE);
   }
   Window_SetTitle(icndiag_window,buffer);
+
+  if (choices->safe_icons == TRUE)
+    MsgTrans_Lookup(messages,"IcnDgAdjust",buffer,16);
+  else
+    MsgTrans_Lookup(messages,"IcnDgDont",buffer,16);
+  Icon_SetText(icndiag_window, icndiag_ALTUPDATE, buffer);
+  Icon_SetText(icndiag_pane, icndiag_ALTUPDATE, buffer);
 
   Wimp_GetWindowState(icndiag_window,&wstate);
 /*
@@ -667,7 +676,8 @@ BOOL icndiag_update(event_pollblock *event,void *reference)
   }
 
   /* Resize if necessary */
-  if (event->data.mouse.icon == icndiag_ADJUSTSIZE && icndiag_icon != -1)
+  if (((event->data.mouse.icon == icndiag_UPDATE && choices->safe_icons == FALSE) ||
+      (event->data.mouse.icon == icndiag_ALTUPDATE && choices->safe_icons == TRUE)) && icndiag_icon != -1)
   {
     wimp_point minsize;
     BOOL resize = FALSE;

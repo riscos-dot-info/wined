@@ -24,6 +24,7 @@ typedef struct {
   BOOL borders;
   BOOL formed;
   BOOL strict_panes;
+  BOOL safe_icons;
 } choices_str;
 
 extern choices_str *choices;

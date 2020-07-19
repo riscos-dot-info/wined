@@ -24,7 +24,8 @@ typedef enum {
   choices_SAVE = 19,
   choices_OK = 21,
   choices_CANCEL = 23,
-  choices_ROUNDSORT = 26
+  choices_ROUNDSORT = 26,
+  choices_SAFEICONS = 27
 } choices_icons;
 
 #define WEdC 0x43644557
@@ -109,7 +110,8 @@ void choices_default()
   choices->viewtools = TRUE;
   choices->confirm =
   choices->borders =
-  choices->browtools = FALSE;
+  choices->browtools = 
+  choices->safe_icons = FALSE;
 }
 
 void choices_seticons()
@@ -129,6 +131,7 @@ void choices_seticons()
   Icon_SetSelect(choices_window,choices_BORDERS,choices->borders);
   Icon_SetSelect(choices_window,choices_FORMED,choices->formed);
   Icon_SetSelect(choices_window,choices_STRICTPANES,choices->strict_panes);
+  Icon_SetSelect(choices_window,choices_SAFEICONS,choices->safe_icons);
 }
 
 void choices_open()
@@ -160,6 +163,7 @@ void choices_readicons()
   choices->borders = Icon_GetSelect(choices_window,choices_BORDERS);
   choices->formed = Icon_GetSelect(choices_window,choices_FORMED);
   choices->strict_panes = Icon_GetSelect(choices_window,choices_STRICTPANES);
+  choices->safe_icons = Icon_GetSelect(choices_window,choices_SAFEICONS);
 
   (*global_responder)(&old,choices);
 }

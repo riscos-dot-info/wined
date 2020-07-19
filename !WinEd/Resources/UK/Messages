@@ -50,6 +50,8 @@ Safety:Attempting to save altered files to !Scrap after fatal error
 WorkArea:Work area
 IcnDgTI:Edit icon %0
 IcnDgTT:Edit title
+IcnDgAdjust:Adjust size
+IcnDgDont:Don't resize
 WADgT:'%0' work area
 WinDgT:Edit window '%0'
 Total:Total
@@ -237,8 +239,8 @@ H_WEC_61/H_ICC_41/H_ICC_46:\Schoose a new colour for this item.
 H_WEC_62:\Sset all the colours to their recommended default values.
 H_WEC_63:If this option is selected the \w will use GCOL colours instead of Wimp colours.
 H_ICC:\Ticon/title editing dialogue box.
-H_ICC_00:\Supdate the icon/title.|MThe icon's dimensions are not checked against the content.
-H_ICC_01:\Supdate the icon, ensuring that the icon is large enough to hold the data and resizing it if not.
+H_ICC_00:\Supdate the icon/title.|MIn the default configuration (see the Choices dialogue), the icon will be resized if it is not large enough to display its contents.
+H_ICC_01:\Supdate the icon, performing the opposite resizing action to the Update button.
 H_ICC_06:Enter the text or the sprite name of the icon here.
 H_ICC_07:This flag indicates the icon contains text.
 H_ICC_08:This flag indicates the icon contains a sprite.
@@ -347,6 +349,7 @@ H_CHO_14:Select this option if you want to be prompted to confirm before deletin
 H_CHO_15:Select this option to terminate all strings with CR.|MDeselect it to use NULL terminators.
 H_CHO_16:Select this option to ensure that panes can't be given furniture leading to strange behaviour.
 H_CHO_26:Select this option to display the list of templates in alphabetical order in the browser window.
+H_CHO_27:Select this option to make resizing icons the non-default action in the Edit Icon dialogue box.
 H_CRE:Use this dialogue box to enter a name for your new \w.
 H_COP:Use this dialogue box to enter a name for the copy of the slected \w.
 H_REN:Use this dialogue box to enter a new name for the selected \w.
