@@ -265,10 +265,26 @@ int WinEd_Wimp_ReportErrorR(os_error *error, int flags, const char *name)
   return Wimp_ReportErrorR(error, flags, name);
 }
 
-/* Extract icon name from icon definition (returns 0 if no name, otherwise length of it) */
+/**
+ * Extract an icon name from icon definition (The N validation command),
+ * copying it into the supplied buffer.
+ * 
+ * \param *winentry     The window entry containing the icon.
+ * \param icon          The icon from which to extract the name.
+ * \param *buffer       Pointer to a buffer in which to return the name.
+ * \param buflen        The length of the buffer.
+ * \return              The length of the name, or 0 if none returned.
+ */
 int extract_iconname(browser_winentry *winentry, int icon, char *buffer, int buflen)
 {
   int valix, n = 0;
+
+  if (buffer == NULL || buflen == 0)
+    return 0;
+
+  /* Ensure that the buffer is always returned terminated. */
+
+  buffer[0] = '\0';
 
   if (  (winentry->window->icon[icon].flags.data.indirected)
      && (winentry->window->icon[icon].flags.data.text) )
@@ -281,7 +297,7 @@ int extract_iconname(browser_winentry *winentry, int icon, char *buffer, int buf
     if (valix)
     {
 
-      for (n = valix; (validstring[n] > 31) && (validstring[n] != ';') && (n-valix<buflen-1); n++)
+      for (n = valix; (validstring[n] > 31) && (validstring[n] != ';') && (n-valix < buflen-1); n++)
         buffer[n-valix] = validstring[n];
 
       buffer[n-valix] = 0;
