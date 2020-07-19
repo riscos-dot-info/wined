@@ -202,6 +202,10 @@ void Log(int level, const char *format, ...)
   vsnprintf(log_buffer, sizeof(log_buffer), format, argptr);
   va_end(argptr);
 
+  /* If the output string runs over the end of the buffer, it will be
+     truncated but not null-terminated, so have to account for that: */
+  log_buffer[sizeof(log_buffer)-1] = '\0';
+
   /* Reset the prebuffer now that we've built the log string. */
   log_prebuffer = 0;
 
