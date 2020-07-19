@@ -62,6 +62,10 @@ extern char browser_odialogvalid[];
 extern char browser_windowvalid[];
 extern char browser_owindowvalid[];
 
+/* Keep the IDE code disabled for now. This will require a proper config option
+ * at some stage, but at present this is always FALSE. */
+BOOL viewer_use_ide = FALSE;
+
 /* Whether an icon can be selected with menu click */
 BOOL viewer_selection_withmenu = TRUE;
 
@@ -195,7 +199,7 @@ static void         viewer_view(browser_winentry *winentry,BOOL editable)
   viewer_open(winentry,editable);
 
 
-  if (!editable)
+  if (!editable && viewer_use_ide)
     /* Try and find an IDE app to work with */
     ide_broadcast(winentry->browser);
 
@@ -1259,7 +1263,7 @@ BOOL                preview_click(event_pollblock *event, void *reference)
       Wimp_DragBox(&drag);
     }
   }
-  else
+  else if (viewer_use_ide)
   {
     browser_winentry *viewer = (browser_winentry *)reference;
     ide_sendinfo(viewer, event);
