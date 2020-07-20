@@ -29,7 +29,7 @@ typedef enum {
 } choices_icons;
 
 #define WEdC 0x43644557
-#define choices_VERSION 131
+#define choices_VERSION 234
 
 typedef struct {
   int id;
