@@ -86,6 +86,9 @@ BOOL icndiag_affect(event_pollblock *event,void *reference);
    point to the icndiag buffers */
 void icndiag_readicons(icon_block *block);
 
+/* Provide our own interactive help support. */
+BOOL icndiag_help(event_pollblock *event,void *reference);
+
 /* What's being edited */
 browser_winentry *icndiag_winentry;
 icon_handle icndiag_icon;
@@ -140,8 +143,8 @@ void icndiag_init()
   diagutils_colour(icndiag_window,icndiag_BACKCOL,FALSE);
   diagutils_btype(icndiag_window,icndiag_BTNTYPE);
   Event_Claim(event_CLICK,icndiag_window,icndiag_FONTMENU,icndiag_fontmenu,0);
-  help_claim_window(icndiag_window,"ICC");
-  help_claim_window(icndiag_pane,"ICC");
+  EventMsg_Claim(message_HELPREQUEST, icndiag_window, icndiag_help,(void *) "ICC");
+  EventMsg_Claim(message_HELPREQUEST, icndiag_pane, icndiag_help,(void *) "ICC");
 }
 
 BOOL icndiag_clickcancel(event_pollblock *event,void *reference)
@@ -798,6 +801,26 @@ BOOL icndiag_minmax(event_pollblock *event,void *reference)
 {
   Icon_SetText(icndiag_window,icndiag_MAXLEN,"0");
   return icndiag_affect(event,reference);
+}
+
+BOOL icndiag_help(event_pollblock *event,void *reference)
+{
+  char tag[20], *suffix = "";
+
+  /* Add in a suffix to the window name, to give ICC_S for the two update
+   * action buttons if we're in "safe icons" mode, ICC_T for the main
+   * update button if we're editing a window title, and ICC otherwise. */
+
+  if ((icndiag_icon == -1) && (event->data.message.data.helprequest.where.icon == icndiag_UPDATE))
+    suffix = "_T";
+  else if (choices->safe_icons && (event->data.message.data.helprequest.where.icon == icndiag_UPDATE ||
+      event->data.message.data.helprequest.where.icon == icndiag_ALTUPDATE))
+    suffix = "_S";
+
+  snprintf(tag, 20, "%s%s", (char *) reference, suffix);
+  tag[20 - 1] = '\0';
+
+  return help_on_window(event, tag);
 }
 
 void icndiag_close()

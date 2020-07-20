@@ -239,8 +239,9 @@ H_WEC_61/H_ICC_41/H_ICC_46:\Schoose a new colour for this item.
 H_WEC_62:\Sset all the colours to their recommended default values.
 H_WEC_63:If this option is selected the \w will use GCOL colours instead of Wimp colours.
 H_ICC:\Ticon/title editing dialogue box.
-H_ICC_00:\Supdate the icon/title.|MIn the default configuration (see the Choices dialogue), the icon will be resized if it is not large enough to display its contents.
-H_ICC_01:\Supdate the icon, performing the opposite resizing action to the Update button.
+H_ICC_00/H_ICC_S_01:\Supdate the icon, ensuring that it is large enough to hold its contents and resizing it if not.|MThe behaviour of this button can be changed in WinEd's configuration.
+H_ICC_01/H_ICC_S_00:\Supdate the icon, without resizing it to fit its contents.|MThe behaviour of this button can be changed in WinEd's configuration.
+H_ICC_T_00:\Supdate the title.
 H_ICC_06:Enter the text or the sprite name of the icon here.
 H_ICC_07:This flag indicates the icon contains text.
 H_ICC_08:This flag indicates the icon contains a sprite.

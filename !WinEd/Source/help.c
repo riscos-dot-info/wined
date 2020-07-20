@@ -62,14 +62,17 @@ BOOL help_on_window(event_pollblock *event,void *reference)
 {
   char tag[20];
 
-  sprintf(tag,"H_%s",(char *) reference);
+  snprintf(tag,20, "H_%s",(char *) reference);
 
   if (event->data.message.data.helprequest.where.icon != -1 &&
       event->data.message.data.helprequest.where.window != window_ICONBAR)
   {
-    sprintf(tag + strlen(tag),"_%02d",
+    int inset = strlen(tag);
+    snprintf(tag + inset, 20 - inset,"_%02d",
     	    event->data.message.data.helprequest.where.icon);
   }
+
+  tag[20 - 1] = '\0';
 
   help_reply(&event->data.message,tag);
 
