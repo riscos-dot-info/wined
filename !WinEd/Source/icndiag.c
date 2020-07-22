@@ -596,8 +596,8 @@ static void icndiag_readdbox(icon_block *iblock)
   esg = Icon_GetInteger(icndiag_window,icndiag_ESG);
   if (esg < 0)
     esg = 0;
-  else if (esg > 31)
-    esg = 31;
+  else if (esg > 15)
+    esg = 15;
   iblock->flags.data.esg = esg;
   iblock->flags.data.font = Icon_GetSelect(icndiag_window,icndiag_ANTIALIASED);
   if (iblock->flags.data.font)
