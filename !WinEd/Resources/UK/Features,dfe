@@ -43,7 +43,7 @@
 42,"Export choices","Add choices to allow exporting icon names in upper/lower case","b",,40,"Requested by Ray Favre, David Thomas"
 43,"Field widths calculation","Add option to ignore system font when calculating minimum icon widths. Specify a specific ""backup"" font instead (e.g. Homerton Bold)","b",,40
 44,"Sprite loading","Change code to handle three different sprite types (for buttons). Add modechange handler to free and load relevant sprites.","c"
-45,"Iconbar menu","Change picker and monitor options to be tickable + re-choosing them closes windows","c"
+45,"Iconbar menu","Change picker and monitor options to be tickable + re-choosing them closes windows. This needs to take into account the auto-open and -close.","c"
 46,"Resize-icons window","Add cancel button","Done","r69"
 47,"Remove repeated strings","As per FormED","z"
 48,"Add template metadata","Add metadata to template files (e.g. author, program&version used etc) - using non-window object?","c"
@@ -62,3 +62,8 @@
 61,"Icon Move Error","When moving multiple icons by click-cursor key, the icons jump position on release","Done","r78",,"Reported by Martin Avison"
 62,"Template Scroll Handler","Add support for extended scroll requests in the template editor and preview windows","Done","r83"
 63,"Goto Icon","If the target icon for a goto is outside the visible area of a window, the mouse moves to the position where it would be"
+64,"Shortcuts Men","This appears to be undocumented and not fully implemented. What does it do?"
+65,"SaveAs Failure","If the Save As dialogue opens from the Unsaved Templates warning, the buttons don't work.",,,,"Reported by David Ruck"
+66,"Indirected Lengths","Indirected icon text lengths seem to get reduced to the length of the text on update, for sprite-only icons","Done","r96"
+67,"IDE Interface","The changes added in r48 appear to be incomplete. What do they do?"
+68,"Icon Resizing","More intelligently resize icons, extending left when right-align flag is set and so on."

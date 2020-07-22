@@ -24,8 +24,8 @@ typedef enum {
   icndiag_VALID = 11,
   icndiag_MAXLEN = 13,
   icndiag_MINMAX,
-  icndiag_WIMPSPRITES,
-  icndiag_USERSPRITES,
+  icndiag_WIMPSPRITES,  /* No longer used? */
+  icndiag_USERSPRITES,  /* No longer used? */
   icndiag_BTNTYPE = 18,
   icndiag_BTNMENU,
   icndiag_BORDER = 22,
@@ -255,12 +255,18 @@ void icndiag_open(browser_winentry *winentry,icon_handle icon)
   Icon_SetCaret(icndiag_window,icndiag_STRING);
 }
 
+/**
+ * Set the icons in the Icon Edit dialogue for a given window and icon.
+ * 
+ * \param *winentry   The window containing the icon of interest.
+ * \param icon        The index of the required icon, or -1 for the title.
+ */
 void icndiag_seticons(browser_winentry *winentry,int icon)
 {
   icon_data *data;
   icon_flags *flags;
 
-  /* Make shortcut pointers to icon's data/flags */
+  /* Make shortcut pointers to the icon or title data/flags */
   if (icndiag_icon == -1)
   {
     data = &winentry->window->window.title;
@@ -272,10 +278,13 @@ void icndiag_seticons(browser_winentry *winentry,int icon)
     flags = &winentry->window->icon[icon].flags;
   }
 
-  /* Set string/valid/sprite area etc */
+  /* Set the icon data fields. */
   if (flags->data.indirected)
   {
+    /* Indirected icon. */
     Icon_Select(icndiag_window,icndiag_INDIRECTED);
+
+    /* Set the icon text or sprite name. */
     if (flags->data.text ||
         (flags->data.sprite && data->indirectsprite.nameisname))
     {
@@ -284,19 +293,29 @@ void icndiag_seticons(browser_winentry *winentry,int icon)
     }
     else
       Icon_SetText(icndiag_window,icndiag_STRING,"");
+
+    /* Set the validation string and maximum text length */
     if (flags->data.text)
     {
       Icon_SetInteger(icndiag_window,icndiag_MAXLEN,
-      		      data->indirecttext.bufflen);
+              data->indirecttext.bufflen);
       Icon_SetText(icndiag_window,icndiag_VALID,
-      		   strterm(data->indirecttext.validstring +
-      		   	(int) winentry->window));
+              strterm(data->indirecttext.validstring +
+              (int) winentry->window));
+    }
+    else if (flags->data.sprite && data->indirectsprite.nameisname)
+    {
+      Icon_SetInteger(icndiag_window,icndiag_MAXLEN,
+              data->indirectsprite.nameisname);
+      Icon_SetText(icndiag_window,icndiag_VALID,"");
     }
     else
     {
       Icon_SetText(icndiag_window,icndiag_MAXLEN,"");
       Icon_SetText(icndiag_window,icndiag_VALID,"");
     }
+
+    /* The Wimp or User Sprite area icons are no longer present. */
     /*if (flags->data.sprite)
     {
       if ((int) data->indirectsprite.spritearea == 1)
@@ -313,7 +332,10 @@ void icndiag_seticons(browser_winentry *winentry,int icon)
   }
   else
   {
+    /* Non-indirected icon. */
     Icon_Deselect(icndiag_window,icndiag_INDIRECTED);
+
+    /* Set the icon text or sprite name. */
     if (flags->data.text || flags->data.sprite)
     {
       char buffer[13];
@@ -324,6 +346,8 @@ void icndiag_seticons(browser_winentry *winentry,int icon)
     else
       Icon_SetText(icndiag_window,icndiag_STRING,"");
   }
+
+  /* Set the text and sprite flags. */
   Icon_SetSelect(icndiag_window,icndiag_TEXT,flags->data.text);
   Icon_SetSelect(icndiag_window,icndiag_SPRITE,flags->data.sprite);
 
@@ -406,6 +430,14 @@ void icndiag_seticons(browser_winentry *winentry,int icon)
   icndiag_affect(0,0);
 }
 
+/**
+ * Dynamically update the contents of the dialogue box as the
+ * user interacts with it or the data changes.
+ * 
+ * \param *event  The
+ * \param *reference  
+ * \return            TRUE if the event was handled.
+ */
 BOOL icndiag_affect(event_pollblock *event,void *reference)
 {
   int len;
