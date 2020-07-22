@@ -246,7 +246,10 @@ extern browser_winentry picker_winentry; /* Set up in picker.c */
 extern BOOL monitor_isopen; /* Set up in monitor.c */
 extern window_handle monitor_window; /* Set up in monitor.c */
 
-void               browser_createmenus()
+/**
+ * (Re-)Create the browser window menu structures from the messages.
+ */
+void browser_createmenus()
 {
   char menutext[256];
   char subtitle[32];
@@ -280,6 +283,14 @@ void               browser_createmenus()
   Menu_AddSubMenu(browser_parentmenu,parent_templat,browser_submenu);
 }
 
+/**
+ * Process clicks on the Create button in the Create Window dialogue, or
+ * Return keypresses.
+ *
+ * \param *event      The event data.
+ * \param *reference  The parent browser instance into which to create the window.
+ * \return            TRUE if the event was processed.
+ */
 static BOOL       create_clicked(event_pollblock *event,void *reference)
 {
   char buffer[16];
@@ -3434,7 +3445,14 @@ void               browcom_view(browser_fileinfo *browser,BOOL editable)
   viewer_open(winentry,editable);
 }
 
-void               browser_responder(choices_str *old,choices_str *new_ch)
+/**
+ * Respond to changes in the application choices.
+ * 
+ * \param *old    The old choices, which had been in effect until the change.
+ * \param *new_ch The new choices which will be in effect.
+ */
+
+void browser_responder(choices_str *old,choices_str *new_ch)
 {
   browser_fileinfo *browser;
   browser_winentry *winentry;

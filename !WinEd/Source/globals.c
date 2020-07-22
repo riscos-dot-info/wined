@@ -16,6 +16,9 @@ msgtrans_filedesc *messages;
 
 event_handler menuhandler;
 
+/**
+ * The linked list of loaded template files/browser windows.
+ */
 linklist_header browser_list;
 
 char APPNAME[] = "WinEd";
