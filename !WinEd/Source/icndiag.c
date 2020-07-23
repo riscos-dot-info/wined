@@ -137,7 +137,7 @@ void icndiag_init()
   Event_Claim(event_CLICK,icndiag_window,icndiag_ANTIALIASED,icndiag_affect,0);
   Event_Claim(event_CLICK,icndiag_window,icndiag_FONTVALID,icndiag_fontvalid,0);
   Event_Claim(event_CLICK,icndiag_window,icndiag_MINMAX,icndiag_minmax,0);
-  diagutils_bumpers(icndiag_window,icndiag_ESG,0,31,1);
+  diagutils_bumpers(icndiag_window,icndiag_ESG,0,15,1);
   diagutils_bumpers(icndiag_window,icndiag_FONTHEIGHT,2,200,2);
   diagutils_colour(icndiag_window,icndiag_FORECOL,FALSE);
   diagutils_colour(icndiag_window,icndiag_BACKCOL,FALSE);
