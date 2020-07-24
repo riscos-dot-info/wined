@@ -67,3 +67,4 @@
 66,"Indirected Lengths","Indirected icon text lengths seem to get reduced to the length of the text on update, for sprite-only icons","Done","r96"
 67,"IDE Interface","The changes added in r48 appear to be incomplete. What do they do?"
 68,"Icon Resizing","More intelligently resize icons, extending left when right-align flag is set and so on."
+69,"Icon Minimizing","Avoid Adjust-double-click on an icon with no text resizing the icon down to zero width.",,,,"Suggested by Chris"
