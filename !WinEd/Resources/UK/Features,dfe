@@ -63,7 +63,7 @@
 62,"Template Scroll Handler","Add support for extended scroll requests in the template editor and preview windows","Done","r83"
 63,"Goto Icon","If the target icon for a goto is outside the visible area of a window, the mouse moves to the position where it would be"
 64,"Shortcuts Men","This appears to be undocumented and not fully implemented. What does it do?"
-65,"SaveAs Failure","If the Save As dialogue opens from the Unsaved Templates warning, the buttons don't work.",,,,"Reported by David Ruck"
+65,"SaveAs Failure","If the Save As dialogue opens from the Unsaved Templates warning, the buttons don't work.","Done","r100",,"Reported by David Ruck"
 66,"Indirected Lengths","Indirected icon text lengths seem to get reduced to the length of the text on update, for sprite-only icons","Done","r96"
 67,"IDE Interface","The changes added in r48 appear to be incomplete. What do they do?"
 68,"Icon Resizing","More intelligently resize icons, extending left when right-align flag is set and so on."

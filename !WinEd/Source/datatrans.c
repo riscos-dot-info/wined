@@ -262,11 +262,11 @@ static void saveas_immediate_save(window_handle window, BOOL close, void *ref)
   	saveas_export_open ?
   		FALSE : Icon_GetSelect(saveas_window,saveas_SELECTION)))
   {
+    if (close || saveas_complete == (datatrans_complete) unsaved_complete)
+      WinEd_CreateMenu((menu_ptr) -1,0,0);
     (*saveas_complete)(ref,TRUE,TRUE,buffer,
     	saveas_export_open ?
   		FALSE : Icon_GetSelect(saveas_window,saveas_SELECTION));
-    if (close || saveas_complete == (datatrans_complete) unsaved_complete)
-      WinEd_CreateMenu((menu_ptr) -1,0,0);
   }
   else
     (*saveas_complete)(ref,FALSE,FALSE,NULL,
