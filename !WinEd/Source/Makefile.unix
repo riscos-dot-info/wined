@@ -11,6 +11,7 @@ APP ?= !WinEd
 RUNIMAGE = !RunImage,ff8
 README ?= ReadMe,fff
 LICENSE ?= Copyright,fff
+EXTRASRC ?= TestCases
 
 # Object Files.
 
@@ -36,6 +37,7 @@ INCLUDES := -I$(GCCSDK_INSTALL_ENV)/include
 COMPILEFLAGS = -O3 -std=c99 -mlibscl -Wunused -Wuninitialized -Wall -fno-strict-aliasing -mthrowback -mpoke-function-name -c
 LINKFLAGS = -mlibscl -Wl,--allow-multiple-definition -o ../!RunImage,ff8
 ZIPFLAGS := -x "*/.svn/*" -x "*/Source/*" -r -, -9
+SRCZIPFLAGS := -x "*/.svn/*" -x "*fortify.*" -x "*.o" -r -, -9
 
 # Build Tools
 
@@ -66,6 +68,7 @@ BUILD_INFO = -D'app_VERSION="$(VERSION) ($(BUILD_DATE))"'
 # If $(RELEASE) is set, then the file can be given a version number suffix.
 
 ZIPFILE := $(ARCHIVE)$(RELEASE).zip
+SRCZIPFILE := $(ARCHIVE)$(RELEASE)src.zip
 
 # Build the application and its supporting binary files.
 
@@ -168,6 +171,8 @@ wined.o : wined.c
 release: clean application
 	$(RM) $(OUTDIR)/../$(ZIPFILE)
 	($(CD) $(OUTDIR) ; $(ZIP) $(ZIPFLAGS) ../$(ZIPFILE) $(APP) $(README) $(LICENSE) )
+	$(RM) $(OUTDIR)/../$(SRCZIPFILE)
+	($(CD) $(OUTDIR) ; $(ZIP) $(SRCZIPFLAGS) ../$(SRCZIPFILE) $(APP) $(README) $(LICENSE) $(EXTRASRC) )
 
 # Clean targets
 
