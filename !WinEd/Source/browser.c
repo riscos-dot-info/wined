@@ -2052,10 +2052,10 @@ static load_result browser_load_templat(browser_fileinfo *browser,
 {
   browser_winentry *winentry;
   load_result result;
-  char identifier[wimp_MAXNAME], origname[wimp_MAXNAME + 1];
+  char identifier[48];
   browser_winentry *tempitem;
-  BOOL repeatedname;
-  int counter = 1, tries = 1000;
+  BOOL renamed = FALSE;
+  int tries = 1000, prefix = 1;
 
   #ifdef DeskLib_DEBUG
   int i;
@@ -2068,41 +2068,38 @@ static load_result browser_load_templat(browser_fileinfo *browser,
   if (!winentry)
     return load_MemoryError;
 
-  LinkList_AddToTail(&browser->winlist,&winentry->header);
+  /* Copy identifier into large buffer with \0 terminator. */
+  strncpycr(identifier, entry->identifier, sizeof(identifier));
+  identifier[sizeof(identifier) - 1] = '\0';
 
-  /* Store (pos. 12 char) original with terminator for use in messages to user etc */
-  snprintf(origname, sizeof(origname), entry->identifier);
+  /* Copy the name into the target buffer, truncated to the maximum length and \0 terminated. */
+  strncpycr(winentry->identifier, identifier, sizeof(winentry->identifier));
+  winentry->identifier[sizeof(winentry->identifier) - 1] = '\0';
 
-  /* Store correct-length name in temporary place - might need to muck around with it */
-  snprintf(identifier, sizeof(identifier), entry->identifier);
+  /* If the name was too long, warn the user it has been truncated. */
+  if (strlencr(identifier) >= wimp_MAXNAME)
+    WinEd_MsgTrans_ReportPS(messages, "LongIdent", FALSE, identifier, winentry->identifier, 0, 0);
 
-  if (strlencr(entry->identifier) >= wimp_MAXNAME) /* Illegal name */
-    WinEd_MsgTrans_ReportPS(messages,"LongIdent",FALSE,origname,identifier,0,0);
+  /* Check for duplicates (possibly we've re-named to a pre-existing name),
+   * by looping through all of the existing names and comparing to each. */
+  Log(log_DEBUG, "Checking for duplicates of: %s", LogPreBuffer(winentry->identifier));
 
-  /* Check for duplicates (possibly we've re-named to a pre-existing name) */
-
-  /* Set temporary name */
-  snprintf(winentry->identifier, sizeof(winentry->identifier), "~WinEdNULL~");
-
-  Log(log_DEBUG, "Checking for duplicates of: %s", LogPreBuffer(identifier));
-
-  /* Loop through all existing names */
   tempitem = LinkList_FirstItem(&browser->winlist);
 
-  while (tempitem && (counter < tries)) /* Give up after 1000 tries! */
+  while (tempitem && (tries-- > 0))
   {
     Log(log_DEBUG, " checking:%s", LogPreBuffer(tempitem->identifier));
-    repeatedname = FALSE;
-    if (!strcmpcr(identifier, tempitem->identifier))
-    {
-      snprintf(identifier, sizeof(identifier), "%d~%s", counter++, origname);
-      Log(log_INFORMATION, "Identifier is not unique. Trying '%s'", LogPreBuffer(identifier));
-      repeatedname = TRUE;
-    }
 
-    if (repeatedname)
+    if (strcmpcr(winentry->identifier, tempitem->identifier) == 0)
     {
-      /* Go back to start and try again */
+      snprintf(winentry->identifier, sizeof(winentry->identifier), "%d~%s", prefix++, identifier);
+      winentry->identifier[sizeof(winentry->identifier) - 1] = '\0';
+
+      renamed = TRUE;
+
+      Log(log_INFORMATION, "Identifier is not unique. Trying '%s'", LogPreBuffer(winentry->identifier));
+
+      /* Go back to start and start the comparisons over again */
       tempitem = LinkList_FirstItem(&browser->winlist);
       Log(log_DEBUG, "Back to the start...");
     }
@@ -2111,21 +2108,22 @@ static load_result browser_load_templat(browser_fileinfo *browser,
       tempitem = LinkList_NextItem(tempitem);
   }
 
-  if (counter > 1) /* We had to change the name */
+  if (renamed) /* We had to change the name */
   {
-    if (counter >= tries) /* Couldn't find a unique name */
+    if (tempitem != NULL) /* Couldn't find a unique name */
     {
       /* Free this window */
-      LinkList_Unlink(&browser->winlist,&winentry->header);
       free(winentry);
       return load_DefinitionError;
     }
     else
       /* Inform user of changed name */
-      WinEd_MsgTrans_ReportPS(messages,"DupeName",FALSE,origname,identifier,0,0);
+      WinEd_MsgTrans_ReportPS(messages, "DupeName", FALSE, identifier, winentry->identifier, 0, 0);
   }
 
-  snprintf(winentry->identifier, sizeof(winentry->identifier), identifier);
+  /* The window name is OK, to add to the linked list. */
+
+  LinkList_AddToTail(&browser->winlist,&winentry->header);
 
   winentry->icon = -1;
 
