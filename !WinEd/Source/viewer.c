@@ -2504,8 +2504,8 @@ void                viewer_moveselection(browser_winentry *winentry, int xby, in
 
   Log(log_DEBUG, "viewcom_moveselection");
 
-  /* Don't nudge if the user has disabled the action or there's a drag in progress. */
-  if (choices->mouseless_move == FALSE || viewer_dragref.active == TRUE)
+  /* Don't nudge if the user has disabled the action. */
+  if (choices->mouseless_move == FALSE)
     return;
 
   for (i = 0; i < winentry->window->window.numicons; i++)
@@ -2548,6 +2548,11 @@ BOOL                viewer_hotkey(event_pollblock *event,void *reference)
   int selections = count_selections(winentry->handle);
 
   Log(log_DEBUG, "viewer_hotkey");
+
+  /* Don't handle any keys but Escape during dragging. */
+
+  if (viewer_dragref.active == TRUE)
+    return FALSE;
 
   switch (event->data.key.code)
   {
