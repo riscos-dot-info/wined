@@ -2422,11 +2422,8 @@ void               browser_delwindow(browser_winentry *winentry)
   Log(log_DEBUG, "browser_delwindow");
 
   if (winentry->status)
-  {
     viewer_close(winentry);
-    /* Refresh browser to reflect closed state of viewer */
-    browser_sorticons(winentry->browser,TRUE,FALSE,TRUE);
-  }
+
   tempfont_losewindow(winentry->browser,winentry);
   winentry->browser->numwindows--;
   flex_free((flex_ptr) &winentry->window);
@@ -2437,6 +2434,7 @@ void               browser_delwindow(browser_winentry *winentry)
 void               browser_deletewindow(browser_winentry *winentry)
 {
   Log(log_DEBUG, "browser_deletewindow");
+  Log(log_DEBUG, "Associated icon: %d", winentry->icon);
 
   if (winentry->icon != -1)
     Wimp_DeleteIcon(winentry->browser->window,winentry->icon);
