@@ -37,9 +37,6 @@ static browser_fileinfo *unsaved_browser;
 /* Handling of shutdown */
 static BOOL unsaved_shutdown; /* Whether to re-initiate shutdown */
 static task_handle shutdown_sender;
-static BOOL unsaved_discardanyway; /* Allows unsaved_quit() to be re-entered
-       	    			      if this task has re-initiated shutdown
-       	    			    */
 
 static window_handle close_window;
 static window_handle quit_window;
@@ -87,20 +84,12 @@ void unsaved_init()
   Event_Claim(event_CLICK,quit_window,quit_DISCARD,quit_discardhandler,0);
   Event_Claim(event_CLICK,quit_window,quit_CANCEL,quit_cancelhandler,0);
   help_claim_window(quit_window,"PRQ");
-
-  unsaved_discardanyway = FALSE;
 }
 
 /* Calls handler if Discard chosen,
    whether to shutdown worked out from event */
 void unsaved_quit(event_pollblock *event)
 {
-  if (unsaved_discardanyway)
-  {
-    browser_userquit = TRUE;
-    return;
-  }
-
   if (event)
   {
     message_block *message = &event->data.message;
@@ -154,13 +143,18 @@ BOOL quit_discardhandler(event_pollblock *event,void *ref)
   {
     key_block shutkey;
 
+    /* We can't call exit() yet as this will prevent us restarting the shutdown
+     * sequence. Instead, we close all of the open browser windows so that we have
+     * no unsaved data. The next time Message_PreQuit arrives, we will ignore it. */
+
+    browser_forcecloseall();
+
+    /* Restart the shutdown process. */
+
     Error_Check(Wimp_GetCaretPosition(&shutkey.caret));
     shutkey.code = keycode_CTRL_SHIFT_F12;
     Error_Check(Wimp_SendMessage(event_KEY,(message_block *) &shutkey,
     				 shutdown_sender,0));
-    /* Apparently can't exit() yet or shutdown won't work, therefore indicate
-       that data can be discarded to avoid infinite loop of unsaved_quit() */
-    unsaved_discardanyway = TRUE;
   }
   else
   {

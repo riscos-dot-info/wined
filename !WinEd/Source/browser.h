@@ -47,6 +47,9 @@ BOOL browser_save_check(char *filename,void *ref,BOOL selection);
 /* Warns of unsaved data or quits */
 void browser_preselfquit(void);
 
+/* Forces the closuse of *all* browsers. */
+void browser_forcecloseall();
+
 /* Returns size of file for datatrans */
 int browser_estsize(browser_fileinfo *);
 

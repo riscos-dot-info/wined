@@ -1287,6 +1287,26 @@ void              browser_forceclose(browser_fileinfo *browser)
   browser_close(browser);
 }
 
+/**
+ * Force close all of the broswer windows, including unsaved ones.
+ * This is intended for scenarios where the user has OK'd the
+ * destruction of all files, such as approved desktop exit.
+ */
+void browser_forcecloseall()
+{
+  browser_fileinfo *browser = LinkList_FirstItem(&browser_list);
+
+  Log(log_DEBUG, "browser_forcecloseall");
+
+  while (browser)
+  {
+    browser->altered = FALSE;
+    browser_close(browser);
+
+    browser = LinkList_FirstItem(&browser_list);
+  }
+}
+
 BOOL              browser_closeevent(event_pollblock *event,void *reference)
 {
   mouse_block ptrinfo;
@@ -2648,6 +2668,7 @@ void               browser_settitle(browser_fileinfo *browser,char *title,BOOL a
 BOOL               browser_prequit(event_pollblock *event,void *reference)
 {
   browser_fileinfo *browser = LinkList_NextItem(&browser_list);
+  BOOL unsaved = FALSE;
 
   Log(log_DEBUG, "browser_prequit");
 
@@ -2655,11 +2676,14 @@ BOOL               browser_prequit(event_pollblock *event,void *reference)
   {
     if (browser->altered)
     {
-      unsaved_quit(event);
+      unsaved = TRUE;
       break;
     }
     browser = LinkList_NextItem(browser);
   }
+
+  if (unsaved == TRUE)
+    unsaved_quit(event);
 
   Log(log_NOTICE, "WinEd shutting down (external request), \\t");
 
@@ -2693,6 +2717,7 @@ void               browser_shutdown()
 void               browser_preselfquit()
 {
   browser_fileinfo *browser = LinkList_NextItem(&browser_list);
+  BOOL unsaved = FALSE;
 
   Log(log_DEBUG, "browser_preselfquit");
 
@@ -2700,10 +2725,16 @@ void               browser_preselfquit()
   {
     if (browser->altered)
     {
-      unsaved_quit(0);
-      return;
+      unsaved = TRUE;
+      break;
     }
     browser = LinkList_NextItem(browser);
+  }
+
+  if (unsaved == TRUE)
+  {
+    unsaved_quit(0);
+    return;
   }
 
   Log(log_NOTICE, "WinEd shutting down (user request), \\t");
