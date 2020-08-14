@@ -249,25 +249,25 @@ H_ICC_09:This flag indicates the icon is indirected.
 H_ICC_11:Enter the icon's validation string here.
 H_ICC_13:Enter the maximum permitted length of the icon's text (including terminator) here.
 H_ICC_14:\Sset the icon's maximum text length to the length of the current data.
-H_ICC_18:\Ticon's button type.
-H_ICC_19:\Schange the button type.
-/H_ICC_20/H_ICC_21/H_ICC_22/H_ICC_30/H_ICC_31/H_ICC_32
-H_ICC_23/H_ICC_24/H_ICC_25/H_ICC_26/H_ICC_27/H_ICC_28
-H_ICC_29:These are the icon's flags.
-H_ICC_34:\Ticon's ESG (Exclusive Selection Group number).
-H_ICC_35:\Sdecrease the ESG.
-H_ICC_36:\Sincrease the ESG.
-H_ICC_38:\Ticon's foreground colour.
-H_ICC_43:\Ticon's background colour.
-H_ICC_48:This flag determines whether to use an outline font in the icon.
-H_ICC_49:\Tname of the font used in the icon.
-H_ICC_50:\Schange the font name.
-H_ICC_52:Enter the height of the font here.
-H_ICC_53:\Sdecrease the font height.
-H_ICC_54:\Sincrease the font height.
-H_ICC_57:Enter the aspect ratio (width to height) of the font as a percentage here.
-H_ICC_59:\Stake the colours defined above and add them to the icon's validation string.
-H_ICC_60:This flag indicated the icon contains only numeric data.|MFor territories where text is displayed right-to-left, this preserves the left-to-right formatting.
+H_ICC_16:\Ticon's button type.
+H_ICC_17:\Schange the button type.
+/H_ICC_18/H_ICC_19/H_ICC_20/H_ICC_28/H_ICC_29/H_ICC_30
+H_ICC_21/H_ICC_22/H_ICC_23/H_ICC_24/H_ICC_25/H_ICC_26
+H_ICC_27:These are the icon's flags.
+H_ICC_31:This flag indicated the icon contains only numeric data.|MFor territories where text is displayed right-to-left, this preserves the left-to-right formatting.
+H_ICC_33:\Ticon's ESG (Exclusive Selection Group number).
+H_ICC_34:\Sdecrease the ESG.
+H_ICC_35:\Sincrease the ESG.
+H_ICC_37:\Ticon's foreground colour.
+H_ICC_42:\Ticon's background colour.
+H_ICC_47:This flag determines whether to use an outline font in the icon.
+H_ICC_48:\Tname of the font used in the icon.
+H_ICC_49:\Schange the font name.
+H_ICC_51:Enter the height of the font here.
+H_ICC_52:\Sdecrease the font height.
+H_ICC_53:\Sincrease the font height.
+H_ICC_56:Enter the aspect ratio (width to height) of the font as a percentage here.
+H_ICC_58:\Stake the colours defined above and add them to the icon's validation string.
 H_Font:\Sset the desired font.
 H_COL:\Wthe wimp colour selector.
 H_COL_00:\Sset the chosen colour.

@@ -24,11 +24,9 @@ typedef enum {
   icndiag_VALID = 11,
   icndiag_MAXLEN = 13,
   icndiag_MINMAX,
-  icndiag_WIMPSPRITES,  /* No longer used? */
-  icndiag_USERSPRITES,  /* No longer used? */
-  icndiag_BTNTYPE = 18,
+  icndiag_BTNTYPE = 16,
   icndiag_BTNMENU,
-  icndiag_BORDER = 22,
+  icndiag_BORDER = 20,
   icndiag_HCENTRE,
   icndiag_VCENTRE,
   icndiag_RALIGN,
@@ -39,26 +37,26 @@ typedef enum {
   icndiag_SELECTED,
   icndiag_SHADED,
   icndiag_DELETED,
-  icndiag_ESG = 34,
+  icndiag_NUMERIC,
+  icndiag_ESG = 33,
   icndiag_DECESG,
   icndiag_INCESG,
-  icndiag_FORECOL = 38,
+  icndiag_FORECOL = 37,
   icndiag_DECFORECOL,
   icndiag_INCFORECOL,
   icndiag_FORECOLMENU,
-  icndiag_BACKCOL = 43,
+  icndiag_BACKCOL = 42,
   icndiag_DECBACKCOL,
   icndiag_INCBACKCOL,
   icndiag_BACKCOLMENU,
-  icndiag_ANTIALIASED = 48,
+  icndiag_ANTIALIASED = 47,
   icndiag_FONTNAME,
   icndiag_FONTMENU,
-  icndiag_FONTHEIGHT = 52,
+  icndiag_FONTHEIGHT = 51,
   icndiag_DECFONTHEIGHT,
   icndiag_INCFONTHEIGHT,
-  icndiag_FONTASPECT = 57,
-  icndiag_FONTVALID = 59,
-  icndiag_NUMERIC
+  icndiag_FONTASPECT = 56,
+  icndiag_FONTVALID = 58,
 } icndiag_icons;
 
 /* Handlers */
@@ -314,21 +312,6 @@ void icndiag_seticons(browser_winentry *winentry,int icon)
       Icon_SetText(icndiag_window,icndiag_MAXLEN,"");
       Icon_SetText(icndiag_window,icndiag_VALID,"");
     }
-
-    /* The Wimp or User Sprite area icons are no longer present. */
-    /*if (flags->data.sprite)
-    {
-      if ((int) data->indirectsprite.spritearea == 1)
-      {
-        Icon_Select(icndiag_window,icndiag_WIMPSPRITES);
-        Icon_Deselect(icndiag_window,icndiag_USERSPRITES);
-      }
-      else
-      {
-        Icon_Deselect(icndiag_window,icndiag_WIMPSPRITES);
-        Icon_Select(icndiag_window,icndiag_USERSPRITES);
-      }
-    }*/
   }
   else
   {
@@ -473,18 +456,6 @@ BOOL icndiag_affect(event_pollblock *event,void *reference)
     Icon_Shade(icndiag_window,icndiag_MAXLEN);
     Icon_Shade(icndiag_window,icndiag_MINMAX);
   }
-  /*if (Icon_GetSelect(icndiag_window,icndiag_INDIRECTED) &&
-      Icon_GetSelect(icndiag_window,icndiag_SPRITE) &&
-      !Icon_GetSelect(icndiag_window,icndiag_TEXT))
-  {
-    Icon_Unshade(icndiag_window,icndiag_WIMPSPRITES);
-    Icon_Unshade(icndiag_window,icndiag_USERSPRITES);
-  }
-  else
-  {
-    Icon_Shade(icndiag_window,icndiag_WIMPSPRITES);
-    Icon_Shade(icndiag_window,icndiag_USERSPRITES);
-  }*/
 
   if (Icon_GetSelect(icndiag_window,icndiag_ANTIALIASED))
   {
@@ -620,14 +591,6 @@ static void icndiag_readdbox(icon_block *iblock)
     				   			icndiag_BACKCOL);
   }
 
-  /* Make sure any sprite name isn't too long */
-  /*
-  if (iblock->flags.data.sprite && !iblock->flags.data.text)
-  {
-    ((char *) Icon_GetTextPtr(icndiag_window,icndiag_STRING))[12] = 0;
-    Icon_ForceRedraw(icndiag_window,icndiag_STRING);
-  }
-  */
   if (iblock->flags.data.indirected)
   {
     if (iblock->flags.data.text || iblock->flags.data.sprite)
@@ -661,11 +624,7 @@ static void icndiag_readdbox(icon_block *iblock)
     }
     else if (iblock->flags.data.sprite)
     {
-      /* iblock->data.indirectsprite.nameisname = TRUE; */
-      /*if (Icon_GetSelect(icndiag_window,icndiag_USERSPRITES))*/
       iblock->data.indirectsprite.spritearea = (void *) user_sprites;
-      /*else
-        iblock->data.indirectsprite.spritearea = (void *) 1;*/
     }
   }
   else
