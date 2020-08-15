@@ -105,16 +105,17 @@ Shortcuts:File Shortcuts
 #Interactive Help messages
 #
 H_IBI:\TWinEd icon.|M\Screate a new Template file.|MDrag a Template file here to edit it.|MDrag a Sprite file here to add it to WinEd's sprite pool.
-H_IBM_00:\Rsee information about WinEd
-H_IBM_01:\Sopen the icon picker.
-H_IBM_02:\Sopen the monitor.
-H_IBM_03:\Sopen the choices dialogue box.
-H_IBM_04:\Sclear all sprites from WinEd's user sprite pool.
-H_IBM_05:\Squit WinEd.
+H_IBM_00:\Rsee information about WinEd, visit its website or contact its maintainer.
+H_IBM_01:\Sread the online docunentation for WinEd.
+H_IBM_02:\Sopen the icon picker.
+H_IBM_03:\Sopen the monitor.
+H_IBM_04:\Schange the configuration of WinEd.
+H_IBM_05:\Sclear all sprites from WinEd's user sprite pool.
+H_IBM_06:\Squit WinEd.
 H_ATP:This \w displays information about WinEd.
-H_ATP_10:\Scompose an email for the author of WinEd.
-H_ATP_11:\Svisit WinEd's World Wide Web site.
-H_Brow:This is a template file browser.|MDouble click \s to edit a \w.|MDouble click \a to preview a \w.
+H_ATP_08:\Scompose an email for the maintainer of WinEd.
+H_ATP_09:\Svisit WinEd's website in your browser.
+H_Brow:This is a template file browser.|MDouble click \s to edit or close a \w.|MDouble click \a to preview or close a \w.
 H_BRM_00:\Rcreate a new \w.
 H_BRM_01:\Rperform an operation on the selected \w(s).
 H_BRM_03G/H_BRM_01G:\Gno \ws are selected.
@@ -122,12 +123,12 @@ H_BRM_0100:\Rcopy the selected \w.
 H_BRM_0104G/H_BRM_0103G/H_BRM_0101G/H_BRM_0100G:\Gthere is not exactly one selected \w.
 H_BRM_0101:\Rrename the selected \w.
 H_BT_06
-H_BRM_0102:\Sdelete the selected template(s).
+H_BRM_0102:\Sdelete the selected \w(s).
 H_BRM_0103:\Sedit the selected \w.
 H_BRM_0104:\Spreview the selected \w.
 H_BRM_0105:\Rexport the icon names from the selected \w(s).
-H_BT_01:\Sselect all the templates in the browser.|M\Aclear the selection.
-H_BRM_02:\Sselect all the templates in the browser.
+H_BT_01:\Sselect all of the \ws in the browser.|M\Aclear the selection.
+H_BRM_02:\Sselect all of the \ws in the browser.
 H_VRM_02
 H_BRM_03:\Sclear the selection.
 H_BRM_04:\Rsave the Template file.
@@ -155,9 +156,9 @@ H_VT_07
 H_VRM_0004:\Salign the selected icons with each other.
 H_VRM_0004G:\Gonly one icon is selected.
 H_VT_08
-H_VRM_0005:\Sspace the selected icons out from each other or a single icon from the edges of the \w.
+H_VRM_0005:\Sspace the selected icons out from each other, or position a single icon away from the edges of the \w.
 H_VT_09
-H_VRM_0006:\Sresize the selected icon(s).
+H_VRM_0006:\Sresize the selected icon(s) relative to each other.
 H_VT_12
 H_VRM_0007:\Schange the coordinates and/or size of the selected icon.
 H_VT_10
@@ -173,8 +174,9 @@ H_VT_03
 H_VRM_05:\Sedit the \w.
 H_VT_04
 H_VRM_06:\Sedit the \w's title.
-H_VRM_07:\Sclose the \w.
-H_VRM_08:\Smake this window a preview.
+H_VRM_07:\Rto send the pointer to a given icon's position.
+H_VRM_08:\Sclose the \w.
+H_VRM_09:\Smake this window a preview.
 H_CLO/H_PRQ:This \w is to warn you of potential data loss.
 H_PRQ_00:\Sdiscard all data in WinEd and quit.
 H_PRQ_02:\Skeep WinEd and its data.
@@ -209,7 +211,7 @@ H_BOR_17:Select these icons to determine which sides of the frame will be altere
 H_SAVE:\Tdialogue box for saving templates.
 H_SAVE_00:\Ssave the templates with the above pathname.
 H_SAVE_02:Enter a new leafname or pathname for the templates here.
-H_SAVE_03:Drag this icon to the directory display where you want to save the templates or to another application.
+H_SAVE_03:Drag this icon to the directory display where you want to save the templates, or to another application.
 H_SAVE_04:Select this option if you only want to save the \ws which are selected in the browser.
 H_EXP:\Tdialogue box for exporting icon names.
 H_EXP_00:\Ssave the icon names with the above pathname.
@@ -219,48 +221,84 @@ H_EXP_04:Select this option if you want to export the icon names as an enum stat
 H_EXP_05:Select this option if you want to export the icon names as message tokens for a Messages file.
 H_WEC:This is the \w flag editing dialogue box.
 H_WEC_00:\Supdate the \w template with the above flags.
-H_WEC_12/H_WEC_13/H_WEC_14/H_WEC_15/H_WEC_16/H_WEC_17/H_WEC_18/H_WEC_03
-H_WEC_02:These flags determine which of the named tool icons will appear around the \w.
-H_WEC_04/H_WEC_05/H_WEC_21/H_WEC_22/H_WEC_23/H_WEC_24/H_WEC_25/H_WEC_26/H_WEC_27/H_WEC_28
-H_WEC_72/H_WEC_29:These flags affect the behaviour of the \w.
-H_WEC_11/H_WEC_19
-H_WEC_20:These options determine whether and how the \w will receive scroll events.
-H_WEC_30:\Tbutton type of the \w's work area.
-H_WEC_31:\Sto change the button type.
-H_WEC_34/H_WEC_38/H_WEC_42/H_WEC_46/H_WEC_50/H_WEC_54/H_WEC_58
-H_WEC_68/H_WEC_64/H_WEC_65/H_WEC_66/H_WEC_70/H_WEC_67/H_WEC_69
-H_WEC_8/H_WEC_9:These icons show the colours to be used in the \w.
-H_WEC_35/H_WEC_39/H_WEC_43/H_WEC_47/H_WEC_51/H_WEC_55
-H_WEC_59/H_ICC_39/H_ICC_44:\Sdecrease the colour number for this item..
-H_WEC_36/H_WEC_40/H_WEC_44/H_WEC_48/H_WEC_52/H_WEC_56
-H_WEC_60/H_ICC_40/H_ICC_45:\Sincrease the colour number for this item.
-H_WEC_37/H_WEC_41/H_WEC_45/H_WEC_49/H_WEC_53/H_WC_57
-H_WEC_61/H_ICC_41/H_ICC_46:\Schoose a new colour for this item.
-H_WEC_62:\Sset all the colours to their recommended default values.
-H_WEC_63:If this option is selected the \w will use GCOL colours instead of Wimp colours.
+H_WEC_02/H_WEC_03:These are the flags controlling the \w tools.
+H_WEC_04:This enables the back icon for the \w.|MWindow Flags: Bit 24.
+H_WEC_05:This enables the close icon for the \w.|MWindow Flags: Bit 25.
+H_WEC_06:This enables the title bar for the \w.|MWindow Flags: Bit 26.
+H_WEC_07:This enables the toggle size icon for the \w.|MWindow Flags: Bit 27.
+H_WEC_08:This enables the vertical scroll bar for the \w.|MWindow Flags: Bit 28.
+H_WEC_09:This enables the adjust size icon for the \w.|MWindow Flags: Bit 29.
+H_WEC_10:This enables the horizontal scroll bar for the \w.|MWindow Flags: Bit 30.
+H_WEC_12:\Tbutton type of the \w's work area.
+H_WEC_13:\Sto change the button type.
+H_WEC_14/H_WEC_15:These are the flags affect the behaviour of the \w.
+H_WEC_16:This makes the \w movable.|MWindow Flags: Bit 1.
+H_WEC_17:This causes the \w to be treated as a pane.|MWindow Flags: Bit 5.
+H_WEC_18:This makes the \w catch and return hot keys.|MWindow Flags: Bit 12.
+H_WEC_19:This indicates that the \w can be fully redrawn by the Wimp|MWindow Flags: Bit 4.
+H_WEC_20:This forces the \w to be at the bottom of the \w stack.|MWindow Flags: Bit 11.
+H_WEC_21:This indicates that Wimp_GetPointerInfo should return details of shaded icons.|MExtended Window Flags: Bit 4 (RISC OS 5.00+).
+H_WEC_22:This indicates that the right-hand extent should be ignored when dragging the adjust size icon.|MWindow Flags: Bit 14 (RISC OS 3.10+).
+H_WEC_23:This indicates that the bottom-hand extent should be ignored when dragging the adjust size icon.|MWindow Flags: Bit 15 (RISC OS 3.10+).
+H_WEC_24:This allows the \w to be opened or dragged outside the screen area.|MWindow Flags: Bit 6.
+H_WEC_25:This forces the \w to remain on screen.|MWindow Flags: Bit 13 (RISC OS 3.10+).
+H_WEC_26:This marks the \w as a furniture/foreground window.|MWindow Flags: Bit 23 (RISC OS 3.80/4.00+).
+H_WEC_27:This causes the \w to always be given a 3D border.|MExtended Window Flags: Bit 3 (RISC OS 4.00+).
+H_WEC_28:This causes the \w to never be given a 3D border.|MExtended Window Flags: Bit 2 (RISC OS 4.00+).
+H_WEC_29/H_WEC_30:These options determine whether and how the \w will receive scroll events.
+H_WEC_31:This indicates that the \w will not receive any scroll events.|MWindow Flags: Bits 8-9 unset.
+H_WEC_32:This will cause the \w to receive non-repeating scroll events when the mouse is clicked in the scroll bars.|MWindow Flags: Bit 9.
+H_WEC_33:This will cause the \w to receive auto-repeating scroll events when the mouse is clicked in the scroll bars.|MWindow Flags: Bit 8.
+H_WEC_34:This will cause the \w to receive extended scroll requests from auto-scroll and scroll-wheel use.|MExtended Window Flags: Bit 1 (RISC OS 4.32/RISC OS 5.27).
+H_WEC_35/H_WEC_36:These control the colours to be used in the \w.
+H_WEC_38:\Tcolour used for the \w's title bar foreground.
+H_WEC_43:\Tcolour used for the \w's title bar background.
+H_WEC_48:\Tcolour used for the \w's work area foreground.
+H_WEC_53:\Tcolour used for the \w's work area background.
+H_WEC_58:\Tcolour used for the inside of the \w's scroll bars.
+H_WEC_63:\Tcolour used for the outside of the \w's scroll bars.
+H_WEC_68:\Thighlight colour used for the \w's title bar background when it has input focus.
+H_WEC_72:This causes the \w colours to be treated as GCOL values instead of Wimp colours.|MWindow Flags: Bit 10.
+H_WEC_73:This indicates that a True Colour validation string is provided.|MExtended Window Flags: Bit 0 (RISC OS 4.00+).
+H_WEC_74:\Sset all of the \w colours to their recommended default values.
+H_WEC_39/H_WEC_44/H_WEC_49/H_WEC_54/H_WEC_59/H_WEC_64
+H_WEC_69:\Sdecrease the colour number for this item.
+H_WEC_40/H_WEC_45/H_WEC_50/H_WEC_55/H_WEC_60/H_WEC_65
+H_WEC_70:\Sincrease the colour number for this item.
+H_WEC_41/H_WEC_46/H_WEC_51/H_WEC_56/H_WEC_61/H_WEC_66
+H_WEC_71:\Schoose a new colour for this item.
 H_ICC:\Ticon/title editing dialogue box.
 H_ICC_00/H_ICC_S_01:\Supdate the icon, ensuring that it is large enough to hold its contents and resizing it if not.|MThe behaviour of this button can be changed in WinEd's configuration.
 H_ICC_01/H_ICC_S_00:\Supdate the icon, without resizing it to fit its contents.|MThe behaviour of this button can be changed in WinEd's configuration.
 H_ICC_T_00:\Supdate the title.
 H_ICC_06:Enter the text or the sprite name of the icon here.
-H_ICC_07:This flag indicates the icon contains text.
-H_ICC_08:This flag indicates the icon contains a sprite.
-H_ICC_09:This flag indicates the icon is indirected.
+H_ICC_07:This flag indicates the icon contains text.|MIcon Flags: Bit 0.
+H_ICC_08:This flag indicates the icon contains a sprite.|MIcon Flags: Bit 1.
+H_ICC_09:This flag indicates the icon is indirected.|MIcon Flags: Bit 8.
 H_ICC_11:Enter the icon's validation string here.
 H_ICC_13:Enter the maximum permitted length of the icon's text (including terminator) here.
 H_ICC_14:\Sset the icon's maximum text length to the length of the current data.
-H_ICC_16:\Ticon's button type.
+H_ICC_16:\Ticon's button type.|MIcon Flags: Bits 12-15.
 H_ICC_17:\Schange the button type.
-/H_ICC_18/H_ICC_19/H_ICC_20/H_ICC_28/H_ICC_29/H_ICC_30
-H_ICC_21/H_ICC_22/H_ICC_23/H_ICC_24/H_ICC_25/H_ICC_26
-H_ICC_27:These are the icon's flags.
-H_ICC_31:This flag indicated the icon contains only numeric data.|MFor territories where text is displayed right-to-left, this preserves the left-to-right formatting.
-H_ICC_33:\Ticon's ESG (Exclusive Selection Group number).
+H_ICC_18/H_ICC_19:These are the icon's flags.
+H_ICC_20:This makes the icon border visible.|MIcon Flags: Bit 2.
+H_ICC_21:This makes the icon's contents "horizontally centred".|MIcon Flags: Bit 3.
+H_ICC_22:This makes the icon's contents "vertically centred".|MIcon Flags: Bit 4.
+H_ICC_23:This makes the icon's contents "right-aligned".|MIcon Flags: Bit 9.
+H_ICC_24:This makes the icon's background filled.|MIcon Flags: Bit 5.
+H_ICC_25:This indicates that the icon "needs help to be redrawn".|MIt forces its background to be cleared and redrawn when an update is required.|MIcon Flags: Bit 7.
+H_ICC_26:If part of a non-zero ESG, this prevents an Adjust-click clearing the other icons in the group.|MIcon Flags: Bit 10.
+H_ICC_27:In a sprite icon, this displays the sprite at half size.|MIcon Flags: Bit 11.
+H_ICC_28:This makes the icon selected.|MIcon Flags: Bit 21.
+H_ICC_29:This makes the icon shaded.|MIcon Flags: Bit 22.
+H_ICC_30:This marks the icon as deleted.|MA deleted icon remains in the window definition, but is not visible to the user.|MIcon Flags: Bit 23.
+H_ICC_31:This indicates that the icon contains only numeric data.|MFor territories where text is displayed right-to-left, this preserves the left-to-right formatting.|MIcon Flags: Bit 20.
+H_ICC_33:\Ticon's ESG (Exclusive Selection Group number).|MIcon Flags: Bits 16-19 (Bit 20 was repurposed in RISC OS 3.5).
 H_ICC_34:\Sdecrease the ESG.
 H_ICC_35:\Sincrease the ESG.
-H_ICC_37:\Ticon's foreground colour.
-H_ICC_42:\Ticon's background colour.
-H_ICC_47:This flag determines whether to use an outline font in the icon.
+H_ICC_37:\Ticon's foreground colour.|MIcon Flags: Bits 24-27 (or Validation if outline font is enabled).
+H_ICC_42:\Ticon's background colour.|MIcon Flags: Bits 28-31 (or Validation if outline font is enabled).
+H_ICC_47:This flag determines whether to use an outline font in the icon.|MIcon Flags: Bit 6.
 H_ICC_48:\Tname of the font used in the icon.
 H_ICC_49:\Schange the font name.
 H_ICC_51:Enter the height of the font here.
@@ -275,12 +313,13 @@ H_COL_02:\Schoose no colour (transparent).
 H_COL_03:\Tchosen colour.
 H_COL_04/H_COL_05/H_COL_06/H_COL_07/H_COL_08/H_COL_09/H_COL_10/H_COL_11/H_COL_12/H_COL_13
 H_COL_14/H_COL_16/H_COL_17/H_COL_18/H_COL_19/H_COL_20:Choose a colour from this table.
-H_MON:\Wthe monitor.|MIt shows the \w identifier and icon under the pointer.
-H_MON_04:This shows the identifier of the \w under the pointer. A '*' means the \w is editable, otherwise it is a preview.
-H_MON_05:This shows the number of the icon under the pointer.
+H_MON:\Wthe monitor.|MIt shows details of the \w and icon which are currently under the pointer.
+H_MON_04:\Tthe identifier of the \w currently under the pointer.|MA '*' after the identifier means the \w is editable, otherwise it is a preview.
+H_MON_05:\Tthe number of the icon currently under the pointer.|MIt shows 'Work area' when the pointer is not over an icon.
 H_MON_02/H_MON_06/H_MON_07/H_MON_08
-H_MON_09:These icons show the work area coordinates of the icon under the pointer or the visible limits of the work area.
-H_MON_10:This icon shows the size of the icon under the pointer or of the visible area.
+H_MON_09:These icons show the work area coordinates of the icon under the pointer, or the visible limits of the \w work area when the pointer is not over an icon.
+H_MON_10:This icon shows the size of the icon under the pointer, or the size of the visible area of the \w when the pointer is not over an icon.
+H_MON_12:\Tname of the icon currently under the pointer, if one has been defined.|MThe name is set using the N validation command.
 H_Pick:\Wthe icon picker.|MDrag icons from here to make copies in your own \ws.
 H_WAD:\Twork area editing dialogue box.
 H_WAD_00:\Supdate the work area.
@@ -304,6 +343,7 @@ H_WAD_22:\Sincrease the minimum allowed width of the visible area.
 H_WAD_23:Enter the minimum allowed height of the visible area here.
 H_WAD_24:\Sdecrease the minimum allowed height of the visible area.
 H_WAD_25:\Sincrease the minimum allowed height of the visible area.
+H_WAD_26:\Sset the minimum size to the full size of the work area.
 H_SPC:\Wfor spacing out icons from each other or from the edges of the visible area.
 H_SPC_00:\Sspace out the selected icon(s).
 H_SPC_02/H_SPC_03/H_SPC_04
@@ -319,14 +359,14 @@ H_RSZ_07:\Smake all the selected icons as wide as the widest one selected.
 H_RSZ_08:\Smake all the selected icons as wide as the narrowest one selected.
 H_RSZ_09:\Smake all the selected icons as tall as the tallest one selected.
 H_RSZ_10:\Smake all the selected icons as tall as the shortest one selected.
-H_RSZ_12:\S
+H_RSZ_11:\Schoose whether to include the icons' 3D borders in the resizing calculations.
 H_BTM:This is the button-type menu.
 H_BTM_09:'Menu' button type will act the same as 'Click' for work areas.
 H_BTM_14:Do not use the Writable/Drag button type for work areas.
 H_STAT:This \w shows statistics about a template file loaded in WinEd.|MThe figures show sizes in bytes.
 H_BT:\Tbrowser tool bar. It allows quicker access to browser functions.
 H_BT_00:\Screate a new \w.
-H_BT_03:\Ssave the templates.
+H_BT_03:\Sopen the Save templates dialogue box.|M\Asave the templates to their current file.
 H_BT_04:\Scopy the selected template.
 H_BT_05:\Srename the selected template.
 H_VT:\Tviewer tool pane. It allows quicker access to viewer functions.
