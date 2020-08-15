@@ -84,6 +84,10 @@ void spcdiag_init()
   Event_Claim(event_CLICK,spcdiag_window,spcdiag_SPACE,spcdiag_clickspace,0);
   Event_Claim(event_CLICK,spcdiag_window,spcdiag_CANCEL,spcdiag_clickcancel,0);
   Event_Claim(event_KEY,spcdiag_window,event_ANY,spcdiag_keypress,0);
+  Event_Claim(event_CLICK,spcdiag_window,spcdiag_LEFT,diagutils_adjust_radio,0);
+  Event_Claim(event_CLICK,spcdiag_window,spcdiag_RIGHT,diagutils_adjust_radio,0);
+  Event_Claim(event_CLICK,spcdiag_window,spcdiag_TOP,diagutils_adjust_radio,0);
+  Event_Claim(event_CLICK,spcdiag_window,spcdiag_BOTTOM,diagutils_adjust_radio,0);
   diagutils_bumpers(spcdiag_window,spcdiag_GAP,0,256,-1);
   help_claim_window(spcdiag_window,"SPC");
 }

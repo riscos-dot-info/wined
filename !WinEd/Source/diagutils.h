@@ -33,4 +33,14 @@ int diagutils_readbtype(window_handle window,icon_handle field);
 int diagutils_readcolour(window_handle window,icon_handle field);
 void diagutils_writecolour(window_handle window,icon_handle field,int value);
 
+/**
+ * General purpose event handler to check the state of radio icons
+ * after an Adjust click and ensure that they have not been deselected.
+ * 
+ * \param *event      The event poll block.
+ * \param *reference  Unused.
+ * \returns           FALSE, as this never claims the event.
+ */
+BOOL diagutils_adjust_radio(event_pollblock *event, void *reference);
+
 #endif

@@ -322,6 +322,29 @@ void diagutils_writecolour(window_handle window,icon_handle field,int value)
   Icon_ForceRedraw(window,field);
 }
 
+/**
+ * General purpose event handler to check the state of radio icons
+ * after an Adjust click and ensure that they have not been deselected.
+ * 
+ * \param *event      The event poll block.
+ * \param *reference  Unused.
+ * \returns           FALSE, as this never claims the event.
+ */
+BOOL diagutils_adjust_radio(event_pollblock *event, void *reference)
+{
+  mouse_block *mouse;
+
+  if (event == NULL || event->type != event_BUTTON)
+    return FALSE;
+
+  mouse = &(event->data.mouse);
+
+  if (mouse->button.data.adjust)
+    Icon_SetSelect(mouse->window, mouse->icon, 1);
+
+  return FALSE;
+}
+
 BOOL colour_clicknone(event_pollblock *event,void *reference)
 {
   if (event->data.mouse.button.data.menu)

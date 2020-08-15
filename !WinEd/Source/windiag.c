@@ -88,20 +88,23 @@ void windiag_init()
   windiag_paneheight = templat->screenrect.max.y - templat->screenrect.min.y;
   free(templat);
 
-  Event_Claim(event_OPEN,   windiag_window, event_ANY,          windiag_OpenWindow,0);
-  Event_Claim(event_CLOSE,  windiag_window, event_ANY,          windiag_CloseWindow,0);
-  Event_Claim(event_SCROLL, windiag_window, event_ANY,          globals_scrollevent,0);
-  Event_Claim(event_CLICK,  windiag_window, windiag_UPDATE,     windiag_update,0);
-  Event_Claim(event_CLICK,  windiag_pane,   windiag_CANCEL,     windiag_cancel,0);
-  Event_Claim(event_CLICK,  windiag_pane,   windiag_UPDATE,     windiag_update,0);
-  Event_Claim(event_CLICK,  windiag_window, windiag_CANCEL,     windiag_cancel,0);
-  Event_Claim(event_CLICK,  windiag_window, windiag_TITLE,      windiag_optionclick,0);
-  Event_Claim(event_CLICK,  windiag_window, windiag_FURNITURE,  windiag_optionclick,0);
-  Event_Claim(event_CLICK,  windiag_window, windiag_PANE,       windiag_optionclick,0);
-  Event_Claim(event_CLICK,  windiag_window, windiag_VSCROLL,    windiag_optionclick,0);
-  Event_Claim(event_CLICK,  windiag_window, windiag_HSCROLL,    windiag_optionclick,0);
-  Event_Claim(event_CLICK,  windiag_window, windiag_COL24BIT,   windiag_optionclick,0);
-  Event_Claim(event_CLICK,  windiag_window, windiag_COLDEFAULT, windiag_clickdefault,0);
+  Event_Claim(event_OPEN,   windiag_window, event_ANY,                windiag_OpenWindow,0);
+  Event_Claim(event_CLOSE,  windiag_window, event_ANY,                windiag_CloseWindow,0);
+  Event_Claim(event_SCROLL, windiag_window, event_ANY,                globals_scrollevent,0);
+  Event_Claim(event_CLICK,  windiag_window, windiag_UPDATE,           windiag_update,0);
+  Event_Claim(event_CLICK,  windiag_pane,   windiag_CANCEL,           windiag_cancel,0);
+  Event_Claim(event_CLICK,  windiag_pane,   windiag_UPDATE,           windiag_update,0);
+  Event_Claim(event_CLICK,  windiag_window, windiag_CANCEL,           windiag_cancel,0);
+  Event_Claim(event_CLICK,  windiag_window, windiag_TITLE,            windiag_optionclick,0);
+  Event_Claim(event_CLICK,  windiag_window, windiag_FURNITURE,        windiag_optionclick,0);
+  Event_Claim(event_CLICK,  windiag_window, windiag_PANE,             windiag_optionclick,0);
+  Event_Claim(event_CLICK,  windiag_window, windiag_VSCROLL,          windiag_optionclick,0);
+  Event_Claim(event_CLICK,  windiag_window, windiag_HSCROLL,          windiag_optionclick,0);
+  Event_Claim(event_CLICK,  windiag_window, windiag_COL24BIT,         windiag_optionclick,0);
+  Event_Claim(event_CLICK,  windiag_window, windiag_COLDEFAULT,       windiag_clickdefault,0);
+  Event_Claim(event_CLICK,  windiag_window, windiag_NOSCROLL,         diagutils_adjust_radio,0);
+  Event_Claim(event_CLICK,  windiag_window, windiag_SCROLLDEBOUNCED,  diagutils_adjust_radio,0);
+  Event_Claim(event_CLICK,  windiag_window, windiag_SCROLLAUTOREPEAT, diagutils_adjust_radio,0);
   help_claim_window(windiag_window,"WEC");
   help_claim_window(windiag_pane,"WEC");
 

@@ -50,6 +50,9 @@ void bordiag_init()
   Event_Claim(event_CLICK,bordiag_window,bordiag_WITHICON,bordiag_clickradio,0);
   Event_Claim(event_CLICK,bordiag_window,bordiag_TOP,bordiag_clickradio,0);
   Event_Claim(event_KEY,bordiag_window,event_ANY,bordiag_keypress,0);
+  /* The following two claims need to come after any others for the same icons. */
+  Event_Claim(event_CLICK,bordiag_window,bordiag_VISAREA,diagutils_adjust_radio,0);
+  Event_Claim(event_CLICK,bordiag_window,bordiag_WITHICON,diagutils_adjust_radio,0);
   diagutils_bumpers(bordiag_window,bordiag_GAP,0,256,-1);
   diagutils_bumpers(bordiag_window,bordiag_ICON,0,999,1);
   diagutils_bumpers(bordiag_window,bordiag_ALLOW,0,996,-1);

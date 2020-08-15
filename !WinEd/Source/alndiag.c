@@ -7,6 +7,7 @@
 #include "DeskLib:Validation.h"
 
 #include "alndiag.h"
+#include "diagutils.h"
 #include "icnedit.h"
 #include "title.h"
 
@@ -114,6 +115,8 @@ void alndiag_init()
   Event_Claim(event_CLICK,alndiag_window,alndiag_ALIGN,alndiag_clickalign,0);
   Event_Claim(event_CLICK,alndiag_window,alndiag_CANCEL,alndiag_clickcancel,0);
   Event_Claim(event_CLICK,alndiag_window,event_ANY,alndiag_clickradio,0);
+  /* The following claims needs to come after any others for the same icons. */
+  Event_Claim(event_CLICK,alndiag_window,event_ANY,diagutils_adjust_radio,0);
   help_claim_window(alndiag_window,"ALN");
 }
 
