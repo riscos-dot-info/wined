@@ -395,6 +395,8 @@ static BOOL       copy_clicked(event_pollblock *event,void *reference)
   }
 
   winentry = browser_findselection(browser,&index,browser->numwindows);
+  if (winentry == NULL)
+    return TRUE;
   /* Ignore if giving it the same name */
   if (!strcmp(winentry->identifier,buffer))
     return TRUE;
@@ -431,6 +433,7 @@ static BOOL       release_copy_msg(event_pollblock *e, void *r)
 
 void              browcom_copy(BOOL submenu, int x, int y,void *reference)
 {
+  browser_winentry *winentry;
   Log(log_DEBUG, "browcom_copy");
 
   int index = -1;
@@ -444,8 +447,11 @@ void              browcom_copy(BOOL submenu, int x, int y,void *reference)
     x = ptrinfo.pos.x - 64;
     y = ptrinfo.pos.y + 64;
   }
-  Icon_SetText(copy_dbox, 2,
-  	browser_findselection(browser,&index,browser->numwindows)->identifier);
+  winentry = browser_findselection(browser,&index,browser->numwindows);
+  if (winentry == NULL)
+    return;
+
+  Icon_SetText(copy_dbox, 2, winentry->identifier);
   if (submenu)
     Wimp_CreateSubMenu((menu_ptr) copy_dbox, x, y);
   else
@@ -490,6 +496,8 @@ static BOOL       rename_clicked(event_pollblock *event,void *reference)
     return TRUE;
   index = -1;
   winentry = browser_findselection(browser,&index,browser->numwindows);
+  if (winentry == NULL)
+    return TRUE;
 
   strncpy(winentry->identifier, buffer, sizeof(winentry->identifier) - 1);
   winentry->identifier[sizeof(winentry->identifier) - 1] = '\0';
@@ -527,6 +535,7 @@ static BOOL       release_rename_msg(event_pollblock *e, void *r)
 void              browcom_rename(BOOL submenu, int x, int y,void *reference)
 {
   int index = -1;
+  browser_winentry *winentry;
   browser_fileinfo *browser = reference;
   Log(log_DEBUG, "browcom_rename");
 
@@ -539,8 +548,12 @@ void              browcom_rename(BOOL submenu, int x, int y,void *reference)
     x = ptrinfo.pos.x - 64;
     y = ptrinfo.pos.y + 64;
   }
-  Icon_SetText(rename_dbox, 2,
-               browser_findselection(browser, &index,browser->numwindows)->identifier);
+
+  winentry = browser_findselection(browser, &index,browser->numwindows);
+  if (winentry == NULL)
+    return;
+
+  Icon_SetText(rename_dbox, 2, winentry->identifier);
 
   if (submenu)
     Wimp_CreateSubMenu((menu_ptr) rename_dbox, x, y);
@@ -3005,6 +3018,8 @@ BOOL               browser_menuselect(event_pollblock *event,void *reference)
         case submenu_EDIT:
           index = -1;
           winentry = browser_findselection(browser,&index,browser->numwindows);
+          if (winentry == NULL)
+            break;
           if (winentry->status)
             viewer_close(winentry);
           viewer_open(winentry,event->data.selection[1] == submenu_EDIT);
@@ -3467,6 +3482,9 @@ void               browcom_view(browser_fileinfo *browser,BOOL editable)
   Log(log_DEBUG, "browcom_view");
 
   winentry = browser_findselection(browser,&index,browser->numwindows);
+  if (winentry == NULL)
+    return;
+
   if (winentry->status)
     viewer_close(winentry);
   viewer_open(winentry,editable);
