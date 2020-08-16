@@ -72,4 +72,4 @@
 71,"Keyboard shortcuts while dragging","Using keyboard shortcuts while dragging icons can lead to odd effects","Done","r107",,"Reported by Edwardx"
 72,"Crash on window delete","Deleting a window using a keyboard shortcut while the browser menu is open leaves the window actions in the menu in a dangerous state.","Done","r112",,"Reported by Edwardx"
 73,"Orphaned window on delete","Deleting a window while it is open leaves an orphaned icon in the browser window","Done","r105",,"Reported by Edwardx"
-74,"Can't quit after shutdown","A deskrop shutdown with unsaved data can leave WinEd unable to quit if aborted by another task","Done","r106",,"Reported by Edwardx"
+74,"Can't quit after shutdown","A desktop shutdown with unsaved data can leave WinEd unable to quit if aborted by another task","Done","r106",,"Reported by Edwardx"
