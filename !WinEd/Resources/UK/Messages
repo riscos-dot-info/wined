@@ -217,8 +217,19 @@ H_EXP:\Tdialogue box for exporting icon names.
 H_EXP_00:\Ssave the icon names with the above pathname.
 H_EXP_02:Enter a new leafname or pathname for the file here.
 H_EXP_03:Drag this icon to the directory display where you want to save the icon names or to another application.
-H_EXP_04:Select this option if you want to export the icon names as an enum statement for use in C programs.
-H_EXP_05:Select this option if you want to export the icon names as message tokens for a Messages file.
+H_EXP_04/H_EXP_05:These buttons select the format in which the icon data will be saved.
+H_EXP_06:Select this option to output the data in the form of a C typedef enum block.
+H_EXP_07:Select this option to output the data in the form of a set of C #define preprocessor statements.
+H_EXP_08:Select this option to output the data in the form of a PROC definition containing variable assignments in BBC BASIC.
+H_EXP_09:Select this option to output the data in the form of a set of Message file tokens.
+H_EXP_10/H_EXP_11:These buttons select how the case of the window and icon names is handled.
+H_EXP_12:Select this option to leave the case of all names unchanged.
+H_EXP_13:Select this option to convert all names to upper case.
+H_EXP_14:Select this option to convert all names to lower case.
+H_EXP_15:This allows implied icon numbers to be skipped when writing C enum blocks.|MWhen set, only the first number of each sequential block will be explicitly assigned.
+H_EXP_16:This controls whether real of integer BASIC variables will be used.|MWhen set, % signs will be omitted from the ends of names.
+H_EXP_17:This controls whether names are prefixed with an underscore.|MIt can be useful to do this if any names start with reserved words in the target language.
+H_EXP_18:This controls whether window names are included in the names.|MThis is important if the same names appear in more than one \w.
 H_WEC:This is the \w flag editing dialogue box.
 H_WEC_00:\Supdate the \w template with the above flags.
 H_WEC_02/H_WEC_03:These are the flags controlling the \w tools.
@@ -450,32 +461,7 @@ H_OVR_2:Click here to cancel the save operation.
 #
 ExportLeaf:IconNames
 
-E_Preamble:/* Icon names exported by WinEd on %3 */\n\n
-E_PreWin:/* Icons for window %0 */\ntypedef enum {\n
-E_1stIcon:  %0_%1 = %2,\n
-E_Icon:  %0_%1 = %2,\n
-E_OneIcon:  %0_%1 = %2,\n
-E_LastIcon:  %0_%1 = %2\n
-E_PostWin:} %0_icons;\n\n
-E_Postamble:\n
-
-M_Preamble:# Icon names exported by WinEd on %3\n\n
-M_PreWin:# Icons for window %0\n
-M_1stIcon:%0_%1:\n
-M_Icon:%0_%1:\n
-M_OneIcon:%0_%1:\n
-M_LastIcon:%0_%1:\n
-M_PostWin:
-M_Postamble:\n
-
-B_Preamble:� Icon names exported by WinEd on %3\n\n� �iconnumbers\n
-B_PreWin:� Icons for window %0
-B_1stIcon:%0_%1%%=%2
-B_Icon:%0_%1%%=%2
-B_OneIcon:%0_%1%%=%2
-B_LastIcon:%0_%1%%=%2
-B_PostWin:\n
-B_Postamble:�
-
+ExportPreamble:Icon names exported by WinEd on %3.
+ExportPostamble:
+ExportWindow:Icons for the %0 window.
 NoExport:Unable to export icon names to file '%0'
-

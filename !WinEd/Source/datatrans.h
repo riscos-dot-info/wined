@@ -51,17 +51,27 @@ void saveas_release(void);
 /* Set file icon to text or basic depending on currently selected icon */
 BOOL export_setfiletype(event_pollblock *event,void *ref);
 
-/* Note: be very careful with these numbers, they're hardcoded in - especially 3 & 7.
-   Look at export_setfiletype and datatrans_saveas */
-#define saveas_SAVE 0
-#define saveas_CANCEL 1
-#define saveas_FILE 2
-int saveas_ICON=3; /* Bodge - instead of nicely changing the icon validation text when switching
-                      between a text and basic file icon, we swap round two icon's deleted bit &
-                      change the icon number referred to in the code. Other icon is number 7 */
-#define saveas_SELECTION 4
-#define saveas_MESSAGES 5
-#define saveas_BASIC 6
+/* Note: these icon numbers are shared between SaveAs and Export dialogues! */
+
+typedef enum {
+  saveas_SAVE = 0,
+  saveas_CANCEL = 1,
+  saveas_FILE = 2,
+  saveas_ICON = 3,
+  saveas_SELECTION = 4,
+  saveas_CENUM = 6,
+  saveas_CDEFINE = 7,
+  saveas_BASIC = 8,
+  saveas_MESSAGES = 9,
+  saveas_UNCHANGED = 12,
+  saveas_UPPER = 13,
+  saveas_LOWER = 14,
+  saveas_SKIPIMPLIED = 15,
+  saveas_USEREAL = 16,
+  saveas_PREFIX = 17,
+  saveas_WINNAME = 18
+} datatrans_icons;
+
 extern window_handle saveas_window;
 extern window_handle saveas_export;
 

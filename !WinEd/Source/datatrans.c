@@ -8,6 +8,7 @@
 
 #include "browser.h"
 #include "datatrans.h"
+#include "diagutils.h"
 
 
 window_handle saveas_window, saveas_export;
@@ -107,7 +108,7 @@ void        saveas_init()
   free(templat);
 
   /* Export icon name/numbers save box */
-  templat = templates_load("export",0,0,0,0);
+  templat = templates_load("Export",0,0,0,0);
   Error_CheckFatal(Wimp_CreateWindow(templat,&saveas_export));
   free(templat);
 
@@ -197,8 +198,7 @@ void        datatrans_saveas(char *filename,BOOL allow_selection,
   Event_Claim(event_CLOSE,win,event_ANY,saveas_accclose,ref);
   Event_Claim(event_CLICK,win,saveas_SAVE,saveas_clicksave,ref);
   Event_Claim(event_CLICK,win,saveas_CANCEL,kill_menus,ref);
-  Event_Claim(event_CLICK,win,3,saveas_startdrag,ref);
-  Event_Claim(event_CLICK,win,7,saveas_startdrag,ref);
+  Event_Claim(event_CLICK,win,saveas_ICON,saveas_startdrag,ref);
   Event_Claim(event_KEY,win,saveas_FILE,saveas_key,ref);
   if (export) help_claim_window(win, "EXP"); else help_claim_window(win,"SAVE");
   if (!export)
@@ -212,9 +212,20 @@ void        datatrans_saveas(char *filename,BOOL allow_selection,
   else
   {
     Icon_SetText(win,saveas_FILE,filename);
-    Event_Claim(event_CLICK,win,saveas_SELECTION,export_setfiletype,ref);
+    Event_Claim(event_CLICK,win,saveas_CENUM,export_setfiletype,ref);
+    Event_Claim(event_CLICK,win,saveas_CDEFINE,export_setfiletype,ref);
     Event_Claim(event_CLICK,win,saveas_MESSAGES,export_setfiletype,ref);
     Event_Claim(event_CLICK,win,saveas_BASIC,export_setfiletype,ref);
+
+    Event_Claim(event_CLICK,win, saveas_CENUM, diagutils_adjust_radio, ref);
+    Event_Claim(event_CLICK,win, saveas_CDEFINE, diagutils_adjust_radio, ref);
+    Event_Claim(event_CLICK,win, saveas_MESSAGES, diagutils_adjust_radio, ref);
+    Event_Claim(event_CLICK,win, saveas_BASIC, diagutils_adjust_radio, ref);
+    Event_Claim(event_CLICK,win, saveas_UNCHANGED, diagutils_adjust_radio, ref);
+    Event_Claim(event_CLICK,win, saveas_LOWER, diagutils_adjust_radio, ref);
+    Event_Claim(event_CLICK,win, saveas_UPPER, diagutils_adjust_radio, ref);
+
+    export_setfiletype(0, 0);
   }
 
   if (leaf)
@@ -287,24 +298,33 @@ BOOL        saveas_clicksave(event_pollblock *event,void *ref)
   return TRUE;
 }
 
-BOOL        export_setfiletype(event_pollblock *event,void *ref)
+/**
+ * Process clicks in the export icons dialogue, which can
+ * change the behaviour of the rest of the icons.
+ */
+BOOL export_setfiletype(event_pollblock *event,void *ref)
 {
+  int icon;
+
   Log(log_DEBUG, "export_setfiletype");
 
-  switch(Icon_WhichRadioInEsg(saveas_export, 1))
+  icon = Icon_WhichRadioInEsg(saveas_export, 1);
+
+  switch(icon)
   {
     case saveas_BASIC:
-      Icon_SetDeleted(saveas_export, 3, 1);
-      Icon_SetDeleted(saveas_export, 7, 0);
-      saveas_ICON = 7;
+      Icon_SetText(saveas_export, saveas_ICON, "file_ffb");
       Log(log_DEBUG, "Basic icon revealed");
       break;
     default:
-      Icon_SetDeleted(saveas_export, 3, 0);
-      Icon_SetDeleted(saveas_export, 7, 1);
-      saveas_ICON = 3;
-      Log(log_DEBUG, "Text icon revealed");      break;
+      Icon_SetText(saveas_export, saveas_ICON, "file_fff");
+      Log(log_DEBUG, "Text icon revealed");
+      break;
   }
+
+  Icon_SetShade(saveas_export, saveas_SKIPIMPLIED, icon != saveas_CENUM);
+  Icon_SetShade(saveas_export, saveas_USEREAL, icon != saveas_BASIC);
+
   return TRUE;
 }
 

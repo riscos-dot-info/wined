@@ -40,7 +40,7 @@
 39,"Icon re-numbering","Improve group-icon-renumbering algorithm to logically follow layout of icons.","c",,,"Requested by Ray Favre"
 40,"Choices","Re-write choices code to use text format. Include shortcuts-menu editing.","b"
 41,"Preview window","Change interface so only changes to state/size/position of preview window are stored.","b",,40
-42,"Export choices","Add choices to allow exporting icon names in upper/lower case","b",,40,"Requested by Ray Favre, David Thomas"
+42,"Export choices","Add choices to allow exporting icon names in upper/lower case","b","r115",40,"Requested by Ray Favre, David Thomas"
 43,"Field widths calculation","Add option to ignore system font when calculating minimum icon widths. Specify a specific ""backup"" font instead (e.g. Homerton Bold)","b",,40
 44,"Sprite loading","Change code to handle three different sprite types (for buttons). Add modechange handler to free and load relevant sprites.","c"
 45,"Iconbar menu","Change picker and monitor options to be tickable + re-choosing them closes windows. This needs to take into account the auto-open and -close.","c"
@@ -52,8 +52,8 @@
 51,"Overwrite warning on Wimp$Scrap","Drag and Drop via Wimp$Scrap fails if ScrapFile already exists","Done","r67",,"Reported by Martin Avison"
 52,"Remove arrows in Align dialogue","Remove the arrows from the radio icons in the Align dialogue","Done","r68",,"Reported by Martin Avison"
 53,"Add scroll handlers","Add scroll handlers for WinDiag, IcnEdit, Browser and Stats windows","Done","r70",,"Reported by Martin Avison"
-54,"Export Spaces","Export icon names uses spaces and other invalid characters",,,,"Reported by Martin Avison"
-55,"Export Enum","Exporting icon names as a C enum includes a trailing comma if the last icon in the window has no name",,,,"Reported by Martin Avison"
+54,"Export Spaces","Export icon names uses spaces and other invalid characters","Done","r115",,"Reported by Martin Avison"
+55,"Export Enum","Exporting icon names as a C enum includes a trailing comma if the last icon in the window has no name","Done","r115",,"Reported by Martin Avison"
 56,"Extended Scroll Events","Add support for extended scroll events to the scroll handler.","Done","r71-r72"
 57,"Batch Editing of Icons","Make it possible to be able to batch alter icons eg: mass alter the text length validation of icons etc",,,,"Requested by Kevin Wells"
 58,"Don't Resize","Swap the default action from Update to Don't Resize in the Edit Icon dialogue","Done","r81",,"Requested by Martin Avison"
@@ -62,7 +62,7 @@
 61,"Icon Move Error","When moving multiple icons by click-cursor key, the icons jump position on release","Done","r78",,"Reported by Martin Avison"
 62,"Template Scroll Handler","Add support for extended scroll requests in the template editor and preview windows","Done","r83"
 63,"Goto Icon","If the target icon for a goto is outside the visible area of a window, the mouse moves to the position where it would be"
-64,"Shortcuts Men","This appears to be undocumented and not fully implemented. What does it do?"
+64,"Shortcuts Menu","This appears to be undocumented and not fully implemented. What does it do?"
 65,"SaveAs Failure","If the Save As dialogue opens from the Unsaved Templates warning, the buttons don't work.","Done","r100",,"Reported by David Ruck"
 66,"Indirected Lengths","Indirected icon text lengths seem to get reduced to the length of the text on update, for sprite-only icons","Done","r96"
 67,"IDE Interface","The changes added in r48 appear to be incomplete. What do they do?"
