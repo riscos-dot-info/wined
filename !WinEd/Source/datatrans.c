@@ -214,11 +214,14 @@ void        datatrans_saveas(char *filename,BOOL allow_selection,
     Icon_SetText(win,saveas_FILE,filename);
     Event_Claim(event_CLICK,win,saveas_CENUM,export_setfiletype,ref);
     Event_Claim(event_CLICK,win,saveas_CDEFINE,export_setfiletype,ref);
+    Event_Claim(event_CLICK,win,saveas_CTYPEDEF,export_setfiletype,ref);
     Event_Claim(event_CLICK,win,saveas_MESSAGES,export_setfiletype,ref);
     Event_Claim(event_CLICK,win,saveas_BASIC,export_setfiletype,ref);
+    Event_Claim(event_CLICK,win,saveas_PREFIX,export_setfiletype,ref);
 
     Event_Claim(event_CLICK,win, saveas_CENUM, diagutils_adjust_radio, ref);
     Event_Claim(event_CLICK,win, saveas_CDEFINE, diagutils_adjust_radio, ref);
+    Event_Claim(event_CLICK,win, saveas_CTYPEDEF, diagutils_adjust_radio, ref);
     Event_Claim(event_CLICK,win, saveas_MESSAGES, diagutils_adjust_radio, ref);
     Event_Claim(event_CLICK,win, saveas_BASIC, diagutils_adjust_radio, ref);
     Event_Claim(event_CLICK,win, saveas_UNCHANGED, diagutils_adjust_radio, ref);
@@ -322,8 +325,11 @@ BOOL export_setfiletype(event_pollblock *event,void *ref)
       break;
   }
 
-  Icon_SetShade(saveas_export, saveas_SKIPIMPLIED, icon != saveas_CENUM);
+  Icon_SetShade(saveas_export, saveas_SKIPIMPLIED,
+      icon != saveas_CENUM && icon != saveas_CTYPEDEF);
   Icon_SetShade(saveas_export, saveas_USEREAL, icon != saveas_BASIC);
+
+  Icon_SetShade(saveas_export, saveas_PREFIXFIELD, !Icon_GetSelect(saveas_export, saveas_PREFIX));
 
   return TRUE;
 }

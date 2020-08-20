@@ -60,16 +60,18 @@ typedef enum {
   saveas_ICON = 3,
   saveas_SELECTION = 4,
   saveas_CENUM = 6,
-  saveas_CDEFINE = 7,
-  saveas_BASIC = 8,
-  saveas_MESSAGES = 9,
-  saveas_UNCHANGED = 12,
-  saveas_UPPER = 13,
-  saveas_LOWER = 14,
-  saveas_SKIPIMPLIED = 15,
-  saveas_USEREAL = 16,
-  saveas_PREFIX = 17,
-  saveas_WINNAME = 18
+  saveas_CTYPEDEF = 7,
+  saveas_CDEFINE = 8,
+  saveas_BASIC = 9,
+  saveas_MESSAGES = 10,
+  saveas_UNCHANGED = 13,
+  saveas_UPPER = 14,
+  saveas_LOWER = 15,
+  saveas_WINNAME = 16,
+  saveas_SKIPIMPLIED = 17,
+  saveas_USEREAL = 18,
+  saveas_PREFIX = 19,
+  saveas_PREFIXFIELD = 20
 } datatrans_icons;
 
 extern window_handle saveas_window;

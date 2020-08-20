@@ -3615,6 +3615,7 @@ BOOL browser_export(char *filename, void *ref, BOOL selection)
   browser_winentry *winentry;
   struct export_handle *export;
   BOOL outcome;
+  char *prefix;
   enum export_format format = EXPORT_FORMAT_NONE;
   enum export_flags flags = EXPORT_FLAGS_NONE;
 
@@ -3628,6 +3629,9 @@ BOOL browser_export(char *filename, void *ref, BOOL selection)
       break;
     case saveas_CDEFINE:
       format = EXPORT_FORMAT_CDEFINE;
+      break;
+    case saveas_CTYPEDEF:
+      format = EXPORT_FORMAT_CTYPEDEF;
       break;
     case saveas_MESSAGES:
       format = EXPORT_FORMAT_MESSAGES;
@@ -3650,10 +3654,11 @@ BOOL browser_export(char *filename, void *ref, BOOL selection)
       break;
   }
 
-  if (Icon_GetSelect(saveas_export, saveas_SKIPIMPLIED))
+  if (Icon_GetSelect(saveas_export, saveas_SKIPIMPLIED) &&
+      (format == EXPORT_FORMAT_CENUM || format == EXPORT_FORMAT_CDEFINE || format == EXPORT_FORMAT_CTYPEDEF))
     flags |= EXPORT_FLAGS_SKIPIMPLIED;
 
-  if (Icon_GetSelect(saveas_export, saveas_USEREAL))
+  if (Icon_GetSelect(saveas_export, saveas_USEREAL) && (format == EXPORT_FORMAT_BASIC))
     flags |= EXPORT_FLAGS_USEREAL;
 
   if (Icon_GetSelect(saveas_export, saveas_PREFIX))
@@ -3662,7 +3667,9 @@ BOOL browser_export(char *filename, void *ref, BOOL selection)
   if (Icon_GetSelect(saveas_export, saveas_WINNAME))
     flags |= EXPORT_FLAGS_WINNAME;
 
-  export = export_openfile(format, flags, filename);
+  prefix = Icon_GetTextPtr(saveas_export, saveas_PREFIXFIELD);
+
+  export = export_openfile(format, flags, prefix, filename);
   if (export == NULL)
   {
     WinEd_MsgTrans_ReportPS(messages, "NoExport", FALSE, filename, 0,0,0);
