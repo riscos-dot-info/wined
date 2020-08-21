@@ -349,6 +349,7 @@ static void export_process_escape_char(struct export_handle *instance, char **es
     case '[':
     case ']':
     case '@':
+    case '\\':
       instance->line[instance->ptr++] = *(*escape)++;
       break;
     default: /* Codes we don't recognise. */
