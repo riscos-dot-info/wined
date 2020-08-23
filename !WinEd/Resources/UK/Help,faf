@@ -988,7 +988,7 @@ messages as supplied; you should find them at the bottom of the file:</p>
 <br>ExportTypedefSep:,
 <br>ExportTypedefEnd:} @wn_icons;</code></p>
 
-<p></p>There are five groups, whose names start <code>ExportEnum...</code>, <code>ExportTypedef...</code>, <code>ExportDefine...</code>, <code>ExportBasic...</code> and <code>ExportBasic...</code> respectively, covering the formatting for each output format.</p>
+<p></p>There are five groups, whose names start <code>ExportEnum...</code>, <code>ExportTypedef...</code>, <code>ExportDefine...</code>, <code>ExportBasic...</code> and <code>ExportMessages...</code> respectively, covering the formatting for each output format.</p>
 
 <p>The <code>...Start</code> and <code>...End</code> tokens are used at the start and end of a window block, with <code>...Icon</code> being written for each icon name to be output. For all but the last icon to be written, the <code>...Sep</code> token is added to the end of the line.</p>
 
