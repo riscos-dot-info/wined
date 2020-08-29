@@ -59,10 +59,10 @@ struct export_handle
   FILE *fp;                           /**< The handle of the export file.                            */
   char time[EXPORT_MAX_FIELD];        /**< The time of the export.                                   */
   char prefix[EXPORT_MAX_FIELD];      /**< The prefix to use for entries.                            */
-  char varsuffix[EXPORT_MAX_FIELD];
-  char winname[wimp_MAXNAME];
-  char iconname[EXPORT_MAX_FIELD];
-  char iconhandle[EXPORT_MAX_FIELD];
+  char varsuffix[EXPORT_MAX_FIELD];   /**< The suffix to use for BASIC variables.                    */
+  char winname[wimp_MAXNAME];         /**< The processed window name.                                */
+  char iconname[EXPORT_MAX_FIELD];    /**< The processed icon name.                                  */
+  char iconhandle[EXPORT_MAX_FIELD];  /**< The processed icon handle.                                */
   char line[EXPORT_MAX_LINE];         /**< The buffer holding the current line.                      */
   int ptr;                            /**< A pointer to the next free character in the current line. */
   int linenumber;                     /**< The current line number.                                  */
@@ -86,8 +86,6 @@ static void export_write_line(struct export_handle *instance)
   do
   {
     length = strlen(instance->line + ptr);
-
-    Log(log_INFORMATION, "Writing line from ptr=%d (max=%d), length=%d, string='%s'", ptr, instance->ptr, length, LogPreBuffer(instance->line + ptr));
 
     if (ptr + length <= instance->ptr)
     {
