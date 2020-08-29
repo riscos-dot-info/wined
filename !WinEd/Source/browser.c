@@ -3599,33 +3599,78 @@ void               browser_changesparea(browser_winblock *win, void *sparea)
   }
 }
 
-BOOL               browser_export(char *filename, void *ref, BOOL selection)
+
+/**
+ * Export the icon names from the selected windows in a browser.
+ * 
+ * \param *filename   The filename to export to.
+ * \param *ref        Pointer to the browser instance of interest.
+ * \param selection   Not used.
+ * \return            TRUE if successful; otherwise FALSE.
+ */
+BOOL browser_export(char *filename, void *ref, BOOL selection)
 {
   browser_fileinfo *browser = ref;
-  int index = -1, type = 0, linecounter = 1;
+  int index = -1, type = 0;
   browser_winentry *winentry;
-  FILE *fp;
-  unsigned char ro_time[5];
-  char buffer[256], pre[3], buffy[256], thetime[256];
+  struct export_handle *export;
+  BOOL outcome;
+  char *prefix;
+  enum export_format format = EXPORT_FORMAT_NONE;
+  enum export_flags flags = EXPORT_FLAGS_NONE;
 
   Log(log_DEBUG, "browser_export");
 
   type = Icon_WhichRadioInEsg(saveas_export, 1);
   switch(type)
   {
-    case 4:
-      strcpy(pre, "E_");
+    case saveas_CENUM:
+      format = EXPORT_FORMAT_CENUM;
       break;
-    case 5:
-      strcpy(pre, "M_");
+    case saveas_CDEFINE:
+      format = EXPORT_FORMAT_CDEFINE;
       break;
-    case 6:
-      strcpy(pre, "B_");
+    case saveas_CTYPEDEF:
+      format = EXPORT_FORMAT_CTYPEDEF;
+      break;
+    case saveas_MESSAGES:
+      format = EXPORT_FORMAT_MESSAGES;
+      break;
+    case saveas_BASIC:
+      format = EXPORT_FORMAT_BASIC;
       break;
   }
 
-  fp = fopen(filename, "w");
-  if (!fp)
+  type = Icon_WhichRadioInEsg(saveas_export, 2);
+  switch(type)
+  {
+    case saveas_UNCHANGED:
+      break;
+    case saveas_UPPER:
+      flags |= EXPORT_FLAGS_UPPERCASE;
+      break;
+    case saveas_LOWER:
+      flags |= EXPORT_FLAGS_LOWERCASE;
+      break;
+  }
+
+  if (Icon_GetSelect(saveas_export, saveas_SKIPIMPLIED) &&
+      (format == EXPORT_FORMAT_CENUM || format == EXPORT_FORMAT_CDEFINE || format == EXPORT_FORMAT_CTYPEDEF))
+    flags |= EXPORT_FLAGS_SKIPIMPLIED;
+
+  if (Icon_GetSelect(saveas_export, saveas_USEREAL) && (format == EXPORT_FORMAT_BASIC))
+    flags |= EXPORT_FLAGS_USEREAL;
+
+  if (Icon_GetSelect(saveas_export, saveas_PREFIX))
+    flags |= EXPORT_FLAGS_PREFIX;
+
+  if (Icon_GetSelect(saveas_export, saveas_WINNAME))
+    flags |= EXPORT_FLAGS_WINNAME;
+
+  prefix = Icon_GetTextPtr(saveas_export, saveas_PREFIXFIELD);
+
+  export = export_openfile(format, flags, prefix, filename);
+  if (export == NULL)
   {
     WinEd_MsgTrans_ReportPS(messages, "NoExport", FALSE, filename, 0,0,0);
     return FALSE;
@@ -3633,63 +3678,27 @@ BOOL               browser_export(char *filename, void *ref, BOOL selection)
 
   Hourglass_On();
 
-  snprintf(buffy, 256, "%sPreamble", pre);
-
-  Time_ReadClock(ro_time);
-  Time_ConvertDateAndTime(ro_time, thetime, sizeof(thetime), "%ce%yr/%mn/%dy, %24:%mi");
-
-  MsgTrans_LookupPS(messages, buffy, buffer, sizeof(buffer), 0, 0, 0, thetime);
-
-  if (strcmp(pre, "B_"))
-    export_puts(fp, buffer);
-  else
-    export_puts_basic(fp, buffer, &linecounter);
+  export_preamble(export);
 
   do
   {
-    winentry = browser_findselection(browser,&index,browser->numwindows);
+    winentry = browser_findselection(browser, &index, browser->numwindows);
 
     if (winentry)
-      linecounter = export_winentry(fp, winentry, pre, linecounter);
+      export_winentry(export, winentry);
   }
   while (index != -1);
 
-  snprintf(buffy, 256, "%sPostamble", pre);
+  export_postamble(export);
 
-  Time_ReadClock(ro_time);
-  Time_ConvertDateAndTime(ro_time, thetime, sizeof(thetime), "%ce%yr/%mn/%dy, %24:%mi");
-
-  MsgTrans_LookupPS(messages, buffy, buffer, sizeof(buffer), 0, 0, 0, thetime);
-
-  if (strcmp(pre, "B_"))
-    export_puts(fp, buffer);
-  else
-  {
-    export_puts_basic(fp, buffer, &linecounter);
-    /* Terminate basic file */
-    putc(13, fp);
-    putc(255, fp);
-  }
-
-  index = fclose(fp);
+  outcome = export_closefile(export);
 
   Hourglass_Off();
 
-  if (index != EOF)
-  {
-    if (type == 6)
-      File_SetType(filename, 0xffb);
-    else
-      File_SetType(filename, 0xfff);
-
-    return TRUE;
-  }
-  else
-  {
-    File_Delete(filename);
+  if (!outcome)
     WinEd_MsgTrans_ReportPS(messages, "NoExport", FALSE, filename, 0,0,0);
-    return FALSE;
-  }
+
+  return outcome;
 }
 
 int                browser_estsize(browser_fileinfo *browser)

@@ -345,28 +345,74 @@ top of browser windows. The tools provide short cuts for the functions
 described above, available from the browser menu. They are (from left
 to right):</p>
 <p><ul>
-<li>Create (opens writable submenu)
-<li>Select all (Select mouse button) / Clear selection (Adjust mouse button)
-<li>Save
-<li>Copy (opens writable submenu)
-<li>Rename (opens writable submenu)
-<li>Delete
-<li>Statistics
+<li>Create (opens writable submenu)</li>
+<li>Select all (Select mouse button) / Clear selection (Adjust mouse button)</li>
+<li>Save</li>
+<li>Copy (opens writable submenu)</li>
+<li>Rename (opens writable submenu)</li>
+<li>Delete</li>
+<li>Statistics</li>
 </ul></p>
 <p><a href="#contents">Return to contents</a></p>
 
 <a name="export"><h2>22. Exporting icon names</h2></a>
-<p>The last entry on the selected window(s) submenu of the browser menu
-leads to a &quot;Save as&quot; dialogue box for exporting icon names for all selected windows. An icon can
-be given a name using an <code>N</code> in its validation string.
-<em>WinEd</em> will export the icon names in text format if the <code>enum</code> or <code>Messages</code> options
-are chosen. The <code>enum</code> option is useful for including in C programs
-and the <code>Messages</code> option is intended for use for icon help text in an
-application's &quot;Messages&quot; file. If <code>Basic</code> is selected
-the output is written to a Basic file, for use in Basic
-programs. Note that the output of any of these options can be altered by editing
-<em>WinEd</em>'s <code>Messages</code> file. See
-the chapter on <a href="#custom">customisation</a>.</p>
+<p>The last entry on the selected window(s) submenu of the browser menu leads to a &quot;Save as&quot; dialogue box for exporting icon names from all of the selected windows in one of several different formats.</p>
+
+<p><ul>
+<li><code>C Enum</code> exports a standard C <code>enum ... { ... };</code> structure, where the entries are the icon names and handles.</li>
+<li><code>C Typedef</code> is similar, but exports a C <code>typedef enum { ... } ...;</code> structure instead.</li>
+<li><code>C #define</code> exports a list of C preprocessor <code>#define ... </code> directives, to define constants for the icon names.</li>
+<li><code>BASIC</code> exports a definition for <code>PROCiconnumbers</code>, in which variables are defined for each icon name.</li>
+<li><code>Messages</code> exports a skeleton MessageTrans file, where tokens are set up for the icon names.</li>
+</ul></p>
+
+<p>Most of the exports are as plain text; if <code>BASIC</code> is selected, then the file is a correctly formatted BASIC program file.</p>
+
+<p>The names used in the export are the icon names, as given using the <code>N</code> validation string command. If <code>Include window name</code> is ticked, then the names will be prefixed by the name of the template containing the identifier. Without window names, an export might look like this:</p>
+
+<p><code>enum ProgInfo {
+<br>  Title = 1,
+<br>  Purpose = 3,
+<br>  Authors = 5,
+<br>  Version = 7
+<br>};</code></p>
+
+<p>With the name included, it might look like this:</p>
+
+<p><code>enum ProgInfo {
+<br>  ProgInfo_Title = 1,
+<br>  ProgInfo_Purpose = 3,
+<br>  ProgInfo_Authors = 5,
+<br>  ProgInfo_Version = 7
+<br>};</code></p>
+
+<p>The case of the names can be left as it is defined in the templates by selecting <code>Unchanged</code>, or converted to <code>All upper</code> or <code>All lower</code> as required. Characters which are not valid for the target format are converted to underscores.</p>
+
+<p>If <code>Add prefix</code> is ticked, a user-supplied prefix can be additionally be added to the start of each name. It is up to the user to ensure that the prefix is valid for the language that they are exporting to.</p>
+
+<p>A couple of format-specific options are also available. When exporting as <code>C Enum</code> or <code>C Typedef</code>, the <code>Skip implied numbers</code> option will omit explicit assignments if they are implied by the position of the line in the enum. For example, this:</p>
+
+<p><code>enum ProgInfo {
+<br>  OK = 0,
+<br>  Cancel = 1,
+<br>  Upper = 3,
+<br>  Lower = 4,
+<br>  ROT13 = 6
+<br>};</code></p>
+
+<p>would become this:</p>
+
+<p><code>enum ProgInfo {
+<br>  OK,
+<br>  Cancel,
+<br>  Upper = 3,
+<br>  Lower,
+<br>  ROT13 = 6
+<br>};</code></p>
+	
+<p>In <code>BASIC</code> mode, <code>Use real variables</code> will write the variable names without a trailing <code>%</code> &ndash; making them real instead of integer.</p>
+
+<p>Note that the output of any of these options can be altered by editing <em>WinEd</em>'s <code>Messages</code> file. See the chapter on <a href="#custom">customisation</a>.</p>
 <p><a href="#contents">Return to contents</a></p>
 
 <a name="preview"><h2>23. Preview windows</h2></a>
@@ -934,43 +980,56 @@ boxes are determined by the values in <em>WinEd</em>'s templates.</p>
 <p>The format in which icon names are exported is highly configurable by
 editing the Messages file. For example, look at the export template
 messages as supplied; you should find them at the bottom of the file:</p>
-<p><code>
-<br>E_Preamble:/* Icon names exported by WinEd */\n\n
-<br>E_PreWin:/* Icons for window %0 */\ntypedef enum {\n
-<br>E_1stIcon:  %0_%1 = %2,\n
-<br>E_Icon:  %0_%1 = %2,\n
-<br>E_OneIcon:  %0_%1 = %2,\n
-<br>E_LastIcon:  %0_%1 = %2\n
-<br>E_PostWin:} %0_icons;\n\n
-<br>E_Postamble:\n
-</code></p>
-<p>(Note: there are three sets of messages, which are used depending on the radio
-icons in the export save box. The lines starting with <code>E_</code> or
-<code>M_</code> both produce plain text files and the <code>B_</code> lines are
-used to write a tokenised Basic file.)</p>
-<p>The string up to and including the colon at the beginning of each line
-is the tag used by the program to look up the message. The following
-text is the message that will be substituted. In each line, the
-following parameters can be substituted:</p>
+
+<p><code># C typedef enum { ... } ...; style output.
+<br>
+<br>ExportTypedefStart:typedef enum {
+<br>ExportTypedefIcon:  @pf[@wn_]@in[ = @ih]
+<br>ExportTypedefSep:,
+<br>ExportTypedefEnd:} @wn_icons;</code></p>
+
+<p></p>There are five groups, whose names start <code>ExportEnum...</code>, <code>ExportTypedef...</code>, <code>ExportDefine...</code>, <code>ExportBasic...</code> and <code>ExportMessages...</code> respectively, covering the formatting for each output format.</p>
+
+<p>The <code>...Start</code> and <code>...End</code> tokens are used at the start and end of a window block, with <code>...Icon</code> being written for each icon name to be output. For all but the last icon to be written, the <code>...Sep</code> token is added to the end of the line.</p>
+
+<p>In addition, there are <code>...Preamble</code> and <code>...Postamble</code> tokens which are written at the start and end of the file. In BASIC, these are used to write the <code>DEF PROCiconnumbers</code> and <code>ENDPROC</code> lines.</p>
+
+<p>Finally, <code>ExportPreamble</code> and <code>ExportPostamble</code> tokens provide content for start-of-file and end-of-file comments respectively, while and <code>ExportWindow</code> allows a comment to be written before each window's icons. The same tokens are used in all output formats, with appropriate comment marks around them.</p>
+
+<p>All of the tokens are optional, and will simply be omitted from the output if not present.</p>
+
+<p>The tokens follow the standard MessageTrans format, with the string up to and including the colon at the beginning of each line being the token used by the <cite>WinEd</cite> to look up the message. Following that is a format string, which uses a slightly different format from the standard MessageTrans one. The line will be output to the file, with the following parameters being substituted:
+
 <p><table>
-<tr><td>%0</td><td>Window template name</td></tr>
-<tr><td>%1</td><td>Icon name</td></tr>
-<tr><td>%2</td><td>Icon number</td></tr>
-<tr><td>%3</td><td>Date and time</td></tr>
+<tr><td>@wn</td><td>The window template name</td></tr>
+<tr><td>@in</td><td>The icon name</td></tr>
+<tr><td>@ih</td><td>The icon handle, or number</td></tr>
+<tr><td>@pf</td><td>The user-supplied line prefix</td></tr>
+<tr><td>@dt</td><td>The date and time of the export operation</td></tr>
+<tr><td>@vs</td><td>The appropriate BASIC variable suffix (% or nothing)</td></tr>
 </table></p>
-<p>Note that <code>%1</code> and <code>%2</code> are undefined for <code>E_Preamble</code>, <code>E_PreWin</code>, <code>E_PostWin</code> and <code>E_Postamble</code>, and <code>%0</code> is undefined for <code>E_Preamble</code> and <code>E_Postamble</code>. You need not use all the substitutions available for any message.</p>
-<p>In text-based exports, a tab character is substituted for a <code>\t</code>. Other
-characters following a backslash will be written, but cause the
-backslash to be ignored, so you can use <code>\\</code> to include a backslash in
-your messages.</p>
-<p>In both text-based and tokenised Basic outputs, an extra newline will be inserted when a
-<code>\n</code> is encountered. Finally, to allow a % character to be included in any output you must type <code>%%</code>.</p>
-<p><code>E_Preamble</code> is a message that will appear at the top of an icon names
-file, and <code>E_Postamble</code> will appear at the end. <code>E_PreWin</code> appears at the
-start of each window and <code>E_PostWin</code> at the end; they will not be written
-for a window with no icons. <code>E_1stIcon</code>, <code>E_LastIcon</code> and <code>E_Icon</code> are the
-messages for the first, last and any other icon in each window
-respectively. If a window has one icon, <code>E_OneIcon</code> is used.</p>
+
+<p>Note that not all substitutions will be valid in all contexts.</p>
+
+<p>The format string can be divided up into blocks using the <code>[</code> and <code>]</code> characters, which can be nested if required. A block, and any blocks nested inside it, will only be included if one of the substitutions contained within it is able to be applied.</p>
+
+<p><code>@pf[@wn_]@in[ = @ih]</code></p>
+
+<p>In this example, the <code>@wn_</code> text will only be included if the window name (the <code>@wn</code> value) is relevant and available. This ensures that the underscore separator is also omitted if window names are not included. In a similar way, the <code> = @ih</code> will all be omitted if the icon handle isn't being included (if <code>Skip implied numbers</code> is taking effect). Amongst many other combinations. this line might produce <code>ProgInfo_Title = 1</code>, or <code>Title = 1</code>, or <code>Title</code>, or perhaps <code>PrefixProgInfo_Title</code> depending upon the options used for the export.</p>
+
+<p>You need not use all the substitutions available for any message.</p>
+
+<p>The backslash character can be used to include additional escape sequences:</p>
+
+<p><table>
+<tr><td>\n</td><td>Start a new line (in comments, this will add the necessary continuation characters)</td></tr>
+<tr><td>\t</td><td>Insert a tab character.</td></tr>
+<tr><td>\xXX</td><td>Insert the character whose code is XX in hex.</td></tr>
+<tr><td>\\</td><td>Insert a literal \</td></tr>
+<tr><td>\[</td><td>Insert a literal [</td></tr>
+<tr><td>\]</td><td>Insert a literal ]</td></tr>
+<tr><td>\@</td><td>Insert a literal @</td></tr>
+</table></p>
 <p><a href="#contents">Return to contents</a></p>
 
 <a name="bug"><h2>44. Bug reports &amp; suggestions</h2></a>
