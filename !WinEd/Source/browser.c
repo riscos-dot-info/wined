@@ -2085,10 +2085,10 @@ static load_result browser_load_templat(browser_fileinfo *browser,
 {
   browser_winentry *winentry;
   load_result result;
-  char identifier[48];
   browser_winentry *tempitem;
   BOOL renamed = FALSE;
-  int tries = 1000, prefix = 1;
+  char suffix_string[12], *terminator;
+  int tries = 1000, suffix = 1, suffix_length;
 
   #ifdef DeskLib_DEBUG
   int i;
@@ -2101,17 +2101,15 @@ static load_result browser_load_templat(browser_fileinfo *browser,
   if (!winentry)
     return load_MemoryError;
 
-  /* Copy identifier into large buffer with \0 terminator. */
-  strncpycr(identifier, entry->identifier, sizeof(identifier));
-  identifier[sizeof(identifier) - 1] = '\0';
+  /* Copy the identifier into the target buffer. */
+  terminator = strncpycr(winentry->identifier, entry->identifier, sizeof(winentry->identifier));
 
-  /* Copy the name into the target buffer, truncated to the maximum length and \0 terminated. */
-  strncpycr(winentry->identifier, identifier, sizeof(winentry->identifier));
-  winentry->identifier[sizeof(winentry->identifier) - 1] = '\0';
-
-  /* If the name was too long, warn the user it has been truncated. */
-  if (strlencr(identifier) >= wimp_MAXNAME)
-    WinEd_MsgTrans_ReportPS(messages, "LongIdent", FALSE, identifier, winentry->identifier, 0, 0);
+  /* StrnCpyCr won't terminate the string if it doesn't fit, so an unterminated string is a warning. */
+  if (*terminator != '\0')
+  {
+    winentry->identifier[sizeof(winentry->identifier) - 1] = '\0';
+    WinEd_MsgTrans_ReportPS(messages, "LongIdent", FALSE, winentry->identifier, 0, 0, 0);
+  }
 
   /* Check for duplicates (possibly we've re-named to a pre-existing name),
    * by looping through all of the existing names and comparing to each. */
@@ -2125,8 +2123,11 @@ static load_result browser_load_templat(browser_fileinfo *browser,
 
     if (strcmpcr(winentry->identifier, tempitem->identifier) == 0)
     {
-      snprintf(winentry->identifier, sizeof(winentry->identifier), "%d~%s", prefix++, identifier);
-      winentry->identifier[sizeof(winentry->identifier) - 1] = '\0';
+      snprintf(suffix_string, sizeof(suffix_string), "~%d", suffix++);
+      suffix_string[sizeof(suffix_string) - 1] = '\0';
+
+      suffix_length = strlen(suffix_string) + 1;
+      strncpy(winentry->identifier + sizeof(winentry->identifier) - suffix_length, suffix_string, suffix_length);
 
       renamed = TRUE;
 
@@ -2151,7 +2152,7 @@ static load_result browser_load_templat(browser_fileinfo *browser,
     }
     else
       /* Inform user of changed name */
-      WinEd_MsgTrans_ReportPS(messages, "DupeName", FALSE, identifier, winentry->identifier, 0, 0);
+      WinEd_MsgTrans_ReportPS(messages, "DupeName", FALSE, winentry->identifier, 0, 0, 0);
   }
 
   /* The window name is OK, to add to the linked list. */

@@ -14,8 +14,8 @@ WinMem:Not enough memory for new window
 IndMem:Not enough memory for icon's indirected data
 IconMem:Not enough memory for new icon
 NotFile:File '%0' not found
-LongIdent:Indentifier '%0' is too long. It has been changed to '%1'
-DupeName:Identifier with original name '%0' was not unique - renamed to '%1'
+LongIdent:An identifier is too long. It has been changed to '%0'
+DupeName:An identifier was not unique. It has been renamed to '%0'
 DupeNameFail:Unable to find unique name for original window '%0'. Discarded.
 WontOpen:File '%0' won't open
 NotWindow:Removing unrecognised object (type %1) from file '%0'
