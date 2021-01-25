@@ -209,6 +209,9 @@ BOOL browser_export(char *filename, void *ref, BOOL selection);
 void browser_exportcomplete(void *ref,BOOL successful,BOOL safe,char *filename,
      			  BOOL selection);
 
+/* Create a sorted list of windows in a browser. */
+browser_winentry **browser_sortwindows(browser_fileinfo *browser, BOOL sort);
+
 /* Used as comparison function for qsort in alphabetsort */
 int alphacomp(const void *one, const void *two);
 
@@ -659,11 +662,21 @@ static void       browser_cr(browser_fileinfo *browser)
   }
 }
 
-static BOOL       browser_dosave(char *filename, browser_fileinfo *browser, BOOL selection, file_handle fp)
+/**
+ * Save a file to an open file handle.
+ * 
+ * \param *filename   The filename of the file, used for messages.
+ * \param *browser    The browser instance to be saved.
+ * \param sorted      TRUE if the templates should be sorted alphabetically in the file.
+ * \param selection   TRUE if only the selected templates should be saved.
+ * \param fp          The file handle to write the data to.
+ * \return            TRUE if successful; FALSE on failure.
+ */
+static BOOL browser_dosave(char *filename, browser_fileinfo *browser, BOOL sorted, BOOL selection, file_handle fp)
 {
   template_header header;
-  browser_winentry *winentry;
-  int offset, windowcount = 0;
+  browser_winentry **winentries, *winentry;
+  int index, offset, windowcount = 0;
   #ifdef DeskLib_DEBUG
   int corrupt_type = 0;
   #endif
@@ -685,16 +698,25 @@ static BOOL       browser_dosave(char *filename, browser_fileinfo *browser, BOOL
 
   browser_cr(browser);
 
+  winentries = browser_sortwindows(browser, sorted);
+  if (winentries == NULL)
+  {
+    WinEd_MsgTrans_ReportPS(messages, "CantSave", FALSE, filename, 0, 0, 0);
+    return FALSE;
+  }
+
   /* Save header */
   if (browser->fontinfo)
   {
     /* Calculate eventual offset of font data */
     offset = sizeof(template_header);
-    for (winentry = LinkList_NextItem(&browser->winlist); winentry;
-         winentry = LinkList_NextItem(winentry))
-      if (!selection || Icon_GetSelect(browser->window,winentry->icon))
-        offset += sizeof(template_index) +
-                  flex_size((flex_ptr) &winentry->window);
+    for (index = 0; index < browser->numwindows; index++)
+    {
+      winentry = winentries[index];
+
+      if (!selection || Icon_GetSelect(browser->window, winentry->icon))
+        offset += sizeof(template_index) + flex_size((flex_ptr) &winentry->window);
+    }
     header.fontoffset = offset + 4; /* Skip terminating zero */
 
     #ifdef DeskLib_DEBUG
@@ -731,16 +753,20 @@ static BOOL       browser_dosave(char *filename, browser_fileinfo *browser, BOOL
 
   /* Work out eventual offset for start off window data */
   offset = sizeof(template_header);
-  for (winentry = LinkList_NextItem(&browser->winlist); winentry;
-       winentry = LinkList_NextItem(winentry))
+  for (index = 0; index < browser->numwindows; index++)
+  {
+    winentry = winentries[index];
+
     if (!selection || Icon_GetSelect(browser->window,winentry->icon))
       offset += sizeof(template_index);
+  }
   offset += 4; /* Skip terminating zero word */
 
   /* Save index entry for each window */
-  for (winentry = LinkList_NextItem(&browser->winlist); winentry;
-       winentry = LinkList_NextItem(winentry))
+  for (index = 0; index < browser->numwindows; index++)
   {
+    winentry = winentries[index];
+
     if (!selection || Icon_GetSelect(browser->window,winentry->icon))
     {
       template_index index;
@@ -870,7 +896,7 @@ static void       browser_safetynet()
       fp = File_Open(browser->title,file_WRITE);
       if (fp)
       {
-        browser_dosave(browser->title, browser, FALSE, fp);
+        browser_dosave(browser->title, browser, FALSE, FALSE, fp);
         browser->altered = FALSE;
         File_Close(fp);
         File_SetType(browser->title, filetype_TEMPLATE);
@@ -2804,7 +2830,7 @@ void               browser_preselfquit()
   exit(0);
 }
 
-/* Save file in strict order for speed */
+/* Save file in strict order for speed (NB: what "strict order"? We can now sort files.) */
 BOOL               browser_save(char *filename,void *reference,BOOL selection)
 {
   browser_fileinfo *browser = reference;
@@ -2831,7 +2857,7 @@ BOOL               browser_save(char *filename,void *reference,BOOL selection)
     return FALSE;
   }
 
-  result = browser_dosave(filename, browser, selection, fp);
+  result = browser_dosave(filename, browser, FALSE, selection, fp);
 
   File_Close(fp);
   if (result)
