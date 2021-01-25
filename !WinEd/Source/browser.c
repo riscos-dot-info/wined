@@ -2406,6 +2406,7 @@ icon_handle        browser_newicon(browser_fileinfo *browser,int index, browser_
   /* window_redrawblock redraw; */
 
   Log(log_TEDIOUS, "browser_newicon");
+  Log(log_DEBUG, "Create icon at index %d for %s from 0x%x", index, winentry->identifier, winentry);
 
   column = index % browser->numcolumns;
   row = index / browser->numcolumns;
@@ -2520,26 +2521,32 @@ void               browser_setextent(browser_fileinfo *browser)
   }
 }
 
-int                alphacomp(const void *one, const void *two)
+/**
+ * Compare two browser_winentry blocks alpabetically by identifier.
+ * 
+ * \param *one    Pointer to the first block to compare.
+ * \param *two    Pointer to the second block to compare.
+ * \return        The comparison of the two identifiers.
+ */
+int alphacomp(const void *one, const void *two)
 {
-  char lc_one[wimp_MAXNAME + 1];
-  char lc_two[wimp_MAXNAME + 1];
+  const browser_winentry **we_one = (const browser_winentry **) one, **we_two = (const browser_winentry **) two;
+  char lc_one[wimp_MAXNAME];
+  char lc_two[wimp_MAXNAME];
 
-  strncpycr(lc_one, (char *)one, wimp_MAXNAME);
-  strncpycr(lc_two, (char *)two, wimp_MAXNAME);
+  strncpy(lc_one, (*we_one)->identifier, wimp_MAXNAME);
+  strncpy(lc_two, (*we_two)->identifier, wimp_MAXNAME);
 
-  /* If the names are 12 chars long, won't be terminated at all by wimp */
-  lc_one[wimp_MAXNAME] = '\0';
-  lc_two[wimp_MAXNAME] = '\0';
+  lc_one[wimp_MAXNAME - 1] = '\0';
+  lc_two[wimp_MAXNAME - 1] = '\0';
 
-  /* make comparison case-insensitive */
   lower_case(lc_one);
   lower_case(lc_two);
 
   return strcmpcr(lc_one, lc_two);
 }
 
-char              *lower_case(char *s)
+char *lower_case(char *s)
 {
 //  Log(log_DEBUG, "lower_case");
 
@@ -2555,70 +2562,113 @@ char              *lower_case(char *s)
   return ret;
 }
 
-
-void               browser_sorticons(browser_fileinfo *browser, BOOL force, BOOL reopen, BOOL keepsel)
+/**
+ * Build an array of winentry pointers for the current file, optionally sorted
+ * alphabetically by identifier.
+ * 
+ * The array is allocated with malloc(), and must be freed after use.
+ *
+ * \param *browser    Pointer to the browser instance to sort.
+ * \param sort        TRUE to sort the entries; FALSE to leave in file order.
+ * \return            Pointer to the resulting array, or NULL on failure.
+ */
+browser_winentry **browser_sortwindows(browser_fileinfo *browser, BOOL sort)
 {
-  int index = 0, ordered;
-  browser_winentry *winentry;
+  browser_winentry **sorted, *winentry;
+  int count = 0;
+
+  Log(log_DEBUG, "browser_sortwindows");
+
+  if (browser == NULL)
+    return NULL;
+
+  /* Allocate an array of window pointers, and fill it in file order. */
+
+  sorted = malloc(sizeof(browser_winentry*) * browser->numwindows);
+  if (sorted == NULL)
+    return NULL;
+
+  winentry = LinkList_FirstItem(&browser->winlist);
+
+  while ((winentry != NULL) && (count < browser->numwindows))
+  {
+    sorted[count++] = winentry;
+    winentry = LinkList_NextItem(&winentry->header);
+  }
+
+  Log(log_DEBUG, "Found %d windows, out of %d.", count, browser->numwindows);
+
+  if (sort == TRUE)
+    qsort(sorted, count, sizeof(browser_winentry*), alphacomp);
+
+  return sorted;
+}
+
+/**
+ * Sort and place the icons in a file browser window, creating any which don't
+ * exist in the process.
+ * 
+ * \param *browser  The browser instance to be operated on.
+ * \param force     TRUE to delete all icons, even if they don't need to move.
+ * \param reopen    TRUE to call Wimp_OpenWindow on the window after update.
+ * \param keepsel   TRUE to restore any selection after the update.
+ */
+void browser_sorticons(browser_fileinfo *browser, BOOL force, BOOL reopen, BOOL keepsel)
+{
+  int index;
+  browser_winentry **winentries, *winentry;
   window_state wstate;
-  char *selected;
-  char names[browser->numwindows][wimp_MAXNAME];
+  int *selected;
 
   Log(log_DEBUG, "browser_sorticons");
 
-  if (choices->round) /* Note: this choice now means "sort browser icons alphabetically" */
-  {
-    /* Find list of window names */
-    winentry = LinkList_FirstItem(&browser->winlist);
-    while (winentry)
-    {
-      strncpycr(names[index], winentry->identifier, wimp_MAXNAME);
-      names[index][wimp_MAXNAME - 1] = '\0'; /* Ensure null termination */
-      index++;
-      winentry = LinkList_NextItem(&winentry->header);
-    }
-    /* Order list alphabetically */
-    qsort(names, browser->numwindows, wimp_MAXNAME, alphacomp);
-  }
+  /* Get the winentry indexes. Note that "round" means "sort browser icons alphabetically" (!). */
 
-  if (keepsel)
+  winentries = browser_sortwindows(browser, choices->round);
+  if (winentries == NULL)
+    return;
+
+  /* If we're keeping the selections, record the selected icons. */
+
+  if (keepsel == TRUE)
   {
-    selected = malloc(browser->numwindows);
+    selected = malloc(browser->numwindows * sizeof(int));
     if (selected)
-      for (index=0; index<browser->numwindows; index++)
-        selected[index] = Icon_GetSelect(browser->window,index);
+    {
+      for (index = 0; index < browser->numwindows; index++)
+        selected[index] = Icon_GetSelect(browser->window, index);
+    }
   }
   else
-    selected = NULL;
-
-  index = 0;
-  winentry = LinkList_NextItem(&browser->winlist);
-  while (winentry)
   {
+    selected = NULL;
+  }
+
+  /* Replace the icons in the window. */
+
+  for (index = 0; index < browser->numwindows; index++)
+  {
+    winentry = winentries[index];
+
+    /* Delete any existing icon. */
+
     if (winentry->icon != -1 && (winentry->icon != index || force))
     {
-      Wimp_DeleteIcon(browser->window,winentry->icon);
+      Wimp_DeleteIcon(browser->window, winentry->icon);
       winentry->icon = -1;
     }
+
+    /* Create a new icon. */
+
     if (winentry->icon == -1)
-    {
-      if (choices->round)
-      { /* Find order for "index" to pass to browser_newicon */
-        ordered = 0;
-        while ((strcmpcr(names[ordered], winentry->identifier)) && (ordered < browser->numwindows))
-          ordered++;
-      }
-      else
-      {
-        ordered = index;
-      }
-
-      winentry->icon = browser_newicon(browser, ordered, winentry, keepsel&&selected&&selected[index]);
-    }
-
-    index++;
-    winentry = LinkList_NextItem(&winentry->header);
+      winentry->icon = browser_newicon(browser, index, winentry, keepsel && selected != NULL && selected[index]);
   }
+
+  if (keepsel == TRUE && selected != NULL)
+    free(selected);
+
+  if (winentries != NULL)
+    free(winentries);
 
   browser_setextent(browser);
   Wimp_GetWindowState(browser->window,&wstate);
@@ -2636,8 +2686,6 @@ void               browser_sorticons(browser_fileinfo *browser, BOOL force, BOOL
   Wimp_ForceRedraw((window_redrawblock *) &wstate.openblock);
   if (choices->browtools)
     browtools_shadeapp(browser);
-  if (keepsel&&selected)
-    free(selected);
 }
 
 /* See title.h */
