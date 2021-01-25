@@ -746,6 +746,7 @@ static BOOL browser_dosave(char *filename, browser_fileinfo *browser, BOOL sorte
       Error_Check(file_lasterror);
     else
       WinEd_MsgTrans_ReportPS(messages,"CantSave",FALSE,filename,0,0,0);
+    free(winentries);
     return FALSE;
   }
 
@@ -803,6 +804,7 @@ static BOOL browser_dosave(char *filename, browser_fileinfo *browser, BOOL sorte
           Error_Check(file_lasterror);
         else
           WinEd_MsgTrans_ReportPS(messages,"CantSave",FALSE,filename,0,0,0);
+        free(winentries);
         return FALSE;
       }
       offset += index.size;
@@ -812,6 +814,7 @@ static BOOL browser_dosave(char *filename, browser_fileinfo *browser, BOOL sorte
   /* Save index-terminating zero */
   if (Error_Check(File_Write32(fp,0)))
   {
+    free(winentries);
     return FALSE;
   }
 
@@ -835,6 +838,7 @@ static BOOL browser_dosave(char *filename, browser_fileinfo *browser, BOOL sorte
         else
           WinEd_MsgTrans_ReportPS(messages,"CantSave",FALSE,filename,0,0,0);
         browser_changesparea(winentry->window, user_sprites);
+        free(winentries);
         return FALSE;
       }
       browser_changesparea(winentry->window, user_sprites);
@@ -851,9 +855,12 @@ static BOOL browser_dosave(char *filename, browser_fileinfo *browser, BOOL sorte
           Error_Check(file_lasterror);
         else
           WinEd_MsgTrans_ReportPS(messages,"CantSave",FALSE,filename,0,0,0);
+        free(winentries);
         return FALSE;
       }
   }
+
+  free(winentries);
 
   Log(log_DEBUG, "End of do_save");
 
