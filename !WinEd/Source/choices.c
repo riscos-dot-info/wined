@@ -31,6 +31,18 @@ typedef enum {
 #define WEdC 0x43644557
 #define choices_VERSION 234
 
+/* The size of buffer for constructing filenames. */
+#define CHOICES_MAX_FILENAME 256
+
+/* The Choices filename. */
+const char choices_filename[] = "Choices";
+
+/* The Choices folder for use within Choices$Path. */
+const char choices_foldername[] = "WinEd";
+
+/* The local choices folder for non-uni-boot systems. */
+const char choices_winedname[] = "<WinEd$Dir>.Resources";
+
 typedef struct {
   int id;
   int version;
@@ -38,19 +50,12 @@ typedef struct {
   choices_str choices;
 } choices_filestr;
 
-/* Can't use Resource because it's a ...$Path and we need to save as well */
-const char choices_pathname[] = "Choices:WinEd.Choices";
-const char choices_winedsavename[] = "<WinEd$Dir>.Resources.Choices";
-const char choices_savename[] = "<Choices$Write>.WinEd.Choices";
-/*const char choices_existingsave[] = "Choices:Wined.Choices";*/
-#define choices_existingsave choices_savename
-const char choices_var[] = "Choices$Write";
-const char choices_makedir[] = "<Choices$Write>.WinEd";
-const char choices_existingdir[] = "Choices:WinEd";
 
 void choices_seticons(void);
 void choices_readicons(void); /* Also calls responder */
 void choices_default(void);
+static BOOL choices_load(void);
+static BOOL choices_save(void);
 
 BOOL choices_clickok(event_pollblock *event,void *reference);
 BOOL choices_clickcancel(event_pollblock *event,void *reference);
@@ -60,6 +65,7 @@ choices_str *choices = &choices_buffer.choices;
 
 static choices_responder global_responder;
 static window_handle choices_window;
+
 
 void choices_init(choices_responder responder)
 {
@@ -79,14 +85,7 @@ void choices_init(choices_responder responder)
   global_responder = responder;
 
   choices_default();
-
-  if (File_Size((char *) choices_pathname) > sizeof(choices_filestr))
-    return;
-  if (File_LoadTo((char *) choices_pathname, &choices_buffer, 0))
-    return;
-  if (choices_buffer.id != WEdC ||
-      choices_buffer.version > choices_VERSION)
-    choices_default();
+  choices_load();
 }
 
 void choices_default()
@@ -171,6 +170,7 @@ void choices_readicons()
 BOOL choices_clickok(event_pollblock *event,void *reference)
 {
   browser_fileinfo *browser;
+  BOOL success = TRUE;
 
   if (event->data.mouse.button.data.menu)
     return FALSE;
@@ -178,53 +178,9 @@ BOOL choices_clickok(event_pollblock *event,void *reference)
   choices_readicons();
 
   if (event->data.mouse.icon == choices_SAVE)
-  {
-    const char *choices_file = choices_pathname;
-    	/* Any initialiser will do, just suppresses warning */
-    /* Check for <Choices$Path> */
-    int rvresult;
-    SWI(5, 3, SWI_OS_ReadVarVal, choices_var, NULL, -1, 0, 0,
-    	NULL, NULL, &rvresult);
-    if (rvresult < 0)
-    {
-      /* Check for existence of WinEd directory in Choices$Path */
-      int objtype;
-      SWI(2,1,SWI_OS_File,5,choices_existingdir,&objtype);
-      switch (objtype)
-      {
-        case 1:
-          choices_file = choices_winedsavename;
-          break;
-        case 2: case 3:
-          /* Try to save in existing Choices:WinEd and if that fails
-             try next clause */
-          if (!SWI(6,0,SWI_OS_File,10,
-                (int) choices_existingsave,filetype_DATA,0,
-                (int) &choices_buffer,
-                (int) &choices_buffer + sizeof(choices_filestr)))
-          {
-            if (event->data.mouse.button.data.select)
-              Wimp_CloseWindow(choices_window);
-            return TRUE;
-          }
-        case 0:
-          /* Make directory in Choices$Write */
-          if (SWI(5,0,SWI_OS_File,8,choices_makedir,0,0,0))
-            choices_file = choices_winedsavename;
-          else
-            choices_file = choices_savename;
-          break;
-      }
-    }
-    else
-      choices_file = choices_winedsavename;
+    success = choices_save();
 
-    Error_Check(SWI(6,0,SWI_OS_File,10,(int) choices_file,filetype_DATA,0,
-                (int) &choices_buffer,
-                (int) &choices_buffer + sizeof(choices_filestr)));
-  }
-
-  if (event->data.mouse.button.data.select)
+  if (success && event->data.mouse.button.data.select)
     Wimp_CloseWindow(choices_window);
 
   /* Need to check if any browser windows are open in case "sort" has changed */
@@ -244,4 +200,120 @@ BOOL choices_clickcancel(event_pollblock *event,void *reference)
   Wimp_CloseWindow(choices_window);
 
   return TRUE;
+}
+
+/**
+ * Load a choices file from disc.
+ * 
+ * \return TRUE on success; FALSE on failure.
+ */
+static BOOL choices_load(void)
+{
+  BOOL global_choices = FALSE;
+  int object_type = 0;
+  char filename[CHOICES_MAX_FILENAME];
+
+  /* Check if there is a global choices setup available. */
+
+  global_choices = Environment_SysVarRead("Choices$Path", NULL, 0);
+
+  /* Attempt to find a file somewhere. */
+
+  snprintf(filename, CHOICES_MAX_FILENAME, "Choices:%s.%s", choices_foldername, choices_filename);
+  filename[CHOICES_MAX_FILENAME - 1] = '\0';
+
+  SWI(2, 1, SWI_OS_File, 17, filename, &object_type);
+
+  if (object_type == 0) {
+    snprintf(filename, CHOICES_MAX_FILENAME, "%s.%s", choices_winedname, choices_filename);
+    filename[CHOICES_MAX_FILENAME - 1] = '\0';
+
+    SWI(2, 1, SWI_OS_File, 17, filename, &object_type);
+    if (object_type == 1) {
+      if (global_choices) {
+        WinEd_MsgTrans_ReportPS(messages, "LocalChoice", FALSE, 0, 0, 0, 0);
+      }
+    } else {
+      if (object_type != 0) {
+        WinEd_MsgTrans_ReportPS(messages, "BadLoadChoice", FALSE, filename, 0, 0, 0);
+        return FALSE;
+      }
+    }
+  } else if (object_type != 1) {
+    WinEd_MsgTrans_ReportPS(messages, "BadLoadChoice", FALSE, filename, 0, 0, 0);
+    return FALSE;
+  }
+
+  /* Check that the filesize is sane. */
+
+  if (File_Size((char *) filename) > sizeof(choices_filestr))
+    return FALSE;
+
+  /* Load the file into memory. */
+
+  if (File_LoadTo((char *) filename, &choices_buffer, 0))
+    return FALSE;
+
+  /* If the file wasn't valid, reset to the default choices. */
+
+  if (choices_buffer.id != WEdC || choices_buffer.version > choices_VERSION)
+    choices_default();
+
+  return TRUE;
+}
+
+/**
+ * Save a choices file to disc.
+ * 
+ * \return TRUE on success; FALSE on failure.
+ */
+static BOOL choices_save(void)
+{
+  BOOL global_choices = FALSE;
+  int object_type = 0;
+  char filename[CHOICES_MAX_FILENAME];
+
+  /* Check if there is a global choices setup available. */
+
+  global_choices = Environment_SysVarRead("Choices$Write", NULL, 0);
+
+  if (global_choices) {
+    /* If there are global choices, make sure that our folder is created. */
+
+    snprintf(filename, CHOICES_MAX_FILENAME, "<Choices$Write>.%s", choices_foldername);
+    filename[CHOICES_MAX_FILENAME - 1] = '\0';
+
+    SWI(2, 1, SWI_OS_File, 17, filename, &object_type);
+
+    if (object_type == 0) {
+      File_CreateDir(filename);
+    } else if (object_type != 2 && object_type != 3) {
+      WinEd_MsgTrans_ReportPS(messages, "BadSaveChoice", FALSE, filename, 0, 0, 0);
+      return FALSE;
+    }
+
+    snprintf(filename, CHOICES_MAX_FILENAME, "<Choices$Write>.%s.%s", choices_foldername, choices_filename);
+    filename[CHOICES_MAX_FILENAME - 1] = '\0';
+  } else {
+    /* If there are not global choices, save into our application. */
+
+    snprintf(filename, CHOICES_MAX_FILENAME, "%s.%s", choices_winedname, choices_filename);
+    filename[CHOICES_MAX_FILENAME - 1] = '\0';
+  }
+
+  /* Make sure that the target file isn't a folder. */
+
+  SWI(2, 1, SWI_OS_File, 17, filename, &object_type);
+
+  if (object_type != 0 && object_type != 1) {
+    WinEd_MsgTrans_ReportPS(messages, "BadSaveChoice", FALSE, filename, 0, 0, 0);
+    return FALSE;
+  }
+
+  /* Save the file. */
+
+  return !Error_Check(SWI(6, 0, SWI_OS_File | XOS_Bit, 10,
+                (int) filename, filetype_DATA, 0,
+                (int) &choices_buffer,
+                (int) &choices_buffer + sizeof(choices_filestr)));
 }
