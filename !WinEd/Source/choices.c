@@ -3,6 +3,7 @@
 #include "common.h"
 
 #include "choices.h"
+#include "IniConfig.h"
 
 
 /* Icons for window Choices */
@@ -43,6 +44,9 @@ const char choices_foldername[] = "WinEd";
 /* The local choices folder for non-uni-boot systems. */
 const char choices_winedname[] = "<WinEd$Dir>.Resources";
 
+/* The INI file used to store the choices. */
+iniconfig_file *choices_file;
+
 typedef struct {
   int id;
   int version;
@@ -54,6 +58,7 @@ typedef struct {
 void choices_seticons(void);
 void choices_readicons(void); /* Also calls responder */
 void choices_default(void);
+
 static BOOL choices_load(void);
 static BOOL choices_save(void);
 
@@ -84,7 +89,32 @@ void choices_init(choices_responder responder)
 
   global_responder = responder;
 
-  choices_default();
+  /* Initialise the choices file handler. */
+
+  choices_file = IniConfig_Init();
+
+  IniConfig_AddSection(choices_file, "Windows");
+  IniConfig_AddBoolean(choices_file, "AutomaticMonitor", &(choices->monitor), TRUE);
+  IniConfig_AddBoolean(choices_file, "AutomaticPicker", &(choices->picker), TRUE);
+  IniConfig_AddBoolean(choices_file, "BrowserToolbar", &(choices->browtools), FALSE);
+  IniConfig_AddBoolean(choices_file, "EditorPanes", &(choices->editpanes), TRUE);
+  IniConfig_AddBoolean(choices_file, "EditableToolbar", &(choices->viewtools), TRUE);
+  IniConfig_AddBoolean(choices_file, "EditableFurniture", &(choices->furniture), TRUE);
+  IniConfig_AddSection(choices_file, "Editing");
+  IniConfig_AddBoolean(choices_file, "KeyboardShortcuts", &(choices->hotkeys), TRUE);
+  IniConfig_AddBoolean(choices_file, "MoveSelWithoutMouse", &(choices->mouseless_move), TRUE);
+  IniConfig_AddBoolean(choices_file, "ConfirmDelete", &(choices->confirm), FALSE);
+  IniConfig_AddBoolean(choices_file, "SafeIconUpdate", &(choices->safe_icons), FALSE);
+  IniConfig_AddSection(choices_file, "Display");
+  IniConfig_AddBoolean(choices_file, "AlwaysShowBorders", &(choices->borders), FALSE);
+  IniConfig_AddBoolean(choices_file, "HatchUserRedraw", &(choices->hatchredraw), TRUE);
+  IniConfig_AddBoolean(choices_file, "DisplayTemplatesSorted", &(choices->round), TRUE);
+  IniConfig_AddSection(choices_file, "Misc");
+  IniConfig_AddBoolean(choices_file, "AutoLoadSprites", &(choices->autosprites), TRUE);
+  IniConfig_AddBoolean(choices_file, "FormEdCompatible", &(choices->formed), TRUE);
+  IniConfig_AddBoolean(choices_file, "StrictPanes", &(choices->strict_panes), TRUE);
+
+  choices_default(); // Do we do this?
   choices_load();
 }
 
@@ -246,20 +276,20 @@ static BOOL choices_load(void)
 
   /* Check that the filesize is sane. */
 
-  if (File_Size((char *) filename) > sizeof(choices_filestr))
-    return FALSE;
+//  if (File_Size((char *) filename) > sizeof(choices_filestr))
+//    return FALSE;
 
   /* Load the file into memory. */
 
-  if (File_LoadTo((char *) filename, &choices_buffer, 0))
-    return FALSE;
+//  if (File_LoadTo((char *) filename, &choices_buffer, 0))
+//    return FALSE;
 
   /* If the file wasn't valid, reset to the default choices. */
 
-  if (choices_buffer.id != WEdC || choices_buffer.version > choices_VERSION)
-    choices_default();
+//  if (choices_buffer.id != WEdC || choices_buffer.version > choices_VERSION)
+//    choices_default();
 
-  return TRUE;
+  return IniConfig_ReadFile(choices_file, filename);
 }
 
 /**
@@ -312,8 +342,5 @@ static BOOL choices_save(void)
 
   /* Save the file. */
 
-  return !Error_Check(SWI(6, 0, SWI_OS_File | XOS_Bit, 10,
-                (int) filename, filetype_DATA, 0,
-                (int) &choices_buffer,
-                (int) &choices_buffer + sizeof(choices_filestr)));
+  return IniConfig_WriteFile(choices_file, filename);
 }

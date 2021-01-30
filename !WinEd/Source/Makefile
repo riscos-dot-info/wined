@@ -1,7 +1,7 @@
 # Makefile for WinEd
 
 
-objects = Error.o alndiag.o bordiag.o browser.o browtools.o choices.o coorddiag.o datatrans.o deskfont.o \
+objects = Error.o IniConfig.o alndiag.o bordiag.o browser.o browtools.o choices.o coorddiag.o datatrans.o deskfont.o \
           diagutils.o drag.o dragext.o export.o fontpick.o fortify.o globals.o help.o icndiag.o icnedit.o \
           ide.o minsize.o monitor.o multiicon.o pane.o picker.o round.o rszdiag.o shortcuts.o spcdiag.o \
           stats.o tempfont.o templates.o terminator.o unsaved.o uri.o usersprt.o viewer.o viewtools.o \
@@ -24,6 +24,8 @@ dragext.o : DragExt.s
 	gcc $(compileflags) DragExt.s
 Error.o : Error.c
 	gcc $(compileflags) Error.c
+IniConfig.o : IniConfig.c
+	gcc $(compileflags) IniConfig.c
 alndiag.o : alndiag.c
 	gcc $(compileflags) alndiag.c
 bordiag.o : bordiag.c
