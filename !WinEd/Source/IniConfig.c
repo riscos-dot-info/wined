@@ -333,6 +333,9 @@ BOOL IniConfig_ReadFileRaw(iniconfig_file *file, FILE *in)
         continue;
       }
 
+      /* Match the section name. Note that leading and trailing white space
+       * within the [...] is treated as significant. */
+
       IniConfig_StringToLower(token);
 
       section = IniConfig_FindSection(file, token);
@@ -373,6 +376,10 @@ BOOL IniConfig_ReadFileRaw(iniconfig_file *file, FILE *in)
         success = FALSE;
         continue;
       }
+
+      Log(log_INFORMATION, "Token = '%s', Value = '%s'", token, value);
+
+      /* Match the token name within the current section. */
 
       IniConfig_StringToLower(token);
 
