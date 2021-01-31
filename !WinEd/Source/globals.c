@@ -212,10 +212,14 @@ void Log(int level, const char *format, ...)
   /* Reset the prebuffer now that we've built the log string. */
   log_prebuffer = 0;
 
-  /* Scan the buffer to see if there are any control characters before the terminator. */
-  for (zero_len = 0; zero_len < sizeof(log_buffer) && log_buffer[zero_len] != '\0'; zero_len++)
+  /* Scan the buffer to see if there are any control characters before the terminator.
+     Also convert " to ~, to sidestep Reporter's inability to handle " in log messages. */
+  for (zero_len = 0; zero_len < sizeof(log_buffer) && log_buffer[zero_len] != '\0'; zero_len++) {
     if (log_buffer[zero_len] < ' ')
       bad_terminator = TRUE;
+    if (log_buffer[zero_len] == '"')
+      log_buffer[zero_len] = '~';
+  }
 
   if (bad_terminator == TRUE) {
     char *message = "A bad string termintor was found in the following log message.";
