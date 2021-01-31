@@ -15,7 +15,7 @@ EXTRASRC ?= TestCases
 
 # Object Files.
 
-OBJECTS = Error.o alndiag.o bordiag.o browser.o browtools.o choices.o coorddiag.o datatrans.o deskfont.o \
+OBJECTS = Error.o IniConfig.o alndiag.o bordiag.o browser.o browtools.o choices.o coorddiag.o datatrans.o deskfont.o \
           diagutils.o drag.o dragext.o export.o fontpick.o fortify.o globals.o help.o icndiag.o icnedit.o \
           ide.o minsize.o monitor.o multiicon.o pane.o picker.o round.o rszdiag.o shortcuts.o spcdiag.o \
           stats.o tempfont.o templates.o terminator.o unsaved.o uri.o usersprt.o viewer.o viewtools.o \
@@ -34,7 +34,7 @@ INCLUDES := -I$(GCCSDK_INSTALL_ENV)/include
 
 # Additional flags for compiling include -DFORTIFY and -DDeskLib_DEBUG
 
-COMPILEFLAGS = -O3 -std=c99 -mlibscl -Wunused -Wuninitialized -Wall -fno-strict-aliasing -mthrowback -mpoke-function-name -c
+COMPILEFLAGS = -O3 -std=c99 -mlibscl -Wunused -Wuninitialized -Wall -fno-strict-aliasing -mthrowback -mpoke-function-name -c -DDeskLib_DEBUG
 LINKFLAGS = -mlibscl -Wl,--allow-multiple-definition -o ../!RunImage,ff8
 ZIPFLAGS := -x "*/.svn/*" -x "*/Source/*" -r -, -9
 SRCZIPFLAGS := -x "*/.svn/*" -x "*fortify.*" -x "*.o" -r -, -9
@@ -85,6 +85,8 @@ dragext.o : DragExt.s
 	$(AS) -o dragext.o DragExt.s
 Error.o : Error.c
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) Error.c
+IniConfig.o : IniConfig.c
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) IniConfig.c
 alndiag.o : alndiag.c
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) alndiag.c
 bordiag.o : bordiag.c

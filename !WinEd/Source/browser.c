@@ -3600,6 +3600,11 @@ void browser_responder(choices_str *old,choices_str *new_ch)
       browtools_newpane(browser);
       browser_sorticons(browser,TRUE,TRUE,FALSE);
     }
+    else if ((old->round != new_ch->round) && Window_IsOpen(browser->window))
+    {
+      browser_sorticons(browser, TRUE, FALSE, TRUE);
+    }
+
     if (old->hotkeys && !new_ch->hotkeys)
     {
       caret_block caret;
@@ -3614,6 +3619,7 @@ void browser_responder(choices_str *old,choices_str *new_ch)
     }
     else if (!old->hotkeys && new_ch->hotkeys)
       browser_createmenus();
+
 
     for (winentry = LinkList_NextItem(&browser->winlist);
          winentry;
