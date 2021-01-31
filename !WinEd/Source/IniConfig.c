@@ -290,13 +290,15 @@ BOOL IniConfig_ReadFileRaw(iniconfig_file *file, FILE *in)
     for (tail = line; tail - line < INICONFIG_MAX_LINE && *tail != '\0' && *tail != '\r' && *tail != '\n'; tail++);
     *tail = '\0';
 
+    Log(log_INFORMATION, "-----------------------------------------");
+    Log(log_INFORMATION, "Read Raw Line: '%s'", line);
+
     /* Remove white space from the end of the line. */
-    while ((tail > line) && isspace(*(tail - 1)))
-      *--tail = '\0';
+    for (; (tail > line) && isspace(*(tail - 1)); *--tail = '\0');
 
     Log(log_INFORMATION, "Read Line: '%s'", line);
 
-    /* Find the start of the line and token. */
+    /* Move past the whitespace at the start of the line, to find the token. */
     for (token = line; *token != '\0' && isspace(*token); token++);
 
     /* Skip any blank lines or comments. */
@@ -324,6 +326,12 @@ BOOL IniConfig_ReadFileRaw(iniconfig_file *file, FILE *in)
       /* Remove the brackets from the name, and make it lower case. */
       token++;
       *end = '\0';
+
+      if (*token == '\0') {
+        Log(log_WARNING, "Skipping enpty section.");
+        success = FALSE;
+        continue;
+      }
 
       IniConfig_StringToLower(token);
 
@@ -355,17 +363,26 @@ BOOL IniConfig_ReadFileRaw(iniconfig_file *file, FILE *in)
         *--tail = '\0';
       }
 
+      /* Terminate the token. */
+      *end = '\0';
+
       /* Strip the trailing whitespace from the token, and make it lower case. */
-      while ((end > line) && isspace(*(end - 1)))
-        *--end = '\0';
+      for (; (end > line) && isspace(*(end - 1)); *--end = '\0');
+      if (token == '\0') {
+        Log(log_WARNING, "Skipping enpty token.");
+        success = FALSE;
+        continue;
+      }
 
       IniConfig_StringToLower(token);
 
       entry = IniConfig_FindEntry(section, token);
       if (entry != NULL) {
         Log(log_INFORMATION, "Found entry '%s' = 0x%x", token, entry);
-        if (!IniConfig_UpdateEntry(entry, value))
+        if (!IniConfig_UpdateEntry(entry, value)) {
+          Log(log_WARNING, "Failed to update entry for '%s' with '%s'", token, value);
           success = FALSE;
+        }
       } else {
         Log(log_WARNING, "Unexpected entry '%s'", token);
         success = FALSE;
@@ -393,6 +410,9 @@ static BOOL IniConfig_UpdateEntry(iniconfig_entry *entry, char *value)
     case iniconfig_type_BOOLEAN:
       if (entry->value.boolean.variable == NULL)
         break;
+
+      if (*value == '\0')
+        return FALSE;
 
       if (IniConfig_StringCompare("yes", value, TRUE) || IniConfig_StringCompare("true", value, TRUE))
         *entry->value.boolean.variable = TRUE;
