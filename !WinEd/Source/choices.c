@@ -128,6 +128,7 @@ void choices_init(choices_responder responder)
   IniConfig_AddSection(choices_file, "Misc");
   IniConfig_AddBoolean(choices_file, "AutoLoadSprites", &(choices->autosprites), TRUE);
   IniConfig_AddBoolean(choices_file, "FormEdCompatible", &(choices->formed), TRUE);
+  IniConfig_AddBoolean(choices_file, "SaveFilesSorted", &(choices->file_sort), FALSE);
   IniConfig_AddBoolean(choices_file, "StrictPanes", &(choices->strict_panes), TRUE);
 
   /* Load any user-saved choices from disc. */

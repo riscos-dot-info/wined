@@ -35,6 +35,7 @@ typedef struct {
    * and may be added, removed or changed as required.                                        */
 
   BOOL round_coords;    /**< Round all window and icon coordinates to pixel boundaries.       */
+  BOOL file_sort;       /**< Sort the templates into alphabetical order when saving.          */
 } choices_str;
 
 /**

@@ -2864,7 +2864,7 @@ BOOL               browser_save(char *filename,void *reference,BOOL selection)
     return FALSE;
   }
 
-  result = browser_dosave(filename, browser, FALSE, selection, fp);
+  result = browser_dosave(filename, browser, choices->file_sort, selection, fp);
 
   File_Close(fp);
   if (result)
