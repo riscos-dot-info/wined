@@ -8,32 +8,45 @@
 #include "DeskLib:Core.h"
 #include "browser.h"
 
+/**
+ * The structure holding the user choices.
+ */ 
 typedef struct {
-  BOOL monitor;
-  BOOL picker;
-  BOOL browtools;
-  BOOL viewtools;
-  BOOL hotkeys;
-  BOOL hatchredraw;
-  BOOL round; /* This option removed from UI from version ar0.1. Always true now */
-  BOOL furniture;
-  BOOL autosprites;
-  BOOL editpanes;
-  BOOL mouseless_move;
-  BOOL confirm;
-  BOOL borders;
-  BOOL formed;
-  BOOL strict_panes;
-  BOOL safe_icons;
+  BOOL monitor;         /**< Automatically display the monitor.                               */
+  BOOL picker;          /**< Automatically display the icon picker.                           */
+  BOOL browtools;       /**< Show a toolbar in the template browser.                          */
+  BOOL viewtools;       /**< Show a toolbar on editable windows.                              */
+  BOOL hotkeys;         /**< Provide keyborad shortcuts.                                      */
+  BOOL hatchredraw;     /**< Hatch the work area of user redrawn windows.                     */
+  BOOL round;           /**< This option removed from UI from version ar0.1. Always true now. */
+  BOOL furniture;       /**< Always show furniture on editable windows.                       */
+  BOOL autosprites;     /**< Automatically load sprites files.                                */
+  BOOL editpanes;       /**< Use panes for action buttons in window and icon edit dialogues.  */
+  BOOL mouseless_move;  /**< Move selected icons with just the cursor keys.                   */
+  BOOL confirm;         /**< Confirm the deletions of any windows or icons.                   */
+  BOOL borders;         /**< Always plot borders on editable icons.                           */
+  BOOL formed;          /**< Use FormEd style string terminators (ie. \n and not \0).         */
+  BOOL strict_panes;    /**< Limit flag options on pane windows.                              */
+  BOOL safe_icons;      /**< Make "Don't Move" the default in icon edit dialogue box.         */
+
+  /* The values above this point form the structure of the legacy binary config file, and     *
+   * should not be changed, moved or deleted. If no longer required, leave in-situ and mark   *
+   * as obsolete. Below this point, values have only appeared in the textual config files,    *
+   * and may be added, removed or changed as required.                                        */
 } choices_str;
 
+/**
+ * Public pointer to the choices data.
+ */
 extern choices_str *choices;
 
 /* This function is called when choices change */
-typedef void (*choices_responder)(choices_str *old_ch,choices_str *new_ch);
+typedef void (*choices_responder)(choices_str *old_ch, choices_str *new_ch);
 
+/* Initialise the choices. */
 void choices_init(choices_responder responder);
 
+/* Open the Choices dialogue. */
 void choices_open(void);
 
 /* Sort icons into proper places in browser */

@@ -1,4 +1,4 @@
-/* InioConfig.c */
+/* IniConfig.c */
 
 /**
  * Handle the loading and saving of choices structures in a textual
@@ -66,13 +66,12 @@ static BOOL IniConfig_StringCompare(char *lower, const char *mixed, BOOL allow_s
 static void IniConfig_StringToLower(char *str);
 
 
-/**
- * Construct a new IniConfig file instance, returning a pointer to its
- * descriptor struct.
- * 
- * \return  Pointer to the new structure, or NULL on failure.
- */
 
+/**
+ * Construct a new IniConfig file instance.
+ * 
+ * \return            Pointer to a new instance, or NULL.
+ */
 iniconfig_file *IniConfig_Init(void)
 {
   iniconfig_file *file = NULL;
@@ -88,8 +87,12 @@ iniconfig_file *IniConfig_Init(void)
   return file;
 }
 
-
-
+/**
+ * Add a section to an IniConfig file.
+ *
+ * \param *file       Pointer to the IniFile instance to update.
+ * \param *name       Pointer to the name of the section.
+ */
 void IniConfig_AddSection(iniconfig_file *file, const char *name)
 {
   iniconfig_section *section = NULL;
@@ -110,7 +113,14 @@ void IniConfig_AddSection(iniconfig_file *file, const char *name)
   LinkList_AddToTail(&file->sections, &section->header);
 }
 
-
+/**
+ * Add a boolean value to an IniConfig file.
+ *
+ * \param *file       Pointer to the IniFile instance to update.
+ * \param *name       Pointer to the name of the value.
+ * \param *variable   Pointer to the associated variable.
+ * \param initial     The initial value to set the variable to.
+ */
 void IniConfig_AddBoolean(iniconfig_file *file, const char *name, BOOL *variable, BOOL initial)
 {
   iniconfig_entry *entry = NULL;
@@ -140,8 +150,48 @@ void IniConfig_AddBoolean(iniconfig_file *file, const char *name, BOOL *variable
   LinkList_AddToTail(&section->entries, &entry->header);
 }
 
+/**
+ * Reset the variables in an IniConfig file to their default
+ * values.
+ * 
+ * \param *file       Pointer to the IniFile instance to update.
+ */
+void IniConfig_ResetDefaults(iniconfig_file *file)
+{
+  iniconfig_section *section;
+  iniconfig_entry *entry;
 
+  if (file == NULL)
+    return;
 
+  section = LinkList_FirstItem(&file->sections);
+
+  while (section != NULL) {
+    entry = LinkList_FirstItem(&section->entries);
+
+    while (entry != NULL) {
+      switch (entry->type) {
+        case iniconfig_type_BOOLEAN:
+          if (entry->value.boolean.variable != NULL)
+            *entry->value.boolean.variable = entry->value.boolean.initial;
+          break;
+      }
+
+      entry = LinkList_NextItem(entry);
+    }
+
+    section = LinkList_NextItem(section);
+  }
+}
+
+/**
+ * Write an IniConfig file to disc, storing the current values
+ * of the choices variables within it.
+ *
+ * \param *file       Pointer to the IniFile instance to write.
+ * \param *filename   Pointer to the filename to write to.
+ * \return            TRUE if successful; FALSE on failure.
+ */
 BOOL IniConfig_WriteFile(iniconfig_file *file, char *filename)
 {
   FILE *out = NULL;
@@ -188,6 +238,15 @@ BOOL IniConfig_WriteFile(iniconfig_file *file, char *filename)
   return TRUE;
 }
 
+/**
+ * Read an IniConfig file from disc and update the current
+ * values of the choices variables according to the data within
+ * it.
+ *
+ * \param *file       Pointer to the IniFile instance to read.
+ * \param *filename   Pointer to the filename to read from.
+ * \return            TRUE if successful; FALSE on failure.
+ */
 BOOL IniConfig_ReadFile(iniconfig_file *file, char *filename)
 {
   FILE *in = NULL;
@@ -204,8 +263,15 @@ BOOL IniConfig_ReadFile(iniconfig_file *file, char *filename)
   return result;
 }
 
-
-
+/**
+ * Read an IniConfig file from disc and update the current
+ * values of the choices variables according to the data within
+ * it.
+ *
+ * \param *file       Pointer to the IniFile instance to read.
+ * \param *in         Pointer to a C file handle to read from.
+ * \return            TRUE if successful; FALSE on failure.
+ */
 BOOL IniConfig_ReadFileRaw(iniconfig_file *file, FILE *in)
 {
   iniconfig_section *section;

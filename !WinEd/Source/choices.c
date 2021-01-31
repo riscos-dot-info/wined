@@ -29,7 +29,10 @@ typedef enum {
   choices_SAFEICONS = 27
 } choices_icons;
 
+/* The magic number which appears in legacy binary config files. */
 #define WEdC 0x43644557
+
+/* The current version number for legacy binary config files. */
 #define choices_VERSION 234
 
 /* The size of buffer for constructing filenames. */
@@ -47,6 +50,7 @@ const char choices_winedname[] = "<WinEd$Dir>.Resources";
 /* The INI file used to store the choices. */
 iniconfig_file *choices_file;
 
+/* The header block for legacy binary config files. */
 typedef struct {
   int id;
   int version;
@@ -64,21 +68,32 @@ static BOOL choices_save(void);
 BOOL choices_clickok(event_pollblock *event,void *reference);
 BOOL choices_clickcancel(event_pollblock *event,void *reference);
 
+/* The choices data structure. */
 static choices_str choices_data;
+
+/* Set the public reference to the choices data structure. */
 choices_str *choices = &choices_data;
 
 static choices_responder global_responder;
+
+/* The handle of the Choices window. */
 static window_handle choices_window;
 
-
+/**
+ * Initialise the choices system.
+ *
+ * \param responder   Pointer to a function to be called when the choices change.
+ */
 void choices_init(choices_responder responder)
 {
   window_block *templat;
 
+  /* Load the Choices window template. */
   templat = templates_load("Choices",0,0,0,0);
   Error_CheckFatal(Wimp_CreateWindow(templat,&choices_window));
   free(templat);
 
+  /* Set up event handlers for the Choices window. */
   Event_Claim(event_OPEN,choices_window,event_ANY,Handler_OpenWindow,0);
   Event_Claim(event_CLOSE,choices_window,event_ANY,Handler_CloseWindow,0);
   Event_Claim(event_CLICK,choices_window,choices_OK,choices_clickok,0);
@@ -86,12 +101,13 @@ void choices_init(choices_responder responder)
   Event_Claim(event_CLICK,choices_window,choices_SAVE,choices_clickok,0);
   help_claim_window(choices_window,"CHO");
 
+  /* Store the function to be called when choices change. */
   global_responder = responder;
 
   /* Initialise the choices file handler. */
-
   choices_file = IniConfig_Init();
 
+  /* Initialise the choices, and set their default values. */
   IniConfig_AddSection(choices_file, "Windows");
   IniConfig_AddBoolean(choices_file, "AutomaticMonitor", &(choices->monitor), TRUE);
   IniConfig_AddBoolean(choices_file, "AutomaticPicker", &(choices->picker), TRUE);
@@ -113,31 +129,13 @@ void choices_init(choices_responder responder)
   IniConfig_AddBoolean(choices_file, "FormEdCompatible", &(choices->formed), TRUE);
   IniConfig_AddBoolean(choices_file, "StrictPanes", &(choices->strict_panes), TRUE);
 
-  choices_default(); // Do we do this?
+  /* Load any user-saved choices from disc. */
   choices_load();
 }
 
-void choices_default()
-{
-  choices->autosprites =
-  choices->monitor =
-  choices->picker =
-  choices->hotkeys =
-  choices->hatchredraw =
-  /* Note, round now means "display templates sorted in browser" */
-  choices->round =
-  choices->furniture =
-  choices->editpanes =
-  choices->formed =
-  choices->mouseless_move =
-  choices->strict_panes =
-  choices->viewtools = TRUE;
-  choices->confirm =
-  choices->borders =
-  choices->browtools = 
-  choices->safe_icons = FALSE;
-}
-
+/**
+ * Set the icons in the Choices window.
+ */
 void choices_seticons()
 {
   Icon_SetSelect(choices_window,choices_MONITOR,choices->monitor);
@@ -158,12 +156,18 @@ void choices_seticons()
   Icon_SetSelect(choices_window,choices_SAFEICONS,choices->safe_icons);
 }
 
+/**
+ * Open the Choices window.
+ */
 void choices_open()
 {
   choices_seticons();
   Window_Show(choices_window,open_UNDERPOINTER);
 }
 
+/**
+ * Read the icon settings from the Choices window.
+ */
 void choices_readicons()
 {
   choices_str old;
@@ -192,6 +196,13 @@ void choices_readicons()
   (*global_responder)(&old,choices);
 }
 
+/**
+ * Handle clicks on the OK and Save buttons.
+ *
+ * \param *event      The Wimp event block.
+ * \param *reference  Not used, so NULL.
+ * \return            TRUE if handled; otherwise FALSE.
+ */
 BOOL choices_clickok(event_pollblock *event,void *reference)
 {
   browser_fileinfo *browser;
@@ -217,6 +228,13 @@ BOOL choices_clickok(event_pollblock *event,void *reference)
   return TRUE;
 }
 
+/**
+ * Handle clicks on the Cancel button.
+ *
+ * \param *event      The Wimp event block.
+ * \param *reference  Not used, so NULL.
+ * \return            TRUE if handled; otherwise FALSE.
+ */
 BOOL choices_clickcancel(event_pollblock *event,void *reference)
 {
   if (event->data.mouse.button.data.menu)
@@ -316,7 +334,7 @@ static BOOL choices_load(void)
   if (legacy_file) {
     Log(log_INFORMATION, "Loading as a legacy file...");
     if (fread(&choices_data, filesize - sizeof(choices_filestr), 1, in) != 1) {
-      choices_default();
+      IniConfig_ResetDefaults(choices_file);
       Log(log_WARNING, "Failed to load OK");
     }
   } else {
