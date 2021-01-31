@@ -326,7 +326,9 @@ static BOOL choices_load(void)
 
   if (legacy_file) {
     Log(log_INFORMATION, "Loading as a legacy file...");
-    if (fread(&choices_data, filesize - sizeof(choices_filestr), 1, in) != 1) {
+    if (fread(&choices_data, filesize - sizeof(choices_filestr), 1, in) == 1) {
+      result = TRUE;
+    } else {
       IniConfig_ResetDefaults(choices_file);
       Log(log_WARNING, "Failed to load OK");
     }
@@ -336,6 +338,9 @@ static BOOL choices_load(void)
   }
 
   fclose(in);
+
+  if (!result)
+    WinEd_MsgTrans_ReportPS(messages, "BadChoices", FALSE, filename, 0, 0, 0);
 
   return result;
 }
