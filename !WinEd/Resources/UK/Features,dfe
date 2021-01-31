@@ -29,7 +29,7 @@
 28,"Stats window design","Reduce vertical size of rows","Done","3.14"
 29,"Anni bug","Corruption of minimum x icon co-ordinates in certain circumstances","Done","3.14",,"Reported by Martin Avison"
 30,"Identify icon location","Add ""goto icon"" feature to move mouse to icon by name/number","Done","3.14"
-31,"Preview menu shortcuts","Add keyboard shortcuts to previee menu","Done","3.14"
+31,"Preview menu shortcuts","Add keyboard shortcuts to preview menu","Done","3.14"
 32,"Basic code export","Add ability to add newlines and time to Basic icon name/number code export","Done","3.14"
 33,"Long identifier user message","Truncate over-long identifiers so user message displays only 12 characters","Done","3.17"
 34,"Duplicate window identifiers","Automatically rename duplicate window names to allow loading","Done","3.17"
@@ -38,7 +38,7 @@
 37,"Interactive help","Interactive help needs expanding to cover more icons and options (e.g. icon flags window)","Done","r109",,"Simple to do, but tedious"
 38,"Search & Replace icon data","Search and replace functionality to apply to icon data, indirected data and validation data","z",,,"Lots of work. Requested by Ray Favre."
 39,"Icon re-numbering","Improve group-icon-renumbering algorithm to logically follow layout of icons.","c",,,"Requested by Ray Favre"
-40,"Choices","Re-write choices code to use text format. Include shortcuts-menu editing.","b"
+40,"Choices","Re-write choices code to use text format.","b"
 41,"Preview window","Change interface so only changes to state/size/position of preview window are stored.","b",,40
 42,"Export choices","Add choices to allow exporting icon names in upper/lower case","b","r115",40,"Requested by Ray Favre, David Thomas"
 43,"Field widths calculation","Add option to ignore system font when calculating minimum icon widths. Specify a specific ""backup"" font instead (e.g. Homerton Bold)","b",,40
@@ -73,3 +73,6 @@
 72,"Crash on window delete","Deleting a window using a keyboard shortcut while the browser menu is open leaves the window actions in the menu in a dangerous state.","Done","r112",,"Reported by Edwardx"
 73,"Orphaned window on delete","Deleting a window while it is open leaves an orphaned icon in the browser window","Done","r105",,"Reported by Edwardx"
 74,"Can't quit after shutdown","A desktop shutdown with unsaved data can leave WinEd unable to quit if aborted by another task","Done","r106",,"Reported by Edwardx"
+75,"Short-Cut Menu","Implement shortcuts-menu editing.","b"
+76,"Save Templates sorted","Provide option to save templates with their contents sorted alphabetically.","Done",,,"Requested by Martin Avison"
+77,"Fix Round Coordinates","Split the Display Sorted option off from the Round Coordinates one that it hijacked.","Done"
