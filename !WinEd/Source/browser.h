@@ -78,6 +78,17 @@ extern BOOL browser_userquit;
 
 extern BOOL browser_selection_withmenu;
 
+/**
+ * Sort and place the icons in a file browser window, creating any which don't
+ * exist in the process.
+ * 
+ * \param *browser  The browser instance to be operated on.
+ * \param force     TRUE to delete all icons, even if they don't need to move.
+ * \param reopen    TRUE to call Wimp_OpenWindow on the window after update.
+ * \param keepsel   TRUE to restore any selection after the update.
+ */
+void browser_sorticons(browser_fileinfo *browser, BOOL force, BOOL reopen, BOOL keepsel);
+
 /* overwrite window icon numbers */
 #define overwrite_OVERWRITE 1
 #define overwrite_CANCEL 2

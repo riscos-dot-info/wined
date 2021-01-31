@@ -49,8 +49,4 @@ void choices_init(choices_responder responder);
 /* Open the Choices dialogue. */
 void choices_open(void);
 
-/* Sort icons into proper places in browser */
-void browser_sorticons(browser_fileinfo *browser,BOOL force,
-	BOOL reopen,BOOL keep_selection);
-
 #endif
