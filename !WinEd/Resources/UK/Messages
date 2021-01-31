@@ -47,6 +47,7 @@ SelBorder:The frame icon is included in the selection. Do you wish to continue w
 LocalChoice:Loading locally-saved choices on a system with central storage.
 BadLoadChoice:Unexpected object type (not a file) found when loading choices from '%0'.
 BadSaveChoice:Unexpected object type found when saving choices to '%0'.
+BadChoices:There were errors encountered with the file contents while loading the choices from '%0'.
 ShortNone:T
 PickMem:Not enough memory for picker window
 Safety:Attempting to save altered files to !Scrap after fatal error
