@@ -2657,7 +2657,7 @@ void browser_sorticons(browser_fileinfo *browser, BOOL force, BOOL reopen, BOOL 
 
   /* Get the winentry indexes. Note that "round" means "sort browser icons alphabetically" (!). */
 
-  winentries = browser_sortwindows(browser, choices->round);
+  winentries = browser_sortwindows(browser, choices->browser_sort);
   if (winentries == NULL)
     return;
 
@@ -3600,7 +3600,7 @@ void browser_responder(choices_str *old,choices_str *new_ch)
       browtools_newpane(browser);
       browser_sorticons(browser,TRUE,TRUE,FALSE);
     }
-    else if ((old->round != new_ch->round) && Window_IsOpen(browser->window))
+    else if ((old->browser_sort != new_ch->browser_sort) && Window_IsOpen(browser->window))
     {
       browser_sorticons(browser, TRUE, FALSE, TRUE);
     }

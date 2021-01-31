@@ -18,7 +18,7 @@ typedef struct {
   BOOL viewtools;       /**< Show a toolbar on editable windows.                              */
   BOOL hotkeys;         /**< Provide keyborad shortcuts.                                      */
   BOOL hatchredraw;     /**< Hatch the work area of user redrawn windows.                     */
-  BOOL round;           /**< This option removed from UI from version ar0.1. Always true now. */
+  BOOL browser_sort;    /**< Sort the browser contents into alphabetical order.               */
   BOOL furniture;       /**< Always show furniture on editable windows.                       */
   BOOL autosprites;     /**< Automatically load sprites files.                                */
   BOOL editpanes;       /**< Use panes for action buttons in window and icon edit dialogues.  */
@@ -33,6 +33,8 @@ typedef struct {
    * should not be changed, moved or deleted. If no longer required, leave in-situ and mark   *
    * as obsolete. Below this point, values have only appeared in the textual config files,    *
    * and may be added, removed or changed as required.                                        */
+
+  BOOL round_coords;    /**< Round all window and icon coordinates to pixel boundaries.       */
 } choices_str;
 
 /**

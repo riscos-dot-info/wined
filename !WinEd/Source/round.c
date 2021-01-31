@@ -5,13 +5,13 @@
 
 int round_down_int(int a)
 {
-  if (choices->round) a = a & ~3;
+  if (choices->round_coords) a = a & ~3;
   return a;
 }
 
 int round_up_int(int a)
 {
-  if (choices->round) a = (a + 3) & ~3;
+  if (choices->round_coords) a = (a + 3) & ~3;
   return a;
 }
 
@@ -54,6 +54,6 @@ void round_down_point_less(wimp_point *point)
 
 int round_down_int_less(int a)
 {
-  if ((choices->round) && ((a%2) == 1)) a = a - 1;
+  if ((choices->round_coords) && ((a%2) == 1)) a = a - 1;
   return a;
 }

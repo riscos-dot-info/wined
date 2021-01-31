@@ -25,7 +25,7 @@ typedef enum {
   choices_SAVE = 19,
   choices_OK = 21,
   choices_CANCEL = 23,
-  choices_ROUNDSORT = 26,
+  choices_BROWSERSORT = 26,
   choices_SAFEICONS = 27
 } choices_icons;
 
@@ -118,12 +118,13 @@ void choices_init(choices_responder responder)
   IniConfig_AddSection(choices_file, "Editing");
   IniConfig_AddBoolean(choices_file, "KeyboardShortcuts", &(choices->hotkeys), TRUE);
   IniConfig_AddBoolean(choices_file, "MoveSelWithoutMouse", &(choices->mouseless_move), TRUE);
+  IniConfig_AddBoolean(choices_file, "RoundCoordinates", &(choices->round_coords), TRUE);
   IniConfig_AddBoolean(choices_file, "ConfirmDelete", &(choices->confirm), FALSE);
   IniConfig_AddBoolean(choices_file, "SafeIconUpdate", &(choices->safe_icons), FALSE);
   IniConfig_AddSection(choices_file, "Display");
   IniConfig_AddBoolean(choices_file, "AlwaysShowBorders", &(choices->borders), FALSE);
   IniConfig_AddBoolean(choices_file, "HatchUserRedraw", &(choices->hatchredraw), TRUE);
-  IniConfig_AddBoolean(choices_file, "DisplayTemplatesSorted", &(choices->round), TRUE);
+  IniConfig_AddBoolean(choices_file, "DisplayTemplatesSorted", &(choices->browser_sort), TRUE);
   IniConfig_AddSection(choices_file, "Misc");
   IniConfig_AddBoolean(choices_file, "AutoLoadSprites", &(choices->autosprites), TRUE);
   IniConfig_AddBoolean(choices_file, "FormEdCompatible", &(choices->formed), TRUE);
@@ -144,7 +145,7 @@ void choices_seticons()
   Icon_SetSelect(choices_window,choices_VIEWTOOLS,choices->viewtools);
   Icon_SetSelect(choices_window,choices_HATCHREDRAW,choices->hatchredraw);
   Icon_SetSelect(choices_window,choices_FURNITURE,choices->furniture);
-  Icon_SetSelect(choices_window,choices_ROUNDSORT,choices->round);
+  Icon_SetSelect(choices_window,choices_BROWSERSORT,choices->browser_sort);
   Icon_SetSelect(choices_window,choices_HOTKEYS,choices->hotkeys);
   Icon_SetSelect(choices_window,choices_AUTOSPRITES,choices->autosprites);
   Icon_SetSelect(choices_window,choices_EDITPANES,choices->editpanes);
@@ -179,8 +180,7 @@ void choices_readicons()
   choices->browtools = Icon_GetSelect(choices_window,choices_BROWTOOLS);
   choices->viewtools = Icon_GetSelect(choices_window,choices_VIEWTOOLS);
   choices->hatchredraw = Icon_GetSelect(choices_window,choices_HATCHREDRAW);
-  /* Note: this isn't "round". The flag is re-used to determine whether templates are sorted in browser view */
-  choices->round = Icon_GetSelect(choices_window,choices_ROUNDSORT);
+  choices->browser_sort = Icon_GetSelect(choices_window,choices_BROWSERSORT);
   choices->furniture = Icon_GetSelect(choices_window,choices_FURNITURE);
   choices->hotkeys = Icon_GetSelect(choices_window,choices_HOTKEYS);
   choices->autosprites = Icon_GetSelect(choices_window,choices_AUTOSPRITES);
