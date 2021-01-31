@@ -205,7 +205,6 @@ void choices_readicons()
  */
 BOOL choices_clickok(event_pollblock *event,void *reference)
 {
-  browser_fileinfo *browser;
   BOOL success = TRUE;
 
   if (event->data.mouse.button.data.menu)
@@ -218,12 +217,6 @@ BOOL choices_clickok(event_pollblock *event,void *reference)
 
   if (success && event->data.mouse.button.data.select)
     Wimp_CloseWindow(choices_window);
-
-  /* Need to check if any browser windows are open in case "sort" has changed */
-  for (browser = LinkList_NextItem(&browser_list); browser; browser = LinkList_NextItem(browser))
-  {
-    if (Window_IsOpen(browser->window)) browser_sorticons(browser, TRUE, FALSE, TRUE);
-  }
 
   return TRUE;
 }
