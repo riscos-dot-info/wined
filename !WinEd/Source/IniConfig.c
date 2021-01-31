@@ -166,11 +166,14 @@ void IniConfig_ResetDefaults(iniconfig_file *file)
 
   section = LinkList_FirstItem(&file->sections);
 
-  while (section != NULL) {
+  while (section != NULL)
+  {
     entry = LinkList_FirstItem(&section->entries);
 
-    while (entry != NULL) {
-      switch (entry->type) {
+    while (entry != NULL)
+    {
+      switch (entry->type)
+      {
         case iniconfig_type_BOOLEAN:
           if (entry->value.boolean.variable != NULL)
             *entry->value.boolean.variable = entry->value.boolean.initial;
@@ -209,7 +212,8 @@ BOOL IniConfig_WriteFile(iniconfig_file *file, char *filename)
   fprintf(out, "# WinEd Choices File\n");
 
   section = LinkList_FirstItem(&file->sections);
-  while (section != NULL) {
+  while (section != NULL)
+  {
     entry = LinkList_FirstItem(&section->entries);
 
     if (entry != NULL)
@@ -218,8 +222,10 @@ BOOL IniConfig_WriteFile(iniconfig_file *file, char *filename)
     if (section->name != NULL)
       fprintf(out, "[%s]\n", section->name);
 
-    while (entry != NULL) {
-      switch (entry->type) {
+    while (entry != NULL)
+    {
+      switch (entry->type)
+      {
         case iniconfig_type_BOOLEAN:
           fprintf(out, "%s = %s\n", entry->name, (*entry->value.boolean.variable == TRUE) ? "Yes" : "No");
           break;
@@ -285,7 +291,8 @@ BOOL IniConfig_ReadFileRaw(iniconfig_file *file, FILE *in)
   section = IniConfig_FindSection(file, NULL);
   Log(log_INFORMATION, "Initial section: 0x%x", section);
 
-  while (fgets(line, INICONFIG_MAX_LINE, in) != NULL) {
+  while (fgets(line, INICONFIG_MAX_LINE, in) != NULL)
+  {
     /* Find and terminate the end of the line, including white space. */
     for (tail = line; tail - line < INICONFIG_MAX_LINE && *tail != '\0' && *tail != '\r' && *tail != '\n'; tail++);
     *tail = '\0';
@@ -302,22 +309,26 @@ BOOL IniConfig_ReadFileRaw(iniconfig_file *file, FILE *in)
     for (token = line; *token != '\0' && isspace(*token); token++);
 
     /* Skip any blank lines or comments. */
-    if (*token == '\0' || *token == '#') {
+    if (*token == '\0' || *token == '#')
+    {
       Log(log_INFORMATION, "Skipping empty line or comment.");
       continue;
     }
 
-    if (*token == '[') {
+    if (*token == '[')
+    {
       /* If the opening character is [, find the closing half of the pair. */
       for (end = token; *end != '\0' && *end != ']'; end++);
-      if (*end == '\0') {
+      if (*end == '\0')
+      {
         Log(log_WARNING, "End of section name not found.");
         success = FALSE;
         continue;
       }
 
       /* This must be the last thing on the line. */
-      if (*(end + 1) != '\0') {
+      if (*(end + 1) != '\0')
+      {
         Log(log_WARNING, "Non-space after closing ].");
         success = FALSE;
         continue;
@@ -327,7 +338,8 @@ BOOL IniConfig_ReadFileRaw(iniconfig_file *file, FILE *in)
       token++;
       *end = '\0';
 
-      if (*token == '\0') {
+      if (*token == '\0')
+      {
         Log(log_WARNING, "Skipping enpty section.");
         success = FALSE;
         continue;
@@ -339,16 +351,22 @@ BOOL IniConfig_ReadFileRaw(iniconfig_file *file, FILE *in)
       IniConfig_StringToLower(token);
 
       section = IniConfig_FindSection(file, token);
-      if (section == NULL) {
+      if (section == NULL)
+      {
         Log(log_WARNING, "Unexpected section '%s'", token);
         success = FALSE;
-      } else {
+      }
+      else
+      {
         Log(log_INFORMATION, "Found section '%s' = 0x%x", token, section);
       }
-    } else {
+    }
+    else
+    {
       /* Otherwise, this must be a token = value pair, so find the = */
       for (end = token; *end != '\0' && *end != '='; end++);
-      if (*end == '\0') {
+      if (*end == '\0')
+      {
         Log(log_WARNING, "Token separator not found.");
         success = FALSE;
         continue;
@@ -361,7 +379,8 @@ BOOL IniConfig_ReadFileRaw(iniconfig_file *file, FILE *in)
       for (; *value != '\0' && isspace(*value); value++);
 
       /* If the value is quoted, remove them. */
-      if ((tail > (value + 1)) && (*value == '"') && (*(tail - 1) == '"')) {
+      if ((tail > (value + 1)) && (*value == '"') && (*(tail - 1) == '"'))
+      {
         value++;
         *--tail = '\0';
       }
@@ -371,7 +390,8 @@ BOOL IniConfig_ReadFileRaw(iniconfig_file *file, FILE *in)
 
       /* Strip the trailing whitespace from the token, and make it lower case. */
       for (; (end > line) && isspace(*(end - 1)); *--end = '\0');
-      if (token == '\0') {
+      if (token == '\0')
+      {
         Log(log_WARNING, "Skipping enpty token.");
         success = FALSE;
         continue;
@@ -384,13 +404,17 @@ BOOL IniConfig_ReadFileRaw(iniconfig_file *file, FILE *in)
       IniConfig_StringToLower(token);
 
       entry = IniConfig_FindEntry(section, token);
-      if (entry != NULL) {
+      if (entry != NULL)
+      {
         Log(log_INFORMATION, "Found entry '%s' = 0x%x", token, entry);
-        if (!IniConfig_UpdateEntry(entry, value)) {
+        if (!IniConfig_UpdateEntry(entry, value))
+        {
           Log(log_WARNING, "Failed to update entry for '%s' with '%s'", token, value);
           success = FALSE;
         }
-      } else {
+      }
+      else
+      {
         Log(log_WARNING, "Unexpected entry '%s'", token);
         success = FALSE;
       }
@@ -413,7 +437,8 @@ static BOOL IniConfig_UpdateEntry(iniconfig_entry *entry, char *value)
   if (entry == NULL)
     return FALSE;
 
-  switch (entry->type) {
+  switch (entry->type)
+  {
     case iniconfig_type_BOOLEAN:
       if (entry->value.boolean.variable == NULL)
         break;

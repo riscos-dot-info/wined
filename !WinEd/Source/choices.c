@@ -264,22 +264,28 @@ static BOOL choices_load(void)
 
   SWI(2, 1, SWI_OS_File, 17, filename, &object_type);
 
-  if (object_type == 0) {
+  if (object_type == 0)
+  {
     snprintf(filename, CHOICES_MAX_FILENAME, "%s.%s", choices_winedname, choices_filename);
     filename[CHOICES_MAX_FILENAME - 1] = '\0';
 
     SWI(2, 1, SWI_OS_File, 17, filename, &object_type);
-    if (object_type == 1) {
-      if (global_choices) {
+    if (object_type == 1)
+    {
+      if (global_choices)
         WinEd_MsgTrans_ReportPS(messages, "LocalChoice", FALSE, 0, 0, 0, 0);
-      }
-    } else {
-      if (object_type != 0) {
+    }
+    else
+    {
+      if (object_type != 0)
+      {
         WinEd_MsgTrans_ReportPS(messages, "BadLoadChoice", FALSE, filename, 0, 0, 0);
         return FALSE;
       }
     }
-  } else if (object_type != 1) {
+  }
+  else if (object_type != 1)
+  {
     WinEd_MsgTrans_ReportPS(messages, "BadLoadChoice", FALSE, filename, 0, 0, 0);
     return FALSE;
   }
@@ -301,10 +307,12 @@ static BOOL choices_load(void)
 
   /* If it does, load the file header in and check if it looks like a legacy file. */
 
-  if (legacy_file) {
+  if (legacy_file)
+  {
     Log(log_INFORMATION, "File size is %d bytes, so trying for a legacy file.", filesize);
 
-    if (fread(&header, sizeof(choices_filestr), 1, in) != 1) {
+    if (fread(&header, sizeof(choices_filestr), 1, in) != 1)
+    {
       Log(log_ERROR, "Failed to read in file header.");
       fclose(in);
       return FALSE;
@@ -312,11 +320,14 @@ static BOOL choices_load(void)
 
     /* Are the file ID and version number OK? */
 
-    if (header.id != WEdC) {
+    if (header.id != WEdC)
+    {
       Log(log_INFORMATION, "The file ID block isn't WEdC, so try as an INI file.");
       legacy_file = FALSE;
       rewind(in);
-    } else if (header.version > choices_VERSION) {
+    }
+    else if (header.version > choices_VERSION)
+    {
       Log(log_INFORMATION, "The version isn't one we can handle, so skip the load.");
       fclose(in);
       return FALSE;
@@ -325,15 +336,21 @@ static BOOL choices_load(void)
 
   /* Load the file, either as a legacy file or as an INI file. */
 
-  if (legacy_file) {
+  if (legacy_file)
+  {
     Log(log_INFORMATION, "Loading as a legacy file...");
-    if (fread(&choices_data, filesize - sizeof(choices_filestr), 1, in) == 1) {
+    if (fread(&choices_data, filesize - sizeof(choices_filestr), 1, in) == 1)
+    {
       result = TRUE;
-    } else {
+    }
+    else
+    {
       IniConfig_ResetDefaults(choices_file);
       Log(log_WARNING, "Failed to load OK");
     }
-  } else {
+  }
+  else
+  {
     Log(log_INFORMATION, "Loading as an INI file...");
     result = IniConfig_ReadFileRaw(choices_file, in);
   }
@@ -361,7 +378,8 @@ static BOOL choices_save(void)
 
   global_choices = Environment_SysVarRead("Choices$Write", NULL, 0);
 
-  if (global_choices) {
+  if (global_choices)
+  {
     /* If there are global choices, make sure that our folder is created. */
 
     snprintf(filename, CHOICES_MAX_FILENAME, "<Choices$Write>.%s", choices_foldername);
@@ -369,16 +387,21 @@ static BOOL choices_save(void)
 
     SWI(2, 1, SWI_OS_File, 17, filename, &object_type);
 
-    if (object_type == 0) {
+    if (object_type == 0)
+    {
       File_CreateDir(filename);
-    } else if (object_type != 2 && object_type != 3) {
+    }
+    else if (object_type != 2 && object_type != 3)
+    {
       WinEd_MsgTrans_ReportPS(messages, "BadSaveChoice", FALSE, filename, 0, 0, 0);
       return FALSE;
     }
 
     snprintf(filename, CHOICES_MAX_FILENAME, "<Choices$Write>.%s.%s", choices_foldername, choices_filename);
     filename[CHOICES_MAX_FILENAME - 1] = '\0';
-  } else {
+  }
+  else
+  {
     /* If there are not global choices, save into our application. */
 
     snprintf(filename, CHOICES_MAX_FILENAME, "%s.%s", choices_winedname, choices_filename);
@@ -389,7 +412,8 @@ static BOOL choices_save(void)
 
   SWI(2, 1, SWI_OS_File, 17, filename, &object_type);
 
-  if (object_type != 0 && object_type != 1) {
+  if (object_type != 0 && object_type != 1)
+  {
     WinEd_MsgTrans_ReportPS(messages, "BadSaveChoice", FALSE, filename, 0, 0, 0);
     return FALSE;
   }
