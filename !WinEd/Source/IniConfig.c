@@ -191,15 +191,28 @@ BOOL IniConfig_WriteFile(iniconfig_file *file, char *filename)
 BOOL IniConfig_ReadFile(iniconfig_file *file, char *filename)
 {
   FILE *in = NULL;
+  BOOL result = FALSE;
+
+  in = fopen(filename, "r");
+  if (in == NULL)
+    return FALSE;
+
+  result = IniConfig_ReadFileRaw(file, in);
+
+  fclose(in);
+
+  return result;
+}
+
+
+
+BOOL IniConfig_ReadFileRaw(iniconfig_file *file, FILE *in)
+{
   iniconfig_section *section;
   iniconfig_entry *entry;
   char line[INICONFIG_MAX_LINE], *token, *value, *end, *tail;
   BOOL success = TRUE;
 
-  if (file == NULL)
-    return FALSE;
-
-  in = fopen(filename, "r");
   if (in == NULL)
     return FALSE;
 
@@ -293,8 +306,6 @@ BOOL IniConfig_ReadFile(iniconfig_file *file, char *filename)
       }
     }
   }
-
-  fclose(in);
 
   return success;
 }

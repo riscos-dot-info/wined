@@ -13,6 +13,7 @@
 #ifndef __wined_iniconfig_h
 #define __wined_iniconfig_h
 
+#include <stdio.h>
 #include "DeskLib:Core.h"
 
 /**
@@ -29,5 +30,6 @@ void IniConfig_AddBoolean(iniconfig_file *file, const char *name, BOOL *variable
 
 BOOL IniConfig_WriteFile(iniconfig_file *file, char *filename);
 BOOL IniConfig_ReadFile(iniconfig_file *file, char *filename);
+BOOL IniConfig_ReadFileRaw(iniconfig_file *file, FILE *in);
 
 #endif

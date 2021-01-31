@@ -51,7 +51,6 @@ typedef struct {
   int id;
   int version;
   char creator[12];
-  choices_str choices;
 } choices_filestr;
 
 
@@ -65,8 +64,8 @@ static BOOL choices_save(void);
 BOOL choices_clickok(event_pollblock *event,void *reference);
 BOOL choices_clickcancel(event_pollblock *event,void *reference);
 
-static choices_filestr choices_buffer;
-choices_str *choices = &choices_buffer.choices;
+static choices_str choices_data;
+choices_str *choices = &choices_data;
 
 static choices_responder global_responder;
 static window_handle choices_window;
@@ -120,10 +119,6 @@ void choices_init(choices_responder responder)
 
 void choices_default()
 {
-  choices_buffer.id = WEdC;
-  choices_buffer.version = choices_VERSION;
-  strcpy(choices_buffer.creator,APPNAME);
-
   choices->autosprites =
   choices->monitor =
   choices->picker =
@@ -239,9 +234,12 @@ BOOL choices_clickcancel(event_pollblock *event,void *reference)
  */
 static BOOL choices_load(void)
 {
-  BOOL global_choices = FALSE;
+  FILE *in;
+  BOOL global_choices = FALSE, legacy_file = FALSE, result = FALSE;
   int object_type = 0;
   char filename[CHOICES_MAX_FILENAME];
+  choices_filestr header;
+  long filesize;
 
   /* Check if there is a global choices setup available. */
 
@@ -274,22 +272,61 @@ static BOOL choices_load(void)
     return FALSE;
   }
 
-  /* Check that the filesize is sane. */
+  /* Load the file. */
 
-//  if (File_Size((char *) filename) > sizeof(choices_filestr))
-//    return FALSE;
+  in = fopen(filename, "rb");
+  if (in == NULL)
+    return FALSE;
 
-  /* Load the file into memory. */
+  /* Get the filesize and check that it is sane for a legacy file. */
 
-//  if (File_LoadTo((char *) filename, &choices_buffer, 0))
-//    return FALSE;
+  fseek(in, 0, SEEK_END);
+  filesize = ftell(in);
+  rewind(in);
 
-  /* If the file wasn't valid, reset to the default choices. */
+  if ((filesize > sizeof(choices_filestr)) && (filesize <= (sizeof(choices_filestr) + sizeof(choices_str))))
+    legacy_file = TRUE;
 
-//  if (choices_buffer.id != WEdC || choices_buffer.version > choices_VERSION)
-//    choices_default();
+  /* If it does, load the file header in and check if it looks like a legacy file. */
 
-  return IniConfig_ReadFile(choices_file, filename);
+  if (legacy_file) {
+    Log(log_INFORMATION, "File size is %d bytes, so trying for a legacy file.", filesize);
+
+    if (fread(&header, sizeof(choices_filestr), 1, in) != 1) {
+      Log(log_ERROR, "Failed to read in file header.");
+      fclose(in);
+      return FALSE;
+    }
+
+    /* Are the file ID and version number OK? */
+
+    if (header.id != WEdC) {
+      Log(log_INFORMATION, "The file ID block isn't WEdC, so try as an INI file.");
+      legacy_file = FALSE;
+      rewind(in);
+    } else if (header.version > choices_VERSION) {
+      Log(log_INFORMATION, "The version isn't one we can handle, so skip the load.");
+      fclose(in);
+      return FALSE;
+    }
+  }
+
+  /* Load the file, either as a legacy file or as an INI file. */
+
+  if (legacy_file) {
+    Log(log_INFORMATION, "Loading as a legacy file...");
+    if (fread(&choices_data, filesize - sizeof(choices_filestr), 1, in) != 1) {
+      choices_default();
+      Log(log_WARNING, "Failed to load OK");
+    }
+  } else {
+    Log(log_INFORMATION, "Loading as an INI file...");
+    result = IniConfig_ReadFileRaw(choices_file, in);
+  }
+
+  fclose(in);
+
+  return result;
 }
 
 /**
