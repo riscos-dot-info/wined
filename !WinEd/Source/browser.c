@@ -822,9 +822,9 @@ static BOOL browser_dosave(char *filename, browser_fileinfo *browser, BOOL sorte
 
   /* Save actual data for each window */
   windowcount = 0;
-  for (winentry = LinkList_NextItem(&browser->winlist); winentry;
-       winentry = LinkList_NextItem(winentry))
+  for (index = 0; index < browser->numwindows; index++)
   {
+    winentry = winentries[index];
     windowcount++;
 
     if (!selection || Icon_GetSelect(browser->window,winentry->icon))
