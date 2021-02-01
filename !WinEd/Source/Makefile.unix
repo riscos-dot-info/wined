@@ -34,7 +34,7 @@ INCLUDES := -I$(GCCSDK_INSTALL_ENV)/include
 
 # Additional flags for compiling include -DFORTIFY and -DDeskLib_DEBUG
 
-COMPILEFLAGS = -O3 -std=c99 -mlibscl -Wunused -Wuninitialized -Wall -fno-strict-aliasing -mthrowback -mpoke-function-name -c -DDeskLib_DEBUG
+COMPILEFLAGS = -O3 -std=c99 -mlibscl -Wunused -Wuninitialized -Wall -fno-strict-aliasing -mthrowback -mpoke-function-name -c
 LINKFLAGS = -mlibscl -Wl,--allow-multiple-definition -o ../!RunImage,ff8
 ZIPFLAGS := -x "*/.svn/*" -x "*/Source/*" -r -, -9
 SRCZIPFLAGS := -x "*/.svn/*" -x "*fortify.*" -x "*.o" -r -, -9
