@@ -27,7 +27,9 @@ typedef enum {
   choices_CANCEL = 23,
   choices_BROWSERSORT = 26,
   choices_SAFEICONS = 27,
-  choices_DEFAULT = 28
+  choices_DEFAULT = 28,
+  choices_ROUNDCOORDS = 29,
+  choices_FILESORT = 30
 } choices_icons;
 
 /* The magic number which appears in legacy binary config files. */
@@ -159,6 +161,8 @@ void choices_seticons()
   Icon_SetSelect(choices_window,choices_FORMED,choices->formed);
   Icon_SetSelect(choices_window,choices_STRICTPANES,choices->strict_panes);
   Icon_SetSelect(choices_window,choices_SAFEICONS,choices->safe_icons);
+  Icon_SetSelect(choices_window,choices_ROUNDCOORDS,choices->round_coords);
+  Icon_SetSelect(choices_window,choices_FILESORT,choices->file_sort);
 }
 
 /**
@@ -196,6 +200,8 @@ void choices_readicons()
   choices->formed = Icon_GetSelect(choices_window,choices_FORMED);
   choices->strict_panes = Icon_GetSelect(choices_window,choices_STRICTPANES);
   choices->safe_icons = Icon_GetSelect(choices_window,choices_SAFEICONS);
+  choices->round_coords = Icon_GetSelect(choices_window,choices_ROUNDCOORDS);
+  choices->file_sort = Icon_GetSelect(choices_window,choices_FILESORT);
 
   (*global_responder)(&old,choices);
 }
