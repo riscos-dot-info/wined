@@ -215,9 +215,6 @@ browser_winentry **browser_sortwindows(browser_fileinfo *browser, BOOL sort);
 /* Used as comparison function for qsort in alphabetsort */
 int alphacomp(const void *one, const void *two);
 
-/* Convert a string to lower case */
-char *lower_case(char *s);
-
 /* Overwrite-check window handlers */
 BOOL overwrite_checkanswer(event_pollblock *event,void *reference);
 
@@ -2564,35 +2561,8 @@ void               browser_setextent(browser_fileinfo *browser)
 int alphacomp(const void *one, const void *two)
 {
   const browser_winentry **we_one = (const browser_winentry **) one, **we_two = (const browser_winentry **) two;
-  char lc_one[wimp_MAXNAME];
-  char lc_two[wimp_MAXNAME];
 
-  strncpy(lc_one, (*we_one)->identifier, wimp_MAXNAME);
-  strncpy(lc_two, (*we_two)->identifier, wimp_MAXNAME);
-
-  lc_one[wimp_MAXNAME - 1] = '\0';
-  lc_two[wimp_MAXNAME - 1] = '\0';
-
-  lower_case(lc_one);
-  lower_case(lc_two);
-
-  return strcmpcr(lc_one, lc_two);
-}
-
-char *lower_case(char *s)
-{
-//  Log(log_DEBUG, "lower_case");
-
-  char *ret = s;
-  if (s)
-  {
-    while (*s)
-    {
-      *s = tolower(*s);
-      s++;
-    }
-  }
-  return ret;
+  return stricmpcr((*we_one)->identifier, (*we_two)->identifier);
 }
 
 /**
