@@ -234,7 +234,10 @@ BOOL choices_clickcancel(event_pollblock *event,void *reference)
   if (event->data.mouse.button.data.menu)
     return FALSE;
 
-  Wimp_CloseWindow(choices_window);
+  if (event->data.mouse.button.data.select)
+    Wimp_CloseWindow(choices_window);
+  else if (event->data.mouse.button.data.adjust)
+    choices_seticons();
 
   return TRUE;
 }
