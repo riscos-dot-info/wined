@@ -391,7 +391,8 @@ H_VT_06:\Srenumber the selected icon(s), entering a number in the submenu.|M\Are
 H_CHO:\TChoices dialogue box.
 H_CHO_21:\Supdate the choices.
 H_CHO_19:\Supdate and save the choices, preserving them for future sessions with WinEd.
-H_CHO_23:\Sto discard your changes.
+H_CHO_23:\Sto discard your changes.|M\Areset the changes and leave the \w open.
+H_CHO_28:\Srestore the application's default choices.
 H_CHO_17:Select this option if you want the monitor to automatically open and close with editable and preview \ws.
 H_CHO_04:Select this option if you want the icon picker to automatically open and close with editable \ws.
 H_CHO_05:Select this option if you want tool bars in browsers.

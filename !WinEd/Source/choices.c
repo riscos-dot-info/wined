@@ -26,7 +26,8 @@ typedef enum {
   choices_OK = 21,
   choices_CANCEL = 23,
   choices_BROWSERSORT = 26,
-  choices_SAFEICONS = 27
+  choices_SAFEICONS = 27,
+  choices_DEFAULT = 28
 } choices_icons;
 
 /* The magic number which appears in legacy binary config files. */
@@ -67,6 +68,7 @@ static BOOL choices_save(void);
 
 BOOL choices_clickok(event_pollblock *event,void *reference);
 BOOL choices_clickcancel(event_pollblock *event,void *reference);
+BOOL choices_clickdefault(event_pollblock *event,void *reference);
 
 /* The choices data structure. */
 static choices_str choices_data;
@@ -99,6 +101,7 @@ void choices_init(choices_responder responder)
   Event_Claim(event_CLICK,choices_window,choices_OK,choices_clickok,0);
   Event_Claim(event_CLICK,choices_window,choices_CANCEL,choices_clickcancel,0);
   Event_Claim(event_CLICK,choices_window,choices_SAVE,choices_clickok,0);
+  Event_Claim(event_CLICK,choices_window,choices_DEFAULT,choices_clickdefault,0);
   help_claim_window(choices_window,"CHO");
 
   /* Store the function to be called when choices change. */
@@ -238,6 +241,30 @@ BOOL choices_clickcancel(event_pollblock *event,void *reference)
     Wimp_CloseWindow(choices_window);
   else if (event->data.mouse.button.data.adjust)
     choices_seticons();
+
+  return TRUE;
+}
+
+/**
+ * Handle clicks on the Default button.
+ *
+ * \param *event      The Wimp event block.
+ * \param *reference  Not used, so NULL.
+ * \return            TRUE if handled; otherwise FALSE.
+ */
+BOOL choices_clickdefault(event_pollblock *event,void *reference)
+{
+  choices_str saved;
+
+  if (!event->data.mouse.button.data.select)
+    return FALSE;
+
+  saved = *choices;
+
+  IniConfig_ResetDefaults(choices_file);
+  choices_seticons();
+
+  *choices = saved;
 
   return TRUE;
 }
