@@ -181,7 +181,7 @@ BOOL monitor_update(event_pollblock *event,void *reference)
     if (!(    (!(drag_sidemove.min.x && drag_sidemove.max.y && drag_sidemove.max.x && drag_sidemove.min.y))
          && (Kbd_KeyDown(inkey_CTRL)) ))
       /* E.g. we're not (resizing with shift down) */
-      round_down_box(&final);
+      round_down_box(round_STEP_FOUR, &final);
 
     if (drag_sidemove.min.x) Icon_SetInteger(monitor_window,monitor_XMIN, final.min.x);
     if (drag_sidemove.max.y) Icon_SetInteger(monitor_window,monitor_YMIN, final.min.y);

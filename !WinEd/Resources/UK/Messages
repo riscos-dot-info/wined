@@ -14,8 +14,8 @@ WinMem:Not enough memory for new window
 IndMem:Not enough memory for icon's indirected data
 IconMem:Not enough memory for new icon
 NotFile:File '%0' not found
-LongIdent:Indentifier '%0' is too long. It has been changed to '%1'
-DupeName:Identifier with original name '%0' was not unique - renamed to '%1'
+LongIdent:An identifier is too long. It has been changed to '%0'
+DupeName:An identifier was not unique. It has been renamed to '%0'
 DupeNameFail:Unable to find unique name for original window '%0'. Discarded.
 WontOpen:File '%0' won't open
 NotWindow:Removing unrecognised object (type %1) from file '%0'
@@ -44,6 +44,10 @@ IconRange:Icon number out of range
 BadBorder:The frame icon's flags/data do not appear suitable for making a frame. Do you wish to continue with this operation?
 BehindBorder:The frame icon is not behind all those in the selection. Do you wish to continue with this operation?
 SelBorder:The frame icon is included in the selection. Do you wish to continue with this operation?
+LocalChoice:Loading locally-saved choices on a system with central storage.
+BadLoadChoice:Unexpected object type (not a file) found when loading choices from '%0'.
+BadSaveChoice:Unexpected object type found when saving choices to '%0'.
+BadChoices:There were errors encountered with the file contents while loading the choices from '%0'.
 ShortNone:T
 PickMem:Not enough memory for picker window
 Safety:Attempting to save altered files to !Scrap after fatal error
@@ -387,7 +391,8 @@ H_VT_06:\Srenumber the selected icon(s), entering a number in the submenu.|M\Are
 H_CHO:\TChoices dialogue box.
 H_CHO_21:\Supdate the choices.
 H_CHO_19:\Supdate and save the choices, preserving them for future sessions with WinEd.
-H_CHO_23:\Sto discard your changes.
+H_CHO_23:\Sto discard your changes.|M\Areset the changes and leave the \w open.
+H_CHO_28:\Srestore the application's default choices.
 H_CHO_17:Select this option if you want the monitor to automatically open and close with editable and preview \ws.
 H_CHO_04:Select this option if you want the icon picker to automatically open and close with editable \ws.
 H_CHO_05:Select this option if you want tool bars in browsers.
@@ -404,6 +409,8 @@ H_CHO_15:Select this option to terminate all strings with CR.|MDeselect it to us
 H_CHO_16:Select this option to ensure that panes can't be given furniture leading to strange behaviour.
 H_CHO_26:Select this option to display the list of templates in alphabetical order in the browser window.
 H_CHO_27:Select this option to make resizing icons the non-default action in the Edit Icon dialogue box.
+H_CHO_29:Select this option to round window and icon coordinates to pixel boundaries.
+H_CHO_30:Select this option to sort windows alphabetically when saving them to file.
 H_CRE:Use this dialogue box to enter a name for your new \w.
 H_COP:Use this dialogue box to enter a name for the copy of the slected \w.
 H_REN:Use this dialogue box to enter a new name for the selected \w.

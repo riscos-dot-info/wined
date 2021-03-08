@@ -209,11 +209,11 @@ BOOL browser_export(char *filename, void *ref, BOOL selection);
 void browser_exportcomplete(void *ref,BOOL successful,BOOL safe,char *filename,
      			  BOOL selection);
 
+/* Create a sorted list of windows in a browser. */
+browser_winentry **browser_sortwindows(browser_fileinfo *browser, BOOL sort);
+
 /* Used as comparison function for qsort in alphabetsort */
 int alphacomp(const void *one, const void *two);
-
-/* Convert a string to lower case */
-char *lower_case(char *s);
 
 /* Overwrite-check window handlers */
 BOOL overwrite_checkanswer(event_pollblock *event,void *reference);
@@ -659,11 +659,21 @@ static void       browser_cr(browser_fileinfo *browser)
   }
 }
 
-static BOOL       browser_dosave(char *filename, browser_fileinfo *browser, BOOL selection, file_handle fp)
+/**
+ * Save a file to an open file handle.
+ * 
+ * \param *filename   The filename of the file, used for messages.
+ * \param *browser    The browser instance to be saved.
+ * \param sorted      TRUE if the templates should be sorted alphabetically in the file.
+ * \param selection   TRUE if only the selected templates should be saved.
+ * \param fp          The file handle to write the data to.
+ * \return            TRUE if successful; FALSE on failure.
+ */
+static BOOL browser_dosave(char *filename, browser_fileinfo *browser, BOOL sorted, BOOL selection, file_handle fp)
 {
   template_header header;
-  browser_winentry *winentry;
-  int offset, windowcount = 0;
+  browser_winentry **winentries, *winentry;
+  int index, offset, windowcount = 0;
   #ifdef DeskLib_DEBUG
   int corrupt_type = 0;
   #endif
@@ -685,16 +695,25 @@ static BOOL       browser_dosave(char *filename, browser_fileinfo *browser, BOOL
 
   browser_cr(browser);
 
+  winentries = browser_sortwindows(browser, sorted);
+  if (winentries == NULL)
+  {
+    WinEd_MsgTrans_ReportPS(messages, "CantSave", FALSE, filename, 0, 0, 0);
+    return FALSE;
+  }
+
   /* Save header */
   if (browser->fontinfo)
   {
     /* Calculate eventual offset of font data */
     offset = sizeof(template_header);
-    for (winentry = LinkList_NextItem(&browser->winlist); winentry;
-         winentry = LinkList_NextItem(winentry))
-      if (!selection || Icon_GetSelect(browser->window,winentry->icon))
-        offset += sizeof(template_index) +
-                  flex_size((flex_ptr) &winentry->window);
+    for (index = 0; index < browser->numwindows; index++)
+    {
+      winentry = winentries[index];
+
+      if (!selection || Icon_GetSelect(browser->window, winentry->icon))
+        offset += sizeof(template_index) + flex_size((flex_ptr) &winentry->window);
+    }
     header.fontoffset = offset + 4; /* Skip terminating zero */
 
     #ifdef DeskLib_DEBUG
@@ -724,6 +743,7 @@ static BOOL       browser_dosave(char *filename, browser_fileinfo *browser, BOOL
       Error_Check(file_lasterror);
     else
       WinEd_MsgTrans_ReportPS(messages,"CantSave",FALSE,filename,0,0,0);
+    free(winentries);
     return FALSE;
   }
 
@@ -731,16 +751,20 @@ static BOOL       browser_dosave(char *filename, browser_fileinfo *browser, BOOL
 
   /* Work out eventual offset for start off window data */
   offset = sizeof(template_header);
-  for (winentry = LinkList_NextItem(&browser->winlist); winentry;
-       winentry = LinkList_NextItem(winentry))
+  for (index = 0; index < browser->numwindows; index++)
+  {
+    winentry = winentries[index];
+
     if (!selection || Icon_GetSelect(browser->window,winentry->icon))
       offset += sizeof(template_index);
+  }
   offset += 4; /* Skip terminating zero word */
 
   /* Save index entry for each window */
-  for (winentry = LinkList_NextItem(&browser->winlist); winentry;
-       winentry = LinkList_NextItem(winentry))
+  for (index = 0; index < browser->numwindows; index++)
   {
+    winentry = winentries[index];
+
     if (!selection || Icon_GetSelect(browser->window,winentry->icon))
     {
       template_index index;
@@ -777,6 +801,7 @@ static BOOL       browser_dosave(char *filename, browser_fileinfo *browser, BOOL
           Error_Check(file_lasterror);
         else
           WinEd_MsgTrans_ReportPS(messages,"CantSave",FALSE,filename,0,0,0);
+        free(winentries);
         return FALSE;
       }
       offset += index.size;
@@ -786,6 +811,7 @@ static BOOL       browser_dosave(char *filename, browser_fileinfo *browser, BOOL
   /* Save index-terminating zero */
   if (Error_Check(File_Write32(fp,0)))
   {
+    free(winentries);
     return FALSE;
   }
 
@@ -793,9 +819,9 @@ static BOOL       browser_dosave(char *filename, browser_fileinfo *browser, BOOL
 
   /* Save actual data for each window */
   windowcount = 0;
-  for (winentry = LinkList_NextItem(&browser->winlist); winentry;
-       winentry = LinkList_NextItem(winentry))
+  for (index = 0; index < browser->numwindows; index++)
   {
+    winentry = winentries[index];
     windowcount++;
 
     if (!selection || Icon_GetSelect(browser->window,winentry->icon))
@@ -809,6 +835,7 @@ static BOOL       browser_dosave(char *filename, browser_fileinfo *browser, BOOL
         else
           WinEd_MsgTrans_ReportPS(messages,"CantSave",FALSE,filename,0,0,0);
         browser_changesparea(winentry->window, user_sprites);
+        free(winentries);
         return FALSE;
       }
       browser_changesparea(winentry->window, user_sprites);
@@ -825,9 +852,12 @@ static BOOL       browser_dosave(char *filename, browser_fileinfo *browser, BOOL
           Error_Check(file_lasterror);
         else
           WinEd_MsgTrans_ReportPS(messages,"CantSave",FALSE,filename,0,0,0);
+        free(winentries);
         return FALSE;
       }
   }
+
+  free(winentries);
 
   Log(log_DEBUG, "End of do_save");
 
@@ -870,7 +900,7 @@ static void       browser_safetynet()
       fp = File_Open(browser->title,file_WRITE);
       if (fp)
       {
-        browser_dosave(browser->title, browser, FALSE, fp);
+        browser_dosave(browser->title, browser, FALSE, FALSE, fp);
         browser->altered = FALSE;
         File_Close(fp);
         File_SetType(browser->title, filetype_TEMPLATE);
@@ -2085,10 +2115,10 @@ static load_result browser_load_templat(browser_fileinfo *browser,
 {
   browser_winentry *winentry;
   load_result result;
-  char identifier[48];
   browser_winentry *tempitem;
   BOOL renamed = FALSE;
-  int tries = 1000, prefix = 1;
+  char suffix_string[12], *terminator;
+  int tries = 1000, suffix = 1, suffix_length;
 
   #ifdef DeskLib_DEBUG
   int i;
@@ -2101,17 +2131,15 @@ static load_result browser_load_templat(browser_fileinfo *browser,
   if (!winentry)
     return load_MemoryError;
 
-  /* Copy identifier into large buffer with \0 terminator. */
-  strncpycr(identifier, entry->identifier, sizeof(identifier));
-  identifier[sizeof(identifier) - 1] = '\0';
+  /* Copy the identifier into the target buffer. */
+  terminator = strncpycr(winentry->identifier, entry->identifier, sizeof(winentry->identifier));
 
-  /* Copy the name into the target buffer, truncated to the maximum length and \0 terminated. */
-  strncpycr(winentry->identifier, identifier, sizeof(winentry->identifier));
-  winentry->identifier[sizeof(winentry->identifier) - 1] = '\0';
-
-  /* If the name was too long, warn the user it has been truncated. */
-  if (strlencr(identifier) >= wimp_MAXNAME)
-    WinEd_MsgTrans_ReportPS(messages, "LongIdent", FALSE, identifier, winentry->identifier, 0, 0);
+  /* StrnCpyCr won't terminate the string if it doesn't fit, so an unterminated string is a warning. */
+  if (*terminator != '\0')
+  {
+    winentry->identifier[sizeof(winentry->identifier) - 1] = '\0';
+    WinEd_MsgTrans_ReportPS(messages, "LongIdent", FALSE, winentry->identifier, 0, 0, 0);
+  }
 
   /* Check for duplicates (possibly we've re-named to a pre-existing name),
    * by looping through all of the existing names and comparing to each. */
@@ -2125,8 +2153,11 @@ static load_result browser_load_templat(browser_fileinfo *browser,
 
     if (strcmpcr(winentry->identifier, tempitem->identifier) == 0)
     {
-      snprintf(winentry->identifier, sizeof(winentry->identifier), "%d~%s", prefix++, identifier);
-      winentry->identifier[sizeof(winentry->identifier) - 1] = '\0';
+      snprintf(suffix_string, sizeof(suffix_string), "~%d", suffix++);
+      suffix_string[sizeof(suffix_string) - 1] = '\0';
+
+      suffix_length = strlen(suffix_string) + 1;
+      strncpy(winentry->identifier + sizeof(winentry->identifier) - suffix_length, suffix_string, suffix_length);
 
       renamed = TRUE;
 
@@ -2151,7 +2182,7 @@ static load_result browser_load_templat(browser_fileinfo *browser,
     }
     else
       /* Inform user of changed name */
-      WinEd_MsgTrans_ReportPS(messages, "DupeName", FALSE, identifier, winentry->identifier, 0, 0);
+      WinEd_MsgTrans_ReportPS(messages, "DupeName", FALSE, winentry->identifier, 0, 0, 0);
   }
 
   /* The window name is OK, to add to the linked list. */
@@ -2405,6 +2436,7 @@ icon_handle        browser_newicon(browser_fileinfo *browser,int index, browser_
   /* window_redrawblock redraw; */
 
   Log(log_TEDIOUS, "browser_newicon");
+  Log(log_DEBUG, "Create icon at index %d for %s from 0x%x", index, winentry->identifier, winentry);
 
   column = index % browser->numcolumns;
   row = index / browser->numcolumns;
@@ -2519,105 +2551,127 @@ void               browser_setextent(browser_fileinfo *browser)
   }
 }
 
-int                alphacomp(const void *one, const void *two)
+/**
+ * Compare two browser_winentry blocks alpabetically by identifier.
+ * 
+ * \param *one    Pointer to the first block to compare.
+ * \param *two    Pointer to the second block to compare.
+ * \return        The comparison of the two identifiers.
+ */
+int alphacomp(const void *one, const void *two)
 {
-  char lc_one[wimp_MAXNAME + 1];
-  char lc_two[wimp_MAXNAME + 1];
+  const browser_winentry **we_one = (const browser_winentry **) one, **we_two = (const browser_winentry **) two;
 
-  strncpycr(lc_one, (char *)one, wimp_MAXNAME);
-  strncpycr(lc_two, (char *)two, wimp_MAXNAME);
-
-  /* If the names are 12 chars long, won't be terminated at all by wimp */
-  lc_one[wimp_MAXNAME] = '\0';
-  lc_two[wimp_MAXNAME] = '\0';
-
-  /* make comparison case-insensitive */
-  lower_case(lc_one);
-  lower_case(lc_two);
-
-  return strcmpcr(lc_one, lc_two);
+  return stricmpcr((*we_one)->identifier, (*we_two)->identifier);
 }
 
-char              *lower_case(char *s)
+/**
+ * Build an array of winentry pointers for the current file, optionally sorted
+ * alphabetically by identifier.
+ * 
+ * The array is allocated with malloc(), and must be freed after use.
+ *
+ * \param *browser    Pointer to the browser instance to sort.
+ * \param sort        TRUE to sort the entries; FALSE to leave in file order.
+ * \return            Pointer to the resulting array, or NULL on failure.
+ */
+browser_winentry **browser_sortwindows(browser_fileinfo *browser, BOOL sort)
 {
-//  Log(log_DEBUG, "lower_case");
+  browser_winentry **sorted, *winentry;
+  int count = 0;
 
-  char *ret = s;
-  if (s)
+  Log(log_DEBUG, "browser_sortwindows");
+
+  if (browser == NULL)
+    return NULL;
+
+  /* Allocate an array of window pointers, and fill it in file order. */
+
+  sorted = malloc(sizeof(browser_winentry*) * browser->numwindows);
+  if (sorted == NULL)
+    return NULL;
+
+  winentry = LinkList_FirstItem(&browser->winlist);
+
+  while ((winentry != NULL) && (count < browser->numwindows))
   {
-    while (*s)
-    {
-      *s = tolower(*s);
-      s++;
-    }
+    sorted[count++] = winentry;
+    winentry = LinkList_NextItem(&winentry->header);
   }
-  return ret;
+
+  Log(log_DEBUG, "Found %d windows, out of %d.", count, browser->numwindows);
+
+  if (sort == TRUE)
+    qsort(sorted, count, sizeof(browser_winentry*), alphacomp);
+
+  return sorted;
 }
 
-
-void               browser_sorticons(browser_fileinfo *browser, BOOL force, BOOL reopen, BOOL keepsel)
+/**
+ * Sort and place the icons in a file browser window, creating any which don't
+ * exist in the process.
+ * 
+ * \param *browser  The browser instance to be operated on.
+ * \param force     TRUE to delete all icons, even if they don't need to move.
+ * \param reopen    TRUE to call Wimp_OpenWindow on the window after update.
+ * \param keepsel   TRUE to restore any selection after the update.
+ */
+void browser_sorticons(browser_fileinfo *browser, BOOL force, BOOL reopen, BOOL keepsel)
 {
-  int index = 0, ordered;
-  browser_winentry *winentry;
+  int index;
+  browser_winentry **winentries, *winentry;
   window_state wstate;
-  char *selected;
-  char names[browser->numwindows][wimp_MAXNAME];
+  int *selected;
 
   Log(log_DEBUG, "browser_sorticons");
 
-  if (choices->round) /* Note: this choice now means "sort browser icons alphabetically" */
-  {
-    /* Find list of window names */
-    winentry = LinkList_FirstItem(&browser->winlist);
-    while (winentry)
-    {
-      strncpycr(names[index], winentry->identifier, wimp_MAXNAME);
-      names[index][wimp_MAXNAME - 1] = '\0'; /* Ensure null termination */
-      index++;
-      winentry = LinkList_NextItem(&winentry->header);
-    }
-    /* Order list alphabetically */
-    qsort(names, browser->numwindows, wimp_MAXNAME, alphacomp);
-  }
+  /* Get the winentry indexes. Note that "round" means "sort browser icons alphabetically" (!). */
 
-  if (keepsel)
+  winentries = browser_sortwindows(browser, choices->browser_sort);
+  if (winentries == NULL)
+    return;
+
+  /* If we're keeping the selections, record the selected icons. */
+
+  if (keepsel == TRUE)
   {
-    selected = malloc(browser->numwindows);
+    selected = malloc(browser->numwindows * sizeof(int));
     if (selected)
-      for (index=0; index<browser->numwindows; index++)
-        selected[index] = Icon_GetSelect(browser->window,index);
+    {
+      for (index = 0; index < browser->numwindows; index++)
+        selected[index] = Icon_GetSelect(browser->window, index);
+    }
   }
   else
-    selected = NULL;
-
-  index = 0;
-  winentry = LinkList_NextItem(&browser->winlist);
-  while (winentry)
   {
+    selected = NULL;
+  }
+
+  /* Replace the icons in the window. */
+
+  for (index = 0; index < browser->numwindows; index++)
+  {
+    winentry = winentries[index];
+
+    /* Delete any existing icon. */
+
     if (winentry->icon != -1 && (winentry->icon != index || force))
     {
-      Wimp_DeleteIcon(browser->window,winentry->icon);
+      Wimp_DeleteIcon(browser->window, winentry->icon);
       winentry->icon = -1;
     }
+
+    /* Create a new icon. */
+
     if (winentry->icon == -1)
-    {
-      if (choices->round)
-      { /* Find order for "index" to pass to browser_newicon */
-        ordered = 0;
-        while ((strcmpcr(names[ordered], winentry->identifier)) && (ordered < browser->numwindows))
-          ordered++;
-      }
-      else
-      {
-        ordered = index;
-      }
-
-      winentry->icon = browser_newicon(browser, ordered, winentry, keepsel&&selected&&selected[index]);
-    }
-
-    index++;
-    winentry = LinkList_NextItem(&winentry->header);
+      winentry->icon = browser_newicon(browser, index, winentry, keepsel && selected != NULL && selected[index]);
   }
+
+  if (keepsel == TRUE && selected != NULL)
+    free(selected);
+
+  if (winentries != NULL)
+    free(winentries);
 
   browser_setextent(browser);
   Wimp_GetWindowState(browser->window,&wstate);
@@ -2635,8 +2689,6 @@ void               browser_sorticons(browser_fileinfo *browser, BOOL force, BOOL
   Wimp_ForceRedraw((window_redrawblock *) &wstate.openblock);
   if (choices->browtools)
     browtools_shadeapp(browser);
-  if (keepsel&&selected)
-    free(selected);
 }
 
 /* See title.h */
@@ -2755,7 +2807,7 @@ void               browser_preselfquit()
   exit(0);
 }
 
-/* Save file in strict order for speed */
+/* Save file in strict order for speed (NB: what "strict order"? We can now sort files.) */
 BOOL               browser_save(char *filename,void *reference,BOOL selection)
 {
   browser_fileinfo *browser = reference;
@@ -2782,7 +2834,7 @@ BOOL               browser_save(char *filename,void *reference,BOOL selection)
     return FALSE;
   }
 
-  result = browser_dosave(filename, browser, selection, fp);
+  result = browser_dosave(filename, browser, choices->file_sort, selection, fp);
 
   File_Close(fp);
   if (result)
@@ -3518,6 +3570,11 @@ void browser_responder(choices_str *old,choices_str *new_ch)
       browtools_newpane(browser);
       browser_sorticons(browser,TRUE,TRUE,FALSE);
     }
+    else if ((old->browser_sort != new_ch->browser_sort) && Window_IsOpen(browser->window))
+    {
+      browser_sorticons(browser, TRUE, FALSE, TRUE);
+    }
+
     if (old->hotkeys && !new_ch->hotkeys)
     {
       caret_block caret;
@@ -3532,6 +3589,7 @@ void browser_responder(choices_str *old,choices_str *new_ch)
     }
     else if (!old->hotkeys && new_ch->hotkeys)
       browser_createmenus();
+
 
     for (winentry = LinkList_NextItem(&browser->winlist);
          winentry;

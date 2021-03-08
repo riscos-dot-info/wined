@@ -144,7 +144,8 @@ void WinEd_CreateMenu(menu_ptr m, int x, int y)
   /* Belt & Braces, to avoid any problems with DeskLib. Ensure that all attempts to close
      the menu tree use "(menu_ptr) -1", and pass X and Y as 0,0. This will prevent
      DeskLib from trying to interpret the NULL pointer if Y is -1. */
-  if (m == (menu_ptr) -1 || m == NULL) {
+  if (m == (menu_ptr) -1 || m == NULL)
+  {
     m = (menu_ptr) -1;
     x = 0;
     y = 0;
@@ -212,12 +213,18 @@ void Log(int level, const char *format, ...)
   /* Reset the prebuffer now that we've built the log string. */
   log_prebuffer = 0;
 
-  /* Scan the buffer to see if there are any control characters before the terminator. */
+  /* Scan the buffer to see if there are any control characters before the terminator.
+     Also convert " to ~, to sidestep Reporter's inability to handle " in log messages. */
   for (zero_len = 0; zero_len < sizeof(log_buffer) && log_buffer[zero_len] != '\0'; zero_len++)
+  {
     if (log_buffer[zero_len] < ' ')
       bad_terminator = TRUE;
+    if (log_buffer[zero_len] == '"')
+      log_buffer[zero_len] = '~';
+  }
 
-  if (bad_terminator == TRUE) {
+  if (bad_terminator == TRUE)
+  {
     char *message = "A bad string termintor was found in the following log message.";
     Debug_Printf("\\R%s", message);
     Environment_LogMessage(log_ERROR, message);

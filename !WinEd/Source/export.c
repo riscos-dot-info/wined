@@ -817,7 +817,8 @@ static char export_substitute_character(struct export_handle *instance, char c, 
 
   /* Message files are very different, so special-case them now. */
 
-  if (instance->format == EXPORT_FORMAT_MESSAGES) {
+  if (instance->format == EXPORT_FORMAT_MESSAGES)
+  {
     if (c <= ' ' || c == ',' || c == ')' || c == ':' || c == '?' || c == ':')
       return '_';
 
