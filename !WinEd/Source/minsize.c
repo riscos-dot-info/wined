@@ -88,7 +88,7 @@ static int icnedit_stringwidth(char *string, font_handle font,
   		      &splitpoint,&coordblock,0,strlencr(string),0));
   lres.x = (coordblock.bounds.max.x - coordblock.bounds.min.x + 399) / 400;
   lres.y = (coordblock.bounds.max.y - coordblock.bounds.min.y + 399) / 400;
-  round_up_point(&lres);
+  round_up_point(round_STEP_FOUR, &lres);
   if (!font)
   {
     width = 16 * strlencr(string);

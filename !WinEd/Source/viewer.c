@@ -1331,9 +1331,9 @@ BOOL                preview_menuselect(event_pollblock *event,void *reference)
 /*
 void viewer_roundopenblock(window_openblock *openblock)
 {
-  round_down_box(&openblock->screenrect);
-  openblock->scroll.x = round_down_int(openblock->scroll.x);
-  openblock->scroll.y = round_up_int(openblock->scroll.y);
+  round_down_box(round_STEP_FOUR, &openblock->screenrect);
+  openblock->scroll.x = round_down_int(round_STEP_FOUR, openblock->scroll.x);
+  openblock->scroll.y = round_up_int(round_STEP_FOUR, openblock->scroll.y);
 }
 */
 
@@ -1597,11 +1597,12 @@ BOOL                viewer_resizedrag(event_pollblock *event,void *reference)
     box.max.y ^= box.min.y;
     box.min.y ^= box.max.y;
   }
+
+  /* If Shift is held down, round down to 2 OS units, not 4. */
   if (Kbd_KeyDown(inkey_SHIFT))
-    /* If alt is pressed, only round down by 2, not 4 */
-    round_down_box_less(&box);
+    round_down_box(round_STEP_TWO, &box);
   else
-    round_down_box(&box);
+    round_down_box(round_STEP_FOUR, &box);
 
   /* Resize, passing logical icon */
   icnedit_moveicon(viewer_dragref.winentry,viewer_dragref.icon,&box);
@@ -1723,7 +1724,7 @@ BOOL                viewer_moveonedrag(event_pollblock *event,void *reference)
     Wimp_GetWindowState(ptrinfo.window,&wstate);
     Coord_RectToWorkArea(&workarearect,
     			 (convert_block *) &wstate.openblock.screenrect);
-    round_down_box(&workarearect);
+    round_down_box(round_STEP_FOUR, &workarearect);
   }
 
   if (ptrinfo.window == viewer_dragref.winentry->handle)
@@ -1887,7 +1888,7 @@ BOOL                viewer_movemanydrag(event_pollblock *event,void *reference)
   Window_GetInfo3(ptrinfo.window,&winfo);
   Coord_RectToWorkArea(&workarearect,
   			 (convert_block *) &winfo.block.screenrect);
-  round_down_box(&workarearect);
+  round_down_box(round_STEP_FOUR, &workarearect);
 
   viewer_copyselection(viewer_dragref.winentry,dest,
   		       &viewer_dragref.startbox,&workarearect,
@@ -2518,7 +2519,8 @@ void                viewer_moveselection(browser_winentry *winentry, int xby, in
       newrect.max.x = winentry->window->icon[i].workarearect.max.x + xby;
       newrect.max.y = winentry->window->icon[i].workarearect.max.y + yby;
 
-      if (snap) round_down_box(&newrect);
+      if (snap)
+        round_down_box(round_STEP_FOUR, &newrect);
 
       icnedit_moveicon(winentry, i, &newrect);
     }

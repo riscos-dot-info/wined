@@ -132,7 +132,7 @@ BOOL coorddiag_clickok(event_pollblock *event,void *reference)
   newrect.max.x = newrect.min.x + width;
   newrect.min.y = newrect.max.y - height;
   /* Remove round_down_box as we allow this window to be used to make smaller-than-4 size adjustments
-  round_down_box(&newrect); */
+  round_down_box(round_STEP_FOUR, &newrect); */
   icnedit_moveicon(coorddiag_winentry,icon,&newrect);
 
   browser_settitle(coorddiag_winentry->browser,0,TRUE);

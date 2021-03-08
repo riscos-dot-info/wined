@@ -3,57 +3,114 @@
 #include "common.h"
 #include "round.h"
 
-int round_down_int(int a)
+/**
+ * Round a value down to a multiple of a given step, if the
+ * Round Coordinates option is selected. Otherwise, do nothing.
+ *
+ * \param step  The multiple to round to.
+ * \param a     The value to be rounded.
+ * \return      The rounded value.
+ */
+int round_down_int(round_step step, int a)
 {
-  if (choices->round_coords) a = a & ~3;
+  if (choices->round_coords) {
+    switch (step) {
+      case round_STEP_FOUR:
+        a = a & ~3;
+        break;
+      case round_STEP_TWO:
+        a = a & ~1;
+        break;
+      case round_STEP_NONE:
+        break;
+    }
+  }
+
   return a;
 }
 
-int round_up_int(int a)
+/**
+ * Round a value up to a multiple of a given step, if the
+ * Round Coordinates option is selected. Otherwise, do nothing.
+ *
+ * \param step  The multiple to round to.
+ * \param a     The value to be rounded.
+ * \return      The rounded value.
+ */
+int round_up_int(round_step step, int a)
 {
-  if (choices->round_coords) a = (a + 3) & ~3;
+  if (choices->round_coords) {
+    switch (step) {
+      case round_STEP_FOUR:
+        a = (a + 3) & ~3;
+        break;
+      case round_STEP_TWO:
+        a = (a + 1) & ~1;
+        break;
+      case round_STEP_NONE:
+        break;
+    }
+  }
+
   return a;
 }
 
-void round_down_point(wimp_point *point)
+/**
+ * Round the coordinates of a point down to a multiple of a given
+ * step, if the Round Coordinates option is selected. Otherwise,
+ * do nothing.
+ *
+ * \param step  The multiple to round to.
+ * \param point The point to be rounded.
+ * \return      The rounded point.
+ */
+void round_down_point(round_step step, wimp_point *point)
 {
-  point->x = round_down_int(point->x);
-  point->y = round_down_int(point->y);
+  point->x = round_down_int(step, point->x);
+  point->y = round_down_int(step, point->y);
 }
 
-void round_up_point(wimp_point *point)
+/**
+ * Round the coordinates of a point up to a multiple of a given
+ * step, if the Round Coordinates option is selected. Otherwise,
+ * do nothing.
+ *
+ * \param step  The multiple to round to.
+ * \param point The point to be rounded.
+ * \return      The rounded point.
+ */
+void round_up_point(round_step step, wimp_point *point)
 {
-  point->x = round_up_int(point->x);
-  point->y = round_up_int(point->y);
+  point->x = round_up_int(step, point->x);
+  point->y = round_up_int(step, point->y);
 }
 
-void round_down_box(wimp_rect *box)
+/**
+ * Round the coordinates of a box down to a multiple of a given
+ * step, if the Round Coordinates option is selected. Otherwise,
+ * do nothing.
+ *
+ * \param step  The multiple to round to.
+ * \param box   The box to be rounded.
+ * \return      The rounded box.
+ */
+void round_down_box(round_step step, wimp_rect *box)
 {
-  round_down_point(&box->min);
-  round_down_point(&box->max);
+  round_down_point(step, &box->min);
+  round_down_point(step, &box->max);
 }
 
-void round_up_box(wimp_rect *box)
+/**
+ * Round the coordinates of a box up to a multiple of a given
+ * step, if the Round Coordinates option is selected. Otherwise,
+ * do nothing.
+ *
+ * \param step  The multiple to round to.
+ * \param box   The box to be rounded.
+ * \return      The rounded box.
+ */
+void round_up_box(round_step step, wimp_rect *box)
 {
-  round_up_point(&box->min);
-  round_up_point(&box->max);
-}
-
-/* Added to bodge a round by only 2 rather than 4 */
-void round_down_box_less(wimp_rect *box)
-{
-  round_down_point_less(&box->min);
-  round_down_point_less(&box->max);
-}
-
-void round_down_point_less(wimp_point *point)
-{
-  point->x = round_down_int_less(point->x);
-  point->y = round_down_int_less(point->y);
-}
-
-int round_down_int_less(int a)
-{
-  if ((choices->round_coords) && ((a%2) == 1)) a = a - 1;
-  return a;
+  round_up_point(step, &box->min);
+  round_up_point(step, &box->max);
 }
