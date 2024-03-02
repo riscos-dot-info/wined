@@ -54,8 +54,8 @@ BUILD_DATE := $(shell date "+%d %b %Y")
 # Construct version or revision information.
 
 ifeq ($(VERSION),)
-  RELEASE := $(shell svnversion --no-newline)
-  VERSION := r$(RELEASE)
+  RELEASE := $(shell git rev-parse --short=7 HEAD)
+  override VERSION := $(RELEASE)
 else
   RELEASE := $(subst .,,$(VERSION))
 endif
