@@ -4,8 +4,7 @@
             "name": "RISC OS",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/home/steve/gccsdk/env/include/"
-                ,
+                "/home/steve/gccsdk/env/include/",
                 "/home/steve/gccsdk/cross/lib/gcc/arm-unknown-riscos/4.7.4/include/"
             ],
             "defines": [],
