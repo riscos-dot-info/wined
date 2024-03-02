@@ -1569,8 +1569,15 @@ BOOL              browser_merge(char *filename,int filesize,void *reference)
   return FALSE;
 }
 
+/* Load status codes.
+ * 
+ * The code assumes that 0 is OK and non-zero is an error in some places:
+ * These should be cleaned up as they are found!
+ */
+
 typedef enum {
   load_OK = 0,
+  load_Aborted,         /* The user aborted of their own will - so will already have seen an error box. */
   load_MemoryError,     /* Stop loading file, maybe discard completely */
   load_FileError,       /* Some significant file structure error - stop loading file, maybe discard completely */
   load_FatalError,      /* Bad thing. Corrupt file header, font data, indirected data etc. Abandon whole file. */
@@ -1778,18 +1785,15 @@ static load_result browser_load_header(browser_fileinfo *browser,
 
   if (header.dummy[0] || header.dummy[1] || header.dummy[2])
   {
+    os_error message;
+
     Log(log_ERROR, "This file has an apparently invalid header (%d:%d:%d) and cannot be loaded. Please report the problem to the WinEd maintainer.", header.dummy[0], header.dummy[1], header.dummy[2]);
 
-    #ifdef DeskLib_DEBUG
-      snprintf(error.errmess, sizeof(error.errmess), "Debug: Corrupt header - load anyway?");
-      if (WinEd_Wimp_ReportErrorR(&error, 11, event_taskname) == 1/* OK */)
-      {
-        *fontoffset = header.fontoffset;
-        return load_OK;
-      }
-    #endif
+    message.errnum = 0;
+    MsgTrans_Lookup(messages, "BadHeader", message.errmess, 252);
 
-    return load_FatalError;
+    if (!ok_report(&message))
+      return load_Aborted;
   }
 
   *fontoffset = header.fontoffset;
@@ -2279,7 +2283,7 @@ static load_result browser_load_from_fp(browser_fileinfo *browser,
   browser_badind_reported = FALSE;
   result = browser_load_header(browser, &fontoffset, fp);
   if (result)
-    /* Could be: load_FileError, load_FatalError */
+    /* Could be: load_Aborted, load_FileError, load_FatalError */
     return result;
 
   result = browser_load_fonts(browser, &newfontinfo, fontoffset, filesize, fp, filename);
@@ -2401,6 +2405,7 @@ BOOL               browser_getfile(char *filename,int filesize,browser_fileinfo 
 
   result = browser_load_from_fp(browser, fp, filesize, filename);
   /* Results could be: load_OK                                           - all dandy
+                       load_Aborted                                      - user abort, so no second error
                        load_FatalError, load_FileError, load_MemoryError - abandon whole browser */
 
   File_Close(fp);
@@ -2425,7 +2430,7 @@ BOOL               browser_getfile(char *filename,int filesize,browser_fileinfo 
   }
 
   /* If we return FALSE, the browser is abandoned using browser_close */
-  return result ? FALSE : TRUE;
+  return (result == load_OK) ? TRUE : FALSE;
 }
 
 icon_handle        browser_newicon(browser_fileinfo *browser,int index, browser_winentry *winentry,int selected)
