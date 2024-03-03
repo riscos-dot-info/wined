@@ -80,7 +80,7 @@
 <p><a href="#contents">Return to contents</a></p>
 
 <a name="conditions"><h2>3. Conditions of use and distribution</h2></a>
-<p><em>WinEd</em> is released under the GNU General Public Licence. For details of what this means, <a href="Copying">see this file</a>. The source code for WinEd is available from the <a href="http://www.riscos.info/websvn/listing.php?repname=wined">svn repository on riscos.info</a>.</p>
+<p><em>WinEd</em> is released under the GNU General Public Licence. For details of what this means, <a href="Copying">see this file</a>. The source code for WinEd is available from <a href="https://github.com/riscos-dot-info/wined">GitHub</a>.</p>
 <p><a href="#contents">Return to contents</a></p>
 
 <a name="install"><h2>4. Installation</h2></a>

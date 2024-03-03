@@ -35,7 +35,6 @@ Conditions of use and distribution
 WinEd is released under Version 2 of the GNU General Public Licence. For
 details of what this means, see the Copyright file inside the download.
 
-The source code for WinEd is available from the SVN repository on riscos.info
--- check it out from
+The source code for WinEd is available from GitHub -- it can be cloned from
 
-  svn://svn.riscos.info/wined
+  https://github.com/riscos-dot-info/wined

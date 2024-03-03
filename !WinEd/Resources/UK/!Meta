@@ -1,7 +1,7 @@
 # Meta file for WinEd
 Help:<WinEdRes$Dir>.Help
 Version:3.20
-Web:http://www.riscos.info/index.php?title=WinEd
+Web:https://www.stevefryatt.org.uk/risc-os/wined
 Title:WinEd
 Publisher:Steve Fryatt
 Description:WinEd is a programmer's template editor allowing easy design and alteration of program's window templates. WinEd was originally written by Tony Houghton, and maintained by Adam Richardson; this version was built by Steve Fryatt.
