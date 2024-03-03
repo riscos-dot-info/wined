@@ -266,7 +266,7 @@ static BOOL proginfo_email(event_pollblock *event,void *ref)
 
 static BOOL proginfo_web(event_pollblock *event,void *ref)
 {
-  uri_send("http://www.riscos.info/index.php?title=WinEd");
+  uri_send("https://www.stevefryatt.org.uk/risc-os/wined");
   return TRUE;
 }
 
