@@ -16,10 +16,6 @@
 /* Application name for task manager and menus */
 extern char APPNAME[];
 
-/* Filetypes we may want to load */
-#define FILETYPE_Template 0xfec
-#define FILETYPE_Sprites 0xff9
-
 /* An extra logging level */
 #define log_TEDIOUS 240
 

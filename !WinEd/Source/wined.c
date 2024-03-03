@@ -194,7 +194,7 @@ BOOL load_handler(event_pollblock *event,void *ref)
   if (event->data.message.data.dataload.filetype == filetype_TEMPLATE &&
   	event->data.message.data.dataload.window == window_ICONBAR)
     datatrans_load(event,browser_load,NULL);
-  else if (event->data.message.data.dataload.filetype == FILETYPE_Sprites)
+  else if (event->data.message.data.dataload.filetype == filetype_SPRITE)
   {
     if (Kbd_KeyDown(inkey_SHIFT))
     {
@@ -253,7 +253,7 @@ BOOL save_handler(event_pollblock *event,void *ref)
 {
   if ((event->data.message.data.datasave.filetype == filetype_TEMPLATE &&
   	event->data.message.data.datasave.window == window_ICONBAR) ||
-  	event->data.message.data.datasave.filetype == FILETYPE_Sprites)
+  	event->data.message.data.datasave.filetype == filetype_SPRITE)
     datatrans_saveack(event);
   return TRUE;
 }

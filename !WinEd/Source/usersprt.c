@@ -21,8 +21,23 @@
 #undef SWI_Wimp_ReadSysInfo
 #define SWI_Wimp_ReadSysInfo (SWI_XOS_Bit | 0x400f2)
 
+/**
+ * The User Sprite Area pointer.
+ */
+
 sprite_area user_sprites;
 
+/**
+ * Update a sprite file pathname to include the most appropriate
+ * mode suffix. If a file with the correct suffix exists, then
+ * the filename in the buffer will be updated on return; otherwise
+ * it will remain unchanged.
+ * 
+ * The buffer MUST have enough space for a two-character suffix to
+ * be appended: no bounds checks are carried out.
+ * 
+ * \param *name   Pointer to the pathname which is to be updated.
+ */
 void usersprt_modfilename(char *name)
 {
   const char *suffix;
@@ -38,12 +53,14 @@ void usersprt_modfilename(char *name)
     name[strlen(name)-2] = 0;
 }
 
+/**
+ * Initialise the User Sprite area, allocating memory for it and
+ * initialising an empty sprite area.
+ */
 void usersprt_init()
 {
-  if (!flex_alloc((flex_ptr)
-   &user_sprites,
-  sizeof(sprite_areainfo)))
-    WinEd_MsgTrans_Report(messages,"SprtArea",TRUE);
+  if (!flex_alloc((flex_ptr) &user_sprites, sizeof(sprite_areainfo)))
+    WinEd_MsgTrans_Report(messages, "SprtArea", TRUE);
 
   user_sprites->areasize = sizeof(sprite_areainfo);
   /* user_sprites->numsprites = 0; */
@@ -52,7 +69,13 @@ void usersprt_init()
   Error_CheckFatal(Sprite_InitArea(user_sprites));
 }
 
-/* Tidy up after a change to user sprites */
+/**
+ * Tidy up after a change to user sprites, redrawing any windows which
+ * contain sprites, and optionally shrinking the memory allocation
+ * down as much as possible to minimise free space.
+ * 
+ * \param trim  Should the memory allocation be shrunk?
+ */
 void usersprt_postchange(BOOL trim)
 {
   int memsize;
@@ -134,7 +157,16 @@ void usersprt_postchange(BOOL trim)
   }
 }
 
-BOOL usersprt_merge(char *filename,int size,void *reference)
+/**
+ * Merge a sprite file into a user sprites area.
+ *
+ * \param *filename   The name of the file to be merged in.
+ * \param size        The size of the file to be merged.
+ * \param *reference  A unused reference, to allow this function to be
+ *                    supplied to an event handler.
+ * \return            TRUE if successful; FALSE on failure.
+ */
+BOOL usersprt_merge(char *filename, int size, void *reference)
 {
   BOOL result;
   int memsize;
@@ -147,13 +179,16 @@ BOOL usersprt_merge(char *filename,int size,void *reference)
   }
 
   user_sprites->areasize = memsize + size;
-  result = !Error_Check(Sprite_Merge(user_sprites,filename));
+  result = !Error_CheckSilent(Sprite_Merge(user_sprites,filename));
 
   usersprt_postchange(TRUE);
 
   return result;
 }
 
+/**
+ * Clear the user sprites area and free the associated memory.
+ */
 void usersprt_clear()
 {
   user_sprites->areasize = user_sprites->freeoffset = 16;

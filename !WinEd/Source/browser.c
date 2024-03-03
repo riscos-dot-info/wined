@@ -44,6 +44,9 @@
 /* Induce the Anni bug (define this, then load Anni template file) */
 //#define REGRESSION_ANNI
 
+/* The size of the buffer used to process sprites filenames. */
+#define BROWSER_SPRITE_BUFFER_LEN 256
+
 /* Number of columns supported by current mode */
 static int browser_maxnumcolumns;
 
@@ -1498,11 +1501,21 @@ BOOL              browser_load(char *filename,int filesize,void *reference)
       MsgTrans_Lookup(messages,"Untitled",buffer,32);
       browser_settitle(browser,buffer,TRUE);
     }
-    if (choices->autosprites)
+
+    /* Go looking for sprites files in the proximity of the templates.
+     * To avoid being clever on the buffer sizes, we require that there
+     * is sufficient space for "SpritesXX" less a single character
+     * filename (so 9 - 1 = 8) in the buffer. Since the buffer is 256
+     * bytes (as standard) and the Wimp protocols limit us to 230-ish,
+     * this should never be a problem -- and it's better than trampling
+     * over the stack if it goes wrong!
+     */
+
+    if (choices->autosprites && strlen(filename) < (BROWSER_SPRITE_BUFFER_LEN - 8))
     {
-      char spritefile[256];
+      char spritefile[BROWSER_SPRITE_BUFFER_LEN];
       char *leaf;
-      int size;
+      int size, type;
 
       Log(log_DEBUG, " in browser_load... autoloading sprites");
       strcpy(spritefile, filename);
@@ -1526,16 +1539,12 @@ BOOL              browser_load(char *filename,int filesize,void *reference)
             Log(log_DEBUG, " Trying '%s'", spritefile);
           }
         }
+        type = File_GetType(spritefile);
         size = File_Size(spritefile);
-        if (size > 0)
-        {
+        if (type == filetype_SPRITE && size > 0 && usersprt_merge(spritefile,size,0))
           Log(log_INFORMATION, " Sprites found.");
-          usersprt_merge(spritefile,size,0);
-        }
-        else;
-        {
+        else
           Log(log_INFORMATION, " No sprites found");
-        }
       }
     }
     returnvalue = TRUE;
