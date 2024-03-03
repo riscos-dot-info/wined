@@ -1386,6 +1386,8 @@ BOOL                viewer_click(event_pollblock *event,void *reference)
           newrect.max.y += newrect.min.y;
           icnedit_moveicon(winentry,event->data.mouse.icon,&newrect);
           browser_settitle(winentry->browser,0,TRUE);
+          if (monitor_isactive && monitor_winentry == winentry)
+            monitor_moved = TRUE;
         }
       }
       break;

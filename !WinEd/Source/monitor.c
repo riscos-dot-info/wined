@@ -19,10 +19,31 @@ typedef enum {
   monitor_NAME = 12
 } monitor_icons;
 
+/**
+ * Is the monitor active?
+ * 
+ * Updated by this module, and readable globally.
+ */
 BOOL monitor_isactive;
+
+/**
+ * Set TRUE to make the monitor believe that something relevant
+ * has moved since monitor_update() was last called.
+ */
 BOOL monitor_moved = FALSE;
+
+/**
+ * Is there a relevant drag in progress?
+ * 
+ * Update globally, and read by this module.
+ */
 BOOL monitor_dragging = FALSE;
 
+/**
+ * Is the monitor window open?
+ * 
+ * Updated by this module, and readable globally.
+ */
 BOOL monitor_isopen;
 
 window_handle monitor_window;
