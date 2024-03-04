@@ -61,8 +61,8 @@ and installed into the GCCSDK.
 
 If you wish to compile with Fortify, you will need to add the `fortify.c`, `fortify.h`
 and `ufortify.h` files into `!Wined.Sources`. Otherwise, references to fortify will
-need to be removed from the Makefile (both the static dependency, from within the
-OBJECTS list at the top).
+need to be removed from the Makefile (both the static dependency, and from within the
+`OBJECTS` list at the top).
 
 The definitions for `FORTIFY_LOCK()` and `FORTIFY_UNLOCK()` in `ufortify.h` need to be
 changed to empty, as follows:
