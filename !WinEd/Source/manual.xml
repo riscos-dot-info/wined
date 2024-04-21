@@ -1,0 +1,1279 @@
+<manual>
+
+<title>WinEd</title>
+<strapline>A template editor for RISC&nbsp;OS</strapline>
+<credit>&copy; Tony&nbsp;Houghton,&nbsp;1995; Adam&nbsp;Richardson,&nbsp;2007; Stephen&nbsp;Fryatt,&nbsp;2020</credit>
+<version>Version ----</version>
+<date>21 April 2024</date>
+
+<resources>
+<mode type="html">
+<stylesheet>../Styles</stylesheet>
+</mode>
+</resources>
+
+<index>
+<title>Contents</title>
+
+<chapterlist/>
+</index>
+
+<chapter id="about">
+<title>About <cite>WinEd</cite></title>
+
+<section>
+<p><cite>WinEd</cite> is a template editor. Its most attractive features are:</p>
+
+<ul>
+<li><p>Main editing interfaces use dialogue boxes.</p></li>
+<li><p>Icons can be dragged between windows, including a customisable &lsquo;Picker&rsquo; window containing the most commonly used icons.</p></li>
+<li><p>Multiple files can be loaded by one instantiation of <cite>WinEd</cite>.</p></li>
+<li><p>Conventions are based on Acorn&rsquo;s <cite>Style Guide</cite>.</p></li>
+<li><p>Statistics are available on the size etc of template files.</p></li>
+<li><p>Powerful features for positioning icons relative to each other.</p></li>
+<li><p>Optional rounding of coordinates in high resolution modes to ensure low resolution compatibility.</p></li>
+<li><p>Optional tool panes and keyboard short cuts enhance convenience.</p></li>
+<li><p>Fast loading and saving.</p></li>
+</ul>
+
+<p><cite>WinEd</cite> was originally written by Tony Houghton, and his final release was <link href="http://www.snowstone.org.uk/riscos/realh/index.html#wined" erternal="true">version 2.87</link>. Up to and including the release of version 3.22a, <cite>WinEd</cite> was developed by <link href="http://www.snowstone.org.uk/riscos/" external="true">Adam Richardson</link>. Since then, some work to allow the code to be built for modern systems has been done by <link href="http://www.stevefryatt.org.uk/risc-os/wined" external="true">Steve Fryatt</link>.</p>
+
+<p>Some changes have been made to this help file, but the majority of the text remains the work of Tony Houghton. Any comments should be made to Steve Fryatt at <link href="mailto:info@stevefryatt.org.uk" flatten="true">info@stevefryatt.org.uk</link>.</p>
+</section>
+</chapter>
+
+<chapter id="requirements">
+<title>Requirements</title>
+
+<section>
+<p>This release of <cite>WinEd</cite> requires RISC&nbsp;OS&nbsp;4.0 or later. It may well work on earlier systems if you manually alter the <file>!Run</file> file, but this is not supported.</p>
+</section>
+</chapter>
+
+
+<chapter id="licence">
+<title>Conditions of use and distribution</title>
+
+<section>
+<p><cite>WinEd</cite> is released under the GNU General Public Licence. For details of what this means, <link href="Copying" flatten="true">see the Copying file</link>. The source code for <cite>WinEd</cite> is available from <link href="https://github.com/riscos-dot-info/wined" external="true">GitHub</link>.</p>
+</section>
+</chapter>
+
+<chapter id="install">
+<title>Installation</title>
+
+<section>
+<p><cite>WinEd</cite> can be run from any filing system. To install <cite>WinEd</cite> drag it from the directory you receive it on to the directory you want it to &lsquo;live&rsquo; in. To ensure that your new copy is used in preference to the original, simply run it from the new location.</p>
+</section>
+</chapter>
+
+<chapter id="disclaimer">
+<title>Disclaimer</title>
+
+<section>
+<p>Whilst every effort has been made to ensure that this software works correctly, no responsibility for any loss or damage caused by its use is accepted by the authors.</p>
+</section>
+</chapter>
+
+<chapter id="units">
+<title>Units used</title>
+
+<section>
+<p>The units used and referred to throughout are OS&nbsp;units, except where stated. If a writable icon expecting a number is left blank, zero is assumed.</p>
+
+<p>Remember that work area coordinates have the origin at the top left and anything below this is negative.</p>
+</section>
+</chapter>
+
+<chapter id="mode">
+<title>Mode independence</title>
+
+<section>
+<p><cite>WinEd</cite> has been designed so that you do not have to design your templates in low resolution modes to ensure compatibility. This is done by &ldquo;snapping&rdquo; icons to a 4&times;4&nbsp;OS&nbsp;unit grid. (4&nbsp;OS&nbsp;units is equivalent to one pixel in the lowest resolution desktop modes). This can be overridden using the keyboard cursor arrows, together with either <key>Ctrl</key> or <key>Shift</key>.</p>
+</section>
+</chapter>
+
+<chapter id="dialogue">
+<title><cite>WinEd</cite>&rsquo;s dialogue boxes</title>
+
+<section>
+<p>Most of <cite>WinEd</cite>&rsquo;s dialogue boxes are static: that is, a click outside them does not close them. This slightly improves convenience and consistency.</p>
+</section>
+</chapter>
+
+<chapter id="error">
+<title>Error handling</title>
+
+<section>
+
+<p>Where possible, <cite>WinEd</cite> tries to continue after an error, but you should save your data as soon as possible. If <cite>WinEd</cite> can not continue there will be a <icon>Cancel</icon> button instead of <icon>OK</icon> or <icon>Continue</icon>. After a fatal error <cite>WinEd</cite> will attempt to save files with unsaved changes in <file><variable>&lt;Wimp$ScrapDir&gt;</variable>.WinEd</file>. I hope that you never have occasion to find this useful. &smileyface;</p>
+</section>
+</chapter>
+
+<chapter id="help">
+<title>Interactive help</title>
+
+<section>
+<p><cite>WinEd</cite> supports interactive help, including its menus; you may find this helpful at first.</p>
+</section>
+</chapter>
+
+<chapter id="loading">
+<title>Loading and creating templates</title>
+
+<section>
+<p>Template files can be loaded by double clicking or dragging them to <cite>WinEd</cite>&rsquo;s icon on the iconbar. The number of files that <cite>WinEd</cite> can load and edit is only limited by memory. To create a new file click the <cite>WinEd</cite> icon; this opens an <ref id="browsers">empty browser</ref>.</p>
+
+<p>Files can be merged by dragging one file into a browser containing the other.</p>
+</section>
+</chapter>
+
+<chapter id="keyboard">
+<title>Keyboard control of the pointer</title>
+
+<section>
+<p>While <cite>WinEd</cite> has the input focus, each press of one of the cursor keys moves the mouse pointer by one pixel in the appropriate direction.</p>
+
+<p>Alternatively, the cursor keys can be made to &lsquo;nudge&rsquo; any selected icons without using the mouse. The icons are moved by 4&nbsp;OS&nbsp;units, unless the <key>Shift</key> or <key>Ctrl</key> modifier keys are held down, in which case the icons are moved by 2 or 1&nbsp;OS&nbsp;units, respectively.</p>
+</section>
+</chapter>
+
+<chapter id="sprite">
+<title>Sprite files and sprite areas</title>
+
+<section>
+<p>In some windows it is necessary to create icons with sprites that belong to an application instead of the Wimp&rsquo;s sprite pool. You can load &lsquo;user&rsquo; sprite files into <cite>WinEd</cite> by dragging them to its icon. <cite>WinEd</cite> only has one sprite pool which it shares between all windows loaded in it, but it can load sprite files dragged to any of its windows or its iconbar.</p>
+
+<p>Holding <key>Shift</key> while dragging a sprite file to <cite>WinEd</cite> causes it to be merged with the Wimp sprite pool and the screen is redrawn.</p>
+
+<p>From version 2.30 onwards, all sprite area fields are saved with the value 1 (use Wimp sprites) and <cite>WinEd</cite> makes no distinction between the Wimp sprite pool and the user sprite pool. RISC&nbsp;OS&nbsp;3 allows all sprite area pointers to be set to a user sprite area and it will look for sprites in the Wimp pool if they are not found in the user area. It is up to the target application to change sprite area pointers to its own sprite area if necessary.</p>
+</section>
+</chapter>
+
+<chapter id="iconbar">
+<title>The iconbar menu</title>
+
+<section>
+<title>Info</title>
+
+<p>Moving the pointer right opens a typical dialogue box containing information about <cite>WinEd</cite>, including buttons to email the author or visit the <cite>WinEd</cite> website.</p>
+</section>
+
+<section>
+<title>Help</title>
+
+<p>Clicking on this option will launch this file. If a browser has not been seen when you click on the option, a text version of this manual will open instead.</p>
+</section>
+
+<section>
+<title>Icon picker</title>
+
+<p>This opens the icon picker immediately above the right hand end of the iconbar. The icon picker is <ref id="creatingicons">described in a later section</ref>.</p>
+</section>
+
+<section>
+<title>Monitor</title>
+
+<p>This opens the monitor window at the top right of the screen. The monitor is <ref id="monitor">described in a later section</ref>.</p>
+</section>
+
+<section>
+<title>Clear sprites</title>
+
+<p>Clears the user sprite area to save memory.</p>
+</section>
+</chapter>
+
+
+<chapter id="choices">
+<title>The Choices dialogue box</title>
+
+<section>
+<p>The <window>Choices</window> dialogue box can be opened by selecting <menu>Choices...</menu> from the iconbar menu. It allows a number of aspects of <cite>WinEd</cite>&rsquo;s operation to be configured.</p>
+
+<p>Clicking on the <icon>OK</icon> button will cause any changes made to the choices to take effect; if <mouse>Adjust</mouse> is used, the dialogue will remain on screen. Similarly <icon>Cancel</icon> will discard any un-saved changes, and using <mouse>Adjust</mouse> will leave the dialogue open.</p>
+
+<p>The <icon>Save</icon> button will save the configuration to disc, so that the choices made will be remembered for future sessions (otherwise they will be forgotten when <cite>WinEd</cite> is quit). To return to the default configuration, click on <icon>Default</icon> (and then either <icon>Save</icon> or <icon>OK</icon> to apply any changes).</p>
+
+<p>The dialogue is split into sections as described below.</p>
+</section>
+
+<section>
+<title>Windows</title>
+
+<p>The <icon>Windows</icon> section controls the behavior of windows within <cite>WinEd</cite> &ndash; both dialogue boxes and the templates being edited.</p>
+
+<section>
+<title>Automatic monitor</title>
+
+<p>If selected the monitor will automatically open and close when editable or preview windows are opened and closed, as described in the <ref id="monitor">section about the monitor</ref>.</p>
+</section>
+
+<section>
+<title>Automatic icon picker</title>
+
+<p>This makes the icon picker open and close with editable windows in a similar way to the monitor.</p>
+</section>
+
+<section>
+<title>Browser tool bar</title>
+
+<p>This causes a tool bar to be displayed along the top of browsers.</p>
+</section>
+
+<section>
+<title>Editor panes</title>
+
+<p>If this option is set, the two large dialogue boxes for editing windows and icons will have their main action buttons in panes.</p>
+</section>
+
+<section>
+<title>Editable window tool bar</title>
+
+<p>This causes a tool pane to be attached to the top left of editable windows.</p>
+</section>
+
+<section>
+<title>Editable window furniture</title>
+
+<p>This causes editable windows to be displayed with all the tools (title bar, scroll bars etc) to save you having to repeatedly switch them on and off every time you want to move or scroll the window. A Preview system is provided to see how your windows will actually look.</p>
+</section>
+</section>
+
+<section>
+<title>Editing</title>
+
+<p>The <icon>Editing</icon> section contains a collection of options which control the way that editing behaves.</p>
+
+<section>
+<title>Keyboard short cuts</title>
+
+<p>If selected, browsers and editable windows will claim input focus and respond to keyboard short cuts. The short cuts are shown in the menus if this option is selected.</p>
+</section>
+
+<section>
+<title>Move selection without mouse</title>
+
+<p>If selected, selected icons in editable windows can be nudged with the cursor keys instead of the keys only nudging the mouse pointer. The icons will move by 4&nbsp;OS&nbsp;units at a time. Holding down <key>Shift</key> while nudging will make the steps only 2&nbsp;OS&nbsp;units and holding down <key>Ctrl</key> will make the steps only 1&nbsp;OS&nbsp;unit per keypress.</p>
+</section>
+
+<section>
+<title>Round icon coordinates</title>
+
+<p><cite>WinEd</cite> can round the window coordinates of icons to the recommended number of OS&nbsp;units, to avoid issues with redraw in different screen modes. If <icon>Round icon coordinates</icon> is off, then coordinates will be left unchanged.</p>
+</section>
+
+<section>
+<title>Confirm deletions</title>
+
+<p>If selected, you will be prompted with an error box before deleting any icons or windows.</p>
+</section>
+
+<section>
+<title>Safe icon update</title>
+
+<p>In its default, unticked state, the <icon>Update</icon> button in the <ref id="editicon">Edit Icon dialogue box</ref> will also resize the icon if it is too small for its contents. If ticked, the resizing moves to the non-default <icon>Adjust size</icon> action button.</p>
+</section>
+</section>
+
+<section>
+<title>Display</title>
+
+<p>The <icon>Display</icon> section contains options which affect the visual appearance of the editing process.</p>
+
+<section>
+<title>Always show borders</title>
+
+<p>If selected, all editable icons will be drawn with borders, making it easier to line them up with each other without using the automated features <cite>WinEd</cite> provides.</p>
+</section>
+
+<section>
+<title>Hatch user-drawn windows</title>
+
+<p>If selected, a cross hatch pattern will be displayed in any editable window which needs the task&rsquo;s help to be redrawn.</p>
+</section>
+
+<section id="choices-display-sort">
+<title>Display templates sorted</title>
+
+<p>If selected, the templates displayed in the <window>Browser</window> window will be listed in alphabetical order. The ordering in the physical template file will not be affected.</p>
+</section>
+</section>
+
+<section>
+<title>Misc</title>
+
+<p>Finally, the <icon>Misc</icon> section contains options which don&rsquo;t fit in easily anywhere else.</p>
+
+<section>
+<title>Autoload sprites</title>
+
+<p>When a template file is loaded <cite>WinEd</cite> will load a <file>Sprites</file>, <file>Sprites22</file> or <file>Sprites11</file> file from the same directory if one exists and this option is set.</p>
+</section>
+
+<section>
+<title><cite>FormEd</cite> compatible strings</title>
+
+<p>All strings in template files are supposed to use CR (carriagereturn) terminators. The Wimp&rsquo;s template SWIs, and most applications, work with any control character terminator, but <cite>FormEd</cite> is a notable exception, which insists on CR for most strings. <cite>WinEd</cite> now uses CR by default, but if this option is unticked, it will use only zero terminators, which may be useful if you&rsquo;re programming lazily in C. &smileyface;</p>
+</section>
+
+<section>
+<title>Strict with panes</title>
+<p>If selected, windows with the pane flag set will have certain other flags disabled to avoid unusual behaviour in the target application.</p>
+</section>
+
+<section>
+<title>Save templates sorted</title>
+
+<p>In addition to <ref id="choices-display-sort">visually sorting templates in the browser</ref>, <cite>WinEd</cite> can also sort them when saving a file if this option is selected.</p>
+
+<callout type="warning">
+<p>Selecting this option can result in template files changing when saved, even if no other editing is carried out. It is off by default, and it is recommended to consider the potential effects before switching it on.</p>
+</callout>
+</section>
+</section>
+</chapter>
+
+<chapter id="browsers">
+<title>Browsers</title>
+
+<section>
+<p>Browser is the term for a window which displays a list of the window/dialogue box definitions in a file. Each entry is shown as a small icon depicting a dialogue box (with no scroll bars) or window (with scroll bars) next to its template identifier. The icons change to indicate whether the window is currently open. The windows are displayed either in alphabetical order or in the order they appear in the file, depending on the <icon>Display templates sorted</icon> option in the <ref id="choices"><window>Choices</window> window</ref>.</p>
+
+<p>If you click <mouse>Adjust</mouse> on a browser&rsquo;s close tool <cite>WinEd</cite> will attempt to open the directory the templates were last loaded or saved in, keeping the browser open if you hold <key>Shift</key>. Iconising a browser (<key>Shift</key>-<mouse>Select</mouse> on the close tool) closes any windows which &lsquo;belong&rsquo; to it, thus it can be used for a quick tidyup. De-iconising the browser will re-open the closed windows.</p>
+</section>
+</chapter>
+
+
+<chapter id="mouse">
+<title>Mouse operations in browsers</title>
+
+<section>
+<p>Where the location is given as &lsquo;work area&rsquo; below, it refers to clicking over a part of the window not covered by an icon. Similarly, &lsquo;icon&rsquo; means clicking over an icon; each icon corresponds to a window or dialogue box definition. If neither are specified it refers to any part of the window. Holding down <key>Ctrl</key> while clicking has the effect of forcing the
+action to behave as if the click is over the work area, ignoring any icon.</p>
+
+<table>
+<columns>
+<coldef width="14">Operation</coldef>
+<coldef width="10">Location</coldef>
+<coldef>Effect</coldef>
+</columns>
+<row><col>Select</col><col>Icon</col><col>Exclusively select icon</col></row>
+<row><col>Select</col><col>Work Area</col><col>Clear selection</col></row>
+<row><col>Adjust</col><col>Icon</col><col>Toggle selection state of icon without affecting others</col></row>
+<row><col>Double-click Select</col><col>Icon</col><col>Open window for editing, or close it if already open</col></row>
+<row><col>Double-click Adjust</col><col>Icon</col><col>Open window for preview, or close it if already open</col></row>
+<row><col>Drag Select</col><col>Work Area</col><col>Start dragging rubber box; when complete all icons within the box are selected</col></row>
+<row><col>Drag Select</col><col>Icon</col><col>Start drag &amp; drop operation on current selection, saving it with a filename of <file>Selection</file>.</col></row>
+<row><col>Drag Adjust</col><col></col><col>Start dragging rubber box; all icons inside will have their selection state toggled</col></row>
+<row><col>Menu</col><col></col><col>Open browser menu.</col></row>
+</table>
+</section>
+</chapter>
+
+<chapter id="browsermenu">
+<title>The browser menu</title>
+
+<section>
+<title>Create</title>
+
+<p>Move the pointer right to create a new window. This must contain at least one character, and you will be asked for confirmation if you are about to overwrite any existing windows with the same name.</p>
+</section>
+
+<section>
+<title>Statistics</title>
+
+<p>Opens a statistics window for the file in the browser. This is <ref id="stats">described below</ref>.</p>
+</section>
+</chapter>
+
+<chapter id="save">
+<title>Saving templates</title>
+
+<section>
+<p>If one or more windows are selected the <icon>Selection</icon> button will be selectable. Select this if you only want to save the selected templates. Note that when you save a selection, the fonts for the whole file are saved with it. To remove superfluous fonts load the new file back into <cite>WinEd</cite> and resave.</p>
+</section>
+</chapter>
+
+<chapter id="stats">
+<title>Statistics windows</title>
+
+<section>
+<p>The top row shows the column headings. The Identifier column shows the name of the window, Icons shows how many icons the window contains. Buffer shows the size of the buffer needed to load the window block with <swi>Wimp_LoadTemplate</swi>; similarly Indirected shows the size of buffer needed to hold the icons&rsquo; indirected data. Note that the Buffer size is the size that will be requested by <swi>Wimp_LoadTemplate</swi> and includes the Wimp&rsquo;s scratch buffer for indirected data.</p>
+
+<p>Each row in the main section of the window shows the data described above for each window definition in the file.</p>
+
+<p>The penultimate row shows the total of each column for all the windows in the file.</p>
+
+<p>The bottom row shows, from left to right, the number of windows in the file, the number of different font definitions used, and the size in bytes of the file as stored on disc. Note the latter is generally smaller than the total size needed to load the templates, this is because only the parts of indirected strings which contain data are stored in the file, but the application using the templates needs to reserve space for the maximum possible length of the string.</p>
+</section>
+</chapter>
+
+<chapter id="browsertool">
+<title>The browser tool bar</title>
+
+<section>
+<p>This is a row of tool icons which can optionally be displayed along the top of browser windows. The tools provide short cuts for the functions described above, available from the browser menu. They are (from left to right):</p>
+
+<ul>
+<li><p>Create (opens writable submenu)</p></li>
+<li><p>Select all (Select mouse button) / Clear selection (Adjust mouse button)</p></li>
+<li><p>Save</p></li>
+<li><p>Copy (opens writable submenu)</p></li>
+<li><p>Rename (opens writable submenu)</p></li>
+<li><p>Delete</p></li>
+<li><p>Statistics</p></li>
+</ul>
+</section>
+</chapter>
+
+
+<chapter id="export">
+<title>Exporting icon names</title>
+
+<section>
+<p>The last entry on the selected window(s) submenu of the browser menu leads to a &ldquo;Save as&rdquo; dialogue box for exporting icon names from all of the selected windows in one of several different formats.</p>
+
+<ul>
+<li><p><icon>C Enum</icon> exports a standard C <code>enum ... { ... };</code> structure, where the entries are the icon names and handles.</p></li>
+<li><p><icon>C Typedef</icon> is similar, but exports a C <code>typedef enum { ... } ...;</code> structure instead.</p></li>
+<li><p><icon>C #define</icon> exports a list of C preprocessor <code>#define ... </code> directives, to define constants for the icon names.</p></li>
+<li><p><icon>BASIC</icon> exports a definition for <code>PROCiconnumbers</code>, in which variables are defined for each icon name.</p></li>
+<li><p><icon>Messages</icon> exports a skeleton MessageTrans file, where tokens are set up for the icon names.</p></li>
+</ul>
+
+<p>Most of the exports are as plain text; if <icon>BASIC</icon> is selected, then the file is a correctly formatted BASIC program file.</p>
+
+<p>The names used in the export are the icon names, as given using the <code>N</code> validation string command. If <icon>Include window name</icon> is ticked, then the names will be prefixed by the name of the template containing the identifier. Without window names, an export might look like this:</p>
+
+<code>enum ProgInfo {
+  Title = 1,
+  Purpose = 3,
+  Authors = 5,
+  Version = 7
+};</code>
+
+<p>With the name included, it might look like this:</p>
+
+<code>enum ProgInfo {
+  ProgInfo_Title = 1,
+  ProgInfo_Purpose = 3,
+  ProgInfo_Authors = 5,
+  ProgInfo_Version = 7
+};</code>
+
+<p>The case of the names can be left as it is defined in the templates by selecting <icon>Unchanged</icon>, or converted to <icon>All upper</icon> or <icon>All lower</icon> as required. Characters which are not valid for the target format are converted to underscores.</p>
+
+<p>If <icon>Add prefix</icon> is ticked, a user-supplied prefix can be additionally be added to the start of each name. It is up to the user to ensure that the prefix is valid for the language that they are exporting to.</p>
+
+<p>A couple of format-specific options are also available. When exporting as <icon>C Enum</icon> or <icon>C Typedef</icon>, the <icon>Skip implied numbers</icon> option will omit explicit assignments if they are implied by the position of the line in the enum. For example, this:</p>
+
+<code>enum ProgInfo {
+  OK = 0,
+  Cancel = 1,
+  Upper = 3,
+  Lower = 4,
+  ROT13 = 6
+};</code>
+
+<p>would become this:</p>
+
+<code>enum ProgInfo {
+  OK,
+  Cancel,
+  Upper = 3,
+  Lower,
+  ROT13 = 6
+};</code>
+	
+<p>In <icon>BASIC</icon> mode, <icon>Use real variables</icon> will write the variable names without a trailing <code>%</code> &ndash; making them real instead of integer.</p>
+
+<p>Note that the output of any of these options can be altered by editing <cite>WinEd</cite>&rsquo;s <file>Messages</file> file. See the chapter on <ref id="custom">customisation</ref>.</p>
+</section>
+</chapter>
+
+
+<chapter id="preview">
+<title>Preview windows</title>
+
+<section>
+<p>Since editable windows have their attributes altered to make them easier to edit, it is necessary to have a system of viewing exactly how your finished windows will look and behave. This is what preview windows are for. They can be opened by double clicking <mouse>Adjust</mouse> on a window in a browser or by choosing <menu>Preview</menu> from the browser menu.</p>
+
+<p>Previews can also be used to fine tune the size and appearance of windows in ways which are not practical or possible with editable windows.</p>
+
+<p>It is possible to drag a preview window by dragging an empty part (ie. not covered by an icon) of its work area while pressing <key>Ctrl</key>. Using <mouse>Select</mouse> has the same effect as dragging the title bar (move window) and <mouse>Adjust</mouse> is the same as dragging the adjust size tool (resize window).</p>
+
+<p>It may also be necessary to see how windows fit with each other (eg. for panes) without superfluous tools.</p>
+
+<p>Once you are satisfied with the size and position of a preview window remember to store the position and size with the preview menu (see below), otherwise they will be reset next time you open the window.</p>
+</section>
+</chapter>
+
+
+<chapter id="previewmenu">
+<title>The preview menu</title>
+
+<section>
+<title>Store position</title>
+
+<p>Stores the current onscreen size and position of the window in the template definition.</p>
+</section>
+
+<section>
+<title>Store icon states</title>
+
+<p>Stores the selection states of the window&rsquo;s icons in the template definition. However, it is better practice to leave any selection to the application which finally uses the templates.</p>
+</section>
+</chapter>
+
+<chapter id="edit">
+<title>Editable windows</title>
+
+<section>
+<p>The changes you make to editable windows directly affect the template data, including moving and resizing. Editable windows are optionally always shown with all tools (title bar, scroll bars etc) to make editing easier. All icons are given the same button type to make them selectable. This means that they do not appear exactly as they will when used in your program. (In particular, many of the cosmetic changes introduced in RISC&nbsp;OS Select will not be shown.) To see how your windows will really look use the preview system.</p>
+
+<p>Many of the following sections refer to dialogue boxes; each of these is described in its own section.</p>
+</section>
+</chapter>
+
+
+<chapter id="mouseedit">
+<title>Mouse operations in editable windows</title>
+
+<section>
+<p>These are summarised below with notes. Note also that all mouse operations in editable windows can be modified in the same way with the <key>Ctrl</key> key. This has the effect of making the operation act as if over an empty bit of work area instead of over an icon. All irreversible drags (ie excepting rubber boxes) can be cancelled by pressing <key>Esc</key> when you release the mouse.</p>
+
+<p>Note that moving and resizing icons by dragging will always round the result to a multiple of 4&nbsp;OS&nbsp;units. For more precise control when moving icons, you can use the cursor keys instead (together with the <key>Ctrl</key> and <key>Shift</key> modifiers. Small changes to the size of icons must be done via the <window>Coordinates</window> dialogue box.</p>
+
+<table>
+<columns>
+<coldef width="14">Operation</coldef>
+<coldef width="14">Location</coldef>
+<coldef>Effect</coldef>
+</columns>
+<row><col>Select</col><col>Work Area</col><col>Clear selection</col></row>
+<row><col>Select</col><col>Non-Selected Icon</col><col>Exclusively select icon</col></row>
+<row><col>Menu</col><col></col><col>Open editable window menu</col></row>
+<row><col>Adjust</col><col>Non-Selected Icon</col><col>Select icon without affecting others</col></row>
+<row><col>Adjust</col><col>Selected Icon</col><col>Deselect icon</col></row>
+<row><col>Drag Select</col><col>Work Area</col><col>Drag a rubber box to select icons<ref id="note-1"/></col></row>
+<row><col>Drag Select</col><col>Icon</col><col>Move (local) / Copy (export) icon<ref id="note-2"/></col></row>
+<row><col>Drag Adjust</col><col>Work Area</col><col>Drag a rubber box to invert the selection state of icons<ref id="note-1"/></col></row>
+<row><col>Drag Adjust</col><col>Icon</col><col>Resize icon, moving the edge nearest the pointer<ref id="note-3"/></col></row>
+<row><col>Drag Shift-Adjust</col><col>Icon</col><col>Resize icon, moving the corner nearest the pointer<ref id="note-3"/></col></row>
+<row><col>Drag Shift-Select</col><col>Icon</col><col>Copy (local)/Move (export) icon<ref id="note-2"/></col></row>
+<row><col>Drag Shift-Ctrl-Select</col><col></col><col>Move window as if dragging title bar</col></row>
+<row><col>Drag Shift-Ctrl-Adjust</col><col></col><col>Resize window as if dragging adjust size tool</col></row>
+<row><col>Double click Select</col><col>Work Area</col><col>Edit window (open dialogue)<ref id="note-4"/></col></row>
+<row><col>Double click Select</col><col>Icon</col><col>Edit icon(s) (open dialogue)<ref id="note-5"/></col></row>
+<row><col>Double click Adjust</col><col>Work Area</col><col>Edit work area (open dialogue)<ref id="note-4"/></col></row>
+<row><col>Double click Adjust</col><col>Icon</col><col>Minimise icon<ref id="note-6"/></col></row>
+<row><col>Double click Shift-Select</col><col>Work Area</col><col>Edit window title icon (open dialogue)<ref id="note-4"/></col></row>
+</table>
+
+<footnote id="note-1"><p>This is similar to the same type of drag in browsers.</p></footnote>
+
+<footnote id="note-2"><p>This follows the conventions of Drag &amp; Drop as outlined in the <cite>Style Guide</cite>. The unmodified drag and <key>Shift</key>-modified drag have the opposite effect depending on whether the drag is local (finishing in the same window as it started) or an export (to a different window). In the local case an unmodified drag moves the icon and a <key>Shift</key>-drag copies it, in the export case an unmodified drag copies the icon, a <key>Shift</key>-drag effectively moves the icon by making a copy in the destination window and deleting the original.</p>
+
+<p>If the pointer leaves the window during a drag, then the window is scrolled if possible; if the drag turns out to be an export, then the scroll bars are reset to their original positions. The <key>Shift</key> key is polled at the start of the drag, not the end.</p></footnote>
+
+<footnote id="note-3"><p>Resize drags are limited by the window&rsquo;s visible area.</p></footnote>
+
+<footnote id="note-4"><p>These operations open the relevant dialogue box.</p></footnote>
+
+<footnote id="note-5"><p>See <ref id="select-edit"/> below.</p></footnote>
+
+<footnote id="note-6"><p>This minimises both the width and height of an icon; minimisation makes the icon just large enough to display its contents and is described in more detail in the section about the <ref id="resize">Resize icons dialogue box</ref>.</p></footnote>
+</section>
+</chapter>
+
+
+<chapter id="select">
+<title>Selected icon(s) submenu</title>
+
+<section>
+<title>Delete</title>
+
+<p>Deletes the selected icon(s). Deleted icons are entirely removed from the template; any icons with higher numbers are renumbered to &ldquo;fill the gap&rdquo;. The <key>Delete</key> key (in addition to <key>Ctrl-K</key>) can be used to delete an icon using the keyboard.</p>
+</section>
+
+<section>
+<title>Renumber nn</title>
+
+<p>Renumbers the selection, starting from the number shown. A different number can be entered by moving the pointer right. Groups of icons can be renumbered as well as single icons. When renumbering a group they are kept in the same order but are made consecutive, starting from the new number. After renumbering the number in the menu and dialogue box is updated to the number following the new number of the last renumbered icon.</p>
+</section>
+
+<section>
+<title>Copy</title>
+
+<p>This menu item leads to a submenu where you can choose to copy the current selection of icons either up, down, left or right.</p>
+</section>
+
+<section id="select-edit">
+<title>Edit...</title>
+
+<p>If only one icon is selected, the Edit icon dialogue box is opened, if more than one is selected, the <ref id="editicons">Edit multiple icons dialogue</ref> is opened instead.</p>
+</section>
+</chapter>
+
+<chapter id="edittool">
+<title>The editable window tool bar</title>
+
+<section>
+<p>This is optionally attached to the topleft edge of editable windows and provides short cuts for the menu functions described above. The tools are (left to right, top to bottom):</p>
+
+<ul>
+<li><p>Edit window...</p></li>
+<li><p>Edit title...</p></li>
+<li><p>Work area...</p></li>
+<li><p>Visible area...</p></li>
+<li><p>Delete</p></li>
+<li><p>Renumber (<mouse>Select</mouse> opens dialogue box, <mouse>Adjust</mouse> renumbers with value currently shown in menu)</p></li>
+<li><p>Align...</p></li>
+<li><p>Space out...</p></li>
+<li><p>Resize...</p></li>
+<li><p>Coords...</p></li>
+<li><p>Frame...</p></li>
+<li><p>Select all (<mouse>Select</mouse> mouse button) / Clear selection (<mouse>Adjust</mouse> mouse button)</p></li>
+</ul>
+</section>
+</chapter>
+
+
+<chapter id="editwindow">
+<title>Edit window dialogue box</title>
+
+<section>
+<p>Most of the option buttons in this dialogue box correspond directly to window flags documented in the <cite>Programmer&rsquo;s Reference Manual</cite> and other books. The names of the colours are abbreviated to save space. They are:</p>
+
+<table>
+<columns>
+<coldef width="11">Label</coldef>
+<coldef>Meaning</coldef>
+</columns>
+<row><col>Title F.</col><col>Title bar Foreground.</col></row>
+<row><col>Title B.</col><col>Title bar Background.</col></row>
+<row><col>Work F.</col><col>Work area Foreground.</col></row>
+<row><col>Work B</col><col>Work area Background.</col></row>
+<row><col>Scr. Out.</col><col>Scroll bar Outer.</col></row>
+<row><col>Scr. In.</col><col>Scroll bar Inner.</col></row>
+<row><col>Input Focus</col><col>Input focus (the colour the title bar changes to when the window has input focus).</col></row>
+</table>
+</section>
+
+<section>
+<title>Default</title>
+<p>Sets all the colours to their recommended default values. This button doesn&rsquo;t close the dialogue box.</p>
+</section>
+
+<section>
+<title>GCOL colours</title>
+
+<p>If set the above colours are taken to be GCOL values. This was originally intended for 256 colour modes and should not really be used. <cite>WinEd</cite> only supports colours in the usual range of 0-15 (and 255/1 for
+transparent). This option is unavailable if <icon>24bit title colour</icon> is chosen.</p>
+</section>
+</chapter>
+
+
+<chapter id="goto">
+<title>Goto icon menu option</title>
+
+<section>
+<p>Moving the mouse to the right over the <menu>Goto icon</menu> menu option will allow you to enter an icon name or number. If a corresponding icon is found in the current viewer the mouse will be placed in the centre of the icon (even if it&rsquo;s not currently showing on screen).</p>
+</section>
+</chapter>
+
+
+<chapter id="monitor">
+<title>The monitor</title>
+
+<section>
+<p>The monitor shows the following information about any window/icon under the pointer, provided it is in a template loaded in <cite>WinEd</cite>.</p>
+</section>
+
+<section>
+<title>Window</title>
+
+<p>The identifier of the window under the pointer. A trailing * means it is an editable window, otherwise it is a preview window.</p>
+</section>
+
+<section>
+<title>Icon no.</title>
+
+<p>The number of the icon under the pointer, or &ldquo;Work area&rdquo;.</p>
+</section>
+
+<section>
+<title>Icon name</title>
+
+<p>This displays the icon name (if present), as given by using the <code>N</code> validation option in an indirected icon&rsquo;s validation string.</p>
+</section>
+
+<section>
+<title>Position</title>
+
+<p>The work area coordinate of each edge of the icon.</p>
+</section>
+
+<section>
+<title>Size</title>
+
+<p>The size of the icon, shown as <maths>width</maths> &times; <maths>height</maths>.</p>
+
+<p>If the pointer is over an empty bit of work area instead of an icon, the dimensions refer to the visible portion of the work area. This information is generally the most useful, it can be used to accurately
+position icons near the visible edge of a window.</p>
+
+<p>The monitor can be opened from the icon bar menu and closed with its close icon as a manual override, but it also opens automatically (this is optional) when any editable or preview windows are opened and closes
+when no editable or preview windows are open.</p>
+</section>
+</chapter>
+
+<chapter id="creatingicons">
+<title>Creating icons: the Icon picker</title>
+
+<section>
+<p>The icon picker is a convenient alternative to creating icons from a menu. You simply drag one or more icons from the picker to where you want them in an editable window. It behaves rather like an editable window, but most of the functions are suppressed. The only action which can be carried out, apart from making selections, is to export icons from it to other editable windows.</p>
+
+<p>Like the monitor the icon picker can be opened from the icon bar menu and closed with its close icon as a manual override, but it also opens automatically when any editable or preview windows are opened and closes when no editable or preview windows are open.</p>
+
+<p>The icon picker contains examples of most of the common types of icon, but it can be customised. See the section on <ref id="custom">Customising <cite>WinEd</cite></ref>.</p>
+</section>
+</chapter>
+
+
+<chapter id="workarea">
+<title>Work area dialogue box</title>
+
+<section>
+<p>The work area coordinates are shown in formation. Note that it is usual to have the origin of the window (0) at the top, and the bottom coordinate is negative.</p>
+
+<p>The bumper buttons cause the sizes to change in units of 4, unless the <key>Shift</key> or <key>Ctrl</key> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p> 
+</section>
+
+<section>
+<title>Minimise</title>
+
+<p>This sets the values in the work area coordinate fields to the work area coordinates of the portion of the window currently visible. It is not recommended that the origin (X0 &amp; Y1) coordinates are set to any value other than zero, hence the Keep origin button is provided.</p>
+</section>
+
+<section>
+<title>Keep origin</title>
+
+<p>This has a similar effect to the <icon>Minimise</icon> button, but the origin (X0 &amp; Y1) coordinates are set to zero.</p>
+</section>
+
+<section>
+<title>Minimum size</title>
+
+<p>These icons set the minimum size (both values are positive) the window can be dragged to with the Adjust size tool. Zero values mean the size will be determined by the size of the title bar and window tools. The <icon>Maximise</icon> button sets the values to the current size of the window.</p>
+</section>
+</chapter>
+
+<chapter id="visiblearea">
+<title>Visible area dialogue box</title>
+
+<section>
+<p>This allows you to specify the position, size and scroll offsets of a window as it will appear on screen when first opened. All values are usually positive, except for the vertical scroll offset (V Scroll), which should be negative.</p>
+
+<p>The bumper buttons cause the sizes to change in units of 4, unless the <key>Shift</key> or <key>Ctrl</key> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p> 
+</section>
+</chapter>
+
+<chapter id="editicon">
+<title>Edit icon/title dialogue box</title>
+
+<section>
+<p>Most of the entries in this window correspond to icon flags and properties described in the <cite>Programmer&rsquo;s Reference Manual</cite> or other books.</p>
+</section>
+
+<section>
+<title>Test/sprite</title>
+
+<p>If the icon contains a text or sprite, enter the text or sprite name here.</p>
+</section>
+
+<section>
+<title>Validation</title>
+
+<p>You can enter a validation string here for indirected text icons.</p>
+</section>
+
+<section>
+<title>Max text length</title>
+
+<p>Enter the maximum allowed length (including terminator) of the text for indirected text icons. This can be set to the length of the string in the <icon>Text/sprite</icon> field by clicking the <icon>Minimise</icon> button.</p>
+</section>
+
+<section>
+<title>Outline font</title>
+
+<p>If set the icon uses the outline font shown in the field below; fonts can be chosen from a menu by clicking the <mouse>Menu</mouse> button. The height can be entered in points (decimals are allowed). The Aspect ratio is the ratio of width to height expressed as a percentage.</p>
+
+<p>Outline fonts do not seem to work in icons with validation strings containing the L command.</p>
+</section>
+
+<section>
+<title>Validate</title>
+
+<p>Font handles overwrite the colour fields in icon flags, therefore the colour data is held in an F command in the validation string. The <icon>Validate</icon> button reads the colours from the fields in the dialogue box and ensures the validation string contains the correct L command, forcing the indirected flag on if necessary.</p>
+</section>
+
+<section>
+<title>Update / Don&rsquo;t resize / Adjust size</title>
+
+<p>The two action buttons both update the template data with settings from the dialogue box. If the second button is <icon>Don&rsquo;t resize</icon>, then <icon>Update</icon> will also resize the icon if it is currently too small to display its data (see <window>Resize icons</window> dialogue box). If the second button is <icon>Adjust size</icon>, which can be configured by the <icon>Safe icon update</icon> option in the <ref id="choices"><window>Choices</window> dialogue</ref>, then <icon>Update</icon> will only store any changed values, while <icon>Adjust size</icon> will also perform any resizing which is required.</p>
+</section>
+</chapter>
+
+<chapter id="editicons">
+<title>Edit multiple icons dialogue box</title>
+
+<section>
+<p><cite>WinEd</cite> can apply changes to a subset of the icon flags to a selection of icons simultaneously; only those which do not affect icon data or outline fonts can be changed for a multiple selection.</p>
+
+<p>For simple on/off flags you can choose one of the radios <icon>Y</icon>, <icon>N</icon> or <icon>?</icon>, meaning set the flag for all selected icons, reset it, or leave this flag alone for each icon respectively. For <icon>ESG</icon> and <icon>Button</icon> type tick the option button on the left to enable a value to be entered for all selected icons, otherwise they will not be affected.</p>
+</section>
+</chapter>
+
+<chapter id="align">
+<title>Align dialogue box</title>
+
+<section>
+<p>This is opened from an editable window menu tree. It is for aligning groups of icons with each other. The top group of radio icons determines along which edge the icons will be aligned. If only one icon is selected it can be centred in its window.</p>
+</section>
+
+<section>
+<title>Left</title>
+
+<p>The icons will all share the same left (minimum x) coordinate.</p>
+</section>
+
+<section>
+<title>H centre</title>
+
+<p>The icons will be arranged so that half their width is each side of a notional vertical midline. This midline is calculated from the leftmost or rightmost midpoint of all the icons, depending on whether the <icon>Move left</icon> or <icon>Move right</icon> icon is selected.</p>
+</section>
+
+<section>
+<title>Right</title>
+
+<p>The icons will all share the same right (maximum <maths>X</maths>) coordinate.</p>
+</section>
+
+<section>
+<title>Top</title>
+
+<p>The icons will all share the same top (maximum <maths>Y</maths>) coordinate.</p>
+</section>
+
+<section>
+<title>V centre</title>
+
+<p>The icons will be arranged so that half their height is each side of a notional horizontal midline. This midline is calculated from the topmost or bottommost midpoint of all the icons, depending on whether the <icon>Move down</icon> or <icon>Move up</icon> icon is selected.</p>
+</section>
+
+<section>
+<title>Bottom</title>
+
+<p>The icons will all share the same bottom (minimum <maths>Y</maths>) coordinate.</p>
+</section>
+
+<section>
+<title>Group box &amp; label</title>
+
+<p>This is only applicable if exactly two icons are selected in the editable window and the lowernumbered of them has a border and no text and the other has text and no border. The icons will be aligned so that the label&rsquo;s left edge 32&nbsp;OS&nbsp;units to the right of the left edge of the group box and its bottom edge is 24&nbsp;OS&nbsp;units below the top of the group box (ideal for labels 44&nbsp;OS&nbsp;units high).</p>
+</section>
+
+<section>
+<title>Move / Resize</title>
+
+<p>Icons can either be moved or resized to achieve alignment. If <icon>Move</icon> is chosen, icons are moved without changing their size. If <icon>Resize</icon> is chosen, only the edge that has to be aligned is moved, thus resizing the icon; icons will not be allowed to become too small to be selected.</p>
+</section>
+
+<section>
+<title>Move left/down/label / Move right/up/box</title>
+
+<p>These determine which way the icons will be moved or resized. For instance if one of the horizontal alignments is selected above and Move left is selected all the icons will be aligned with the originally leftmost icon. In the special case of Group box &amp; label these options determine whether the label or the box is moved.</p>
+</section>
+
+<section>
+<title>Centre in window</title>
+
+<p>If this is selected instead of one of the above, the centre of the window is chosen as the reference point instead of one of the icons, and it only allows alignment of centres, not edges.</p>
+</section>
+</chapter>
+
+
+<chapter id="space">
+<title>Space out dialogue box</title>
+
+<section>
+<p>Opened from an editable window menu tree, the Space out dialogue box can either be used to space a group of icons out from each other or a single icon from the edge of the visible area.</p>
+
+<p>The icons are sorted into order depending on their horizontal or vertical positions and spaced out from each other by the number of OS units entered in the Gap icon. The direction radio icons determine which icon is used as the &lsquo;anchor&rsquo; &ndash; eg. if you choose <icon>From left</icon> the leftmost icon stays still and all the others are spaced out to its right.</p>
+
+<p>If only a single icon is selected it is spaced out from the edge of the visible area corresponding to the direction radio icons.</p>
+</section>
+</chapter>
+
+
+<chapter id="resize">
+<title>Resize icons dialogue box</title>
+
+<section>
+<p>This dialogue box is for changing the size of icons, either making a group all the same size, making a single icon or group just large enough to display its data, or a single icon a specified size. The resizing is carried out on the right and top edges, leaving the bottom left corner fixed.</p>
+</section>
+
+<section>
+<title>Minimise</title>
+
+<p>These action buttons change the width and/or height of the selected icon(s), making it just large enough to display its data, using fairly intelligent rules.</p>
+
+<p>The size needed for text (taking outline fonts into account) is first calculated, adding a few pixels to each side to satisfy <cite>Style Guide</cite> conventions. Then the size needed for any sprite is calculated if possible. These two sizes are combined, taking into account the icon&rsquo;s alignment flags. If there is a border, sufficient pixels are added, depending on the type of border. If the icon still has a zero size it is made just large enough to click with the mouse.</p>
+
+<p>Icons with <code>L</code> validation commands can now also be minimised fairly sensibly. The program ensures that the current width is sufficient to display the longest word, then makes the icon just the right size to preserve the current format of the text. This does not take outline fonts into account &ndash; they do not work with the <code>L</code> command in RISC&nbsp;OS&nbsp;3.1 anyway.</p>
+
+<p>Versions of <cite>WinEd</cite> from 2.12 onwards ensure that icons that use the system font are also large enough for the current RiscPC Desktop font. If the Desktop font is the System font or you are using RISC&nbsp;OS&nbsp;3.1 then 12pt Homerton Medium is used. Note that this does not apply to <code>L</code> validation, but it is unlikely that an outline font will take more room than the System font for long strings.</p>
+</section>
+
+<section>
+<title>Make same size</title>
+
+<p>This only applies to multiple selections. All the icons can be set to the same width or height, either taking on the width of the narrowest or the widest or the height of the tallest or shortest.</p>
+</section>
+
+<section>
+<title>Excluding borders</title>
+
+<p>If this option is set while making a group of icons the same size as each other, only the size of the icons inside their borders is made the same, so icons with wider borders will be larger overall. This is most useful for sets of action buttons where the default action button is the same size as the others with an additional trench around it.</p>
+</section>
+</chapter>
+
+
+<chapter id="coords">
+<title>Coordinates dialogue box</title>
+
+<section>
+<p>This allows you to enter the position (relative to the window&rsquo;s work area) and size coordinates of an icon. The Top entry is usually negative.</p>
+
+<p>The bumper buttons cause the sizes to change in units of 4, unless the <key>Shift</key> or <key>Ctrl</key> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p> 
+</section>
+</chapter>
+
+<chapter id="frame">
+<title>Frame dialogue box</title>
+
+<section>
+<p>This is for placing a frame around the selected icons. The frame can consist of the window&rsquo;s visible area or an empty bordered icon (group box) with a lower number than any of the selected icons.</p>
+
+<p>The bumper buttons cause the sizes to change in units of 4, unless the <key>Shift</key> or <key>Ctrl</key> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p> 
+</section>
+
+<section>
+<title>Gap</title>
+<p>Enter the minimum gap (OS&nbsp;units) to leave between the frame and any icons inside it. This varies depending on whether the frame is the window&rsquo;s visible area (816 looks best) or an icon with a 3D border (usually with <code>R4</code> validation, 20 or more looks better).</p>
+</section>
+
+<section>
+<title>Visible area</title>
+
+<p>If selected the frame is made by resizing the window&rsquo;s visible area to fit the selection. The window&rsquo;s work area must be large enough to accommodate it.</p>
+</section>
+
+<section>
+<title>Icon</title>
+
+<p>If selected the frame is made by moving and resizing the icon specified in the adjacent writable field to make a group box. It must satisfy the requirements outlined above.</p>
+</section>
+
+<section>
+<title>Allow for label</title>
+
+<p>Group boxes often have a label at the top. If this option is selected an extra gap (read from the writable icon, the default is 24&nbsp;OS&nbsp;units) is left between the top of the frame and the topmost selected icon to
+make room for a text label.</p>
+</section>
+
+<section>
+<title>Top, Left, Right, Bottom</title>
+
+<p>Only the frame&rsquo;s edges indicated by which of these icons are selected are moved (unless the frame would become too small or have negative size). This is useful because frames are often initially placed in relation to objects outside them and resized when their contents have been entered.</p>
+</section>
+</chapter>
+
+
+<chapter id="hints">
+<title>Hints &amp; tips</title>
+
+<section>
+<title>Size of dialogue boxes</title>
+
+<p>When designing dialogue boxes and non-scrollable windows, try to make sure they will fit on screen in as many modes as possible. Mode&nbsp;22 support (768 &times; 576 OS&nbsp;units) is not strictly necessary, but you should
+at least fit your windows on a Mode&nbsp;27 screen (1280 &times; 960 OS&nbsp;units). The <cite>Style Guide</cite> recommends a maximum of 800 &times; 600 OS&nbsp;units for dialogue boxes.</p>
+</section>
+
+<section>
+<title>Positioning icons</title>
+
+<p>Icons with similar functions should be the same size as each other and aligned. When aligning icons, some of which have double borders (eg. <code>R6</code> validation), align with the inner border (use the centre alignment
+options). If a dialogue box has several groups of icons (eg two or more groups of radio icons with two or more different ESGs) place group boxes around them.</p>
+
+<p>Place action icons, particularly the default action and <icon>Cancel</icon> buttons aligned up the side or preferably along the bottom of dialogue boxes. Position the default action button at the bottom right.</p>
+
+<p>Your dialogue boxes will look more attractive the more you space out icons, up to a point. The larger the dialogue box, the more space you should leave. The <cite>Style Guide</cite> suggests a gap of at least 8&nbsp;OS&nbsp;units between icons, but 16 or more generally looks far better.</p>
+
+<p>Note that <cite>WinEd</cite>&rsquo;s window and icon editing dialogue boxes are not spaced out very much, in this case it was considered more important to make them as small as possible. It is also unconventional to have scrolling dialogue boxes unless they are a pane with the default action and <icon>Cancel</icon> buttons in the parent window so they are also visible. Panes were used in <cite>WinEd</cite>&nbsp;1.00, but were too restrictive.</p>
+</section>
+
+<section>
+<title>Writable icons</title>
+
+<p>Use a validation string containing <code>Kta</code>, not <code>Ktar</code> as the <cite>Style Guide</cite> suggests. Due to a bug in RISC&nbsp;OS&nbsp;3.1 this must be the last entry in a validation string to work correctly.</p>
+</section>
+
+<section>
+<title>Outline fonts</title>
+
+<p>Outline fonts in icons should generally be avoided. Apart from the latest versions of RISC&nbsp;OS now being able to automatically use outline fonts in all icons there are a couple of bugs.</p>
+
+<p>In RISC&nbsp;OS&nbsp;3.1 using an outline font in the title bar of a window causes a terrible mess if a customised title bar (eg. <cite>NewLook</cite>&rsquo;s 3D one) is used.</p>
+
+<p>In RISC&nbsp;OS&nbsp;3.5 using an outline font in slabbing icons (<code>R5</code> and <code>R6</code> validation) causes the default desktop font to be reset or disappear or something.</p>
+
+<p>In RISC&nbsp;OS&nbsp;3.1 at least, outline fonts seem to be incompatible with <code>L</code> validation commands.</p>
+</section>
+
+<section>
+<title>Modifying other people&rsquo;s templates</title>
+
+<p>Be careful when modifying other people&rsquo;s templates; always make sure you have a backup of the original file. Some programs may object to changes in their template files &ndash; eg. adding outline fonts, changing the order of windows in the file, and increasing the amount of indirected data. Never renumber any icons.</p>
+</section>
+
+<section>
+<title>Deleting icons</title>
+
+<p>Unlike many template editors, when deleting an icon in <cite>WinEd</cite> its definition is entirely removed from the template, subsequent icons are renumbered to &lsquo;fill the gap&rsquo;.</p>
+
+<p>The Delete flag is best avoided: having deleted icons in your templates can cause confusion when using other template editors.</p>
+</section>
+</chapter>
+
+
+<chapter id="custom">
+<title>Customising <cite>WinEd</cite></title>
+
+<section>
+<p>As well as the <window>Choices</window> dialogue box <cite>WinEd</cite> can be customised by editing its own template file; this is the file called <file>Templates</file> within the <cite>WinEd</cite> resources directory.</p>
+
+<p><cite>WinEd</cite> can not handle outline fonts in its own template file, but changing the order of windows and the amount of indirected data is not a problem.</p>
+
+<p>Some windows you may wish to customise are listed here</p>
+</section>
+
+<section>
+<title>Icon picker</title>
+
+<p>You can put any icons you want in here (but no outline fonts), depending on which icons you like to create most often. Its initial position depends on its template.</p>
+</section>
+
+<section>
+<title>Monitor</title>
+
+<p>The monitor&rsquo;s initial position depends on its template.</p>
+</section>
+
+<section>
+<title>Edit window dialogue box / Edit icon dialogue box</title>
+
+<p>The shape, size and initial positions of these dialogue boxes may be inconvenient to you so you may wish to rearrange the icons. Do not renumber or delete any icons; if you want to get rid of any nonfunctional icons such as group boxes and labels, temporarily enlarge the work area and move them out of the way. Remember you can turn the command button panes off in Choices if you want to reshape the window.</p>
+</section>
+
+<section>
+<title>Tool panes</title>
+
+<p>You can customise these by editing the <name>WinTools</name> and <name>BrowTools</name> templates and/or the <file>Sprites</file> and <file>Sprites22</file> files. Note that you will have to disable the Editable window tool icons option to avoid inadvertently resizing the current browser tool bar while editing it. You can make these panes any size you like, within reason. If you design some that you think are better than mine, which are perhaps a little small, please let me know.</p>
+
+<p>Many of the default values shown in writable icons etc in the dialogue boxes are determined by the values in <cite>WinEd</cite>&rsquo;s templates.</p>
+
+<p>If you alter <cite>WinEd</cite>&rsquo;s templates be sure to back up the original file; <cite>WinEd</cite> must be distributed with this <file>Templates</file> file.</p>
+</section>
+
+<section>
+<title>Exporting icon names</title>
+
+<p>The format in which icon names are exported is highly configurable by editing the <file>Messages</file> file. For example, look at the export template messages as supplied; you should find them at the bottom of the file:</p>
+
+<code># C typedef enum { ... } ...; style output.
+
+ExportTypedefStart:typedef enum {
+ExportTypedefIcon:  @pf[@wn_]@in[ = @ih]
+ExportTypedefSep:,
+ExportTypedefEnd:} @wn_icons;</code>
+
+<p>There are five groups, whose names start <code>ExportEnum...</code>, <code>ExportTypedef...</code>, <code>ExportDefine...</code>, <code>ExportBasic...</code> and <code>ExportMessages...</code> respectively, covering the formatting for each output format.</p>
+
+<p>The <code>...Start</code> and <code>...End</code> tokens are used at the start and end of a window block, with <code>...Icon</code> being written for each icon name to be output. For all but the last icon to be written, the <code>...Sep</code> token is added to the end of the line.</p>
+
+<p>In addition, there are <code>...Preamble</code> and <code>...Postamble</code> tokens which are written at the start and end of the file. In BASIC, these are used to write the <code>DEF PROCiconnumbers</code> and <code>ENDPROC</code> lines.</p>
+
+<p>Finally, <code>ExportPreamble</code> and <code>ExportPostamble</code> tokens provide content for start-of-file and end-of-file comments respectively, while and <code>ExportWindow</code> allows a comment to be written before each window&rsquo;s icons. The same tokens are used in all output formats, with appropriate comment marks around them.</p>
+
+<p>All of the tokens are optional, and will simply be omitted from the output if not present.</p>
+
+<p>The tokens follow the standard MessageTrans format, with the string up to and including the colon at the beginning of each line being the token used by the <cite>WinEd</cite> to look up the message. Following that is a format string, which uses a slightly different format from the standard MessageTrans one. The line will be output to the file, with the following parameters being substituted:</p>
+
+<table>
+<columns>
+<coldef width="8">Sequence</coldef>
+<coldef>Purpose</coldef>
+</columns>
+<row><col><code>@wn</code></col><col>The window template name</col></row>
+<row><col><code>@in</code></col><col>The icon name</col></row>
+<row><col><code>@ih</code></col><col>The icon handle, or number</col></row>
+<row><col><code>@pf</code></col><col>The user-supplied line prefix</col></row>
+<row><col><code>@dt</code></col><col>The date and time of the export operation</col></row>
+<row><col><code>@vs</code></col><col>The appropriate BASIC variable suffix (% or nothing)</col></row>
+</table>
+
+<p>Note that not all substitutions will be valid in all contexts.</p>
+
+<p>The format string can be divided up into blocks using the <code>[</code> and <code>]</code> characters, which can be nested if required. A block, and any blocks nested inside it, will only be included if one of the substitutions contained within it is able to be applied.</p>
+
+<code>@pf[@wn_]@in[ = @ih]</code>
+
+<p>In this example, the <code>@wn_</code> text will only be included if the window name (the <code>@wn</code> value) is relevant and available. This ensures that the underscore separator is also omitted if window names are not included. In a similar way, the <code> = @ih</code> will all be omitted if the icon handle isn&rsquo;t being included (if <code>Skip implied numbers</code> is taking effect). Amongst many other combinations. this line might produce <code>ProgInfo_Title = 1</code>, or <code>Title = 1</code>, or <code>Title</code>, or perhaps <code>PrefixProgInfo_Title</code> depending upon the options used for the export.</p>
+
+<p>You need not use all the substitutions available for any message.</p>
+
+<p>The backslash character can be used to include additional escape sequences:</p>
+
+<table>
+<columns>
+<coldef width="8">Sequence</coldef>
+<coldef>Purpose</coldef>
+</columns>
+<row><col><code>\n</code></col><col>Start a new line (in comments, this will add the necessary continuation characters)</col></row>
+<row><col><code>\t</code></col><col>Insert a tab character.</col></row>
+<row><col><code>\xXX</code></col><col>Insert the character whose code is XX in hex.</col></row>
+<row><col><code>\\</code></col><col>Insert a literal \</col></row>
+<row><col><code>\[</code></col><col>Insert a literal [</col></row>
+<row><col><code>\]</code></col><col>Insert a literal ]</col></row>
+<row><col><code>\@</code></col><col>Insert a literal @</col></row>
+</table>
+</section>
+</chapter>
+
+
+<chapter id="versions">
+<title>Version history</title>
+
+<section>
+<p>The version history of <cite>WinEd</cite>, back as far as version 3.23, is as follows. Change logs prior to 2020 are not currently available.</p>
+</section>
+
+<section>
+<title>Test build</title>
+
+<p>This test build has been made available for feedback from users.</p>
+
+<callout type="warning">
+
+<p>In <cite>WinEd</cite>&nbsp;3.27, the configuration file format has changed from binary to plain text, in order to enable options to be more easily added, changed and removed in the future without any further backwards compatibility issues.</p>
+
+<p>This version will load existing saved options from earlier versions of <cite>WinEd</cite>, but choices saved from it will not load into earlier versions. It is therefore strongly advised to take a backup copy of the files from within the <file>Choices:WinEd</file> folder if you plan to return to an earlier version of the software.</p>
+</callout>
+
+<ul>
+<li><p>A new <icon>Save templates sorted</icon> option to store the windows in alphabetical order in the file.</p></li>
+<li><p>Improvements to the template sorting algorithm used in <icon>Display templates sorted</icon>.</p></li>
+<li><p>Improvements to the template identifier sanity checks when loading files.</p></li>
+<li><p>Improvements to the sanity checks on the reserved fields in file headers, so that invalid files from older third-party editors can be loaded with user agreement.</p></li>
+<li><p>The filetypes of possible application sprite files (those found by proximity to the templates file) are now checked before loading them, to avoid bad sprite file errors.</p></li>
+<li><p>Choices are now saved in textual format, to simplify future changes and additions to the file contents.</p></li>
+<li><p>Improvements to the way that <variable>Choices$Path</variable> and <variable>Choices$Write</variable> are used.</p></li>
+<li><p>A <icon>Default</icon> button in the <window>Choices</window> dialogue to reset the options to their defaults.</p></li>
+<li><p>The <icon>Round icon coordinates</icon> option has returned to <window>Choices</window>, and is no longer paired with <icon>Display templates sorted</icon>.</p></li>
+<li><p>Icon dimensions in the Monitor are updated when an icon is resized using an <key>Adjust</key>-double-click.</p></li>
+<li><p>Website links have been updated to current download page, to avoid issues with RISC&nbsp;OS.info being offline.</p></li>
+<li><p>Overhaul of the documentation, including a replacement of the text version of the manual with one matching the HTML documentation and the addition of the recent version history.</p></li>
+</ul>
+</section>
+
+<section>
+<title>Version 3.26 (29 August 2020)</title>
+
+<ul>
+<li><p>Fix a problem when loading templates whose names contain a % character, introduced in 3.20.</p></li>
+<li><p>Fix problem which left a window icon in the file browser when deleting an open window, introduced in 3.10.</p></li>
+<li><p>Fix problems with the handling of unsaved files during an aborted Desktop Shut-Down, which prevented <cite>WinEd</cite> from subsequently being quit.</p></li>
+<li><p>Disable all keypresses aside from <key>Escape</key> during drag operations, to avoid unexpected side effects.</p></li>
+<li><p>Check that there is a selected window in the template browser before attempting to operate on it.</p></li>
+<li><p>Improve interactive help messages throughout the application.</p></li>
+<li><p>Correct the behaviour of radio icons under <mouse>Adjust</mouse> clicks.</p></li>
+<li><p>Re-implement the <window>icon export</window> dialogue, resolving reported issues and adding <code>typedef</code> enum and <code>#define</code> options, optional name prefix, case conversion and invalid character substitution.</p></li>
+</ul>
+</section>
+
+<section>
+<title>Version 3.25 (28 July 2020)</title>
+
+<callout type="warning">
+<p><cite>WinEd</cite>&nbsp;3.25 adds a new configuration option. It will load existing saved options from earlier versions of <cite>WinEd</cite>, but choices saved from them will not load into earlier versions including 3.20 and 3.23. It might be advisable to take a backup copy of the files from within the <file>Choices:WinEd</file> folder if you plan to return to an earlier version of the software.</p>
+</callout>
+
+<ul>
+<li><p>Resolve numerous additional NULL pointer dereferences in the menu handling code.</p></li>
+<li><p>Stop the overwrite check when files are saved to <variable>Wimp$Scrap</variable> as part of the Data Transfer Protocol.</p></li>
+<li><p>Add a <icon>Cancel</icon> button to the <window>Resize Icons</window> dialogue.</p></li>
+<li><p>Replace the arrows in the <window>Align Icons</window> dialogue with &ldquo;left&rdquo;, &ldquo;right&rdquo;, &ldquo;up&rdquo; and &ldquo;down&rdquo;.</p></li>
+<li><p>Allow the default action in the <window>Icon Edit</window> dialogue to be switched to updating the icon data without changing the icon&rsquo;s dimenstions, using a new option in the <window>Choices</window> dialogue.</p></li>
+<li><p>Improve window scrolling, taking into account the contents of the browser and the statistics windows and supporting extended scroll requests when available. This includes the templates being edited, and for previews if such requests are enabled in the template.</p></li>
+<li><p>Ensure that template strings are correctly zero-terminated when passed to the debug logging system.</p></li>
+<li><p>Disable cursor key movement of selected icons during drag operations, to prevent the two interfering.</p></li>
+<li><p>Standardise the capitalisation of validation commands in the Icon Picker.</p></li>
+<li><p>Make the browser pane fill the complete width of the browser window in large screen modes.</p></li>
+<li><p>Correctly set the <icon>Max text length</icon> field in the <window>Edit icon</window> dialogue box for indirected, sprite-only icons.</p></li>
+<li><p>Limit ESG values to the range 0-15, in line with the changes made for Ursula.</p></li>
+<li><p>Ensure that the <window>Save As</window> dialogue closes after a save triggered by closing an unsaved file.</p></li>
+</ul>
+</section>
+
+<section>
+<title>Version 3.24</title>
+
+<p>This version number was skipped, due to the possibility that it had been used for some limited-release test builds at some stage in the past.</p>
+</section>
+
+<section>
+<title>Version 3.23 (17 June 2020)</title>
+
+<ul>
+<li><p>Resolve a significant NULL pointer dereference in the menu code, which made the application almost unusable with a High Vector ROM.</p></li>
+</ul>
+</section>
+</chapter>
+
+
+<chapter id="bug">
+<title>Bug reports &amp; suggestions</title>
+
+<section>
+<p>Although every effort has been made to iron out bugs, no application is completely bug free so you are advised to save your work regularly. Please report any bugs that you find to Steve Fryatt at <link href="mailto:info@stevefryatt.org.uk" flatten="true">info@stevefryatt.org.uk</link>.</p>
+</section>
+</chapter>
+
+<chapter id="acknowledgements">
+<title>Acknowledgements</title>
+
+<section>
+<p><cite>WinEd</cite> was originally written by Tony Houghton in C (compiled by <cite>Acorn&nbsp;C</cite> Release&nbsp;5) with extensive use of <link href="http://www.riscos.info/index.php/DeskLib" external="true"><cite>DeskLib</cite></link>. This version has been compiled using the <link href="http://www.riscos.info/index.php/GCCSDK" external="true"><cite>GCCSDK</cite></link>. <cite>DeskLib</cite> is a set of Freeware C libraries written by Jason Williams and many others. All C programmers should consider this an essential replacement for <cite>RISC_OSLib</cite>.</p>
+
+<p><cite>Dr Smith&rsquo;s C Development Toolkit</cite>, written by Julian Smith and marketed by WSS, was helpful for debugging in early versions.</p>
+
+<p>The text editor used was <cite>Zap</cite>, an excellent PD program written by Dominic Symes with extensions by several other skilled programmers.</p>
+
+<p>The templates were initially created with <cite>TemplEd</cite>, a PD template editor and <cite>WinEd</cite>&rsquo;s main rival. <cite>WinEd</cite> is intended to improve on it in every aspect.</p>
+
+<p>This manual (in both its HTML and plain-text forms) has been created from a single XML source using <link href="https://github.com/steve-fryatt/xmlman" external="true"><cite>XMLMan</cite></link>.</p>
+</section>
+</chapter>
+</manual>

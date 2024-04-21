@@ -73,6 +73,14 @@ changed to empty, as follows:
 To use Fortify, add -DFORTIFY to the COMPILEFLAGS.
 
 
+### Documentation
+
+The user documentation is supplied in HTML and Text formats. As of the releases
+leading up to 3.27 in April 2024, these are being built from a single XML source
+using [XMLMan](https://github.com/steve-fryatt/xmlman) (which can be built for
+both RISC OS and Linux).
+
+
 ### Path Variables
 
 To allow GCCSDK to find the RISC OS paths used in the source code, it is necessary

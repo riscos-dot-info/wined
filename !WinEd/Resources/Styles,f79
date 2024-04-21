@@ -1,112 +1,289 @@
+/* WinEd Manual Style Sheet. */
 
-body
-{
-font-family:      arial, helvetica, sans-serif;
-background-color: #FFFFFF;
-margin:           5mm;
-color             #000000;
+BODY {
+	font-family: arial, helvetica, sans-serif;
+	background-color: #FFFFFF;
+	margin: 0;
+	padding: 0;
+	color: #000000;
 }
 
-h1
-{
-text-align:    center;
-text-size:     130%;
-font-weight:   bold;
-margin-top:    5mm;
-margin-bottom: 5mm;
-color:         #0000AA;
-font-style:    italic;
+DIV#head {
+	color: #0000AA;
+	background-color: #DFDFFF;
+	margin: 0;
+	padding: 0;
+	border-bottom: 1px solid #0000AA;
 }
 
-h2
-{
-text-align:    left;
-text-size:     115%;
-font-weight:   bold;
-font-style:    italic;
-margin-top:    5mm;
-margin-bottom: 2mm;
-color:         #0000AA;
-padding-top:   1cm;
+DIV#head-liner {
+	max-width: 1000px;
+	margin: 0 auto;
+	padding: 1em;
 }
 
-h3
-{
-text-align:    left;
-text-size:     100%;
-font-style:    italic;
-margin-left:   3mm;
-margin-top:    3mm;
-margin-bottom: 1mm;
-color:         #0000AA;
+DIV#head DIV.title-flex {
+	display: flex;
+	margin: 0 0 1em;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	align-items: center;
 }
 
-code
-{
-text-align:    left;
-font-family:   arial, helvetica, sans-serif;
-font-weight:   normal;
-background-color: #EEEEFF
+DIV#head DIV.title-flex H1 {
+	margin: 0;
+	padding: 0;
+	flex: 1 1 auto;
+	text-align: left;
+	vertical-align: middle;
 }
 
-strong
-{
-color:         #0000AA;
-font-weight:   normal;
+DIV#head DIV.title.flex DIV.title-right {
+	margin: 0.5em;
+	padding: 0;
+	flex: 0 0 auto;
+	vertical-align: middle;
 }
 
-em
-{
-font-style:    italic;
+DIV#head DIV.date {
+	margin-top: 0.3em;
+	font-weight: bold;
+	text-align: right;
 }
 
-a:link
-{
-color:           #0000AA;
-text-decoration: none;
+DIV#head DIV.version {
+	font-weight: bold;
+	text-align: right;
 }
 
-a:visited
-{
-color:           #3333FF;
-text-decoration: none;
+DIV#head DIV.strapline {
+	margin-top: 0.5em;
+	font-style: italic;
+	font-weight: bold;
 }
 
-a:hover
-{
-color:           #99AFFF;
-text-decoration: underline;
+DIV#head DIV.credit {
+	margin-top: 0.5em;
 }
 
-p
-{
-text-align:	  justify;
-text-indent:      3mm;
-margin-left:      3mm;
+DIV#body {
+	margin: 0;
+	padding: 0 1em;
 }
 
-td
-{
-padding:         3mm;
-margin-top:      2mm;
-margin-bottom:   2mm;
-margin-left:     2mm;
-margin-right:    2mm;
-background-color: #DFDFFF;
-vertical-align:  middle;
+DIV#body-liner {
+	max-width: 1000px;
+	margin: 1em auto;
 }
 
-
-.nobox
-{
-border-style: none;
+H1 {
+	text-align: left;
+	font-size: 2em;
+	font-weight: bold;
+	margin-top: 1em;
+	margin-bottom: 1em;
+	color: #0000AA;
 }
 
-.nodent
-{
-text-align:       left;
-margin-top:       0;
-margin-bottom:    0;
-text-indent:      0;
-padding:          1mm;
+H2 {
+	text-align: left;
+	font-size: 1.5em;
+	font-weight: bold;
+	margin-top: 1.5em;
+	margin-bottom: 1em;
+	color: #0000AA;
+}
+
+H3 {
+	text-align: left;
+	font-size: 1em;
+	font-weight: bold;
+	font-style: italic;
+	margin-top: 0.5em;
+	margin-bottom: 0;
+	color: #0000AA;
+}
+
+H4 {
+	text-align: left;
+	font-size: 1em;
+	font-weight: normal;
+	font-style: italic;
+	margin-top: 0.5em;
+	margin-bottom: 0;
+	color: #0000AA;
+}
+
+DIV.callout {
+	margin: 0.5em 4em;
+	padding: 0;
+}
+
+DIV.callout DIV.heading {
+	margin: 0;
+	padding: 5px;
+	font-weight: bold;
+}
+
+DIV.callout DIV.content {
+	margin: 0;
+	padding: 5px;
+}
+
+DIV.callout DIV.content :first-child {
+	margin-top: 0;
+}
+
+DIV.callout DIV.content :last-child {
+	margin-bottom: 0;
+}
+
+DIV.attention, DIV.caution, DIV.warning {
+	background-color: #f3deb8;
+	border: 1px solid #f5b48e;
+}
+
+DIV.attention DIV.heading, DIV.caution DIV.heading, DIV.warning DIV.heading {
+	color: #ffffff;
+	background-color: #f5b48e;
+}
+
+DIV.note, DIV.important {
+	background-color: #DFDFFF;
+	border: 1px solid #6297e7;
+}
+
+DIV.note DIV.heading, DIV.important DIV.heading {
+	color: #ffffff;
+	background-color: #6297e7;
+}
+
+DIV.codeblock {
+	padding: 0.5em;
+	text-align: left;
+	font-family: monospace;
+	font-weight: normal;
+	background-color: #DFDFFF;
+}
+
+UL.contents-list {
+	padding: 0;
+	list-style-type: none;
+}
+
+DL.footnotes {
+	margin-left: 0;
+	margin-right: 0;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+DL.footnotes DT {
+	margin-left: 0;
+	margin-right: 0;
+	font-size: 1em;
+	font-weight: bold;
+	font-style: italic;
+	color: #0000AA;
+}
+
+DL.footnotes DD {
+	margin-left: 1em;
+	margin-right: 0;
+}
+
+TABLE {
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 2px;
+}
+
+TH {
+	font-weight: bold;
+	color: #0000AA;
+	background-color: #DFDFFF;
+	text-align: left;
+}
+
+TD {
+	text-align: left;
+}
+
+TR {
+	vertical-align: middle;
+	border-bottom: 1px solid #DFDFFF;
+}
+
+A:link {
+	color: #0000AA;
+	text-decoration: none;
+}
+
+A:visited {
+	color: #3333FF;
+	text-decoration: none;
+}
+
+A:hover {
+	color: #99AFFF;
+	text-decoration: underline;
+}
+
+CODE, SPAN.code {
+	font-family: monospace;
+	font-weight: bold;
+}
+
+STRONG {
+	font-weight: bold;
+}
+
+EM {
+	font-style: italic;
+}
+
+SPAN.command {
+	font-weight: bold;
+}
+
+SPAN.entry {
+	font-family: monospace;
+}
+
+SPAN.filename {
+	font-weight: bold;
+	font-style: italic;
+}
+
+SPAN.icon {
+	font-style: italic;
+}
+
+SPAN.introduction {
+	font-style: italic;
+}
+
+SPAN.maths {
+	font-style: italic;
+}
+
+SPAN.menu {
+	font-style: italic;
+}
+
+SPAN.key, SPAN.mouse {
+	font-style: unset;
+}
+
+SPAN.keyword, SPAN.name {
+	font-weight: bold;
+}
+
+SPAN.window {
+	font-weight: bold;
+}
+
+SPAN.variable {
+	font-weight: bold;
 }
