@@ -3,8 +3,8 @@
 <title>WinEd</title>
 <strapline>A template editor for RISC&nbsp;OS</strapline>
 <credit>&copy; Tony&nbsp;Houghton,&nbsp;1995; Adam&nbsp;Richardson,&nbsp;2007; Stephen&nbsp;Fryatt,&nbsp;2020</credit>
-<version>Version ----</version>
-<date>21 April 2024</date>
+<version>Version 3.27</version>
+<date>27 April 2024</date>
 
 <resources>
 <mode type="html">
@@ -122,9 +122,9 @@
 <title>Loading and creating templates</title>
 
 <section>
-<p>Template files can be loaded by double clicking or dragging them to <cite>WinEd</cite>&rsquo;s icon on the iconbar. The number of files that <cite>WinEd</cite> can load and edit is only limited by memory. To create a new file click the <cite>WinEd</cite> icon; this opens an <ref id="browsers">empty browser</ref>.</p>
+<p>Template files can be loaded by double clicking or dragging them to <cite>WinEd</cite>&rsquo;s icon on the iconbar. The number of files that <cite>WinEd</cite> can load and edit is only limited by memory. To create a new file click the <cite>WinEd</cite> icon; this opens an <ref id="browsers">empty <window>Browser</window> window</ref>.</p>
 
-<p>Files can be merged by dragging one file into a browser containing the other.</p>
+<p>Files can be merged by dragging one file into a <window>Browser</window> window containing the other.</p>
 </section>
 </chapter>
 
@@ -142,7 +142,7 @@
 <title>Sprite files and sprite areas</title>
 
 <section>
-<p>In some windows it is necessary to create icons with sprites that belong to an application instead of the Wimp&rsquo;s sprite pool. You can load &lsquo;user&rsquo; sprite files into <cite>WinEd</cite> by dragging them to its icon. <cite>WinEd</cite> only has one sprite pool which it shares between all windows loaded in it, but it can load sprite files dragged to any of its windows or its iconbar.</p>
+<p>In some windows it is necessary to create icons with sprites that belong to an application instead of the Wimp&rsquo;s sprite pool. You can load such &lsquo;user&rsquo; sprite files into <cite>WinEd</cite> by dragging them to its icon. <cite>WinEd</cite> only has one sprite pool which it shares between all windows loaded in it, but it can load sprite files dragged to any of its windows or its iconbar.</p>
 
 <p>Holding <key>Shift</key> while dragging a sprite file to <cite>WinEd</cite> causes it to be merged with the Wimp sprite pool and the screen is redrawn.</p>
 
@@ -154,33 +154,43 @@
 <title>The iconbar menu</title>
 
 <section>
+<p><cite>WinEd</cite>&rsquo;s iconbar menu can be accessed in the usual manner, with a <mouse>Menu</mouse> click over <cite>WinEd</cite>&rsquo;s iconbar icon. The options contained within the menu are described in this section.</p>
+</section>
+
+<section>
 <title>Info</title>
 
-<p>Moving the pointer right opens a typical dialogue box containing information about <cite>WinEd</cite>, including buttons to email the author or visit the <cite>WinEd</cite> website.</p>
+<p>Moving the pointer right opens a typical dialogue box containing information about <cite>WinEd</cite>, including buttons to email the current maintainer or visit the current <cite>WinEd</cite> website.</p>
 </section>
 
 <section>
 <title>Help</title>
 
-<p>Clicking on this option will launch this file. If a browser has not been seen when you click on the option, a text version of this manual will open instead.</p>
+<p>The <menu>Help...</menu> entry will launch this user manual. If a web browser has been seen, an HTML version will be loaded; otherwise, a plain text version will open instead.</p>
 </section>
 
 <section>
 <title>Icon picker</title>
 
-<p>This opens the icon picker immediately above the right hand end of the iconbar. The icon picker is <ref id="creatingicons">described in a later section</ref>.</p>
+<p>This entry opens the <window>icon picker</window> immediately above the right hand end of the iconbar. The icon picker is <ref id="creatingicons">described in a later section</ref>.</p>
 </section>
 
 <section>
 <title>Monitor</title>
 
-<p>This opens the monitor window at the top right of the screen. The monitor is <ref id="monitor">described in a later section</ref>.</p>
+<p>This opens the <window>monitor</window> window at the top right of the screen. The monitor is <ref id="monitor">described in a later section</ref>.</p>
+</section>
+
+<section>
+<title>Choices...</title>
+
+<p>The <menu>Choices...</menu> entry will open the <ref id="choices"><window>Choices</window> dialogue</ref>, allowing some aspects of <cite>WinEd</cite>&rsquo;s operation to be configured.</p>
 </section>
 
 <section>
 <title>Clear sprites</title>
 
-<p>Clears the user sprite area to save memory.</p>
+<p>Clears the <ref id="sprite">user sprite area</ref> to save memory.</p>
 </section>
 </chapter>
 
@@ -189,7 +199,7 @@
 <title>The Choices dialogue box</title>
 
 <section>
-<p>The <window>Choices</window> dialogue box can be opened by selecting <menu>Choices...</menu> from the iconbar menu. It allows a number of aspects of <cite>WinEd</cite>&rsquo;s operation to be configured.</p>
+<p>The <window>Choices</window> dialogue box can be opened by selecting <menu>Choices...</menu> from the <ref id="iconbar">iconbar menu</ref>. It allows a number of aspects of <cite>WinEd</cite>&rsquo;s operation to be configured.</p>
 
 <p>Clicking on the <icon>OK</icon> button will cause any changes made to the choices to take effect; if <mouse>Adjust</mouse> is used, the dialogue will remain on screen. Similarly <icon>Cancel</icon> will discard any un-saved changes, and using <mouse>Adjust</mouse> will leave the dialogue open.</p>
 
@@ -201,7 +211,7 @@
 <section>
 <title>Windows</title>
 
-<p>The <icon>Windows</icon> section controls the behavior of windows within <cite>WinEd</cite> &ndash; both dialogue boxes and the templates being edited.</p>
+<p>The <icon>Windows</icon> section controls the behaviour of windows within <cite>WinEd</cite> &ndash; both dialogue boxes and the templates being edited.</p>
 
 <section>
 <title>Automatic monitor</title>
@@ -212,13 +222,13 @@
 <section>
 <title>Automatic icon picker</title>
 
-<p>This makes the icon picker open and close with editable windows in a similar way to the monitor.</p>
+<p>This makes the <ref id="creatingicons">icon picker</ref> open and close with editable windows in a similar way to the monitor.</p>
 </section>
 
 <section>
 <title>Browser tool bar</title>
 
-<p>This causes a tool bar to be displayed along the top of browsers.</p>
+<p>This causes a tool bar to be displayed along the top of <ref id="browsers"><window>Browser</window> windows</ref>.</p>
 </section>
 
 <section>
@@ -248,7 +258,7 @@
 <section>
 <title>Keyboard short cuts</title>
 
-<p>If selected, browsers and editable windows will claim input focus and respond to keyboard short cuts. The short cuts are shown in the menus if this option is selected.</p>
+<p>If selected, <ref id="browsers"><window>Browser</window> windows</ref> and editable windows will claim input focus and respond to keyboard short cuts. The short cuts are shown in the menus if this option is selected.</p>
 </section>
 
 <section>
@@ -296,7 +306,7 @@
 <section id="choices-display-sort">
 <title>Display templates sorted</title>
 
-<p>If selected, the templates displayed in the <window>Browser</window> window will be listed in alphabetical order. The ordering in the physical template file will not be affected.</p>
+<p>If selected, the templates displayed in a <ref id="browsers"><window>Browser</window> window</ref> will be listed in alphabetical order. The ordering in the physical template file will not be affected.</p>
 </section>
 </section>
 
@@ -314,7 +324,7 @@
 <section>
 <title><cite>FormEd</cite> compatible strings</title>
 
-<p>All strings in template files are supposed to use CR (carriagereturn) terminators. The Wimp&rsquo;s template SWIs, and most applications, work with any control character terminator, but <cite>FormEd</cite> is a notable exception, which insists on CR for most strings. <cite>WinEd</cite> now uses CR by default, but if this option is unticked, it will use only zero terminators, which may be useful if you&rsquo;re programming lazily in C. &smileyface;</p>
+<p>All strings in template files are supposed to use carriage returns (CR) as terminators. The Wimp&rsquo;s template SWIs, and most applications, will work with any control character terminator, but <cite>FormEd</cite> is a notable exception which insists on CR for most strings. <cite>WinEd</cite> now uses CR by default, but if this option is unticked, it will use only zero terminators &ndash; which may be useful if you&rsquo;re programming lazily in C. &smileyface;</p>
 </section>
 
 <section>
@@ -325,7 +335,7 @@
 <section>
 <title>Save templates sorted</title>
 
-<p>In addition to <ref id="choices-display-sort">visually sorting templates in the browser</ref>, <cite>WinEd</cite> can also sort them when saving a file if this option is selected.</p>
+<p>In addition to <ref id="choices-display-sort">visually sorting templates in <window>Browser</window> windows</ref>, <cite>WinEd</cite> can also sort them when saving a file if this option is selected.</p>
 
 <callout type="warning">
 <p>Selecting this option can result in template files changing when saved, even if no other editing is carried out. It is off by default, and it is recommended to consider the potential effects before switching it on.</p>
@@ -335,18 +345,18 @@
 </chapter>
 
 <chapter id="browsers">
-<title>Browsers</title>
+<title>Browser windows</title>
 
 <section>
-<p>Browser is the term for a window which displays a list of the window/dialogue box definitions in a file. Each entry is shown as a small icon depicting a dialogue box (with no scroll bars) or window (with scroll bars) next to its template identifier. The icons change to indicate whether the window is currently open. The windows are displayed either in alphabetical order or in the order they appear in the file, depending on the <icon>Display templates sorted</icon> option in the <ref id="choices"><window>Choices</window> window</ref>.</p>
+<p><window>Browser</window> window is the term for a window which displays a list of the window and dialogue box definitions in a file. Each entry is shown as a small icon depicting a dialogue box (with no scroll bars) or window (with scroll bars) next to its template identifier. The icons change to indicate whether the window is currently open. The windows are displayed either in alphabetical order or in the order they appear in the file, depending on the <icon>Display templates sorted</icon> option in the <ref id="choices"><window>Choices</window> window</ref>.</p>
 
-<p>If you click <mouse>Adjust</mouse> on a browser&rsquo;s close tool <cite>WinEd</cite> will attempt to open the directory the templates were last loaded or saved in, keeping the browser open if you hold <key>Shift</key>. Iconising a browser (<key>Shift</key>-<mouse>Select</mouse> on the close tool) closes any windows which &lsquo;belong&rsquo; to it, thus it can be used for a quick tidyup. De-iconising the browser will re-open the closed windows.</p>
+<p>If you click <mouse>Adjust</mouse> on a <window>Browser</window> window&rsquo;s close tool <cite>WinEd</cite> will attempt to open the directory the templates were last loaded or saved in, keeping the <window>Browser</window> open if you hold <key>Shift</key>. Iconising a <window>Browser</window> (<key>Shift</key>-<mouse>Select</mouse> on the close tool) closes any windows which &lsquo;belong&rsquo; to it, thus it can be used for a quick tidyup. De-iconising the <window>Browser</window> will re-open the closed windows.</p>
 </section>
 </chapter>
 
 
 <chapter id="mouse">
-<title>Mouse operations in browsers</title>
+<title>Mouse operations in <window>Browser</window> windows</title>
 
 <section>
 <p>Where the location is given as &lsquo;work area&rsquo; below, it refers to clicking over a part of the window not covered by an icon. Similarly, &lsquo;icon&rsquo; means clicking over an icon; each icon corresponds to a window or dialogue box definition. If neither are specified it refers to any part of the window. Holding down <key>Ctrl</key> while clicking has the effect of forcing the
@@ -366,13 +376,17 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 <row><col>Drag Select</col><col>Work Area</col><col>Start dragging rubber box; when complete all icons within the box are selected</col></row>
 <row><col>Drag Select</col><col>Icon</col><col>Start drag &amp; drop operation on current selection, saving it with a filename of <file>Selection</file>.</col></row>
 <row><col>Drag Adjust</col><col></col><col>Start dragging rubber box; all icons inside will have their selection state toggled</col></row>
-<row><col>Menu</col><col></col><col>Open browser menu.</col></row>
+<row><col>Menu</col><col></col><col>Open the <ref id="browsermenu"><window>Browser</window> menu</ref>.</col></row>
 </table>
 </section>
 </chapter>
 
 <chapter id="browsermenu">
-<title>The browser menu</title>
+<title>The <window>Browser</window> menu</title>
+
+<section>
+<p>Clicking <mouse>Menu</mouse> over a <ref id="browsers"><window>Browser</window> window</ref> will open the <window>Browser</window> window menu, containing the options described in this section.</p>
+</section>
 
 <section>
 <title>Create</title>
@@ -381,9 +395,79 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 </section>
 
 <section>
+<title>Selection</title>
+
+<p>The <menu>Selection</menu> submenu (which appears as <menu>Window</menu> if a single template is selected) leads to a submenu containing options which can be applied to window definitions.</p>
+
+<p>The following actions are available from the menu.</p>
+
+<section>
+<title>Copy</title>
+
+<p>Move right over the menu entry to copy the selected template using the supplied name. This option isn&rsquo;t available if more than one template is selected.</p>
+</section>
+
+<section>
+<title>Rename</title>
+
+<p>Move right over the menu entry to rename the selected template using the supplied name. This option isn&rsquo;t available if more than one template is selected.</p>
+</section>
+
+<section>
+<title>Delete</title>
+
+<p>Select the <menu>Delete</menu> option to delete the selected templates from the browser.</p>
+
+<callout type="warning">
+<p>The delete operation is instant, and no confirmation is requested.</p>
+</callout>
+</section>
+
+<section>
+<title>Edit</title>
+
+<p>Select the <menu>Edit</menu> option to <ref id="edit">open the window for editing</ref>. This is equivalent to double-clicking on the window in the browser with <mouse>Select</mouse>.</p>
+
+<p>This option isn&rsquo;t available if more than one template is selected.</p>
+</section>
+
+<section>
+<title>Preview</title>
+
+<p>Select the <menu>Preview</menu> option to <ref id="preview">open the window in preview mode</ref>. This is equivalent to double-clicking on the window in the browser with <mouse>Adjust</mouse>.</p>
+
+<p>This option isn&rsquo;t available if more than one template is selected.</p>
+</section>
+
+<section>
+<title>Export icon names</title>
+
+<p>Move the pointer right over the menu entry to <ref id="export">export the icon names</ref> in one of a number of formats.</p>
+</section>
+</section>
+
+<section>
+<title>Select all</title>
+
+<p><menu>Select all</menu> will add all of the window templates within the <window>Browser</window> window to the current selection.</p>
+</section>
+
+<section>
+<title>Clear selection</title>
+
+<p>The <menu>Clear selection</menu> entry will clear any selected windows within the <window>Browser</window>.</p>
+</section>
+
+<section>
+<title>Save</title>
+
+<p>The <menu>Save</menu> entry will allow the templates within the <window>Browser</window> window to be <ref id="save">saved</ref> to their template file. Sliding the pointer right will reveal a standard <window>Save as</window> dialogue box, while a click will cause the file to be saved immediately if a full pathname is available.</p>
+</section>
+
+<section>
 <title>Statistics</title>
 
-<p>Opens a statistics window for the file in the browser. This is <ref id="stats">described below</ref>.</p>
+<p>Opens a statistics window for the file in the <ref id="browsers"><window>Browser</window> window</ref>. This is <ref id="stats">described below</ref>.</p>
 </section>
 </chapter>
 
@@ -391,7 +475,11 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 <title>Saving templates</title>
 
 <section>
-<p>If one or more windows are selected the <icon>Selection</icon> button will be selectable. Select this if you only want to save the selected templates. Note that when you save a selection, the fonts for the whole file are saved with it. To remove superfluous fonts load the new file back into <cite>WinEd</cite> and resave.</p>
+<p>The contents of a <ref id="browsers"><window>Browser</window> window</ref> can be saved using the <menu>Save</menu> entry in the <ref id="browsermenu"><window>Browser</window> menu</ref>, clicking on the <icon>Save</icon> button in the <ref id="browsertool"><window>Browser</window> tool bar</ref>, or pressing <key>F3</key>.</p>
+
+<p>Saving is normally carried out using a standard <window>Save as</window> dialogue but, if the template file already has a full pathname shown in the <window>Browser</window> window title bar, clicking on the <menu>Save</menu> menu item or <mouse>Adjust</mouse>-clicking on the <icon>Save</icon> button will save the file instantly to that location.</p>
+
+<p>If one or more windows are selected when the <window>Save as</window> dialogue opens, the <icon>Selection</icon> button will be available. This should be ticked if you only want to save the selected templates. Note that when you save a selection, the fonts for the whole file are saved with it. To remove superfluous fonts, load the new file back into <cite>WinEd</cite> and resave.</p>
 </section>
 </chapter>
 
@@ -410,10 +498,10 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 </chapter>
 
 <chapter id="browsertool">
-<title>The browser tool bar</title>
+<title>The <window>Browser</window> tool bar</title>
 
 <section>
-<p>This is a row of tool icons which can optionally be displayed along the top of browser windows. The tools provide short cuts for the functions described above, available from the browser menu. They are (from left to right):</p>
+<p>This is a row of tool icons which can optionally be displayed along the top of <ref id="browsers"><window>Browser</window> windows</ref>. The tools provide short cuts for the functions described above, available from the <ref id="browsermenu">Browser menu</ref>. They are (from left to right):</p>
 
 <ul>
 <li><p>Create (opens writable submenu)</p></li>
@@ -432,7 +520,7 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 <title>Exporting icon names</title>
 
 <section>
-<p>The last entry on the selected window(s) submenu of the browser menu leads to a &ldquo;Save as&rdquo; dialogue box for exporting icon names from all of the selected windows in one of several different formats.</p>
+<p>The last entry on the selected window(s) submenu of the <ref id="browsermenu"><window>Browser</window> menu</ref> leads to a <window>Save as</window> dialogue box for exporting icon names from all of the selected windows in one of several different formats.</p>
 
 <ul>
 <li><p><icon>C Enum</icon> exports a standard C <code>enum ... { ... };</code> structure, where the entries are the icon names and handles.</p></li>
@@ -485,7 +573,7 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
   Lower,
   ROT13 = 6
 };</code>
-	
+
 <p>In <icon>BASIC</icon> mode, <icon>Use real variables</icon> will write the variable names without a trailing <code>%</code> &ndash; making them real instead of integer.</p>
 
 <p>Note that the output of any of these options can be altered by editing <cite>WinEd</cite>&rsquo;s <file>Messages</file> file. See the chapter on <ref id="custom">customisation</ref>.</p>
@@ -497,7 +585,7 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 <title>Preview windows</title>
 
 <section>
-<p>Since editable windows have their attributes altered to make them easier to edit, it is necessary to have a system of viewing exactly how your finished windows will look and behave. This is what preview windows are for. They can be opened by double clicking <mouse>Adjust</mouse> on a window in a browser or by choosing <menu>Preview</menu> from the browser menu.</p>
+<p>Since editable windows have their attributes altered to make them easier to edit, it is necessary to have a system of viewing exactly how your finished windows will look and behave. This is what preview windows are for. They can be opened by double clicking <mouse>Adjust</mouse> on a window in a <ref id="browsers"><window>Browser</window></ref> or by choosing <menu>Preview</menu> from the <ref id="browsermenu"><window>Browser</window> menu</ref>.</p>
 
 <p>Previews can also be used to fine tune the size and appearance of windows in ways which are not practical or possible with editable windows.</p>
 
@@ -514,6 +602,16 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 <title>The preview menu</title>
 
 <section>
+<p>The preview menu is available when <ref id="preview">a template is being previewed</ref>, by clicking <mouse>Menu</mouse> over its window.</p>
+</section>
+
+<section>
+<title>Close</title>
+
+<p>Close the preview window, even if it does not have a close icon of its own.</p>
+</section>
+
+<section>
 <title>Store position</title>
 
 <p>Stores the current onscreen size and position of the window in the template definition.</p>
@@ -523,6 +621,12 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 <title>Store icon states</title>
 
 <p>Stores the selection states of the window&rsquo;s icons in the template definition. However, it is better practice to leave any selection to the application which finally uses the templates.</p>
+</section>
+
+<section>
+<title>Edit template</title>
+
+<p>Select <menu>Edit template</menu> to close the preview and re-open the template as <ref id="edit">an editable window</ref>.</p>
 </section>
 </chapter>
 
@@ -571,7 +675,7 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 <row><col>Double click Shift-Select</col><col>Work Area</col><col>Edit window title icon (open dialogue)<ref id="note-4"/></col></row>
 </table>
 
-<footnote id="note-1"><p>This is similar to the same type of drag in browsers.</p></footnote>
+<footnote id="note-1"><p>This is similar to the same type of drag in <ref id="browsers"><window>Browser</window> windows</ref>.</p></footnote>
 
 <footnote id="note-2"><p>This follows the conventions of Drag &amp; Drop as outlined in the <cite>Style Guide</cite>. The unmodified drag and <key>Shift</key>-modified drag have the opposite effect depending on whether the drag is local (finishing in the same window as it started) or an export (to a different window). In the local case an unmodified drag moves the icon and a <key>Shift</key>-drag copies it, in the export case an unmodified drag copies the icon, a <key>Shift</key>-drag effectively moves the icon by making a copy in the destination window and deleting the original.</p>
 
@@ -747,19 +851,19 @@ when no editable or preview windows are open.</p>
 <section>
 <p>The work area coordinates are shown in formation. Note that it is usual to have the origin of the window (0) at the top, and the bottom coordinate is negative.</p>
 
-<p>The bumper buttons cause the sizes to change in units of 4, unless the <key>Shift</key> or <key>Ctrl</key> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p> 
+<p>The bumper buttons cause the sizes to change in units of 4, unless the <key>Shift</key> or <key>Ctrl</key> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p>
 </section>
 
 <section>
 <title>Minimise</title>
 
-<p>This sets the values in the work area coordinate fields to the work area coordinates of the portion of the window currently visible. It is not recommended that the origin (X0 &amp; Y1) coordinates are set to any value other than zero, hence the Keep origin button is provided.</p>
+<p>This sets the values in the work area coordinate fields to the work area coordinates of the portion of the window currently visible. It is not recommended that the origin (<maths>X0</maths> &amp; <maths>Y1</maths>) coordinates are set to any value other than zero, hence the <icon>Keep origin</icon> button is provided.</p>
 </section>
 
 <section>
 <title>Keep origin</title>
 
-<p>This has a similar effect to the <icon>Minimise</icon> button, but the origin (X0 &amp; Y1) coordinates are set to zero.</p>
+<p>This has a similar effect to the <icon>Minimise</icon> button, but the origin (<maths>X0</maths> &amp; <maths>Y1</maths>) coordinates are set to zero.</p>
 </section>
 
 <section>
@@ -775,7 +879,7 @@ when no editable or preview windows are open.</p>
 <section>
 <p>This allows you to specify the position, size and scroll offsets of a window as it will appear on screen when first opened. All values are usually positive, except for the vertical scroll offset (V Scroll), which should be negative.</p>
 
-<p>The bumper buttons cause the sizes to change in units of 4, unless the <key>Shift</key> or <key>Ctrl</key> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p> 
+<p>The bumper buttons cause the sizes to change in units of 4, unless the <key>Shift</key> or <key>Ctrl</key> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p>
 </section>
 </chapter>
 
@@ -809,13 +913,13 @@ when no editable or preview windows are open.</p>
 
 <p>If set the icon uses the outline font shown in the field below; fonts can be chosen from a menu by clicking the <mouse>Menu</mouse> button. The height can be entered in points (decimals are allowed). The Aspect ratio is the ratio of width to height expressed as a percentage.</p>
 
-<p>Outline fonts do not seem to work in icons with validation strings containing the L command.</p>
+<p>Outline fonts do not seem to work in icons with validation strings containing the <code>L</code> command.</p>
 </section>
 
 <section>
 <title>Validate</title>
 
-<p>Font handles overwrite the colour fields in icon flags, therefore the colour data is held in an F command in the validation string. The <icon>Validate</icon> button reads the colours from the fields in the dialogue box and ensures the validation string contains the correct L command, forcing the indirected flag on if necessary.</p>
+<p>Font handles overwrite the colour fields in icon flags, therefore the colour data is held in an <code>F</code> command in the validation string. The <icon>Validate</icon> button reads the colours from the fields in the dialogue box and ensures the validation string contains the correct <code>F</code> command, forcing the indirected flag on if necessary.</p>
 </section>
 
 <section>
@@ -956,7 +1060,7 @@ when no editable or preview windows are open.</p>
 <section>
 <p>This allows you to enter the position (relative to the window&rsquo;s work area) and size coordinates of an icon. The Top entry is usually negative.</p>
 
-<p>The bumper buttons cause the sizes to change in units of 4, unless the <key>Shift</key> or <key>Ctrl</key> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p> 
+<p>The bumper buttons cause the sizes to change in units of 4, unless the <key>Shift</key> or <key>Ctrl</key> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p>
 </section>
 </chapter>
 
@@ -966,7 +1070,7 @@ when no editable or preview windows are open.</p>
 <section>
 <p>This is for placing a frame around the selected icons. The frame can consist of the window&rsquo;s visible area or an empty bordered icon (group box) with a lower number than any of the selected icons.</p>
 
-<p>The bumper buttons cause the sizes to change in units of 4, unless the <key>Shift</key> or <key>Ctrl</key> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p> 
+<p>The bumper buttons cause the sizes to change in units of 4, unless the <key>Shift</key> or <key>Ctrl</key> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p>
 </section>
 
 <section>
@@ -1090,7 +1194,7 @@ options). If a dialogue box has several groups of icons (eg two or more groups o
 <section>
 <title>Tool panes</title>
 
-<p>You can customise these by editing the <name>WinTools</name> and <name>BrowTools</name> templates and/or the <file>Sprites</file> and <file>Sprites22</file> files. Note that you will have to disable the Editable window tool icons option to avoid inadvertently resizing the current browser tool bar while editing it. You can make these panes any size you like, within reason. If you design some that you think are better than mine, which are perhaps a little small, please let me know.</p>
+<p>You can customise these by editing the <name>WinTools</name> and <name>BrowTools</name> templates and/or the <file>Sprites</file> and <file>Sprites22</file> files. Note that you will have to disable the Editable window tool icons option to avoid inadvertently resizing the current <ref id="browsertool"><window>Browser</window> tool bar</ref> while editing it. You can make these panes any size you like, within reason. If you design some that you think are better than mine, which are perhaps a little small, please let me know.</p>
 
 <p>Many of the default values shown in writable icons etc in the dialogue boxes are determined by the values in <cite>WinEd</cite>&rsquo;s templates.</p>
 
@@ -1153,7 +1257,7 @@ ExportTypedefEnd:} @wn_icons;</code>
 </columns>
 <row><col><code>\n</code></col><col>Start a new line (in comments, this will add the necessary continuation characters)</col></row>
 <row><col><code>\t</code></col><col>Insert a tab character.</col></row>
-<row><col><code>\xXX</code></col><col>Insert the character whose code is XX in hex.</col></row>
+<row><col><code>\xXX</code></col><col>Insert the character whose code is <maths>XX</maths> in hex.</col></row>
 <row><col><code>\\</code></col><col>Insert a literal \</col></row>
 <row><col><code>\[</code></col><col>Insert a literal [</col></row>
 <row><col><code>\]</code></col><col>Insert a literal ]</col></row>
@@ -1171,15 +1275,13 @@ ExportTypedefEnd:} @wn_icons;</code>
 </section>
 
 <section>
-<title>Test build</title>
-
-<p>This test build has been made available for feedback from users.</p>
+<title>Version 3.27 (27 April 2024)</title>
 
 <callout type="warning">
 
-<p>In <cite>WinEd</cite>&nbsp;3.27, the configuration file format has changed from binary to plain text, in order to enable options to be more easily added, changed and removed in the future without any further backwards compatibility issues.</p>
+<p>In <cite>WinEd</cite>&nbsp;3.27, the configuration file format has changed from binary to plain text, in order to enable options to be more easily added, changed and removed in the future without creating further backwards compatibility issues.</p>
 
-<p>This version will load existing saved options from earlier versions of <cite>WinEd</cite>, but choices saved from it will not load into earlier versions. It is therefore strongly advised to take a backup copy of the files from within the <file>Choices:WinEd</file> folder if you plan to return to an earlier version of the software.</p>
+<p>This version will load existing saved options from earlier versions of <cite>WinEd</cite>, but choices saved from it will not load back into earlier versions. It is therefore strongly advised to take a backup copy of the files from within the <file>Choices:WinEd</file> folder if you plan to return to an earlier version of the software.</p>
 </callout>
 
 <ul>
@@ -1203,10 +1305,10 @@ ExportTypedefEnd:} @wn_icons;</code>
 
 <ul>
 <li><p>Fix a problem when loading templates whose names contain a % character, introduced in 3.20.</p></li>
-<li><p>Fix problem which left a window icon in the file browser when deleting an open window, introduced in 3.10.</p></li>
+<li><p>Fix problem which left a window icon in the file <ref id="browsers"><window>Browser</window> window</ref> when deleting an open window, introduced in 3.10.</p></li>
 <li><p>Fix problems with the handling of unsaved files during an aborted Desktop Shut-Down, which prevented <cite>WinEd</cite> from subsequently being quit.</p></li>
 <li><p>Disable all keypresses aside from <key>Escape</key> during drag operations, to avoid unexpected side effects.</p></li>
-<li><p>Check that there is a selected window in the template browser before attempting to operate on it.</p></li>
+<li><p>Check that there is a selected window in the template <ref id="browsers"><window>Browser</window></ref> before attempting to operate on it.</p></li>
 <li><p>Improve interactive help messages throughout the application.</p></li>
 <li><p>Correct the behaviour of radio icons under <mouse>Adjust</mouse> clicks.</p></li>
 <li><p>Re-implement the <window>icon export</window> dialogue, resolving reported issues and adding <code>typedef</code> enum and <code>#define</code> options, optional name prefix, case conversion and invalid character substitution.</p></li>
@@ -1226,11 +1328,11 @@ ExportTypedefEnd:} @wn_icons;</code>
 <li><p>Add a <icon>Cancel</icon> button to the <window>Resize Icons</window> dialogue.</p></li>
 <li><p>Replace the arrows in the <window>Align Icons</window> dialogue with &ldquo;left&rdquo;, &ldquo;right&rdquo;, &ldquo;up&rdquo; and &ldquo;down&rdquo;.</p></li>
 <li><p>Allow the default action in the <window>Icon Edit</window> dialogue to be switched to updating the icon data without changing the icon&rsquo;s dimenstions, using a new option in the <window>Choices</window> dialogue.</p></li>
-<li><p>Improve window scrolling, taking into account the contents of the browser and the statistics windows and supporting extended scroll requests when available. This includes the templates being edited, and for previews if such requests are enabled in the template.</p></li>
+<li><p>Improve window scrolling, taking into account the contents of the <ref id="browsers"><window>Browser</window></ref> and the statistics windows and supporting extended scroll requests when available. This includes the templates being edited, and for previews if such requests are enabled in the template.</p></li>
 <li><p>Ensure that template strings are correctly zero-terminated when passed to the debug logging system.</p></li>
 <li><p>Disable cursor key movement of selected icons during drag operations, to prevent the two interfering.</p></li>
 <li><p>Standardise the capitalisation of validation commands in the Icon Picker.</p></li>
-<li><p>Make the browser pane fill the complete width of the browser window in large screen modes.</p></li>
+<li><p>Make the <ref id="browsertool"><window>Browser</window> toolbar</ref> fill the complete width of the <ref id="browsers"><window>Browser</window> window</ref> in large screen modes.</p></li>
 <li><p>Correctly set the <icon>Max text length</icon> field in the <window>Edit icon</window> dialogue box for indirected, sprite-only icons.</p></li>
 <li><p>Limit ESG values to the range 0-15, in line with the changes made for Ursula.</p></li>
 <li><p>Ensure that the <window>Save As</window> dialogue closes after a save triggered by closing an unsaved file.</p></li>

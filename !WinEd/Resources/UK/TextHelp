@@ -1,8 +1,8 @@
 =============================================================================
-WinEd - A template editor for RISC OS                            Version ----
+WinEd - A template editor for RISC OS                            Version 3.27
 
 (C) Tony Houghton, 1995; Adam Richardson, 2007;
-    Stephen Fryatt, 2020                                        21 April 2024
+    Stephen Fryatt, 2020                                        27 April 2024
 =============================================================================
 
 Contents
@@ -23,12 +23,12 @@ Contents
   13. Sprite files and sprite areas
   14. The iconbar menu
   15. The Choices dialogue box
-  16. Browsers
-  17. Mouse operations in browsers
-  18. The browser menu
+  16. Browser windows
+  17. Mouse operations in Browser windows
+  18. The Browser menu
   19. Saving templates
   20. Statistics windows
-  21. The browser tool bar
+  21. The Browser tool bar
   22. Exporting icon names
   23. Preview windows
   24. The preview menu
@@ -159,10 +159,10 @@ Contents
   Template files can be loaded by double clicking or dragging them to
   WinEd's icon on the iconbar. The number of files that WinEd can load and
   edit is only limited by memory. To create a new file click the WinEd icon;
-  this opens an empty browser (see Chapter 16. Browsers).
+  this opens an empty Browser window (see Chapter 16. Browser windows).
 
-  Files can be merged by dragging one file into a browser containing the
-  other.
+  Files can be merged by dragging one file into a Browser window containing
+  the other.
 
 12. Keyboard control of the pointer
 -----------------------------------
@@ -179,10 +179,10 @@ Contents
 ---------------------------------
 
   In some windows it is necessary to create icons with sprites that belong
-  to an application instead of the Wimp's sprite pool. You can load 'user'
-  sprite files into WinEd by dragging them to its icon. WinEd only has one
-  sprite pool which it shares between all windows loaded in it, but it can
-  load sprite files dragged to any of its windows or its iconbar.
+  to an application instead of the Wimp's sprite pool. You can load such
+  'user' sprite files into WinEd by dragging them to its icon. WinEd only
+  has one sprite pool which it shares between all windows loaded in it, but
+  it can load sprite files dragged to any of its windows or its iconbar.
 
   Holding Shift while dragging a sprite file to WinEd causes it to be merged
   with the Wimp sprite pool and the screen is redrawn.
@@ -198,26 +198,30 @@ Contents
 14. The iconbar menu
 --------------------
 
+  WinEd's iconbar menu can be accessed in the usual manner, with a Menu
+  click over WinEd's iconbar icon. The options contained within the menu are
+  described in this section.
+
   14.1. Info
   ----------
 
   Moving the pointer right opens a typical dialogue box containing
-  information about WinEd, including buttons to email the author or visit
-  the WinEd website.
+  information about WinEd, including buttons to email the current maintainer
+  or visit the current WinEd website.
 
   14.2. Help
   ----------
 
-  Clicking on this option will launch this file. If a browser has not been
-  seen when you click on the option, a text version of this manual will open
-  instead.
+  The Help... entry will launch this user manual. If a web browser has been
+  seen, an HTML version will be loaded; otherwise, a plain text version will
+  open instead.
 
   14.3. Icon picker
   -----------------
 
-  This opens the icon picker immediately above the right hand end of the
-  iconbar. The icon picker is described in a later section (see Chapter 32.
-  Creating icons: the Icon picker).
+  This entry opens the icon picker immediately above the right hand end of
+  the iconbar. The icon picker is described in a later section (see Chapter
+  32. Creating icons: the Icon picker).
 
   14.4. Monitor
   -------------
@@ -225,17 +229,25 @@ Contents
   This opens the monitor window at the top right of the screen. The monitor
   is described in a later section (see Chapter 31. The monitor).
 
-  14.5. Clear sprites
+  14.5. Choices...
+  ----------------
+
+  The Choices... entry will open the Choices dialogue (see Chapter 15. The
+  Choices dialogue box), allowing some aspects of WinEd's operation to be
+  configured.
+
+  14.6. Clear sprites
   -------------------
 
-  Clears the user sprite area to save memory.
+  Clears the user sprite area (see Chapter 13. Sprite files and sprite
+  areas) to save memory.
 
 15. The Choices dialogue box
 ----------------------------
 
   The Choices dialogue box can be opened by selecting Choices... from the
-  iconbar menu. It allows a number of aspects of WinEd's operation to be
-  configured.
+  iconbar menu (see Chapter 14. The iconbar menu). It allows a number of
+  aspects of WinEd's operation to be configured.
 
   Clicking on the 'OK' button will cause any changes made to the choices to
   take effect; if Adjust is used, the dialogue will remain on screen.
@@ -252,7 +264,7 @@ Contents
   15.1. Windows
   -------------
 
-  The 'Windows' section controls the behavior of windows within WinEd --
+  The 'Windows' section controls the behaviour of windows within WinEd --
   both dialogue boxes and the templates being edited.
 
     15.1.1. Automatic monitor
@@ -265,13 +277,15 @@ Contents
     15.1.2. Automatic icon picker
     -----------------------------
 
-    This makes the icon picker open and close with editable windows in a
-    similar way to the monitor.
+    This makes the icon picker (see Chapter 32. Creating icons: the Icon
+    picker) open and close with editable windows in a similar way to the
+    monitor.
 
     15.1.3. Browser tool bar
     ------------------------
 
-    This causes a tool bar to be displayed along the top of browsers.
+    This causes a tool bar to be displayed along the top of Browser windows
+    (see Chapter 16. Browser windows).
 
     15.1.4. Editor panes
     --------------------
@@ -302,9 +316,9 @@ Contents
     15.2.1. Keyboard short cuts
     ---------------------------
 
-    If selected, browsers and editable windows will claim input focus and
-    respond to keyboard short cuts. The short cuts are shown in the menus if
-    this option is selected.
+    If selected, Browser windows (see Chapter 16. Browser windows) and
+    editable windows will claim input focus and respond to keyboard short
+    cuts. The short cuts are shown in the menus if this option is selected.
 
     15.2.2. Move selection without mouse
     ------------------------------------
@@ -359,9 +373,9 @@ Contents
     15.3.3. Display templates sorted
     --------------------------------
 
-    If selected, the templates displayed in the Browser window will be
-    listed in alphabetical order. The ordering in the physical template file
-    will not be affected.
+    If selected, the templates displayed in a Browser window (see Chapter
+    16. Browser windows) will be listed in alphabetical order. The ordering
+    in the physical template file will not be affected.
 
   15.4. Misc
   ----------
@@ -379,12 +393,12 @@ Contents
     15.4.2. FormEd compatible strings
     ---------------------------------
 
-    All strings in template files are supposed to use CR (carriagereturn)
-    terminators. The Wimp's template SWIs, and most applications, work with
-    any control character terminator, but FormEd is a notable exception,
-    which insists on CR for most strings. WinEd now uses CR by default, but
-    if this option is unticked, it will use only zero terminators, which may
-    be useful if you're programming lazily in C. :-)
+    All strings in template files are supposed to use carriage returns (CR)
+    as terminators. The Wimp's template SWIs, and most applications, will
+    work with any control character terminator, but FormEd is a notable
+    exception which insists on CR for most strings. WinEd now uses CR by
+    default, but if this option is unticked, it will use only zero
+    terminators -- which may be useful if you're programming lazily in C. :-)
 
     15.4.3. Strict with panes
     -------------------------
@@ -395,9 +409,9 @@ Contents
     15.4.4. Save templates sorted
     -----------------------------
 
-    In addition to visually sorting templates in the browser (see Section
-    15.3.3. Display templates sorted), WinEd can also sort them when saving
-    a file if this option is selected.
+    In addition to visually sorting templates in Browser windows (see
+    Section 15.3.3. Display templates sorted), WinEd can also sort them when
+    saving a file if this option is selected.
 
         -----------------------------------------------------------------
                                  ~~~ Warning ~~~
@@ -408,27 +422,27 @@ Contents
         before switching it on.
         -----------------------------------------------------------------
 
-16. Browsers
-------------
+16. Browser windows
+-------------------
 
-  Browser is the term for a window which displays a list of the
-  window/dialogue box definitions in a file. Each entry is shown as a small
-  icon depicting a dialogue box (with no scroll bars) or window (with scroll
-  bars) next to its template identifier. The icons change to indicate
+  Browser window is the term for a window which displays a list of the
+  window and dialogue box definitions in a file. Each entry is shown as a
+  small icon depicting a dialogue box (with no scroll bars) or window (with
+  scroll bars) next to its template identifier. The icons change to indicate
   whether the window is currently open. The windows are displayed either in
   alphabetical order or in the order they appear in the file, depending on
   the 'Display templates sorted' option in the Choices window (see Chapter
   15. The Choices dialogue box).
 
-  If you click Adjust on a browser's close tool WinEd will attempt to open
-  the directory the templates were last loaded or saved in, keeping the
-  browser open if you hold Shift. Iconising a browser (Shift-Select on the
+  If you click Adjust on a Browser window's close tool WinEd will attempt to
+  open the directory the templates were last loaded or saved in, keeping the
+  Browser open if you hold Shift. Iconising a Browser (Shift-Select on the
   close tool) closes any windows which 'belong' to it, thus it can be used
-  for a quick tidyup. De-iconising the browser will re-open the closed
+  for a quick tidyup. De-iconising the Browser will re-open the closed
   windows.
 
-17. Mouse operations in browsers
---------------------------------
+17. Mouse operations in Browser windows
+---------------------------------------
 
   Where the location is given as 'work area' below, it refers to clicking
   over a part of the window not covered by an icon. Similarly, 'icon' means
@@ -454,10 +468,15 @@ Contents
                             Selection.
   Drag Adjust               Start dragging rubber box; all icons inside will
                             have their selection state toggled
-  Menu                      Open browser menu.
+  Menu                      Open the Browser menu (see Chapter 18. The
+                            Browser menu).
 
-18. The browser menu
+18. The Browser menu
 --------------------
+
+  Clicking Menu over a Browser window (see Chapter 16. Browser windows) will
+  open the Browser window menu, containing the options described in this
+  section.
 
   18.1. Create
   ------------
@@ -466,20 +485,112 @@ Contents
   one character, and you will be asked for confirmation if you are about to
   overwrite any existing windows with the same name.
 
-  18.2. Statistics
+  18.2. Selection
+  ---------------
+
+  The Selection submenu (which appears as Window if a single template is
+  selected) leads to a submenu containing options which can be applied to
+  window definitions.
+
+  The following actions are available from the menu.
+
+    18.2.1. Copy
+    ------------
+
+    Move right over the menu entry to copy the selected template using the
+    supplied name. This option isn't available if more than one template is
+    selected.
+
+    18.2.2. Rename
+    --------------
+
+    Move right over the menu entry to rename the selected template using the
+    supplied name. This option isn't available if more than one template is
+    selected.
+
+    18.2.3. Delete
+    --------------
+
+    Select the Delete option to delete the selected templates from the
+    browser.
+
+        -----------------------------------------------------------------
+                                 ~~~ Warning ~~~
+
+        The delete operation is instant, and no confirmation is
+        requested.
+        -----------------------------------------------------------------
+
+    18.2.4. Edit
+    ------------
+
+    Select the Edit option to open the window for editing (see Chapter 25.
+    Editable windows). This is equivalent to double-clicking on the window
+    in the browser with Select.
+
+    This option isn't available if more than one template is selected.
+
+    18.2.5. Preview
+    ---------------
+
+    Select the Preview option to open the window in preview mode (see
+    Chapter 23. Preview windows). This is equivalent to double-clicking on
+    the window in the browser with Adjust.
+
+    This option isn't available if more than one template is selected.
+
+    18.2.6. Export icon names
+    -------------------------
+
+    Move the pointer right over the menu entry to export the icon names (see
+    Chapter 22. Exporting icon names) in one of a number of formats.
+
+  18.3. Select all
   ----------------
 
-  Opens a statistics window for the file in the browser. This is described
-  below (see Chapter 20. Statistics windows).
+  Select all will add all of the window templates within the Browser window
+  to the current selection.
+
+  18.4. Clear selection
+  ---------------------
+
+  The Clear selection entry will clear any selected windows within the
+  Browser.
+
+  18.5. Save
+  ----------
+
+  The Save entry will allow the templates within the Browser window to be
+  saved (see Chapter 19. Saving templates) to their template file. Sliding
+  the pointer right will reveal a standard Save as dialogue box, while a
+  click will cause the file to be saved immediately if a full pathname is
+  available.
+
+  18.6. Statistics
+  ----------------
+
+  Opens a statistics window for the file in the Browser window (see Chapter
+  16. Browser windows). This is described below (see Chapter 20. Statistics
+  windows).
 
 19. Saving templates
 --------------------
 
-  If one or more windows are selected the 'Selection' button will be
-  selectable. Select this if you only want to save the selected templates.
-  Note that when you save a selection, the fonts for the whole file are
-  saved with it. To remove superfluous fonts load the new file back into
-  WinEd and resave.
+  The contents of a Browser window (see Chapter 16. Browser windows) can be
+  saved using the Save entry in the Browser menu (see Chapter 18. The
+  Browser menu), clicking on the 'Save' button in the Browser tool bar (see
+  Chapter 21. The Browser tool bar), or pressing F3.
+
+  Saving is normally carried out using a standard Save as dialogue but, if
+  the template file already has a full pathname shown in the Browser window
+  title bar, clicking on the Save menu item or Adjust-clicking on the 'Save'
+  button will save the file instantly to that location.
+
+  If one or more windows are selected when the Save as dialogue opens, the
+  'Selection' button will be available. This should be ticked if you only
+  want to save the selected templates. Note that when you save a selection,
+  the fonts for the whole file are saved with it. To remove superfluous
+  fonts, load the new file back into WinEd and resave.
 
 20. Statistics windows
 ----------------------
@@ -506,12 +617,13 @@ Contents
   the application using the templates needs to reserve space for the maximum
   possible length of the string.
 
-21. The browser tool bar
+21. The Browser tool bar
 ------------------------
 
   This is a row of tool icons which can optionally be displayed along the
-  top of browser windows. The tools provide short cuts for the functions
-  described above, available from the browser menu. They are (from left to
+  top of Browser windows (see Chapter 16. Browser windows). The tools
+  provide short cuts for the functions described above, available from the
+  Browser menu (see Chapter 18. The Browser menu). They are (from left to
   right):
 
   * Create (opens writable submenu)
@@ -525,9 +637,10 @@ Contents
 22. Exporting icon names
 ------------------------
 
-  The last entry on the selected window(s) submenu of the browser menu leads
-  to a "Save as" dialogue box for exporting icon names from all of the
-  selected windows in one of several different formats.
+  The last entry on the selected window(s) submenu of the Browser menu (see
+  Chapter 18. The Browser menu) leads to a Save as dialogue box for
+  exporting icon names from all of the selected windows in one of several
+  different formats.
 
   * 'C Enum' exports a standard C "enum ... { ... };" structure, where the
     entries are the icon names and handles.
@@ -609,8 +722,9 @@ Contents
   Since editable windows have their attributes altered to make them easier
   to edit, it is necessary to have a system of viewing exactly how your
   finished windows will look and behave. This is what preview windows are
-  for. They can be opened by double clicking Adjust on a window in a browser
-  or by choosing Preview from the browser menu.
+  for. They can be opened by double clicking Adjust on a window in a Browser
+  (see Chapter 16. Browser windows) or by choosing Preview from the Browser
+  menu (see Chapter 18. The Browser menu).
 
   Previews can also be used to fine tune the size and appearance of windows
   in ways which are not practical or possible with editable windows.
@@ -630,18 +744,32 @@ Contents
 24. The preview menu
 --------------------
 
-  24.1. Store position
+  The preview menu is available when a template is being previewed (see
+  Chapter 23. Preview windows), by clicking Menu over its window.
+
+  24.1. Close
+  -----------
+
+  Close the preview window, even if it does not have a close icon of its own.
+
+  24.2. Store position
   --------------------
 
   Stores the current onscreen size and position of the window in the
   template definition.
 
-  24.2. Store icon states
+  24.3. Store icon states
   -----------------------
 
   Stores the selection states of the window's icons in the template
   definition. However, it is better practice to leave any selection to the
   application which finally uses the templates.
+
+  24.4. Edit template
+  -------------------
+
+  Select Edit template to close the preview and re-open the template as an
+  editable window (see Chapter 25. Editable windows).
 
 25. Editable windows
 --------------------
@@ -709,7 +837,8 @@ Contents
 
   Note 1
 
-    This is similar to the same type of drag in browsers.
+    This is similar to the same type of drag in Browser windows (see Chapter
+    16. Browser windows).
 
   Note 2
 
@@ -920,7 +1049,7 @@ Contents
   This sets the values in the work area coordinate fields to the work area
   coordinates of the portion of the window currently visible. It is not
   recommended that the origin (X0 & Y1) coordinates are set to any value
-  other than zero, hence the Keep origin button is provided.
+  other than zero, hence the 'Keep origin' button is provided.
 
   33.2. Keep origin
   -----------------
@@ -980,16 +1109,16 @@ Contents
   width to height expressed as a percentage.
 
   Outline fonts do not seem to work in icons with validation strings
-  containing the L command.
+  containing the "L" command.
 
   35.5. Validate
   --------------
 
   Font handles overwrite the colour fields in icon flags, therefore the
-  colour data is held in an F command in the validation string. The
+  colour data is held in an "F" command in the validation string. The
   'Validate' button reads the colours from the fields in the dialogue box
-  and ensures the validation string contains the correct L command, forcing
-  the indirected flag on if necessary.
+  and ensures the validation string contains the correct "F" command,
+  forcing the indirected flag on if necessary.
 
   35.6. Update / Don't resize / Adjust size
   -----------------------------------------
@@ -1344,9 +1473,10 @@ Contents
   You can customise these by editing the WinTools and BrowTools templates
   and/or the Sprites and Sprites22 files. Note that you will have to disable
   the Editable window tool icons option to avoid inadvertently resizing the
-  current browser tool bar while editing it. You can make these panes any
-  size you like, within reason. If you design some that you think are better
-  than mine, which are perhaps a little small, please let me know.
+  current Browser tool bar (see Chapter 21. The Browser tool bar) while
+  editing it. You can make these panes any size you like, within reason. If
+  you design some that you think are better than mine, which are perhaps a
+  little small, please let me know.
 
   Many of the default values shown in writable icons etc in the dialogue
   boxes are determined by the values in WinEd's templates.
@@ -1446,22 +1576,20 @@ Contents
   The version history of WinEd, back as far as version 3.23, is as follows.
   Change logs prior to 2020 are not currently available.
 
-  44.1. Test build
-  ----------------
-
-  This test build has been made available for feedback from users.
+  44.1. Version 3.27 (27 April 2024)
+  ----------------------------------
 
       -------------------------------------------------------------------
                                 ~~~ Warning ~~~
 
       In WinEd 3.27, the configuration file format has changed from
       binary to plain text, in order to enable options to be more easily
-      added, changed and removed in the future without any further
+      added, changed and removed in the future without creating further
       backwards compatibility issues.
 
       This version will load existing saved options from earlier
-      versions of WinEd, but choices saved from it will not load into
-      earlier versions. It is therefore strongly advised to take a
+      versions of WinEd, but choices saved from it will not load back
+      into earlier versions. It is therefore strongly advised to take a
       backup copy of the files from within the Choices:WinEd folder if
       you plan to return to an earlier version of the software.
       -------------------------------------------------------------------
@@ -1497,14 +1625,15 @@ Contents
 
   * Fix a problem when loading templates whose names contain a % character,
     introduced in 3.20.
-  * Fix problem which left a window icon in the file browser when deleting
-    an open window, introduced in 3.10.
+  * Fix problem which left a window icon in the file Browser window (see
+    Chapter 16. Browser windows) when deleting an open window, introduced in
+    3.10.
   * Fix problems with the handling of unsaved files during an aborted
     Desktop Shut-Down, which prevented WinEd from subsequently being quit.
   * Disable all keypresses aside from Escape during drag operations, to
     avoid unexpected side effects.
-  * Check that there is a selected window in the template browser before
-    attempting to operate on it.
+  * Check that there is a selected window in the template Browser (see
+    Chapter 16. Browser windows) before attempting to operate on it.
   * Improve interactive help messages throughout the application.
   * Correct the behaviour of radio icons under Adjust clicks.
   * Re-implement the icon export dialogue, resolving reported issues and
@@ -1536,16 +1665,18 @@ Contents
     updating the icon data without changing the icon's dimenstions, using a
     new option in the Choices dialogue.
   * Improve window scrolling, taking into account the contents of the
-    browser and the statistics windows and supporting extended scroll
-    requests when available. This includes the templates being edited, and
-    for previews if such requests are enabled in the template.
+    Browser (see Chapter 16. Browser windows) and the statistics windows and
+    supporting extended scroll requests when available. This includes the
+    templates being edited, and for previews if such requests are enabled in
+    the template.
   * Ensure that template strings are correctly zero-terminated when passed
     to the debug logging system.
   * Disable cursor key movement of selected icons during drag operations, to
     prevent the two interfering.
   * Standardise the capitalisation of validation commands in the Icon Picker.
-  * Make the browser pane fill the complete width of the browser window in
-    large screen modes.
+  * Make the Browser toolbar (see Chapter 21. The Browser tool bar) fill the
+    complete width of the Browser window (see Chapter 16. Browser windows)
+    in large screen modes.
   * Correctly set the 'Max text length' field in the Edit icon dialogue box
     for indirected, sprite-only icons.
   * Limit ESG values to the range 0-15, in line with the changes made for
