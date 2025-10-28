@@ -36,7 +36,7 @@
 <li><p>Fast loading and saving.</p></li>
 </ul>
 
-<p><cite>WinEd</cite> was originally written by Tony Houghton, and his final release was <link href="http://www.snowstone.org.uk/riscos/realh/index.html#wined" erternal="true">version 2.87</link>. Up to and including the release of version 3.22a, <cite>WinEd</cite> was developed by <link href="http://www.snowstone.org.uk/riscos/" external="true">Adam Richardson</link>. Since then, some work to allow the code to be built for modern systems has been done by <link href="http://www.stevefryatt.org.uk/risc-os/wined" external="true">Steve Fryatt</link>.</p>
+<p><cite>WinEd</cite> was originally written by Tony Houghton, and his final release was <link href="http://www.snowstone.org.uk/riscos/realh/index.html#wined" external="true">version 2.87</link>. Up to and including the release of version 3.22a, <cite>WinEd</cite> was developed by <link href="http://www.snowstone.org.uk/riscos/" external="true">Adam Richardson</link>. Since then, some work to allow the code to be built for modern systems has been done by <link href="http://www.stevefryatt.org.uk/risc-os/wined" external="true">Steve Fryatt</link>.</p>
 
 <p>Some changes have been made to this help file, but the majority of the text remains the work of Tony Houghton. Any comments should be made to Steve Fryatt at <link href="mailto:info@stevefryatt.org.uk" flatten="true">info@stevefryatt.org.uk</link>.</p>
 </section>
