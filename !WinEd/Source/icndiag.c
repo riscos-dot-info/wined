@@ -255,7 +255,7 @@ void icndiag_open(browser_winentry *winentry,icon_handle icon)
 
 /**
  * Set the icons in the Icon Edit dialogue for a given window and icon.
- * 
+ *
  * \param *winentry   The window containing the icon of interest.
  * \param icon        The index of the required icon, or -1 for the title.
  */
@@ -416,9 +416,9 @@ void icndiag_seticons(browser_winentry *winentry,int icon)
 /**
  * Dynamically update the contents of the dialogue box as the
  * user interacts with it or the data changes.
- * 
+ *
  * \param *event  The
- * \param *reference  
+ * \param *reference
  * \return            TRUE if the event was handled.
  */
 BOOL icndiag_affect(event_pollblock *event,void *reference)
@@ -635,6 +635,7 @@ static void icndiag_readdbox(icon_block *iblock)
 BOOL icndiag_update(event_pollblock *event,void *reference)
 {
   icon_block iblock;
+  BOOL is_not_l_icon = TRUE;
 
   Log(log_DEBUG, "icndiag_update");
 
@@ -670,8 +671,12 @@ BOOL icndiag_update(event_pollblock *event,void *reference)
   }
 
   /* Resize if necessary */
+  if (iblock.flags.data.indirected && iblock.flags.data.text && Validation_ScanString(iblock.data.indirecttext.validstring,'L'))
+    is_not_l_icon = FALSE;
+  Log(log_DEBUG, " NotLIcon:%d, ResizeLIcons:%d", is_not_l_icon, choices->resize_l_icons);
   if (((event->data.mouse.icon == icndiag_UPDATE && choices->safe_icons == FALSE) ||
-      (event->data.mouse.icon == icndiag_ALTUPDATE && choices->safe_icons == TRUE)) && icndiag_icon != -1)
+      (event->data.mouse.icon == icndiag_ALTUPDATE && choices->safe_icons == TRUE)) &&
+      icndiag_icon != -1 && (is_not_l_icon || choices->resize_l_icons))
   {
     wimp_point minsize;
     BOOL resize = FALSE;

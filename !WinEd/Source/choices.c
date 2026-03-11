@@ -29,7 +29,8 @@ typedef enum {
   choices_SAFEICONS = 27,
   choices_DEFAULT = 28,
   choices_ROUNDCOORDS = 29,
-  choices_FILESORT = 30
+  choices_FILESORT = 30,
+  choices_RESIZEMULTILINE = 31
 } choices_icons;
 
 /* The magic number which appears in legacy binary config files. */
@@ -126,6 +127,7 @@ void choices_init(choices_responder responder)
   IniConfig_AddBoolean(choices_file, "RoundCoordinates", &(choices->round_coords), TRUE);
   IniConfig_AddBoolean(choices_file, "ConfirmDelete", &(choices->confirm), FALSE);
   IniConfig_AddBoolean(choices_file, "SafeIconUpdate", &(choices->safe_icons), FALSE);
+  IniConfig_AddBoolean(choices_file, "ResizeLIcons", &(choices->resize_l_icons), TRUE);
   IniConfig_AddSection(choices_file, "Display");
   IniConfig_AddBoolean(choices_file, "AlwaysShowBorders", &(choices->borders), FALSE);
   IniConfig_AddBoolean(choices_file, "HatchUserRedraw", &(choices->hatchredraw), TRUE);
@@ -163,6 +165,7 @@ void choices_seticons()
   Icon_SetSelect(choices_window,choices_SAFEICONS,choices->safe_icons);
   Icon_SetSelect(choices_window,choices_ROUNDCOORDS,choices->round_coords);
   Icon_SetSelect(choices_window,choices_FILESORT,choices->file_sort);
+  Icon_SetSelect(choices_window,choices_RESIZEMULTILINE,choices->resize_l_icons);
 }
 
 /**
@@ -194,7 +197,7 @@ void choices_readicons()
   choices->autosprites = Icon_GetSelect(choices_window,choices_AUTOSPRITES);
   choices->editpanes = Icon_GetSelect(choices_window,choices_EDITPANES);
   choices->mouseless_move =
-  	Icon_GetSelect(choices_window,choices_MOUSELESSMOVE);
+    Icon_GetSelect(choices_window,choices_MOUSELESSMOVE);
   choices->confirm = Icon_GetSelect(choices_window,choices_CONFIRM);
   choices->borders = Icon_GetSelect(choices_window,choices_BORDERS);
   choices->formed = Icon_GetSelect(choices_window,choices_FORMED);
@@ -202,6 +205,8 @@ void choices_readicons()
   choices->safe_icons = Icon_GetSelect(choices_window,choices_SAFEICONS);
   choices->round_coords = Icon_GetSelect(choices_window,choices_ROUNDCOORDS);
   choices->file_sort = Icon_GetSelect(choices_window,choices_FILESORT);
+  choices->resize_l_icons =
+    Icon_GetSelect(choices_window,choices_RESIZEMULTILINE);
 
   (*global_responder)(&old,choices);
 }
@@ -277,7 +282,7 @@ BOOL choices_clickdefault(event_pollblock *event,void *reference)
 
 /**
  * Load a choices file from disc.
- * 
+ *
  * \return TRUE on success; FALSE on failure.
  */
 static BOOL choices_load(void)
@@ -401,7 +406,7 @@ static BOOL choices_load(void)
 
 /**
  * Save a choices file to disc.
- * 
+ *
  * \return TRUE on success; FALSE on failure.
  */
 static BOOL choices_save(void)

@@ -10,7 +10,7 @@
 
 /**
  * The structure holding the user choices.
- */ 
+ */
 typedef struct {
   BOOL monitor;         /**< Automatically display the monitor.                               */
   BOOL picker;          /**< Automatically display the icon picker.                           */
@@ -36,6 +36,7 @@ typedef struct {
 
   BOOL round_coords;    /**< Round all window and icon coordinates to pixel boundaries.       */
   BOOL file_sort;       /**< Sort the templates into alphabetical order when saving.          */
+  BOOL resize_l_icons;  /**< Include L-validation icons in the icon edit dialogue resize.     */
 } choices_str;
 
 /**
