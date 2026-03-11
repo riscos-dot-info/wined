@@ -166,7 +166,7 @@
 <section>
 <title>Help</title>
 
-<p>The <menu>Help...</menu> entry will launch this user manual. If a web browser has been seen, an HTML version will be loaded; otherwise, a plain text version will open instead.</p>
+<p>The <menu><item>Help...</item></menu> entry will launch this user manual. If a web browser has been seen, an HTML version will be loaded; otherwise, a plain text version will open instead.</p>
 </section>
 
 <section>
@@ -184,7 +184,7 @@
 <section>
 <title>Choices...</title>
 
-<p>The <menu>Choices...</menu> entry will open the <ref id="choices"><window>Choices</window> dialogue</ref>, allowing some aspects of <cite>WinEd</cite>&rsquo;s operation to be configured.</p>
+<p>The <menu><item>Choices...</item></menu> entry will open the <ref id="choices"><window>Choices</window> dialogue</ref>, allowing some aspects of <cite>WinEd</cite>&rsquo;s operation to be configured.</p>
 </section>
 
 <section>
@@ -199,7 +199,7 @@
 <title>The Choices dialogue box</title>
 
 <section>
-<p>The <window>Choices</window> dialogue box can be opened by selecting <menu>Choices...</menu> from the <ref id="iconbar">iconbar menu</ref>. It allows a number of aspects of <cite>WinEd</cite>&rsquo;s operation to be configured.</p>
+<p>The <window>Choices</window> dialogue box can be opened by selecting <menu><item>Choices...</item></menu> from the <ref id="iconbar">iconbar menu</ref>. It allows a number of aspects of <cite>WinEd</cite>&rsquo;s operation to be configured.</p>
 
 <p>Clicking on the <icon>OK</icon> button will cause any changes made to the choices to take effect; if <mouse>Adjust</mouse> is used, the dialogue will remain on screen. Similarly <icon>Cancel</icon> will discard any un-saved changes, and using <mouse>Adjust</mouse> will leave the dialogue open.</p>
 
@@ -397,7 +397,7 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 <section>
 <title>Selection</title>
 
-<p>The <menu>Selection</menu> submenu (which appears as <menu>Window</menu> if a single template is selected) leads to a submenu containing options which can be applied to window definitions.</p>
+<p>The <menu><item>Selection</item></menu> submenu (which appears as <menu><item>Window</item></menu> if a single template is selected) leads to a submenu containing options which can be applied to window definitions.</p>
 
 <p>The following actions are available from the menu.</p>
 
@@ -416,7 +416,7 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 <section>
 <title>Delete</title>
 
-<p>Select the <menu>Delete</menu> option to delete the selected templates from the browser.</p>
+<p>Select the <menu><item>Delete</item></menu> option to delete the selected templates from the browser.</p>
 
 <callout type="warning">
 <p>The delete operation is instant, and no confirmation is requested.</p>
@@ -426,7 +426,7 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 <section>
 <title>Edit</title>
 
-<p>Select the <menu>Edit</menu> option to <ref id="edit">open the window for editing</ref>. This is equivalent to double-clicking on the window in the browser with <mouse>Select</mouse>.</p>
+<p>Select the <menu><item>Edit</item></menu> option to <ref id="edit">open the window for editing</ref>. This is equivalent to double-clicking on the window in the browser with <mouse>Select</mouse>.</p>
 
 <p>This option isn&rsquo;t available if more than one template is selected.</p>
 </section>
@@ -434,7 +434,7 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 <section>
 <title>Preview</title>
 
-<p>Select the <menu>Preview</menu> option to <ref id="preview">open the window in preview mode</ref>. This is equivalent to double-clicking on the window in the browser with <mouse>Adjust</mouse>.</p>
+<p>Select the <menu><item>Preview</item></menu> option to <ref id="preview">open the window in preview mode</ref>. This is equivalent to double-clicking on the window in the browser with <mouse>Adjust</mouse>.</p>
 
 <p>This option isn&rsquo;t available if more than one template is selected.</p>
 </section>
@@ -449,19 +449,19 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 <section>
 <title>Select all</title>
 
-<p><menu>Select all</menu> will add all of the window templates within the <window>Browser</window> window to the current selection.</p>
+<p><menu><item>Select all</item></menu> will add all of the window templates within the <window>Browser</window> window to the current selection.</p>
 </section>
 
 <section>
 <title>Clear selection</title>
 
-<p>The <menu>Clear selection</menu> entry will clear any selected windows within the <window>Browser</window>.</p>
+<p>The <menu><item>Clear selection</item></menu> entry will clear any selected windows within the <window>Browser</window>.</p>
 </section>
 
 <section>
 <title>Save</title>
 
-<p>The <menu>Save</menu> entry will allow the templates within the <window>Browser</window> window to be <ref id="save">saved</ref> to their template file. Sliding the pointer right will reveal a standard <window>Save as</window> dialogue box, while a click will cause the file to be saved immediately if a full pathname is available.</p>
+<p>The <menu><item>Save</item></menu> entry will allow the templates within the <window>Browser</window> window to be <ref id="save">saved</ref> to their template file. Sliding the pointer right will reveal a standard <window>Save as</window> dialogue box, while a click will cause the file to be saved immediately if a full pathname is available.</p>
 </section>
 
 <section>
@@ -475,9 +475,9 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 <title>Saving templates</title>
 
 <section>
-<p>The contents of a <ref id="browsers"><window>Browser</window> window</ref> can be saved using the <menu>Save</menu> entry in the <ref id="browsermenu"><window>Browser</window> menu</ref>, clicking on the <icon>Save</icon> button in the <ref id="browsertool"><window>Browser</window> tool bar</ref>, or pressing <key>F3</key>.</p>
+<p>The contents of a <ref id="browsers"><window>Browser</window> window</ref> can be saved using the <menu><item>Save</item></menu> entry in the <ref id="browsermenu"><window>Browser</window> menu</ref>, clicking on the <icon>Save</icon> button in the <ref id="browsertool"><window>Browser</window> tool bar</ref>, or pressing <key>F3</key>.</p>
 
-<p>Saving is normally carried out using a standard <window>Save as</window> dialogue but, if the template file already has a full pathname shown in the <window>Browser</window> window title bar, clicking on the <menu>Save</menu> menu item or <mouse>Adjust</mouse>-clicking on the <icon>Save</icon> button will save the file instantly to that location.</p>
+<p>Saving is normally carried out using a standard <window>Save as</window> dialogue but, if the template file already has a full pathname shown in the <window>Browser</window> window title bar, clicking on the <menu><item>Save</item></menu> menu item or <mouse>Adjust</mouse>-clicking on the <icon>Save</icon> button will save the file instantly to that location.</p>
 
 <p>If one or more windows are selected when the <window>Save as</window> dialogue opens, the <icon>Selection</icon> button will be available. This should be ticked if you only want to save the selected templates. Note that when you save a selection, the fonts for the whole file are saved with it. To remove superfluous fonts, load the new file back into <cite>WinEd</cite> and resave.</p>
 </section>
@@ -585,7 +585,7 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 <title>Preview windows</title>
 
 <section>
-<p>Since editable windows have their attributes altered to make them easier to edit, it is necessary to have a system of viewing exactly how your finished windows will look and behave. This is what preview windows are for. They can be opened by double clicking <mouse>Adjust</mouse> on a window in a <ref id="browsers"><window>Browser</window></ref> or by choosing <menu>Preview</menu> from the <ref id="browsermenu"><window>Browser</window> menu</ref>.</p>
+<p>Since editable windows have their attributes altered to make them easier to edit, it is necessary to have a system of viewing exactly how your finished windows will look and behave. This is what preview windows are for. They can be opened by double clicking <mouse>Adjust</mouse> on a window in a <ref id="browsers"><window>Browser</window></ref> or by choosing <menu><item>Preview</item></menu> from the <ref id="browsermenu"><window>Browser</window> menu</ref>.</p>
 
 <p>Previews can also be used to fine tune the size and appearance of windows in ways which are not practical or possible with editable windows.</p>
 
@@ -626,7 +626,7 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 <section>
 <title>Edit template</title>
 
-<p>Select <menu>Edit template</menu> to close the preview and re-open the template as <ref id="edit">an editable window</ref>.</p>
+<p>Select <menu><item>Edit template</item></menu> to close the preview and re-open the template as <ref id="edit">an editable window</ref>.</p>
 </section>
 </chapter>
 
@@ -783,7 +783,7 @@ transparent). This option is unavailable if <icon>24bit title colour</icon> is c
 <title>Goto icon menu option</title>
 
 <section>
-<p>Moving the mouse to the right over the <menu>Goto icon</menu> menu option will allow you to enter an icon name or number. If a corresponding icon is found in the current viewer the mouse will be placed in the centre of the icon (even if it&rsquo;s not currently showing on screen).</p>
+<p>Moving the mouse to the right over the <menu><item>Goto icon</item></menu> menu option will allow you to enter an icon name or number. If a corresponding icon is found in the current viewer the mouse will be placed in the centre of the icon (even if it&rsquo;s not currently showing on screen).</p>
 </section>
 </chapter>
 
