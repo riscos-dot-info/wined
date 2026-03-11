@@ -635,7 +635,6 @@ static void icndiag_readdbox(icon_block *iblock)
 BOOL icndiag_update(event_pollblock *event,void *reference)
 {
   icon_block iblock;
-  BOOL is_not_l_icon = TRUE;
 
   Log(log_DEBUG, "icndiag_update");
 
@@ -671,12 +670,9 @@ BOOL icndiag_update(event_pollblock *event,void *reference)
   }
 
   /* Resize if necessary */
-  if (iblock.flags.data.indirected && iblock.flags.data.text && Validation_ScanString(iblock.data.indirecttext.validstring,'L'))
-    is_not_l_icon = FALSE;
-  Log(log_DEBUG, " NotLIcon:%d, ResizeLIcons:%d", is_not_l_icon, choices->resize_l_icons);
   if (((event->data.mouse.icon == icndiag_UPDATE && choices->safe_icons == FALSE) ||
       (event->data.mouse.icon == icndiag_ALTUPDATE && choices->safe_icons == TRUE)) &&
-      icndiag_icon != -1 && (is_not_l_icon || choices->resize_l_icons))
+      icndiag_icon != -1 && (!is_multiline_icon(&iblock, &iblock) || choices->resize_l_icons))
   {
     wimp_point minsize;
     BOOL resize = FALSE;

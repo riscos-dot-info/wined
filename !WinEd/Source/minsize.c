@@ -133,10 +133,7 @@ static wimp_point minsize_textsize(icon_block *logblock, icon_block *physblock,
     fh = physblock->flags.font.handle;
   else
     fh = 0;
-  if (logblock->flags.data.indirected &&
-      (Lvalid =
-        Validation_ScanString(physblock->data.indirecttext.validstring,'L'),
-      Lvalid))
+  if (is_multiline_icon(logblock, physblock))
   {
     int widest;
     int rows = 0;
@@ -198,7 +195,14 @@ static wimp_point minsize_textsize(icon_block *logblock, icon_block *physblock,
     }
     /* Add extra margin */
     textsize.x += LMARGIN - 12;
-    sscanf(&physblock->data.indirecttext.validstring[Lvalid],"%d",&i);
+
+    /* To get here, we passed is_multiline_icon() which checked that the
+     * validation string pointer was OK.
+     */
+    i = 0;
+    Lvalid = Validation_ScanString(physblock->data.indirecttext.validstring,'L');
+    if (Lvalid > 0)
+      sscanf(&physblock->data.indirecttext.validstring[Lvalid],"%d",&i);
     if (!i) i = 40;
     textsize.y = rows * i + (4 - 12);
   }

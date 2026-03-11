@@ -8,6 +8,8 @@
 #include "DeskLib:SWI.h"
 #include "DeskLib:Environment.h"
 
+#include <ctype.h>
+
 /* Set up in browser.c */
 extern window_handle overwrite_warn;
 extern BOOL overwrite_warn_open;
@@ -176,7 +178,7 @@ void fort_out(const char *string)
 
 /* Take possibly ctrl-terminated strings and copy them into a separate buffer
  * for use with the Log() function. The pre-buffer is reset when Log() is called.
- * 
+ *
  * \param *text   Pointer to a possibly ctrl-terminated string.
  * \return        Pointer to a zero-terminated string which will be valid until
  *                Log() has been called.
@@ -282,7 +284,7 @@ int WinEd_Wimp_ReportErrorR(os_error *error, int flags, const char *name)
 /**
  * Extract an icon name from icon definition (The N validation command),
  * copying it into the supplied buffer.
- * 
+ *
  * \param *winentry     The window entry containing the icon.
  * \param icon          The icon from which to extract the name.
  * \param *buffer       Pointer to a buffer in which to return the name.
@@ -324,6 +326,66 @@ int extract_iconname(browser_winentry *winentry, int icon, char *buffer, int buf
 
   /* Return length of name copied over */
   return n - valix;
+}
+
+/**
+ * Test a validation string for the presence of a command, without obtaining
+ * the parameter associated with it.
+ *
+ * TODO: This is mostly a reimplementation of DeskLib's
+ * Icon_ScanValidationString() function, but it handles the case where the
+ * command appears at the end of the string with no parameter value following
+ * it. In this situation, Icon_ScanValidationString() returns zero for
+ * "not found". Changing this behaviour could break other applications, so for
+ * now we've re-implemented the call here in a form more useful to WinEd.
+ *
+ * \param *validation   Pointer to the validation string to be tested.
+ * \param command       The validation command to test for.
+ * \return              TRUE if the command was present; else FALSE.
+ */
+BOOL icon_contains_validation_command(char *validation, char command)
+{
+  if (validation == NULL)
+    return FALSE;
+
+  command = toupper(command);
+
+  while (*validation >= 32) {
+    if (toupper(*validation) == command)
+      return TRUE;
+
+    while (*validation >= 32 && *validation != ';')
+      validation++;
+
+    if (*validation == ';')
+      validation++;
+  }
+
+  return FALSE;
+}
+
+/**
+ * Test whether an icon is an indirected text icon with the L validation command
+ * for multi-line display.
+ *
+ * \param *fblock       Pointer to the icon block containing the flags.
+ * \param *vblock       Pointer to the icon block containing the validation
+ *                      string.
+ * \return              TRUE if the icon is multiline; else FALSE.
+ */
+BOOL is_multiline_icon(icon_block *fblock, icon_block *vblock)
+{
+  if (fblock == NULL || vblock == NULL)
+    return FALSE;
+
+  /* The icon must be indirected text for there to be a validation string. */
+
+  if (fblock->flags.data.indirected == FALSE || fblock->flags.data.text == FALSE)
+    return FALSE;
+
+  /* The validation string must contain the L command. */
+
+  return icon_contains_validation_command(vblock->data.indirecttext.validstring, 'L');
 }
 
 BOOL globals_scrollevent(event_pollblock *event,void *reference)

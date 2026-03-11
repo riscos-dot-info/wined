@@ -66,7 +66,7 @@ void fort_out(const char *string);
 
 /* Take possibly ctrl-terminated strings and copy them into a separate buffer
  * for use with the Log() function. The pre-buffer is reset when Log() is called.
- * 
+ *
  * \param *text   Pointer to a possibly ctrl-terminated string.
  * \return        Pointer to a zero-terminated string which will be valid until
  *                Log() has been called.
@@ -93,6 +93,12 @@ int WinEd_Wimp_ReportErrorR(os_error *error, int flags, const char *name);
 
 /* Extract icon name from icon definition. Returns length of string, or 0 if no name */
 int extract_iconname(browser_winentry *winentry, int icon, char *buffer, int buflen);
+
+/* Test for the presence of a validation command in a validation string. */
+BOOL icon_contains_validation_command(char *validation, char command);
+
+/* Test whether an icon is indirected text with the multi-line option set */
+BOOL is_multiline_icon(icon_block *fblock, icon_block *vblock);
 
 /* Handle scroll events generically. */
 BOOL globals_scrollevent(event_pollblock *event,void *reference);
