@@ -412,6 +412,7 @@ H_CHO_26:Select this option to display the list of templates in alphabetical ord
 H_CHO_27:Select this option to make resizing icons the non-default action in the Edit Icon dialogue box.
 H_CHO_29:Select this option to round window and icon coordinates to pixel boundaries.
 H_CHO_30:Select this option to sort windows alphabetically when saving them to file.
+H_CHO_31:Select this option to include multiline text icons (L validation strings) in the automatic resize when closing the Edit Icon dialogue box.
 H_CRE:Use this dialogue box to enter a name for your new \w.
 H_COP:Use this dialogue box to enter a name for the copy of the slected \w.
 H_REN:Use this dialogue box to enter a new name for the selected \w.

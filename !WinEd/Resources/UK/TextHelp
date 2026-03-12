@@ -61,15 +61,23 @@ Contents
   WinEd is a template editor. Its most attractive features are:
 
   * Main editing interfaces use dialogue boxes.
+
   * Icons can be dragged between windows, including a customisable 'Picker'
     window containing the most commonly used icons.
+
   * Multiple files can be loaded by one instantiation of WinEd.
+
   * Conventions are based on Acorn's Style Guide.
+
   * Statistics are available on the size etc of template files.
+
   * Powerful features for positioning icons relative to each other.
+
   * Optional rounding of coordinates in high resolution modes to ensure low
     resolution compatibility.
+
   * Optional tool panes and keyboard short cuts enhance convenience.
+
   * Fast loading and saving.
 
   WinEd was originally written by Tony Houghton, and his final release was
@@ -212,9 +220,9 @@ Contents
   14.2. Help
   ----------
 
-  The Help... entry will launch this user manual. If a web browser has been
-  seen, an HTML version will be loaded; otherwise, a plain text version will
-  open instead.
+  The 'Help...' entry will launch this user manual. If a web browser has
+  been seen, an HTML version will be loaded; otherwise, a plain text version
+  will open instead.
 
   14.3. Icon picker
   -----------------
@@ -232,7 +240,7 @@ Contents
   14.5. Choices...
   ----------------
 
-  The Choices... entry will open the Choices dialogue (see Chapter 15. The
+  The 'Choices...' entry will open the Choices dialogue (see Chapter 15. The
   Choices dialogue box), allowing some aspects of WinEd's operation to be
   configured.
 
@@ -245,7 +253,7 @@ Contents
 15. The Choices dialogue box
 ----------------------------
 
-  The Choices dialogue box can be opened by selecting Choices... from the
+  The Choices dialogue box can be opened by selecting 'Choices...' from the
   iconbar menu (see Chapter 14. The iconbar menu). It allows a number of
   aspects of WinEd's operation to be configured.
 
@@ -350,6 +358,15 @@ Contents
     dialogue box (see Chapter 35. Edit icon/title dialogue box) will also
     resize the icon if it is too small for its contents. If ticked, the
     resizing moves to the non-default 'Adjust size' action button.
+
+    15.2.6. Resize multi-line icons
+    -------------------------------
+
+    If ticked, multi-line icons (those with an "L" validation string) will
+    be resized when closing the Edit Icon dialogue box (see Chapter 35. Edit
+    icon/title dialogue box) (see Section 15.2.5. Safe icon update).
+    Otherwise, such icons will need to be explicitly resized (see Chapter
+    39. Resize icons dialogue box).
 
   15.3. Display
   -------------
@@ -488,7 +505,7 @@ Contents
   18.2. Selection
   ---------------
 
-  The Selection submenu (which appears as Window if a single template is
+  The 'Selection' submenu (which appears as 'Window' if a single template is
   selected) leads to a submenu containing options which can be applied to
   window definitions.
 
@@ -511,7 +528,7 @@ Contents
     18.2.3. Delete
     --------------
 
-    Select the Delete option to delete the selected templates from the
+    Select the 'Delete' option to delete the selected templates from the
     browser.
 
         -----------------------------------------------------------------
@@ -524,7 +541,7 @@ Contents
     18.2.4. Edit
     ------------
 
-    Select the Edit option to open the window for editing (see Chapter 25.
+    Select the 'Edit' option to open the window for editing (see Chapter 25.
     Editable windows). This is equivalent to double-clicking on the window
     in the browser with Select.
 
@@ -533,7 +550,7 @@ Contents
     18.2.5. Preview
     ---------------
 
-    Select the Preview option to open the window in preview mode (see
+    Select the 'Preview' option to open the window in preview mode (see
     Chapter 23. Preview windows). This is equivalent to double-clicking on
     the window in the browser with Adjust.
 
@@ -548,19 +565,19 @@ Contents
   18.3. Select all
   ----------------
 
-  Select all will add all of the window templates within the Browser window
-  to the current selection.
+  'Select all' will add all of the window templates within the Browser
+  window to the current selection.
 
   18.4. Clear selection
   ---------------------
 
-  The Clear selection entry will clear any selected windows within the
+  The 'Clear selection' entry will clear any selected windows within the
   Browser.
 
   18.5. Save
   ----------
 
-  The Save entry will allow the templates within the Browser window to be
+  The 'Save' entry will allow the templates within the Browser window to be
   saved (see Chapter 19. Saving templates) to their template file. Sliding
   the pointer right will reveal a standard Save as dialogue box, while a
   click will cause the file to be saved immediately if a full pathname is
@@ -577,14 +594,14 @@ Contents
 --------------------
 
   The contents of a Browser window (see Chapter 16. Browser windows) can be
-  saved using the Save entry in the Browser menu (see Chapter 18. The
+  saved using the 'Save' entry in the Browser menu (see Chapter 18. The
   Browser menu), clicking on the 'Save' button in the Browser tool bar (see
   Chapter 21. The Browser tool bar), or pressing F3.
 
   Saving is normally carried out using a standard Save as dialogue but, if
   the template file already has a full pathname shown in the Browser window
-  title bar, clicking on the Save menu item or Adjust-clicking on the 'Save'
-  button will save the file instantly to that location.
+  title bar, clicking on the 'Save' menu item or Adjust-clicking on the
+  'Save' button will save the file instantly to that location.
 
   If one or more windows are selected when the Save as dialogue opens, the
   'Selection' button will be available. This should be ticked if you only
@@ -627,11 +644,17 @@ Contents
   right):
 
   * Create (opens writable submenu)
+
   * Select all (Select mouse button) / Clear selection (Adjust mouse button)
+
   * Save
+
   * Copy (opens writable submenu)
+
   * Rename (opens writable submenu)
+
   * Delete
+
   * Statistics
 
 22. Exporting icon names
@@ -644,12 +667,16 @@ Contents
 
   * 'C Enum' exports a standard C "enum ... { ... };" structure, where the
     entries are the icon names and handles.
+
   * 'C Typedef' is similar, but exports a C "typedef enum { ... } ...;"
     structure instead.
+
   * 'C #define' exports a list of C preprocessor "#define ... " directives,
     to define constants for the icon names.
+
   * 'BASIC' exports a definition for "PROCiconnumbers", in which variables
     are defined for each icon name.
+
   * 'Messages' exports a skeleton MessageTrans file, where tokens are set up
     for the icon names.
 
@@ -723,8 +750,8 @@ Contents
   to edit, it is necessary to have a system of viewing exactly how your
   finished windows will look and behave. This is what preview windows are
   for. They can be opened by double clicking Adjust on a window in a Browser
-  (see Chapter 16. Browser windows) or by choosing Preview from the Browser
-  menu (see Chapter 18. The Browser menu).
+  (see Chapter 16. Browser windows) or by choosing 'Preview' from the
+  Browser menu (see Chapter 18. The Browser menu).
 
   Previews can also be used to fine tune the size and appearance of windows
   in ways which are not practical or possible with editable windows.
@@ -768,7 +795,7 @@ Contents
   24.4. Edit template
   -------------------
 
-  Select Edit template to close the preview and re-open the template as an
+  Select 'Edit template' to close the preview and re-open the template as an
   editable window (see Chapter 25. Editable windows).
 
 25. Editable windows
@@ -917,17 +944,28 @@ Contents
   (left to right, top to bottom):
 
   * Edit window...
+
   * Edit title...
+
   * Work area...
+
   * Visible area...
+
   * Delete
+
   * Renumber (Select opens dialogue box, Adjust renumbers with value
     currently shown in menu)
+
   * Align...
+
   * Space out...
+
   * Resize...
+
   * Coords...
+
   * Frame...
+
   * Select all (Select mouse button) / Clear selection (Adjust mouse button)
 
 29. Edit window dialogue box
@@ -965,7 +1003,7 @@ Contents
 30. Goto icon menu option
 -------------------------
 
-  Moving the mouse to the right over the Goto icon menu option will allow
+  Moving the mouse to the right over the 'Goto icon' menu option will allow
   you to enter an icon name or number. If a corresponding icon is found in
   the current viewer the mouse will be placed in the centre of the icon
   (even if it's not currently showing on screen).
@@ -1126,11 +1164,17 @@ Contents
   The two action buttons both update the template data with settings from
   the dialogue box. If the second button is 'Don't resize', then 'Update'
   will also resize the icon if it is currently too small to display its data
-  (see Resize icons dialogue box). If the second button is 'Adjust size',
-  which can be configured by the 'Safe icon update' option in the Choices
-  dialogue (see Chapter 15. The Choices dialogue box), then 'Update' will
-  only store any changed values, while 'Adjust size' will also perform any
-  resizing which is required.
+  (see Resize icons dialogue box (see Chapter 39. Resize icons dialogue
+  box)). If the second button is 'Adjust size', which can be configured by
+  the 'Safe icon update' option in the Choices dialogue (see Chapter 15. The
+  Choices dialogue box), then 'Update' will only store any changed values,
+  while 'Adjust size' will also perform any resizing which is required.
+
+  Unless the 'Resize multi-line icons' option is ticked in the Choices
+  dialogue (see Chapter 15. The Choices dialogue box), icons with validation
+  strings containing the "L" command will not be resized when the dialogue
+  closes. This can make it safer to work on windows where the size of these
+  icons may be unrelated to their content.
 
 36. Edit multiple icons dialogue box
 ------------------------------------
@@ -1576,7 +1620,15 @@ Contents
   The version history of WinEd, back as far as version 3.23, is as follows.
   Change logs prior to 2020 are not currently available.
 
-  44.1. Version 3.27 (27 April 2024)
+  44.1. Test Build
+  ----------------
+
+  * Fix the detection of "L" validation strings when processing icon resize
+    operations.
+
+  * Add the 'Resize multi-line icons' option to Choices.
+
+  44.2. Version 3.27 (27 April 2024)
   ----------------------------------
 
       -------------------------------------------------------------------
@@ -1596,51 +1648,69 @@ Contents
 
   * A new 'Save templates sorted' option to store the windows in
     alphabetical order in the file.
+
   * Improvements to the template sorting algorithm used in 'Display
     templates sorted'.
+
   * Improvements to the template identifier sanity checks when loading files.
+
   * Improvements to the sanity checks on the reserved fields in file
     headers, so that invalid files from older third-party editors can be
     loaded with user agreement.
+
   * The filetypes of possible application sprite files (those found by
     proximity to the templates file) are now checked before loading them, to
     avoid bad sprite file errors.
+
   * Choices are now saved in textual format, to simplify future changes and
     additions to the file contents.
+
   * Improvements to the way that Choices$Path and Choices$Write are used.
+
   * A 'Default' button in the Choices dialogue to reset the options to their
     defaults.
+
   * The 'Round icon coordinates' option has returned to Choices, and is no
     longer paired with 'Display templates sorted'.
+
   * Icon dimensions in the Monitor are updated when an icon is resized using
     an Adjust-double-click.
+
   * Website links have been updated to current download page, to avoid
     issues with RISC OS.info being offline.
+
   * Overhaul of the documentation, including a replacement of the text
     version of the manual with one matching the HTML documentation and the
     addition of the recent version history.
 
-  44.2. Version 3.26 (29 August 2020)
+  44.3. Version 3.26 (29 August 2020)
   -----------------------------------
 
   * Fix a problem when loading templates whose names contain a % character,
     introduced in 3.20.
+
   * Fix problem which left a window icon in the file Browser window (see
     Chapter 16. Browser windows) when deleting an open window, introduced in
     3.10.
+
   * Fix problems with the handling of unsaved files during an aborted
     Desktop Shut-Down, which prevented WinEd from subsequently being quit.
+
   * Disable all keypresses aside from Escape during drag operations, to
     avoid unexpected side effects.
+
   * Check that there is a selected window in the template Browser (see
     Chapter 16. Browser windows) before attempting to operate on it.
+
   * Improve interactive help messages throughout the application.
+
   * Correct the behaviour of radio icons under Adjust clicks.
+
   * Re-implement the icon export dialogue, resolving reported issues and
     adding "typedef" enum and "#define" options, optional name prefix, case
     conversion and invalid character substitution.
 
-  44.3. Version 3.25 (28 July 2020)
+  44.4. Version 3.25 (28 July 2020)
   ---------------------------------
 
       -------------------------------------------------------------------
@@ -1656,41 +1726,53 @@ Contents
 
   * Resolve numerous additional NULL pointer dereferences in the menu
     handling code.
+
   * Stop the overwrite check when files are saved to Wimp$Scrap as part of
     the Data Transfer Protocol.
+
   * Add a 'Cancel' button to the Resize Icons dialogue.
+
   * Replace the arrows in the Align Icons dialogue with "left", "right",
     "up" and "down".
+
   * Allow the default action in the Icon Edit dialogue to be switched to
     updating the icon data without changing the icon's dimenstions, using a
     new option in the Choices dialogue.
+
   * Improve window scrolling, taking into account the contents of the
     Browser (see Chapter 16. Browser windows) and the statistics windows and
     supporting extended scroll requests when available. This includes the
     templates being edited, and for previews if such requests are enabled in
     the template.
+
   * Ensure that template strings are correctly zero-terminated when passed
     to the debug logging system.
+
   * Disable cursor key movement of selected icons during drag operations, to
     prevent the two interfering.
+
   * Standardise the capitalisation of validation commands in the Icon Picker.
+
   * Make the Browser toolbar (see Chapter 21. The Browser tool bar) fill the
     complete width of the Browser window (see Chapter 16. Browser windows)
     in large screen modes.
+
   * Correctly set the 'Max text length' field in the Edit icon dialogue box
     for indirected, sprite-only icons.
+
   * Limit ESG values to the range 0-15, in line with the changes made for
     Ursula.
+
   * Ensure that the Save As dialogue closes after a save triggered by
     closing an unsaved file.
 
-  44.4. Version 3.24
+  44.5. Version 3.24
   ------------------
 
   This version number was skipped, due to the possibility that it had been
   used for some limited-release test builds at some stage in the past.
 
-  44.5. Version 3.23 (17 June 2020)
+  44.6. Version 3.23 (17 June 2020)
   ---------------------------------
 
   * Resolve a significant NULL pointer dereference in the menu code, which

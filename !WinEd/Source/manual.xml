@@ -89,7 +89,7 @@
 <title>Mode independence</title>
 
 <section>
-<p><cite>WinEd</cite> has been designed so that you do not have to design your templates in low resolution modes to ensure compatibility. This is done by &ldquo;snapping&rdquo; icons to a 4&times;4&nbsp;OS&nbsp;unit grid. (4&nbsp;OS&nbsp;units is equivalent to one pixel in the lowest resolution desktop modes). This can be overridden using the keyboard cursor arrows, together with either <key>Ctrl</key> or <key>Shift</key>.</p>
+<p><cite>WinEd</cite> has been designed so that you do not have to design your templates in low resolution modes to ensure compatibility. This is done by &ldquo;snapping&rdquo; icons to a 4&times;4&nbsp;OS&nbsp;unit grid. (4&nbsp;OS&nbsp;units is equivalent to one pixel in the lowest resolution desktop modes). This can be overridden using the keyboard cursor arrows, together with either <keypress><key>Ctrl</key></keypress> or <keypress><key>Shift</key></keypress>.</p>
 </section>
 </chapter>
 
@@ -134,7 +134,7 @@
 <section>
 <p>While <cite>WinEd</cite> has the input focus, each press of one of the cursor keys moves the mouse pointer by one pixel in the appropriate direction.</p>
 
-<p>Alternatively, the cursor keys can be made to &lsquo;nudge&rsquo; any selected icons without using the mouse. The icons are moved by 4&nbsp;OS&nbsp;units, unless the <key>Shift</key> or <key>Ctrl</key> modifier keys are held down, in which case the icons are moved by 2 or 1&nbsp;OS&nbsp;units, respectively.</p>
+<p>Alternatively, the cursor keys can be made to &lsquo;nudge&rsquo; any selected icons without using the mouse. The icons are moved by 4&nbsp;OS&nbsp;units, unless the <keypress><key>Shift</key></keypress> or <keypress><key>Ctrl</key></keypress> modifier keys are held down, in which case the icons are moved by 2 or 1&nbsp;OS&nbsp;units, respectively.</p>
 </section>
 </chapter>
 
@@ -144,7 +144,7 @@
 <section>
 <p>In some windows it is necessary to create icons with sprites that belong to an application instead of the Wimp&rsquo;s sprite pool. You can load such &lsquo;user&rsquo; sprite files into <cite>WinEd</cite> by dragging them to its icon. <cite>WinEd</cite> only has one sprite pool which it shares between all windows loaded in it, but it can load sprite files dragged to any of its windows or its iconbar.</p>
 
-<p>Holding <key>Shift</key> while dragging a sprite file to <cite>WinEd</cite> causes it to be merged with the Wimp sprite pool and the screen is redrawn.</p>
+<p>Holding <keypress><key>Shift</key></keypress> while dragging a sprite file to <cite>WinEd</cite> causes it to be merged with the Wimp sprite pool and the screen is redrawn.</p>
 
 <p>From version 2.30 onwards, all sprite area fields are saved with the value 1 (use Wimp sprites) and <cite>WinEd</cite> makes no distinction between the Wimp sprite pool and the user sprite pool. RISC&nbsp;OS&nbsp;3 allows all sprite area pointers to be set to a user sprite area and it will look for sprites in the Wimp pool if they are not found in the user area. It is up to the target application to change sprite area pointers to its own sprite area if necessary.</p>
 </section>
@@ -264,7 +264,7 @@
 <section>
 <title>Move selection without mouse</title>
 
-<p>If selected, selected icons in editable windows can be nudged with the cursor keys instead of the keys only nudging the mouse pointer. The icons will move by 4&nbsp;OS&nbsp;units at a time. Holding down <key>Shift</key> while nudging will make the steps only 2&nbsp;OS&nbsp;units and holding down <key>Ctrl</key> will make the steps only 1&nbsp;OS&nbsp;unit per keypress.</p>
+<p>If selected, selected icons in editable windows can be nudged with the cursor keys instead of the keys only nudging the mouse pointer. The icons will move by 4&nbsp;OS&nbsp;units at a time. Holding down <keypress><key>Shift</key></keypress> while nudging will make the steps only 2&nbsp;OS&nbsp;units and holding down <keypress><key>Ctrl</key></keypress> will make the steps only 1&nbsp;OS&nbsp;unit per keypress.</p>
 </section>
 
 <section>
@@ -279,10 +279,17 @@
 <p>If selected, you will be prompted with an error box before deleting any icons or windows.</p>
 </section>
 
-<section>
+<section id="choice-safe-icon-update">
 <title>Safe icon update</title>
 
 <p>In its default, unticked state, the <icon>Update</icon> button in the <ref id="editicon">Edit Icon dialogue box</ref> will also resize the icon if it is too small for its contents. If ticked, the resizing moves to the non-default <icon>Adjust size</icon> action button.</p>
+</section>
+
+<section>
+<title>Resize multi-line icons</title>
+
+<p>If ticked, multi-line icons (those with an <code>L</code> validation string) will be resized when closing the <ref id="editicon">Edit Icon dialogue box</ref> (see <ref id="choice-safe-icon-update"/>). Otherwise, such icons will need to be <ref id="resize">explicitly resized</ref>.</p>
+
 </section>
 </section>
 
@@ -350,7 +357,7 @@
 <section>
 <p><window>Browser</window> window is the term for a window which displays a list of the window and dialogue box definitions in a file. Each entry is shown as a small icon depicting a dialogue box (with no scroll bars) or window (with scroll bars) next to its template identifier. The icons change to indicate whether the window is currently open. The windows are displayed either in alphabetical order or in the order they appear in the file, depending on the <icon>Display templates sorted</icon> option in the <ref id="choices"><window>Choices</window> window</ref>.</p>
 
-<p>If you click <mouse>Adjust</mouse> on a <window>Browser</window> window&rsquo;s close tool <cite>WinEd</cite> will attempt to open the directory the templates were last loaded or saved in, keeping the <window>Browser</window> open if you hold <key>Shift</key>. Iconising a <window>Browser</window> (<key>Shift</key>-<mouse>Select</mouse> on the close tool) closes any windows which &lsquo;belong&rsquo; to it, thus it can be used for a quick tidyup. De-iconising the <window>Browser</window> will re-open the closed windows.</p>
+<p>If you click <mouse>Adjust</mouse> on a <window>Browser</window> window&rsquo;s close tool <cite>WinEd</cite> will attempt to open the directory the templates were last loaded or saved in, keeping the <window>Browser</window> open if you hold <keypress><key>Shift</key></keypress>. Iconising a <window>Browser</window> (<keypress><key>Shift</key></keypress>-<mouse>Select</mouse> on the close tool) closes any windows which &lsquo;belong&rsquo; to it, thus it can be used for a quick tidyup. De-iconising the <window>Browser</window> will re-open the closed windows.</p>
 </section>
 </chapter>
 
@@ -359,7 +366,7 @@
 <title>Mouse operations in <window>Browser</window> windows</title>
 
 <section>
-<p>Where the location is given as &lsquo;work area&rsquo; below, it refers to clicking over a part of the window not covered by an icon. Similarly, &lsquo;icon&rsquo; means clicking over an icon; each icon corresponds to a window or dialogue box definition. If neither are specified it refers to any part of the window. Holding down <key>Ctrl</key> while clicking has the effect of forcing the
+<p>Where the location is given as &lsquo;work area&rsquo; below, it refers to clicking over a part of the window not covered by an icon. Similarly, &lsquo;icon&rsquo; means clicking over an icon; each icon corresponds to a window or dialogue box definition. If neither are specified it refers to any part of the window. Holding down <keypress><key>Ctrl</key></keypress> while clicking has the effect of forcing the
 action to behave as if the click is over the work area, ignoring any icon.</p>
 
 <table>
@@ -475,7 +482,7 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 <title>Saving templates</title>
 
 <section>
-<p>The contents of a <ref id="browsers"><window>Browser</window> window</ref> can be saved using the <menu><item>Save</item></menu> entry in the <ref id="browsermenu"><window>Browser</window> menu</ref>, clicking on the <icon>Save</icon> button in the <ref id="browsertool"><window>Browser</window> tool bar</ref>, or pressing <key>F3</key>.</p>
+<p>The contents of a <ref id="browsers"><window>Browser</window> window</ref> can be saved using the <menu><item>Save</item></menu> entry in the <ref id="browsermenu"><window>Browser</window> menu</ref>, clicking on the <icon>Save</icon> button in the <ref id="browsertool"><window>Browser</window> tool bar</ref>, or pressing <keypress><key>F3</key></keypress>.</p>
 
 <p>Saving is normally carried out using a standard <window>Save as</window> dialogue but, if the template file already has a full pathname shown in the <window>Browser</window> window title bar, clicking on the <menu><item>Save</item></menu> menu item or <mouse>Adjust</mouse>-clicking on the <icon>Save</icon> button will save the file instantly to that location.</p>
 
@@ -589,7 +596,7 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 
 <p>Previews can also be used to fine tune the size and appearance of windows in ways which are not practical or possible with editable windows.</p>
 
-<p>It is possible to drag a preview window by dragging an empty part (ie. not covered by an icon) of its work area while pressing <key>Ctrl</key>. Using <mouse>Select</mouse> has the same effect as dragging the title bar (move window) and <mouse>Adjust</mouse> is the same as dragging the adjust size tool (resize window).</p>
+<p>It is possible to drag a preview window by dragging an empty part (ie. not covered by an icon) of its work area while pressing <keypress><key>Ctrl</key></keypress>. Using <mouse>Select</mouse> has the same effect as dragging the title bar (move window) and <mouse>Adjust</mouse> is the same as dragging the adjust size tool (resize window).</p>
 
 <p>It may also be necessary to see how windows fit with each other (eg. for panes) without superfluous tools.</p>
 
@@ -645,9 +652,9 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 <title>Mouse operations in editable windows</title>
 
 <section>
-<p>These are summarised below with notes. Note also that all mouse operations in editable windows can be modified in the same way with the <key>Ctrl</key> key. This has the effect of making the operation act as if over an empty bit of work area instead of over an icon. All irreversible drags (ie excepting rubber boxes) can be cancelled by pressing <key>Esc</key> when you release the mouse.</p>
+<p>These are summarised below with notes. Note also that all mouse operations in editable windows can be modified in the same way with the <keypress><key>Ctrl</key></keypress> key. This has the effect of making the operation act as if over an empty bit of work area instead of over an icon. All irreversible drags (ie excepting rubber boxes) can be cancelled by pressing <keypress><key>Esc</key></keypress> when you release the mouse.</p>
 
-<p>Note that moving and resizing icons by dragging will always round the result to a multiple of 4&nbsp;OS&nbsp;units. For more precise control when moving icons, you can use the cursor keys instead (together with the <key>Ctrl</key> and <key>Shift</key> modifiers. Small changes to the size of icons must be done via the <window>Coordinates</window> dialogue box.</p>
+<p>Note that moving and resizing icons by dragging will always round the result to a multiple of 4&nbsp;OS&nbsp;units. For more precise control when moving icons, you can use the cursor keys instead (together with the <keypress><key>Ctrl</key></keypress> and <keypress><key>Shift</key></keypress> modifiers. Small changes to the size of icons must be done via the <window>Coordinates</window> dialogue box.</p>
 
 <table>
 <columns>
@@ -677,9 +684,9 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 
 <footnote id="note-1"><p>This is similar to the same type of drag in <ref id="browsers"><window>Browser</window> windows</ref>.</p></footnote>
 
-<footnote id="note-2"><p>This follows the conventions of Drag &amp; Drop as outlined in the <cite>Style Guide</cite>. The unmodified drag and <key>Shift</key>-modified drag have the opposite effect depending on whether the drag is local (finishing in the same window as it started) or an export (to a different window). In the local case an unmodified drag moves the icon and a <key>Shift</key>-drag copies it, in the export case an unmodified drag copies the icon, a <key>Shift</key>-drag effectively moves the icon by making a copy in the destination window and deleting the original.</p>
+<footnote id="note-2"><p>This follows the conventions of Drag &amp; Drop as outlined in the <cite>Style Guide</cite>. The unmodified drag and <keypress><key>Shift</key></keypress>-modified drag have the opposite effect depending on whether the drag is local (finishing in the same window as it started) or an export (to a different window). In the local case an unmodified drag moves the icon and a <keypress><key>Shift</key></keypress>-drag copies it, in the export case an unmodified drag copies the icon, a <keypress><key>Shift</key></keypress>-drag effectively moves the icon by making a copy in the destination window and deleting the original.</p>
 
-<p>If the pointer leaves the window during a drag, then the window is scrolled if possible; if the drag turns out to be an export, then the scroll bars are reset to their original positions. The <key>Shift</key> key is polled at the start of the drag, not the end.</p></footnote>
+<p>If the pointer leaves the window during a drag, then the window is scrolled if possible; if the drag turns out to be an export, then the scroll bars are reset to their original positions. The <keypress><key>Shift</key></keypress> key is polled at the start of the drag, not the end.</p></footnote>
 
 <footnote id="note-3"><p>Resize drags are limited by the window&rsquo;s visible area.</p></footnote>
 
@@ -698,7 +705,7 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 <section>
 <title>Delete</title>
 
-<p>Deletes the selected icon(s). Deleted icons are entirely removed from the template; any icons with higher numbers are renumbered to &ldquo;fill the gap&rdquo;. The <key>Delete</key> key (in addition to <key>Ctrl-K</key>) can be used to delete an icon using the keyboard.</p>
+<p>Deletes the selected icon(s). Deleted icons are entirely removed from the template; any icons with higher numbers are renumbered to &ldquo;fill the gap&rdquo;. The <keypress><key>Delete</key></keypress> key (in addition to <keypress><key>Ctrl</key><key>K</key></keypress>) can be used to delete an icon using the keyboard.</p>
 </section>
 
 <section>
@@ -851,7 +858,7 @@ when no editable or preview windows are open.</p>
 <section>
 <p>The work area coordinates are shown in formation. Note that it is usual to have the origin of the window (0) at the top, and the bottom coordinate is negative.</p>
 
-<p>The bumper buttons cause the sizes to change in units of 4, unless the <key>Shift</key> or <key>Ctrl</key> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p>
+<p>The bumper buttons cause the sizes to change in units of 4, unless the <keypress><key>Shift</key></keypress> or <keypress><key>Ctrl</key></keypress> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p>
 </section>
 
 <section>
@@ -879,7 +886,7 @@ when no editable or preview windows are open.</p>
 <section>
 <p>This allows you to specify the position, size and scroll offsets of a window as it will appear on screen when first opened. All values are usually positive, except for the vertical scroll offset (V Scroll), which should be negative.</p>
 
-<p>The bumper buttons cause the sizes to change in units of 4, unless the <key>Shift</key> or <key>Ctrl</key> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p>
+<p>The bumper buttons cause the sizes to change in units of 4, unless the <keypress><key>Shift</key></keypress> or <keypress><key>Ctrl</key></keypress> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p>
 </section>
 </chapter>
 
@@ -925,7 +932,9 @@ when no editable or preview windows are open.</p>
 <section>
 <title>Update / Don&rsquo;t resize / Adjust size</title>
 
-<p>The two action buttons both update the template data with settings from the dialogue box. If the second button is <icon>Don&rsquo;t resize</icon>, then <icon>Update</icon> will also resize the icon if it is currently too small to display its data (see <window>Resize icons</window> dialogue box). If the second button is <icon>Adjust size</icon>, which can be configured by the <icon>Safe icon update</icon> option in the <ref id="choices"><window>Choices</window> dialogue</ref>, then <icon>Update</icon> will only store any changed values, while <icon>Adjust size</icon> will also perform any resizing which is required.</p>
+<p>The two action buttons both update the template data with settings from the dialogue box. If the second button is <icon>Don&rsquo;t resize</icon>, then <icon>Update</icon> will also resize the icon if it is currently too small to display its data (see <ref id="resize"><window>Resize icons</window> dialogue box</ref>). If the second button is <icon>Adjust size</icon>, which can be configured by the <icon>Safe icon update</icon> option in the <ref id="choices"><window>Choices</window> dialogue</ref>, then <icon>Update</icon> will only store any changed values, while <icon>Adjust size</icon> will also perform any resizing which is required.</p>
+
+<p>Unless the <icon>Resize multi-line icons</icon> option is ticked in the <ref id="choices"><window>Choices</window> dialogue</ref>, icons with validation strings containing the <code>L</code> command will <em>not</em> be resized when the dialogue closes. This can make it safer to work on windows where the size of these icons may be unrelated to their content.</p>
 </section>
 </chapter>
 
@@ -1060,7 +1069,7 @@ when no editable or preview windows are open.</p>
 <section>
 <p>This allows you to enter the position (relative to the window&rsquo;s work area) and size coordinates of an icon. The Top entry is usually negative.</p>
 
-<p>The bumper buttons cause the sizes to change in units of 4, unless the <key>Shift</key> or <key>Ctrl</key> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p>
+<p>The bumper buttons cause the sizes to change in units of 4, unless the <keypress><key>Shift</key></keypress> or <keypress><key>Ctrl</key></keypress> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p>
 </section>
 </chapter>
 
@@ -1070,7 +1079,7 @@ when no editable or preview windows are open.</p>
 <section>
 <p>This is for placing a frame around the selected icons. The frame can consist of the window&rsquo;s visible area or an empty bordered icon (group box) with a lower number than any of the selected icons.</p>
 
-<p>The bumper buttons cause the sizes to change in units of 4, unless the <key>Shift</key> or <key>Ctrl</key> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p>
+<p>The bumper buttons cause the sizes to change in units of 4, unless the <keypress><key>Shift</key></keypress> or <keypress><key>Ctrl</key></keypress> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p>
 </section>
 
 <section>
@@ -1275,6 +1284,15 @@ ExportTypedefEnd:} @wn_icons;</code>
 </section>
 
 <section>
+<title>Test Build</title>
+
+<ul>
+<li><p>Fix the detection of <code>L</code> validation strings when processing icon resize operations.</p></li>
+<li><p>Add the <icon>Resize multi-line icons</icon> option to <window>Choices</window>.</p></li>
+</ul>
+</section>
+
+<section>
 <title>Version 3.27 (27 April 2024)</title>
 
 <callout type="warning">
@@ -1294,7 +1312,7 @@ ExportTypedefEnd:} @wn_icons;</code>
 <li><p>Improvements to the way that <variable>Choices$Path</variable> and <variable>Choices$Write</variable> are used.</p></li>
 <li><p>A <icon>Default</icon> button in the <window>Choices</window> dialogue to reset the options to their defaults.</p></li>
 <li><p>The <icon>Round icon coordinates</icon> option has returned to <window>Choices</window>, and is no longer paired with <icon>Display templates sorted</icon>.</p></li>
-<li><p>Icon dimensions in the Monitor are updated when an icon is resized using an <key>Adjust</key>-double-click.</p></li>
+<li><p>Icon dimensions in the Monitor are updated when an icon is resized using an <mouse>Adjust</mouse>-double-click.</p></li>
 <li><p>Website links have been updated to current download page, to avoid issues with RISC&nbsp;OS.info being offline.</p></li>
 <li><p>Overhaul of the documentation, including a replacement of the text version of the manual with one matching the HTML documentation and the addition of the recent version history.</p></li>
 </ul>
@@ -1307,7 +1325,7 @@ ExportTypedefEnd:} @wn_icons;</code>
 <li><p>Fix a problem when loading templates whose names contain a % character, introduced in 3.20.</p></li>
 <li><p>Fix problem which left a window icon in the file <ref id="browsers"><window>Browser</window> window</ref> when deleting an open window, introduced in 3.10.</p></li>
 <li><p>Fix problems with the handling of unsaved files during an aborted Desktop Shut-Down, which prevented <cite>WinEd</cite> from subsequently being quit.</p></li>
-<li><p>Disable all keypresses aside from <key>Escape</key> during drag operations, to avoid unexpected side effects.</p></li>
+<li><p>Disable all keypresses aside from <keypress><key>Escape</key></keypress> during drag operations, to avoid unexpected side effects.</p></li>
 <li><p>Check that there is a selected window in the template <ref id="browsers"><window>Browser</window></ref> before attempting to operate on it.</p></li>
 <li><p>Improve interactive help messages throughout the application.</p></li>
 <li><p>Correct the behaviour of radio icons under <mouse>Adjust</mouse> clicks.</p></li>
