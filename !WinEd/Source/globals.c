@@ -4,6 +4,7 @@
 #include "choices.h"
 #include "common.h"
 #include "DeskLib:BackTrace.h"
+#include "DeskLib:Icon.h"
 #include "DeskLib:MsgTrans.h"
 #include "DeskLib:SWI.h"
 #include "DeskLib:Environment.h"
@@ -329,42 +330,6 @@ int extract_iconname(browser_winentry *winentry, int icon, char *buffer, int buf
 }
 
 /**
- * Test a validation string for the presence of a command, without obtaining
- * the parameter associated with it.
- *
- * TODO: This is mostly a reimplementation of DeskLib's
- * Icon_ScanValidationString() function, but it handles the case where the
- * command appears at the end of the string with no parameter value following
- * it. In this situation, Icon_ScanValidationString() returns zero for
- * "not found". Changing this behaviour could break other applications, so for
- * now we've re-implemented the call here in a form more useful to WinEd.
- *
- * \param *validation   Pointer to the validation string to be tested.
- * \param command       The validation command to test for.
- * \return              TRUE if the command was present; else FALSE.
- */
-BOOL icon_contains_validation_command(char *validation, char command)
-{
-  if (validation == NULL)
-    return FALSE;
-
-  command = toupper(command);
-
-  while (*validation >= 32) {
-    if (toupper(*validation) == command)
-      return TRUE;
-
-    while (*validation >= 32 && *validation != ';')
-      validation++;
-
-    if (*validation == ';')
-      validation++;
-  }
-
-  return FALSE;
-}
-
-/**
  * Test whether an icon is an indirected text icon with the L validation command
  * for multi-line display.
  *
@@ -385,7 +350,7 @@ BOOL is_multiline_icon(icon_block *fblock, icon_block *vblock)
 
   /* The validation string must contain the L command. */
 
-  return icon_contains_validation_command(vblock->data.indirecttext.validstring, 'L');
+  return (Icon_FindValidationStringCommand(vblock->data.indirecttext.validstring, 'L', NULL) != Icon_NoValidationCommand) ? TRUE : FALSE;
 }
 
 BOOL globals_scrollevent(event_pollblock *event,void *reference)
