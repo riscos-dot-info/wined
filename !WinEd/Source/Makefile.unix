@@ -34,7 +34,7 @@ INCLUDES := -I$(GCCSDK_INSTALL_ENV)/include
 
 # Additional flags for compiling include -DFORTIFY and -DDeskLib_DEBUG
 
-COMPILEFLAGS = -O3 -std=c99 -mlibscl -Wunused -Wuninitialized -Wall -fno-strict-aliasing -mthrowback -mpoke-function-name -c
+COMPILEFLAGS = -O3 -std=c99 -mlibscl -mhard-float -Wunused -Wuninitialized -Wall -fno-strict-aliasing -mthrowback -mpoke-function-name -c
 LINKFLAGS = -mlibscl -Wl,--allow-multiple-definition -o ../!RunImage,ff8
 ZIPFLAGS := -x "*/.svn/*" -x "*/Source/*" -r -, -9
 SRCZIPFLAGS := -x "*/.svn/*" -x "*fortify.*" -x "*.o" -r -, -9
@@ -76,7 +76,7 @@ application: $(OUTDIR)/$(APP)/$(RUNIMAGE)
 
 # Build the !RunImage file.
 
-$(OUTDIR)/$(APP)/$(RUNIMAGE) : $(OBJECTS) 
+$(OUTDIR)/$(APP)/$(RUNIMAGE) : $(OBJECTS)
 	$(CC) $(LINKFLAGS) $(OBJECTS) $(LIBRARIES)
 
 # Building the original source files.
@@ -122,7 +122,7 @@ icndiag.o : icndiag.c
 icnedit.o : icnedit.c
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) icnedit.c
 ide.o : ide.c
-	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) ide.c	
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) ide.c
 minsize.o : minsize.c
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) minsize.c
 monitor.o : monitor.c
