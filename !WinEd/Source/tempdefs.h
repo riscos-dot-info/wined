@@ -31,7 +31,7 @@ typedef struct {
   char title[256];               /**< The indirected title buffer for the browser window.                */
   unsigned int numfonts;         /**< The number of fonts currently used in the file.                    */
   template_fontinfo *fontinfo;   /**< A flex block array holding font details; starting from 0.          */
-  char fontcount[255];           /**< Array holding usage of each font; starting from 0.                 */
+  int fontcount[255];            /**< Array holding usage of each font; starting from 0.                 */
   window_handle stats;           /**< The handle of the file's statistics window, if open, or 0.         */
   int largest;                   /**< The largest window buffer total size for the statistics window.    */
   char namesfile[256];           /**< The path name of the last names export file to have been saved.    */
@@ -71,7 +71,7 @@ typedef enum {
 
 /**
  * Internal window template info block.
- * 
+ *
  * This forms the contents of the winlist linked list in the browser_fileinfo struct.
  */
 typedef struct {

@@ -11,9 +11,13 @@
 
 #include "tempdefs.h"
 
+void tempfont_init_browser(browser_fileinfo *browser);
+
 /* Find a font in a browser's font list and increment its usage counter;
    if it doesn't exist, make it */
 unsigned int tempfont_findfont(browser_fileinfo *browser,template_fontinfo *fontinfo);
+
+void tempfont_copy_window(browser_fileinfo *browser, browser_winblock *windata);
 
 /* When deleting an icon etc from a definition, call this to free its font
    usage; if it's the only icon using the font, it's removed from the

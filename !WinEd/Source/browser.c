@@ -664,7 +664,7 @@ static void       browser_cr(browser_fileinfo *browser)
 
 /**
  * Save a file to an open file handle.
- * 
+ *
  * \param *filename   The filename of the file, used for messages.
  * \param *browser    The browser instance to be saved.
  * \param sorted      TRUE if the templates should be sorted alphabetically in the file.
@@ -1065,7 +1065,6 @@ browser_fileinfo *browser_newbrowser()
 {
   browser_fileinfo *newfile;
   window_state wstate;
-  int index;
 /*
   int width,height;
 */
@@ -1080,8 +1079,7 @@ browser_fileinfo *browser_newbrowser()
   }
   newfile->fontinfo = NULL;
   newfile->numfonts = 0;
-  for (index = 1;index < 256;index++)
-    newfile->fontcount[index] = 0;
+  tempfont_init_browser(newfile);
   newfile->numwindows = 0;
   newfile->numcolumns = DEFAULTNUMCOLUMNS;
   newfile->altered = FALSE;
@@ -1579,7 +1577,7 @@ BOOL              browser_merge(char *filename,int filesize,void *reference)
 }
 
 /* Load status codes.
- * 
+ *
  * The code assumes that 0 is OK and non-zero is an error in some places:
  * These should be cleaned up as they are found!
  */
@@ -2567,7 +2565,7 @@ void               browser_setextent(browser_fileinfo *browser)
 
 /**
  * Compare two browser_winentry blocks alpabetically by identifier.
- * 
+ *
  * \param *one    Pointer to the first block to compare.
  * \param *two    Pointer to the second block to compare.
  * \return        The comparison of the two identifiers.
@@ -2582,7 +2580,7 @@ int alphacomp(const void *one, const void *two)
 /**
  * Build an array of winentry pointers for the current file, optionally sorted
  * alphabetically by identifier.
- * 
+ *
  * The array is allocated with malloc(), and must be freed after use.
  *
  * \param *browser    Pointer to the browser instance to sort.
@@ -2624,7 +2622,7 @@ browser_winentry **browser_sortwindows(browser_fileinfo *browser, BOOL sort)
 /**
  * Sort and place the icons in a file browser window, creating any which don't
  * exist in the process.
- * 
+ *
  * \param *browser  The browser instance to be operated on.
  * \param force     TRUE to delete all icons, even if they don't need to move.
  * \param reopen    TRUE to call Wimp_OpenWindow on the window after update.
@@ -3235,7 +3233,6 @@ browser_winentry  *browser_copywindow(browser_fileinfo *browser,
 		 		     browser_winblock **windata)
 {
   browser_winentry *winentry;
-  int icon;
 
   Log(log_INFORMATION, "browser_copywindow - copying window %s", LogPreBuffer(identifier));
 
@@ -3273,11 +3270,8 @@ browser_winentry  *browser_copywindow(browser_fileinfo *browser,
   browser_settitle(browser,NULL,TRUE);
   browser_sorticons(browser,FALSE,TRUE,FALSE);
 
-  /* Font usage may be increased; this is simple enough, because all fonts
-     in copied window already exist for this browser */
-  for (icon = 0;icon < (*windata)->window.numicons;icon++)
-    if ((*windata)->icon[icon].flags.data.font)
-      browser->fontcount[(*windata)->icon[icon].flags.font.handle-1]++;
+  /* Increase any font usage, if required. */
+  tempfont_copy_window(browser, *windata);
 
   return winentry;
 }
@@ -3558,7 +3552,7 @@ void               browcom_view(browser_fileinfo *browser,BOOL editable)
 
 /**
  * Respond to changes in the application choices.
- * 
+ *
  * \param *old    The old choices, which had been in effect until the change.
  * \param *new_ch The new choices which will be in effect.
  */
@@ -3674,7 +3668,7 @@ void               browser_changesparea(browser_winblock *win, void *sparea)
 
 /**
  * Export the icon names from the selected windows in a browser.
- * 
+ *
  * \param *filename   The filename to export to.
  * \param *ref        Pointer to the browser instance of interest.
  * \param selection   Not used.

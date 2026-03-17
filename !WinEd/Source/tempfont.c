@@ -25,6 +25,12 @@ void tempfont_diagnose(browser_fileinfo *browser)
 }
 */
 
+void tempfont_init_browser(browser_fileinfo *browser)
+{
+  for (int index = 1; index < 256; index++)
+    browser->fontcount[index] = 0;
+}
+
 unsigned int tempfont_findfont(browser_fileinfo *browser,template_fontinfo *fontinfo)
 {
   int index;
@@ -102,6 +108,16 @@ void tempfont_amendhandles(browser_fileinfo *browser,int deleted)
       	  winentry->window->icon[icon].flags.font.handle > deleted)
       	winentry->window->icon[icon].flags.font.handle--;
   }
+}
+  /* Font usage may be increased; this is simple enough, because all fonts
+     in copied window already exist for this browser */
+
+void tempfont_copy_window(browser_fileinfo *browser, browser_winblock *windata)
+{
+    for (int icon = 0; icon < windata->window.numicons; icon++) {
+      if (windata->icon[icon].flags.data.font)
+        browser->fontcount[windata->icon[icon].flags.font.handle - 1]++;
+    }
 }
 
 BOOL tempfont_losefont(browser_fileinfo *browser,int font)
