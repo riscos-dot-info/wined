@@ -87,85 +87,85 @@ Error.o : Error.c
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) Error.c
 IniConfig.o : IniConfig.c
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) IniConfig.c
-alndiag.o : alndiag.c
+alndiag.o : alndiag.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) alndiag.c
-bordiag.o : bordiag.c
+bordiag.o : bordiag.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) bordiag.c
-browser.o : browser.c
+browser.o : browser.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) browser.c
-browtools.o : browtools.c
+browtools.o : browtools.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) browtools.c
-choices.o : choices.c
+choices.o : choices.c common.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) choices.c
-coorddiag.o : coorddiag.c
+coorddiag.o : coorddiag.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) coorddiag.c
-datatrans.o : datatrans.c
+datatrans.o : datatrans.c common.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) datatrans.c
-deskfont.o : deskfont.c
+deskfont.o : deskfont.c common.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) deskfont.c
-diagutils.o : diagutils.c
+diagutils.o : diagutils.c common.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) diagutils.c
-drag.o : drag.c
+drag.o : drag.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) drag.c
-export.o : export.c
+export.o : export.c tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) export.c
-fontpick.o : fontpick.c
+fontpick.o : fontpick.c common.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) fontpick.c
 fortify.o : fortify.c
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) fortify.c
-globals.o : globals.c
+globals.o : globals.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) globals.c
-help.o : help.c
+help.o : help.c common.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) help.c
-icndiag.o : icndiag.c
+icndiag.o : icndiag.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) icndiag.c
-icnedit.o : icnedit.c
+icnedit.o : icnedit.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) icnedit.c
-ide.o : ide.c
+ide.o : ide.c common.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) ide.c
-minsize.o : minsize.c
+minsize.o : minsize.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) minsize.c
-monitor.o : monitor.c
+monitor.o : monitor.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) monitor.c
-multiicon.o : multiicon.c
+multiicon.o : multiicon.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) multiicon.c
-pane.o : pane.c
+pane.o : pane.c common.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) pane.c
-picker.o : picker.c
+picker.o : picker.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) picker.c
-round.o : round.c
+round.o : round.c common.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) round.c
-rszdiag.o : rszdiag.c
+rszdiag.o : rszdiag.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) rszdiag.c
-spcdiag.o : spcdiag.c
+spcdiag.o : spcdiag.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) spcdiag.c
-shortcuts.o : shortcuts.c
+shortcuts.o : shortcuts.c common.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) shortcuts.c
-stats.o : stats.c
+stats.o : stats.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) stats.c
-tempfont.o : tempfont.c
+tempfont.o : tempfont.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) tempfont.c
-templates.o : templates.c
+templates.o : templates.c common.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) templates.c
-terminator.o : terminator.c
+terminator.o : terminator.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) terminator.c
-unsaved.o : unsaved.c
-	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) unsaved.c
-uri.o : uri.c
+unsaved.o : unsaved.c common.h
+	$(CC) $(COMPILEFLAGS tempdefs.h) $(BUILD_INFO) $(INCLUDES) unsaved.c
+uri.o : uri.c common.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) uri.c
-usersprt.o : usersprt.c
+usersprt.o : usersprt.c common.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) usersprt.c
-viewer.o : viewer.c
+viewer.o : viewer.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) viewer.c
-viewtools.o : viewtools.c
+viewtools.o : viewtools.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) viewtools.c
-visarea.o : visarea.c
+visarea.o : visarea.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) visarea.c
-wadiag.o : wadiag.c
+wadiag.o : wadiag.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) wadiag.c
-windiag.o : windiag.c
+windiag.o : windiag.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) windiag.c
-wined.o : wined.c
+wined.o : wined.c common.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) wined.c
 
 # Build the release Zip file.
