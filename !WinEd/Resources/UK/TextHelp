@@ -94,9 +94,14 @@ Contents
 2. Requirements
 ---------------
 
-  This release of WinEd requires RISC OS 4.0 or later. It may well work on
+  This release of WinEd requires RISC OS 3.00 or later. It may well work on
   earlier systems if you manually alter the !Run file, but this is not
   supported.
+
+  This requirement has been relaxed from RISC OS 4.00 because there are no
+  known incompatibilities with the earlier system. If you encounter any
+  problems running WinEd on RISC OS 3.00, please report them (see Chapter
+  45. Bug reports & suggestions).
 
 3. Conditions of use and distribution
 -------------------------------------
@@ -622,7 +627,10 @@ Contents
   scratch buffer for indirected data.
 
   Each row in the main section of the window shows the data described above
-  for each window definition in the file.
+  for each window definition in the file. If 'Display templates sorted' is
+  ticked in the Choices dialogue (see Chapter 15. The Choices dialogue box),
+  the entries will be listed in alphabetical order; otherwise they will
+  appear in file order.
 
   The penultimate row shows the total of each column for all the windows in
   the file.
@@ -1623,6 +1631,8 @@ Contents
 
   44.1. Test Build
   ----------------
+
+  * Reduce the OS version check from RISC OS 4.00 to RISC OS 3.00.
 
   * Fix the detection of "L" validation strings when processing icon resize
     operations.

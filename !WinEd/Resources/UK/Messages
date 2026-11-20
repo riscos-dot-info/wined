@@ -1,6 +1,6 @@
 # Run file message
 run_copyover:Due to internal changes, this version of WinEd must not be copied over an old version. Please download WinEd again and place it in a new location.
-run_minos:WinEd requires RISC OS 4.0 or later.
+run_minos:WinEd requires RISC OS 3.0 or later.
 run_minclib:WinEd requires SharedCLibrary version 5.34 or later. This can be downloaded from http://www.iyonix.com/32bit/system.shtml
 
 MsgFrom:WinEd

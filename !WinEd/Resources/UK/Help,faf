@@ -95,7 +95,9 @@
 <h2 id="requirements">2. Requirements</h2>
 
 
-<p>This release of <cite>WinEd</cite> requires RISC OS 4.0 or later. It may well work on earlier systems if you manually alter the <span class="filename">!Run</span> file, but this is not supported.</p>
+<p>This release of <cite>WinEd</cite> requires RISC OS 3.00 or later. It may well work on earlier systems if you manually alter the <span class="filename">!Run</span> file, but this is not supported.</p>
+
+<p>This requirement has been relaxed from RISC OS 4.00 because there are no known incompatibilities with the earlier system. If you encounter any problems running <cite>WinEd</cite> on RISC OS 3.00, please <a href="#bug">report them</a>.</p>
 
 <h2 id="licence">3. Conditions of use and distribution</h2>
 
@@ -447,7 +449,7 @@
 
 <p>The top row shows the column headings. The Identifier column shows the name of the window, Icons shows how many icons the window contains. Buffer shows the size of the buffer needed to load the window block with <span class="name">Wimp_LoadTemplate</span>; similarly Indirected shows the size of buffer needed to hold the icons’ indirected data. Note that the Buffer size is the size that will be requested by <span class="name">Wimp_LoadTemplate</span> and includes the Wimp’s scratch buffer for indirected data.</p>
 
-<p>Each row in the main section of the window shows the data described above for each window definition in the file.</p>
+<p>Each row in the main section of the window shows the data described above for each window definition in the file. If <span class="icon">Display templates sorted</span> is ticked in the <a href="#choices"><span class="window">Choices</span> dialogue</a>, the entries will be listed in alphabetical order; otherwise they will appear in file order.</p>
 
 <p>The penultimate row shows the total of each column for all the windows in the file.</p>
 
@@ -1090,6 +1092,7 @@ ExportTypedefEnd:} @wn_icons;</pre></div>
 
 
 <ul>
+<li>Reduce the OS version check from RISC OS 4.00 to RISC OS 3.00.</li>
 <li>Fix the detection of <code>L</code> validation strings when processing icon resize operations.</li>
 <li>Add the <span class="icon">Resize multi-line icons</span> option to <span class="window">Choices</span>.</li>
 <li>Sort the templates in the <a href="#stats"><span class="window">Statistics</span> window</a> if <span class="icon">Display templates sorted</span> is selected.</li>

@@ -46,7 +46,9 @@
 <title>Requirements</title>
 
 <section>
-<p>This release of <cite>WinEd</cite> requires RISC&nbsp;OS&nbsp;4.0 or later. It may well work on earlier systems if you manually alter the <file>!Run</file> file, but this is not supported.</p>
+<p>This release of <cite>WinEd</cite> requires RISC&nbsp;OS&nbsp;3.00 or later. It may well work on earlier systems if you manually alter the <file>!Run</file> file, but this is not supported.</p>
+
+<p>This requirement has been relaxed from RISC&nbsp;OS&nbsp;4.00 because there are no known incompatibilities with the earlier system. If you encounter any problems running <cite>WinEd</cite> on RISC&nbsp;OS&nbsp;3.00, please <ref id="bug">report them</ref>.</p>
 </section>
 </chapter>
 
@@ -1287,6 +1289,7 @@ ExportTypedefEnd:} @wn_icons;</code>
 <title>Test Build</title>
 
 <ul>
+<li><p>Reduce the OS version check from RISC&nbsp;OS&nbsp;4.00 to RISC&nbsp;OS&nbsp;3.00.</p></li>
 <li><p>Fix the detection of <code>L</code> validation strings when processing icon resize operations.</p></li>
 <li><p>Add the <icon>Resize multi-line icons</icon> option to <window>Choices</window>.</p></li>
 <li><p>Sort the templates in the <ref id="stats"><window>Statistics</window> window</ref> if <icon>Display templates sorted</icon> is selected.</p></li>

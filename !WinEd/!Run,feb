@@ -7,8 +7,8 @@ Set WinEd$Meta WinEdRes:!Meta
 IfThere <WinEd$Dir>.Templates Then Run WinEdRes:MultiError -l WinEd -t WinEdRes:Templates -m WinEdRes:Messages -k run_copyover
 IfThere <WinEd$Dir>.Templates Then UnSet WinEd$CarryOn
 
-RMEnsure UtilityModule 4.0 Run WinEdRes:MultiError -l WinEd -t WinEdRes:Templates -m WinEdRes:Messages -k run_minos
-RMEnsure UtilityModule 4.0 UnSet WinEd$CarryOn
+RMEnsure UtilityModule 3.0 Run WinEdRes:MultiError -l WinEd -t WinEdRes:Templates -m WinEdRes:Messages -k run_minos
+RMEnsure UtilityModule 3.0 UnSet WinEd$CarryOn
 
 RMEnsure SharedCLibrary 5.17 IfThere System:Modules.Clib Then RMLoad System:Modules.CLib
 RMEnsure SharedCLibrary 5.34 WinEdRes:MultiError -l WinEd -t WinEdRes:Templates -m WinEdRes:Messages -k run_minclib
