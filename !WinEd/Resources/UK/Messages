@@ -99,7 +99,7 @@ VMIcon:Icon
 ViewMen:Selection,Select all,Clear selection,Work area...,Visible area...,Edit window...,Edit title...,Goto icon...,Close window,Preview window
 ViewMenK:Selection,Select all      ^A,Clear selection ^Z,Work area...    ^O,Visible area... ^V,Edit window...  ^W,Edit title...   ^T,>Goto icon     ^G,Close window   ^F2,Preview window  ^P
 IconMen:Delete,>Renumber nnn,Copy,Edit...,Align...,Space out...,Resize...,Coordinates...,Frame...
-IconMenK:Delete         ^K,>Renumber nnn   ^N,Copy,Edit...        ^E,Align...       ^L,Space out...   ^S,Resize...      ^R,Coordinates... ^D,Frame...       ^F
+IconMenK:Delete         ^K,>Renumber nnn   ^N,Copy,Edit...        ^E,Move...        ^M,Align...       ^L,Space out...   ^S,Resize...      ^R,Coordinates... ^D,Frame...       ^F
 CopyMen: Down,Right,Left,Up
 CopyMenK:Down   ^2,Right  ^6,Left   ^4,Up     ^8
 CopyName:Copy
@@ -157,17 +157,18 @@ H_VRM_000202:\Sto copy the selected icon(s) to the left.
 H_VRM_000203:\Sto copy the selected icon(s) upwards.
 H_VRM_0003:\Sedit the selected icon.
 H_VRM_0003G:\Gthere is not exactly one selected icon.
+H_VRM_0004:\Smove the selected icons by a specified amount.
 H_VT_07
-H_VRM_0004:\Salign the selected icons with each other.
-H_VRM_0004G:\Gonly one icon is selected.
+H_VRM_0005:\Salign the selected icons with each other.
+H_VRM_0005G:\Gonly one icon is selected.
 H_VT_08
-H_VRM_0005:\Sspace the selected icons out from each other, or position a single icon away from the edges of the \w.
+H_VRM_0006:\Sspace the selected icons out from each other, or position a single icon away from the edges of the \w.
 H_VT_09
-H_VRM_0006:\Sresize the selected icon(s) relative to each other.
+H_VRM_0007:\Sresize the selected icon(s) relative to each other.
 H_VT_12
-H_VRM_0007:\Schange the coordinates and/or size of the selected icon.
+H_VRM_0008:\Schange the coordinates and/or size of the selected icon.
 H_VT_10
-H_VRM_0008:\Splace a frame around the selected icon(s).
+H_VRM_0009:\Splace a frame around the selected icon(s).
 H_VT_00:\Sselect all the icons in the viewer.|M\Aclear the selection.
 H_VRM_01:\Sselect all the icons in the viewer.
 H_VRM_02G:\Gthere are no selected icons.
@@ -191,7 +192,7 @@ H_CLO_03:\Skeep this file.
 H_ALN:\Ticon alignment dialogue box.
 H_ALN_00:\Salign the selected icons.
 H_SPC_01/H_WAD_01/H_COL_01/H_ICC_02/H_BOR_01/H_ALN_01/H_WEC_01/H_CHO_01
-H_CRD_17/H_VSA_17/H_RSZ_12/H_SAVE_01/H_MIE_61/H_EXP_01:\Sclose this dialogue box.
+H_MOV_09/H_CRD_17/H_VSA_17/H_RSZ_12/H_SAVE_01/H_MIE_61/H_EXP_01:\Sclose this dialogue box.
 H_ALN_02/H_ALN_04/H_ALN_05/H_ALN_06/H_ALN_07/H_ALN_08/H_ALN_09
 H_ALN_10:Select which way you want to align the selected icons from these options.
 H_ALN_03/H_ALN_13/H_ALN_14
@@ -418,6 +419,14 @@ H_COP:Use this dialogue box to enter a name for the copy of the slected \w.
 H_REN:Use this dialogue box to enter a new name for the selected \w.
 H_NUM:Use this dialogue box to enter a number to start renumbering the selected icon(s) from.
 H_GOT:Use this dialogue box to send the pointer to an icon name or number.
+H_MOV:Use this dialogue box to move the selected icons.
+H_MOV_02:\Tamount to move the selected icon(s) horizontally.|MNegative values move left.
+H_MOV_03:\Sdecrease the horizontal movement value.
+H_MOV_04:\Sincrease the horizontal movement value.
+H_MOV_05:\Tamount to move the selected icon(s) vertically.|MNegative values move down.
+H_MOV_06:\Sdecrease the vertical movement value.
+H_MOV_07:\Sincrease the vertical movement value.
+H_MOV_08:\Smove the selected icon(s) by these amounts.
 H_CRD:Use this dialogue box to alter the selected icon's coordinates.
 H_CRD_02:\Tcoordinate of the selected icon's left edge.
 H_CRD_03:\Sdecrease the coordinate of the selected icon's left edge.

@@ -94,4 +94,7 @@ void viewcom_editicon(browser_winentry *winentry);
 /* Open border dialogue box */
 #define viewcom_border(winentry) bordiag_open(winentry)
 
+/* Open move dialogue box */
+#define viewcom_move(winentry) movediag_open(winentry)
+
 #endif
