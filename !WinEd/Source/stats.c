@@ -83,11 +83,30 @@ void stats_init()
   stats_vicon.flags.data.background = 2;
 }
 
-void stats_open(browser_fileinfo *browser)
+/**
+ * Create & open stats window for a browser.
+ *
+ * If the winentry index pointer is not NULL on return, the returned pointer
+ * is to an old index which the caller should free().
+ *
+ * \param *browser    Pointer to the browser instance for which to open the
+ *                    stats window.
+ * \param ***index    Pointer to a pointer to the winentry index which the
+ *                    stats window should use.
+ */
+void stats_open(browser_fileinfo *browser, browser_winentry ***index)
 {
   window_state wstate;
   int x,y;
   mouse_block ptrinfo;
+
+  /* Update the window index. */
+
+  browser_winentry **old_index = browser->stats_index;
+  browser->stats_index = *index;
+  *index = old_index;
+
+  /* Create the window if it doesn't yet exist. */
 
   if (!browser->stats)
   {
@@ -98,6 +117,8 @@ void stats_open(browser_fileinfo *browser)
     Event_Claim(event_SCROLL,browser->stats,event_ANY,stats_scrollevent,browser);
     help_claim_window(browser->stats,"STAT");
   }
+
+  /* Refresh the window and (re-)open it at the front. */
 
   stats_update(browser);
   Error_Check(Wimp_GetWindowState(browser->stats,&wstate));
@@ -112,14 +133,60 @@ void stats_open(browser_fileinfo *browser)
   Error_Check(Wimp_OpenWindow(&wstate.openblock));
 }
 
+/**
+ * Close & delete the stats window for a browser.
+ *
+ * The stats_index is freed as part of this action.
+ *
+ * \param *browser    Pointer to the browser instance for which the stats
+ *                    window is to be closed.
+ */
 void stats_close(browser_fileinfo *browser)
 {
   Wimp_DeleteWindow(browser->stats);
   EventMsg_ReleaseWindow(browser->stats);
   Event_ReleaseWindow(browser->stats);
+  if (browser->stats_index != NULL) {
+    free(browser->stats_index);
+    browser->stats_index = NULL;
+  }
   browser->stats = 0;
 }
 
+/**
+ * Update the winentry index for a stats window.
+ *
+ * If the winentry index pointer is not NULL on return, the returned pointer
+ * is to the old index which the caller should free().
+ *
+ * \param *browser    Pointer to the browser instance for which to update the
+ *                    stats window.
+ * \param ***index    Pointer to a pointer to the winentry index which the
+ *                    stats window should use from now on.
+ */
+void stats_updateindex(browser_fileinfo *browser, browser_winentry ***index)
+{
+  if (browser == NULL || index == NULL)
+    return;
+
+  /* If we don't have an index, don't take this new one. */
+
+  if (browser->stats_index == NULL)
+    return;
+
+  /* Take the supplied index and update the pointer to the one that we've replaced. */
+
+  browser_winentry **new_index = *index;
+  *index = browser->stats_index;
+  browser->stats_index = new_index;
+}
+
+/**
+ * Recalculate the statistics for a stats window, and force a redraw.
+ *
+ * \param *browser    Pointer to the browser instance for which to update the
+ *                    stats window.
+ */
 void stats_update(browser_fileinfo *browser)
 {
   window_state wstate;
@@ -144,7 +211,7 @@ void stats_update(browser_fileinfo *browser)
     if (wtot > ltot)
     {
       ltot = wtot;
-      browser->largest = i;
+      browser->largest = winentry;
     }
     stats_count_indirected(winentry);
     browser->estsize += sizeof(template_index) + wtot;
@@ -177,7 +244,6 @@ BOOL stats_redraw(event_pollblock *event,void *reference)
   int totalind;
   int totalicn;
   char total[13];
-  browser_winentry *winentry;
 
   MsgTrans_Lookup(messages,"Total",total,sizeof(total));
   redraw.window = browser->stats;
@@ -185,7 +251,6 @@ BOOL stats_redraw(event_pollblock *event,void *reference)
   while (more)
   {
     totalwin = totalind = totalicn = 0;
-    winentry = LinkList_NextItem(&browser->winlist);
     wkarea = redraw.cliprect;
     Coord_RectToWorkArea(&wkarea,(convert_block *) &redraw.rect);
     for (line = 0; line <= browser->numwindows + 1; line++)
@@ -204,8 +269,9 @@ BOOL stats_redraw(event_pollblock *event,void *reference)
         stats_vicon.flags.data.filled = 0;
         stats_other_info(line,&wkarea,browser);
       }
-      else
+      else if (browser->stats_index != NULL)
       {
+        browser_winentry *winentry = browser->stats_index[line];
         stats_vicon.flags.data.hcentre = 0;
         stats_vicon.flags.data.rightjustify = 1;
         stats_vicon.flags.data.filled = 0;
@@ -213,7 +279,7 @@ BOOL stats_redraw(event_pollblock *event,void *reference)
         	       winentry->window->window.numicons,
         	       flex_size((flex_ptr) &winentry->window),
         	       winentry->indsize,
-        	       line == browser->largest);
+        	       winentry == browser->largest);
 /*
         totalwin += sizeof(window_block) +
         	    winentry->window->window.numicons * sizeof(icon_block);
@@ -221,7 +287,6 @@ BOOL stats_redraw(event_pollblock *event,void *reference)
         totalwin += flex_size((flex_ptr) &winentry->window);
         totalind += winentry->indsize;
         totalicn += winentry->window->window.numicons;
-        winentry = LinkList_NextItem(winentry);
       }
     }
     Wimp_GetRectangle(&redraw,&more);

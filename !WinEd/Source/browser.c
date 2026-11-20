@@ -215,6 +215,9 @@ void browser_exportcomplete(void *ref,BOOL successful,BOOL safe,char *filename,
 /* Create a sorted list of windows in a browser. */
 browser_winentry **browser_sortwindows(browser_fileinfo *browser, BOOL sort);
 
+/* Open a browser's stats window. */
+void browser_openstats(browser_fileinfo *browser);
+
 /* Used as comparison function for qsort in alphabetsort */
 int alphacomp(const void *one, const void *two);
 
@@ -664,7 +667,7 @@ static void       browser_cr(browser_fileinfo *browser)
 
 /**
  * Save a file to an open file handle.
- * 
+ *
  * \param *filename   The filename of the file, used for messages.
  * \param *browser    The browser instance to be saved.
  * \param sorted      TRUE if the templates should be sorted alphabetically in the file.
@@ -1087,6 +1090,8 @@ browser_fileinfo *browser_newbrowser()
   newfile->altered = FALSE;
   newfile->iconised = FALSE;
   newfile->stats = 0;
+  newfile->stats_index = NULL;
+  newfile->largest = NULL;
   newfile->idetask = 0; /* 0 used to indicate no registered IDE app */
   LinkList_AddToTail(&browser_list,&newfile->header);
   LinkList_Init(&newfile->winlist);
@@ -1579,7 +1584,7 @@ BOOL              browser_merge(char *filename,int filesize,void *reference)
 }
 
 /* Load status codes.
- * 
+ *
  * The code assumes that 0 is OK and non-zero is an error in some places:
  * These should be cleaned up as they are found!
  */
@@ -2567,7 +2572,7 @@ void               browser_setextent(browser_fileinfo *browser)
 
 /**
  * Compare two browser_winentry blocks alpabetically by identifier.
- * 
+ *
  * \param *one    Pointer to the first block to compare.
  * \param *two    Pointer to the second block to compare.
  * \return        The comparison of the two identifiers.
@@ -2582,7 +2587,7 @@ int alphacomp(const void *one, const void *two)
 /**
  * Build an array of winentry pointers for the current file, optionally sorted
  * alphabetically by identifier.
- * 
+ *
  * The array is allocated with malloc(), and must be freed after use.
  *
  * \param *browser    Pointer to the browser instance to sort.
@@ -2624,7 +2629,7 @@ browser_winentry **browser_sortwindows(browser_fileinfo *browser, BOOL sort)
 /**
  * Sort and place the icons in a file browser window, creating any which don't
  * exist in the process.
- * 
+ *
  * \param *browser  The browser instance to be operated on.
  * \param force     TRUE to delete all icons, even if they don't need to move.
  * \param reopen    TRUE to call Wimp_OpenWindow on the window after update.
@@ -2639,7 +2644,7 @@ void browser_sorticons(browser_fileinfo *browser, BOOL force, BOOL reopen, BOOL 
 
   Log(log_DEBUG, "browser_sorticons");
 
-  /* Get the winentry indexes. Note that "round" means "sort browser icons alphabetically" (!). */
+  /* Get the winentry indexes. */
 
   winentries = browser_sortwindows(browser, choices->browser_sort);
   if (winentries == NULL)
@@ -2684,6 +2689,11 @@ void browser_sorticons(browser_fileinfo *browser, BOOL force, BOOL reopen, BOOL 
   if (keepsel == TRUE && selected != NULL)
     free(selected);
 
+  /* If the browser's stats window is open, use winentries to refresh the index
+   * and free the old index. Otherwise just free winentries.
+   */
+
+  stats_updateindex(browser, &winentries);
   if (winentries != NULL)
     free(winentries);
 
@@ -2703,6 +2713,23 @@ void browser_sorticons(browser_fileinfo *browser, BOOL force, BOOL reopen, BOOL 
   Wimp_ForceRedraw((window_redrawblock *) &wstate.openblock);
   if (choices->browtools)
     browtools_shadeapp(browser);
+}
+
+/**
+ * Open (or re-open) the stats window associated with a browser.
+ *
+ * \param *browser    Pointer to the browser of interest.
+ */
+
+void browser_openstats(browser_fileinfo *browser)
+{
+  if (browser == NULL)
+    return;
+
+  browser_winentry **winentries = browser_sortwindows(browser, choices->browser_sort);
+  stats_open(browser, &winentries);
+  if (winentries != NULL)
+    free(winentries);
 }
 
 /* See title.h */
@@ -3116,7 +3143,7 @@ BOOL               browser_menuselect(event_pollblock *event,void *reference)
       }
       break;
     case parent_STATS:
-      stats_open(browser);
+      browser_openstats(browser);
       break;
   }
 
@@ -3441,8 +3468,7 @@ void               browcom_delete(browser_fileinfo *browser)
 void               browcom_stats(browser_fileinfo *browser)
 {
   Log(log_DEBUG, "browcom_stats");
-
-  stats_open(browser);
+  browser_openstats(browser);
 }
 
 BOOL               browser_hotkey(event_pollblock *event,void *reference)
@@ -3558,7 +3584,7 @@ void               browcom_view(browser_fileinfo *browser,BOOL editable)
 
 /**
  * Respond to changes in the application choices.
- * 
+ *
  * \param *old    The old choices, which had been in effect until the change.
  * \param *new_ch The new choices which will be in effect.
  */
@@ -3587,6 +3613,7 @@ void browser_responder(choices_str *old,choices_str *new_ch)
     else if ((old->browser_sort != new_ch->browser_sort) && Window_IsOpen(browser->window))
     {
       browser_sorticons(browser, TRUE, FALSE, TRUE);
+      stats_update(browser);
     }
 
     if (old->hotkeys && !new_ch->hotkeys)
@@ -3674,7 +3701,7 @@ void               browser_changesparea(browser_winblock *win, void *sparea)
 
 /**
  * Export the icon names from the selected windows in a browser.
- * 
+ *
  * \param *filename   The filename to export to.
  * \param *ref        Pointer to the browser instance of interest.
  * \param selection   Not used.

@@ -81,7 +81,7 @@ extern BOOL browser_selection_withmenu;
 /**
  * Sort and place the icons in a file browser window, creating any which don't
  * exist in the process.
- * 
+ *
  * \param *browser  The browser instance to be operated on.
  * \param force     TRUE to delete all icons, even if they don't need to move.
  * \param reopen    TRUE to call Wimp_OpenWindow on the window after update.

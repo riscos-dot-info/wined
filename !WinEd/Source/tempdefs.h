@@ -8,6 +8,30 @@
 #include "DeskLib:MsgTrans.h"
 #include "DeskLib:Wimp.h"
 
+/* Struct typedefs.
+ *
+ * Definitions for the structures are included below, but the typedefs
+ * precede them so that we can create references back and forth.
+ */
+
+/**
+ * Internal template file info block.
+ *
+ * This forms the contents of the browser_list linked list.
+ */
+typedef struct browser_fileinfo browser_fileinfo;
+
+/**
+ * Internal window template info block.
+ *
+ * This forms the contents of the winlist linked list in the browser_fileinfo struct.
+ */
+
+typedef struct browser_winentry browser_winentry;
+
+/* Struct definitions.
+ */
+
 /* Information about fonts */
 typedef struct {
   wimp_point size; /* Points * 16 */
@@ -19,7 +43,7 @@ typedef struct {
  *
  * This forms the contents of the browser_list linked list.
  */
-typedef struct {
+struct browser_fileinfo {
   linklist_header header;
   window_handle window;          /**< The handle of the browser window.                                  */
   window_handle pane;            /**< The handle of the browser tool pane.                               */
@@ -33,11 +57,12 @@ typedef struct {
   template_fontinfo *fontinfo;   /**< A flex block array holding font details; starting from 0.          */
   char fontcount[255];           /**< Array holding usage of each font; starting from 0.                 */
   window_handle stats;           /**< The handle of the file's statistics window, if open, or 0.         */
-  int largest;                   /**< The largest window buffer total size for the statistics window.    */
+  browser_winentry **stats_index;/**< The sort index for the file's statistics window, if open, or 0.    */
+  browser_winentry *largest;     /**< The largest window buffer total size for the statistics window.    */
   char namesfile[256];           /**< The path name of the last names export file to have been saved.    */
   BOOL iconised;                 /**< TRUE if the browser window is currently iconised.                  */
   task_handle idetask;           /**< The task handle of the registered IDE task, or 0 if none.          */
-} browser_fileinfo;
+};
 
 /* Template file header */
 typedef struct {
@@ -71,10 +96,10 @@ typedef enum {
 
 /**
  * Internal window template info block.
- * 
+ *
  * This forms the contents of the winlist linked list in the browser_fileinfo struct.
  */
-typedef struct {
+struct browser_winentry {
   linklist_header header;
   browser_winblock *window;      /**< The window and icon definitions associated with the template.      */
   icon_handle icon;              /**< The handle of the icon representing the window in the browser.     */
@@ -86,7 +111,7 @@ typedef struct {
   browser_fileinfo *browser;     /**< The Browser instance that this window belongs to.                  */
   int indsize;                   /**< The indirected data size for the window; calculated by stats.      */
   BOOL iconised;                 /**< TRUE if the edit/preview window is currently iconised.             */
-} browser_winentry;
+};
 
 /* IDE message data structures */
 

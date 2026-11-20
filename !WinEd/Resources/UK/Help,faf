@@ -296,7 +296,7 @@
 <h4 id="choices-display-sort">15.3.3. Display templates sorted</h4>
 
 
-<p>If selected, the templates displayed in a <a href="#browsers"><span class="window">Browser</span> window</a> will be listed in alphabetical order. The ordering in the physical template file will not be affected.</p>
+<p>If selected, the templates displayed in a <a href="#browsers"><span class="window">Browser</span> window</a> or a <a href="#stats"><span class="window">Statistics</span> window</a> will be listed in alphabetical order. The ordering in the physical template file will not be affected.</p>
 
 <h3>15.4. Misc</h3>
 
@@ -431,7 +431,7 @@
 <h3>18.6. Statistics</h3>
 
 
-<p>Opens a statistics window for the file in the <a href="#browsers"><span class="window">Browser</span> window</a>. This is <a href="#stats">described below</a>.</p>
+<p>Opens a <a href="#stats"><span class="window">Statistics</span> window</a> for the file in the <a href="#browsers"><span class="window">Browser</span> window</a>. This is <a href="#stats">described below</a>.</p>
 
 <h2 id="save">19. Saving templates</h2>
 
@@ -1092,6 +1092,7 @@ ExportTypedefEnd:} @wn_icons;</pre></div>
 <ul>
 <li>Fix the detection of <code>L</code> validation strings when processing icon resize operations.</li>
 <li>Add the <span class="icon">Resize multi-line icons</span> option to <span class="window">Choices</span>.</li>
+<li>Sort the templates in the <a href="#stats"><span class="window">Statistics</span> window</a> if <span class="icon">Display templates sorted</span> is selected.</li>
 </ul>
 
 <h3>44.2. Version 3.27 (27 April 2024)</h3>

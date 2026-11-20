@@ -313,7 +313,7 @@
 <section id="choices-display-sort">
 <title>Display templates sorted</title>
 
-<p>If selected, the templates displayed in a <ref id="browsers"><window>Browser</window> window</ref> will be listed in alphabetical order. The ordering in the physical template file will not be affected.</p>
+<p>If selected, the templates displayed in a <ref id="browsers"><window>Browser</window> window</ref> or a <ref id="stats"><window>Statistics</window> window</ref> will be listed in alphabetical order. The ordering in the physical template file will not be affected.</p>
 </section>
 </section>
 
@@ -474,7 +474,7 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 <section>
 <title>Statistics</title>
 
-<p>Opens a statistics window for the file in the <ref id="browsers"><window>Browser</window> window</ref>. This is <ref id="stats">described below</ref>.</p>
+<p>Opens a <ref id="stats"><window>Statistics</window> window</ref> for the file in the <ref id="browsers"><window>Browser</window> window</ref>. This is <ref id="stats">described below</ref>.</p>
 </section>
 </chapter>
 
@@ -496,7 +496,7 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 <section>
 <p>The top row shows the column headings. The Identifier column shows the name of the window, Icons shows how many icons the window contains. Buffer shows the size of the buffer needed to load the window block with <swi>Wimp_LoadTemplate</swi>; similarly Indirected shows the size of buffer needed to hold the icons&rsquo; indirected data. Note that the Buffer size is the size that will be requested by <swi>Wimp_LoadTemplate</swi> and includes the Wimp&rsquo;s scratch buffer for indirected data.</p>
 
-<p>Each row in the main section of the window shows the data described above for each window definition in the file.</p>
+<p>Each row in the main section of the window shows the data described above for each window definition in the file. If <icon>Display templates sorted</icon> is ticked in the <ref id="choices"><window>Choices</window> dialogue</ref>, the entries will be listed in alphabetical order; otherwise they will appear in file order.</p>
 
 <p>The penultimate row shows the total of each column for all the windows in the file.</p>
 
@@ -1289,6 +1289,7 @@ ExportTypedefEnd:} @wn_icons;</code>
 <ul>
 <li><p>Fix the detection of <code>L</code> validation strings when processing icon resize operations.</p></li>
 <li><p>Add the <icon>Resize multi-line icons</icon> option to <window>Choices</window>.</p></li>
+<li><p>Sort the templates in the <ref id="stats"><window>Statistics</window> window</ref> if <icon>Display templates sorted</icon> is selected.</p></li>
 </ul>
 </section>
 
