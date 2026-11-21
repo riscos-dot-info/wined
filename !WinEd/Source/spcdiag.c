@@ -177,7 +177,6 @@ BOOL spcdiag_clickspace(event_pollblock *event,void *reference)
   }
   else
   {
-    Hourglass_On();
     table = malloc((selections + 1) * sizeof(icon_handle));
     if (!table)
     {
@@ -185,6 +184,7 @@ BOOL spcdiag_clickspace(event_pollblock *event,void *reference)
       return TRUE;
     }
     Wimp_WhichIcon(spcdiag_winentry->handle,table,icon_SELECTED,icon_SELECTED);
+    Hourglass_On();
     switch (Icon_WhichRadioInEsg(spcdiag_window,1))
     {
       case -1:
