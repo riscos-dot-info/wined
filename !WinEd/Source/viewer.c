@@ -29,6 +29,7 @@
 #include "icndiag.h"
 #include "icnedit.h"
 #include "monitor.h"
+#include "movediag.h"
 #include "multiicon.h"
 #include "picker.h"
 #include "round.h"
@@ -248,6 +249,7 @@ typedef enum {
   viewer_RENUMBER,
   viewer_COPY,
   viewer_EDITICON,
+  viewer_MOVE,
   viewer_ALIGN,
   viewer_SPACEOUT,
   viewer_RESIZE,
@@ -642,6 +644,7 @@ void                viewer_init()
   alndiag_init();
   spcdiag_init();
   rszdiag_init();
+  movediag_init();
   coorddiag_init();
   bordiag_init();
   viewtools_init();
@@ -682,6 +685,8 @@ void                viewer_closechildren(browser_winentry *winentry)
     rszdiag_close();
   if (coorddiag_winentry == winentry)
     coorddiag_close();
+  if (movediag_winentry == winentry)
+    movediag_close();
   if (bordiag_winentry == winentry)
     bordiag_close();
   if (visarea_winentry == winentry)
@@ -2030,6 +2035,9 @@ BOOL                viewer_menuselect(event_pollblock *event,void *reference)
         case viewer_EDITICON:
           viewcom_editicon(winentry);
           break;
+        case viewer_MOVE:
+          viewcom_move(winentry);
+          break;
         case viewer_ALIGN:
           viewcom_align(winentry);
           break;
@@ -2491,11 +2499,11 @@ void                viewer_claimcaret(browser_winentry *winentry)
 /**
  * Move the currently-selected icons immediately, as a response to a
  * press of one of the cursor keys.
- * 
+ *
  * This action is disabled if the user has not ticked the option in
  * choices, or if a drag is currently in progress. The latter avoids
  * the two operations fighting each other.
- * 
+ *
  * \param *winentry  The target window.
  * \param xby        The number of OS units to move in the X direction.
  * \param yby        The number of OS units to move in the Y direction.
@@ -2682,6 +2690,10 @@ BOOL                viewer_hotkey(event_pollblock *event,void *reference)
     case 'L' - 'A' + 1:
       if (selections)
         viewcom_align(winentry);
+      break;
+    case 'M' - 'A' + 1:
+      if (selections)
+        viewcom_move(winentry);
       break;
     case 'S' - 'A' + 1:
       if (selections)

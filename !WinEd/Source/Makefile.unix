@@ -17,7 +17,7 @@ EXTRASRC ?= TestCases
 
 OBJECTS = Error.o IniConfig.o alndiag.o bordiag.o browser.o browtools.o choices.o coorddiag.o datatrans.o deskfont.o \
           diagutils.o drag.o dragext.o export.o fontpick.o fortify.o globals.o help.o icndiag.o icnedit.o \
-          ide.o minsize.o monitor.o multiicon.o pane.o picker.o round.o rszdiag.o shortcuts.o spcdiag.o \
+          ide.o minsize.o monitor.o movediag.o multiicon.o pane.o picker.o round.o rszdiag.o shortcuts.o spcdiag.o \
           stats.o tempfont.o templates.o terminator.o unsaved.o uri.o usersprt.o viewer.o viewtools.o \
           visarea.o wadiag.o windiag.o wined.o
 
@@ -127,6 +127,8 @@ minsize.o : minsize.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) minsize.c
 monitor.o : monitor.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) monitor.c
+movediag.o : movediag.c common.h tempdefs.h
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) movediag.c
 multiicon.o : multiicon.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) multiicon.c
 pane.o : pane.c common.h

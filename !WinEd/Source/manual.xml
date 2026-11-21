@@ -725,7 +725,14 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 <section id="select-edit">
 <title>Edit...</title>
 
-<p>If only one icon is selected, the Edit icon dialogue box is opened, if more than one is selected, the <ref id="editicons">Edit multiple icons dialogue</ref> is opened instead.</p>
+<p>If only one icon is selected, the <ref id="editicon">Edit icon dialogue box</ref> is opened, if more than one is selected, the <ref id="editicons">Edit multiple icons dialogue</ref> is opened instead.</p>
+</section>
+
+<section>
+<title>Move...</title>
+
+<p>Open the <ref id="move"><window>Move Icon</window> dialogue box</ref> for the selected icon or icons.</p>
+
 </section>
 </chapter>
 
@@ -745,8 +752,9 @@ action to behave as if the click is over the work area, ignoring any icon.</p>
 <li><p>Align...</p></li>
 <li><p>Space out...</p></li>
 <li><p>Resize...</p></li>
-<li><p>Coords...</p></li>
+<li><p><ref id="move">Move...</ref></p></li>
 <li><p>Frame...</p></li>
+<li><p>Coords...</p></li>
 <li><p>Select all (<mouse>Select</mouse> mouse button) / Clear selection (<mouse>Adjust</mouse> mouse button)</p></li>
 </ul>
 </section>
@@ -947,6 +955,16 @@ when no editable or preview windows are open.</p>
 <p><cite>WinEd</cite> can apply changes to a subset of the icon flags to a selection of icons simultaneously; only those which do not affect icon data or outline fonts can be changed for a multiple selection.</p>
 
 <p>For simple on/off flags you can choose one of the radios <icon>Y</icon>, <icon>N</icon> or <icon>?</icon>, meaning set the flag for all selected icons, reset it, or leave this flag alone for each icon respectively. For <icon>ESG</icon> and <icon>Button</icon> type tick the option button on the left to enable a value to be entered for all selected icons, otherwise they will not be affected.</p>
+</section>
+</chapter>
+
+<chapter id="move">
+<title>Move dialogue box</title>
+
+<section>
+<p>Opened from an editable window menu tree, the <window>Move Icon</window> dialogue box can be used to move one or more icons by precise numbers of OS&nbsp;units.</p>
+
+<p>Enter the required movement into the <icon>Horizontal</icon> and <icon>Vertical</icon> fields, where negative values will move the icons left and down respectively, then click on <icon>Move</icon> to apply the change.</p>
 </section>
 </chapter>
 
@@ -1290,6 +1308,7 @@ ExportTypedefEnd:} @wn_icons;</code>
 
 <ul>
 <li><p>Reduce the OS version check from RISC&nbsp;OS&nbsp;4.00 to RISC&nbsp;OS&nbsp;3.00.</p></li>
+<li><p>Add the <ref id="move"><window>Move Icon</window> dialogue box</ref> to allow icons to be moved by specific numerical amounts.</p></li>
 <li><p>Fix the detection of <code>L</code> validation strings when processing icon resize operations.</p></li>
 <li><p>Add the <icon>Resize multi-line icons</icon> option to <window>Choices</window>.</p></li>
 <li><p>Sort the templates in the <ref id="stats"><window>Statistics</window> window</ref> if <icon>Display templates sorted</icon> is selected.</p></li>

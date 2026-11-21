@@ -18,7 +18,8 @@ typedef enum {
   viewtools_RESIZE,
   viewtools_FRAME,
   viewtools_VISAREA,
-  viewtools_COORDS
+  viewtools_COORDS,
+  viewtools_MOVE
 } viewtools_icons;
 
 /* Browser sprite area */
@@ -37,6 +38,7 @@ BOOL viewtools_space(event_pollblock *event,void *reference);
 BOOL viewtools_resize(event_pollblock *event,void *reference);
 BOOL viewtools_frame(event_pollblock *event,void *reference);
 BOOL viewtools_coords(event_pollblock *event,void *reference);
+BOOL viewtools_move(event_pollblock *event,void *reference);
 
 static window_block *viewtools_template;
 
@@ -68,6 +70,7 @@ void viewtools_newpane(browser_winentry *winentry)
   Event_Claim(event_CLICK,winentry->pane,viewtools_RESIZE, viewtools_resize,winentry);
   Event_Claim(event_CLICK,winentry->pane,viewtools_FRAME, viewtools_frame,winentry);
   Event_Claim(event_CLICK,winentry->pane,viewtools_COORDS, viewtools_coords,winentry);
+  Event_Claim(event_CLICK,winentry->pane,viewtools_MOVE, viewtools_move,winentry);
   help_claim_window(winentry->pane,"VT");
 }
 
@@ -169,6 +172,7 @@ void viewtools_shadenosel(window_handle pane)
   Icon_Shade(pane,viewtools_RESIZE);
   Icon_Shade(pane,viewtools_FRAME);
   Icon_Shade(pane,viewtools_COORDS);
+  Icon_Shade(pane,viewtools_MOVE);
 }
 
 void viewtools_shadeonesel(window_handle pane)
@@ -180,6 +184,7 @@ void viewtools_shadeonesel(window_handle pane)
   Icon_Unshade(pane,viewtools_RESIZE);
   Icon_Unshade(pane,viewtools_FRAME);
   Icon_Unshade(pane,viewtools_COORDS);
+  Icon_Unshade(pane,viewtools_MOVE);
 }
 
 void viewtools_shadeapp(browser_winentry *winentry)
@@ -305,5 +310,13 @@ BOOL viewtools_coords(event_pollblock *event,void *reference)
   if (event->data.mouse.button.data.menu)
     return FALSE;
   viewcom_coords(reference);
+  return TRUE;
+}
+
+BOOL viewtools_move(event_pollblock *event,void *reference)
+{
+  if (event->data.mouse.button.data.menu)
+    return FALSE;
+  viewcom_move(reference);
   return TRUE;
 }

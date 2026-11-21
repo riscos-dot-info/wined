@@ -44,16 +44,17 @@ Contents
   34. Visible area dialogue box
   35. Edit icon/title dialogue box
   36. Edit multiple icons dialogue box
-  37. Align dialogue box
-  38. Space out dialogue box
-  39. Resize icons dialogue box
-  40. Coordinates dialogue box
-  41. Frame dialogue box
-  42. Hints & tips
-  43. Customising WinEd
-  44. Version history
-  45. Bug reports & suggestions
-  46. Acknowledgements
+  37. Move dialogue box
+  38. Align dialogue box
+  39. Space out dialogue box
+  40. Resize icons dialogue box
+  41. Coordinates dialogue box
+  42. Frame dialogue box
+  43. Hints & tips
+  44. Customising WinEd
+  45. Version history
+  46. Bug reports & suggestions
+  47. Acknowledgements
 
 1. About WinEd
 --------------
@@ -101,7 +102,7 @@ Contents
   This requirement has been relaxed from RISC OS 4.00 because there are no
   known incompatibilities with the earlier system. If you encounter any
   problems running WinEd on RISC OS 3.00, please report them (see Chapter
-  45. Bug reports & suggestions).
+  46. Bug reports & suggestions).
 
 3. Conditions of use and distribution
 -------------------------------------
@@ -371,7 +372,7 @@ Contents
     be resized when closing the Edit Icon dialogue box (see Chapter 35. Edit
     icon/title dialogue box) (see Section 15.2.5. Safe icon update).
     Otherwise, such icons will need to be explicitly resized (see Chapter
-    39. Resize icons dialogue box).
+    40. Resize icons dialogue box).
 
   15.3. Display
   -------------
@@ -749,7 +750,7 @@ Contents
   without a trailing "%" -- making them real instead of integer.
 
   Note that the output of any of these options can be altered by editing
-  WinEd's Messages file. See the chapter on customisation (see Chapter 43.
+  WinEd's Messages file. See the chapter on customisation (see Chapter 44.
   Customising WinEd).
 
 23. Preview windows
@@ -909,7 +910,7 @@ Contents
     This minimises both the width and height of an icon; minimisation makes
     the icon just large enough to display its contents and is described in
     more detail in the section about the Resize icons dialogue box (see
-    Chapter 39. Resize icons dialogue box).
+    Chapter 40. Resize icons dialogue box).
 
 27. Selected icon(s) submenu
 ----------------------------
@@ -941,9 +942,16 @@ Contents
   27.4. Edit...
   -------------
 
-  If only one icon is selected, the Edit icon dialogue box is opened, if
-  more than one is selected, the Edit multiple icons dialogue (see Chapter
-  36. Edit multiple icons dialogue box) is opened instead.
+  If only one icon is selected, the Edit icon dialogue box (see Chapter 35.
+  Edit icon/title dialogue box) is opened, if more than one is selected, the
+  Edit multiple icons dialogue (see Chapter 36. Edit multiple icons dialogue
+  box) is opened instead.
+
+  27.5. Move...
+  -------------
+
+  Open the Move Icon dialogue box (see Chapter 37. Move dialogue box) for
+  the selected icon or icons.
 
 28. The editable window tool bar
 --------------------------------
@@ -971,9 +979,11 @@ Contents
 
   * Resize...
 
-  * Coords...
+  * Move... (see Chapter 37. Move dialogue box)
 
   * Frame...
+
+  * Coords...
 
   * Select all (Select mouse button) / Clear selection (Adjust mouse button)
 
@@ -1077,7 +1087,7 @@ Contents
 
   The icon picker contains examples of most of the common types of icon, but
   it can be customised. See the section on Customising WinEd (see Chapter
-  43. Customising WinEd).
+  44. Customising WinEd).
 
 33. Work area dialogue box
 --------------------------
@@ -1173,7 +1183,7 @@ Contents
   The two action buttons both update the template data with settings from
   the dialogue box. If the second button is 'Don't resize', then 'Update'
   will also resize the icon if it is currently too small to display its data
-  (see Resize icons dialogue box (see Chapter 39. Resize icons dialogue
+  (see Resize icons dialogue box (see Chapter 40. Resize icons dialogue
   box)). If the second button is 'Adjust size', which can be configured by
   the 'Safe icon update' option in the Choices dialogue (see Chapter 15. The
   Choices dialogue box), then 'Update' will only store any changed values,
@@ -1198,7 +1208,17 @@ Contents
   option button on the left to enable a value to be entered for all selected
   icons, otherwise they will not be affected.
 
-37. Align dialogue box
+37. Move dialogue box
+---------------------
+
+  Opened from an editable window menu tree, the Move Icon dialogue box can
+  be used to move one or more icons by precise numbers of OS units.
+
+  Enter the required movement into the 'Horizontal' and 'Vertical' fields,
+  where negative values will move the icons left and down respectively, then
+  click on 'Move' to apply the change.
+
+38. Align dialogue box
 ----------------------
 
   This is opened from an editable window menu tree. It is for aligning
@@ -1206,12 +1226,12 @@ Contents
   along which edge the icons will be aligned. If only one icon is selected
   it can be centred in its window.
 
-  37.1. Left
+  38.1. Left
   ----------
 
   The icons will all share the same left (minimum x) coordinate.
 
-  37.2. H centre
+  38.2. H centre
   --------------
 
   The icons will be arranged so that half their width is each side of a
@@ -1219,17 +1239,17 @@ Contents
   rightmost midpoint of all the icons, depending on whether the 'Move left'
   or 'Move right' icon is selected.
 
-  37.3. Right
+  38.3. Right
   -----------
 
   The icons will all share the same right (maximum X) coordinate.
 
-  37.4. Top
+  38.4. Top
   ---------
 
   The icons will all share the same top (maximum Y) coordinate.
 
-  37.5. V centre
+  38.5. V centre
   --------------
 
   The icons will be arranged so that half their height is each side of a
@@ -1237,12 +1257,12 @@ Contents
   or bottommost midpoint of all the icons, depending on whether the 'Move
   down' or 'Move up' icon is selected.
 
-  37.6. Bottom
+  38.6. Bottom
   ------------
 
   The icons will all share the same bottom (minimum Y) coordinate.
 
-  37.7. Group box & label
+  38.7. Group box & label
   -----------------------
 
   This is only applicable if exactly two icons are selected in the editable
@@ -1252,7 +1272,7 @@ Contents
   box and its bottom edge is 24 OS units below the top of the group box
   (ideal for labels 44 OS units high).
 
-  37.8. Move / Resize
+  38.8. Move / Resize
   -------------------
 
   Icons can either be moved or resized to achieve alignment. If 'Move' is
@@ -1260,7 +1280,7 @@ Contents
   chosen, only the edge that has to be aligned is moved, thus resizing the
   icon; icons will not be allowed to become too small to be selected.
 
-  37.9. Move left/down/label / Move right/up/box
+  38.9. Move left/down/label / Move right/up/box
   ----------------------------------------------
 
   These determine which way the icons will be moved or resized. For instance
@@ -1269,14 +1289,14 @@ Contents
   In the special case of Group box & label these options determine whether
   the label or the box is moved.
 
-  37.10. Centre in window
+  38.10. Centre in window
   -----------------------
 
   If this is selected instead of one of the above, the centre of the window
   is chosen as the reference point instead of one of the icons, and it only
   allows alignment of centres, not edges.
 
-38. Space out dialogue box
+39. Space out dialogue box
 --------------------------
 
   Opened from an editable window menu tree, the Space out dialogue box can
@@ -1292,7 +1312,7 @@ Contents
   If only a single icon is selected it is spaced out from the edge of the
   visible area corresponding to the direction radio icons.
 
-39. Resize icons dialogue box
+40. Resize icons dialogue box
 -----------------------------
 
   This dialogue box is for changing the size of icons, either making a group
@@ -1301,7 +1321,7 @@ Contents
   carried out on the right and top edges, leaving the bottom left corner
   fixed.
 
-  39.1. Minimise
+  40.1. Minimise
   --------------
 
   These action buttons change the width and/or height of the selected
@@ -1330,14 +1350,14 @@ Contents
   but it is unlikely that an outline font will take more room than the
   System font for long strings.
 
-  39.2. Make same size
+  40.2. Make same size
   --------------------
 
   This only applies to multiple selections. All the icons can be set to the
   same width or height, either taking on the width of the narrowest or the
   widest or the height of the tallest or shortest.
 
-  39.3. Excluding borders
+  40.3. Excluding borders
   -----------------------
 
   If this option is set while making a group of icons the same size as each
@@ -1346,7 +1366,7 @@ Contents
   for sets of action buttons where the default action button is the same
   size as the others with an additional trench around it.
 
-40. Coordinates dialogue box
+41. Coordinates dialogue box
 ----------------------------
 
   This allows you to enter the position (relative to the window's work area)
@@ -1356,7 +1376,7 @@ Contents
   Shift or Ctrl modifier keys are pressed, in which case the numbers are
   altered in units of 2 and 1, respectively.
 
-41. Frame dialogue box
+42. Frame dialogue box
 ----------------------
 
   This is for placing a frame around the selected icons. The frame can
@@ -1367,7 +1387,7 @@ Contents
   Shift or Ctrl modifier keys are pressed, in which case the numbers are
   altered in units of 2 and 1, respectively.
 
-  41.1. Gap
+  42.1. Gap
   ---------
 
   Enter the minimum gap (OS units) to leave between the frame and any icons
@@ -1375,21 +1395,21 @@ Contents
   visible area (816 looks best) or an icon with a 3D border (usually with
   "R4" validation, 20 or more looks better).
 
-  41.2. Visible area
+  42.2. Visible area
   ------------------
 
   If selected the frame is made by resizing the window's visible area to fit
   the selection. The window's work area must be large enough to accommodate
   it.
 
-  41.3. Icon
+  42.3. Icon
   ----------
 
   If selected the frame is made by moving and resizing the icon specified in
   the adjacent writable field to make a group box. It must satisfy the
   requirements outlined above.
 
-  41.4. Allow for label
+  42.4. Allow for label
   ---------------------
 
   Group boxes often have a label at the top. If this option is selected an
@@ -1397,7 +1417,7 @@ Contents
   left between the top of the frame and the topmost selected icon to make
   room for a text label.
 
-  41.5. Top, Left, Right, Bottom
+  42.5. Top, Left, Right, Bottom
   ------------------------------
 
   Only the frame's edges indicated by which of these icons are selected are
@@ -1405,10 +1425,10 @@ Contents
   This is useful because frames are often initially placed in relation to
   objects outside them and resized when their contents have been entered.
 
-42. Hints & tips
+43. Hints & tips
 ----------------
 
-  42.1. Size of dialogue boxes
+  43.1. Size of dialogue boxes
   ----------------------------
 
   When designing dialogue boxes and non-scrollable windows, try to make sure
@@ -1417,7 +1437,7 @@ Contents
   your windows on a Mode 27 screen (1280 x 960 OS units). The Style Guide
   recommends a maximum of 800 x 600 OS units for dialogue boxes.
 
-  42.2. Positioning icons
+  43.2. Positioning icons
   -----------------------
 
   Icons with similar functions should be the same size as each other and
@@ -1443,14 +1463,14 @@ Contents
   in the parent window so they are also visible. Panes were used in
   WinEd 1.00, but were too restrictive.
 
-  42.3. Writable icons
+  43.3. Writable icons
   --------------------
 
   Use a validation string containing "Kta", not "Ktar" as the Style Guide
   suggests. Due to a bug in RISC OS 3.1 this must be the last entry in a
   validation string to work correctly.
 
-  42.4. Outline fonts
+  43.4. Outline fonts
   -------------------
 
   Outline fonts in icons should generally be avoided. Apart from the latest
@@ -1467,7 +1487,7 @@ Contents
   In RISC OS 3.1 at least, outline fonts seem to be incompatible with "L"
   validation commands.
 
-  42.5. Modifying other people's templates
+  43.5. Modifying other people's templates
   ----------------------------------------
 
   Be careful when modifying other people's templates; always make sure you
@@ -1476,7 +1496,7 @@ Contents
   windows in the file, and increasing the amount of indirected data. Never
   renumber any icons.
 
-  42.6. Deleting icons
+  43.6. Deleting icons
   --------------------
 
   Unlike many template editors, when deleting an icon in WinEd its
@@ -1486,7 +1506,7 @@ Contents
   The Delete flag is best avoided: having deleted icons in your templates
   can cause confusion when using other template editors.
 
-43. Customising WinEd
+44. Customising WinEd
 ---------------------
 
   As well as the Choices dialogue box WinEd can be customised by editing its
@@ -1498,19 +1518,19 @@ Contents
 
   Some windows you may wish to customise are listed here
 
-  43.1. Icon picker
+  44.1. Icon picker
   -----------------
 
   You can put any icons you want in here (but no outline fonts), depending
   on which icons you like to create most often. Its initial position depends
   on its template.
 
-  43.2. Monitor
+  44.2. Monitor
   -------------
 
   The monitor's initial position depends on its template.
 
-  43.3. Edit window dialogue box / Edit icon dialogue box
+  44.3. Edit window dialogue box / Edit icon dialogue box
   -------------------------------------------------------
 
   The shape, size and initial positions of these dialogue boxes may be
@@ -1520,7 +1540,7 @@ Contents
   and move them out of the way. Remember you can turn the command button
   panes off in Choices if you want to reshape the window.
 
-  43.4. Tool panes
+  44.4. Tool panes
   ----------------
 
   You can customise these by editing the WinTools and BrowTools templates
@@ -1537,7 +1557,7 @@ Contents
   If you alter WinEd's templates be sure to back up the original file; WinEd
   must be distributed with this Templates file.
 
-  43.5. Exporting icon names
+  44.5. Exporting icon names
   --------------------------
 
   The format in which icon names are exported is highly configurable by
@@ -1623,16 +1643,19 @@ Contents
   "\]"     Insert a literal ]
   "\@"     Insert a literal @
 
-44. Version history
+45. Version history
 -------------------
 
   The version history of WinEd, back as far as version 3.23, is as follows.
   Change logs prior to 2020 are not currently available.
 
-  44.1. Test Build
+  45.1. Test Build
   ----------------
 
   * Reduce the OS version check from RISC OS 4.00 to RISC OS 3.00.
+
+  * Add the Move Icon dialogue box (see Chapter 37. Move dialogue box) to
+    allow icons to be moved by specific numerical amounts.
 
   * Fix the detection of "L" validation strings when processing icon resize
     operations.
@@ -1642,7 +1665,7 @@ Contents
   * Sort the templates in the Statistics window (see Chapter 20. Statistics
     windows) if 'Display templates sorted' is selected.
 
-  44.2. Version 3.27 (27 April 2024)
+  45.2. Version 3.27 (27 April 2024)
   ----------------------------------
 
       -------------------------------------------------------------------
@@ -1697,7 +1720,7 @@ Contents
     version of the manual with one matching the HTML documentation and the
     addition of the recent version history.
 
-  44.3. Version 3.26 (29 August 2020)
+  45.3. Version 3.26 (29 August 2020)
   -----------------------------------
 
   * Fix a problem when loading templates whose names contain a % character,
@@ -1724,7 +1747,7 @@ Contents
     adding "typedef" enum and "#define" options, optional name prefix, case
     conversion and invalid character substitution.
 
-  44.4. Version 3.25 (28 July 2020)
+  45.4. Version 3.25 (28 July 2020)
   ---------------------------------
 
       -------------------------------------------------------------------
@@ -1780,26 +1803,26 @@ Contents
   * Ensure that the Save As dialogue closes after a save triggered by
     closing an unsaved file.
 
-  44.5. Version 3.24
+  45.5. Version 3.24
   ------------------
 
   This version number was skipped, due to the possibility that it had been
   used for some limited-release test builds at some stage in the past.
 
-  44.6. Version 3.23 (17 June 2020)
+  45.6. Version 3.23 (17 June 2020)
   ---------------------------------
 
   * Resolve a significant NULL pointer dereference in the menu code, which
     made the application almost unusable with a High Vector ROM.
 
-45. Bug reports & suggestions
+46. Bug reports & suggestions
 -----------------------------
 
   Although every effort has been made to iron out bugs, no application is
   completely bug free so you are advised to save your work regularly. Please
   report any bugs that you find to Steve Fryatt at info@stevefryatt.org.uk.
 
-46. Acknowledgements
+47. Acknowledgements
 --------------------
 
   WinEd was originally written by Tony Houghton in C (compiled by Acorn C

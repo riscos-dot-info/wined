@@ -59,16 +59,17 @@
 <li><a href="#visiblearea">34. Visible area dialogue box</a></li>
 <li><a href="#editicon">35. Edit icon/title dialogue box</a></li>
 <li><a href="#editicons">36. Edit multiple icons dialogue box</a></li>
-<li><a href="#align">37. Align dialogue box</a></li>
-<li><a href="#space">38. Space out dialogue box</a></li>
-<li><a href="#resize">39. Resize icons dialogue box</a></li>
-<li><a href="#coords">40. Coordinates dialogue box</a></li>
-<li><a href="#frame">41. Frame dialogue box</a></li>
-<li><a href="#hints">42. Hints &amp; tips</a></li>
-<li><a href="#custom">43. Customising <cite>WinEd</cite></a></li>
-<li><a href="#versions">44. Version history</a></li>
-<li><a href="#bug">45. Bug reports &amp; suggestions</a></li>
-<li><a href="#acknowledgements">46. Acknowledgements</a></li>
+<li><a href="#move">37. Move dialogue box</a></li>
+<li><a href="#align">38. Align dialogue box</a></li>
+<li><a href="#space">39. Space out dialogue box</a></li>
+<li><a href="#resize">40. Resize icons dialogue box</a></li>
+<li><a href="#coords">41. Coordinates dialogue box</a></li>
+<li><a href="#frame">42. Frame dialogue box</a></li>
+<li><a href="#hints">43. Hints &amp; tips</a></li>
+<li><a href="#custom">44. Customising <cite>WinEd</cite></a></li>
+<li><a href="#versions">45. Version history</a></li>
+<li><a href="#bug">46. Bug reports &amp; suggestions</a></li>
+<li><a href="#acknowledgements">47. Acknowledgements</a></li>
 </ul>
 
 <h2 id="about">1. About <cite>WinEd</cite></h2>
@@ -646,7 +647,12 @@
 <h3 id="select-edit">27.4. Edit...</h3>
 
 
-<p>If only one icon is selected, the Edit icon dialogue box is opened, if more than one is selected, the <a href="#editicons">Edit multiple icons dialogue</a> is opened instead.</p>
+<p>If only one icon is selected, the <a href="#editicon">Edit icon dialogue box</a> is opened, if more than one is selected, the <a href="#editicons">Edit multiple icons dialogue</a> is opened instead.</p>
+
+<h3>27.5. Move...</h3>
+
+
+<p>Open the <a href="#move"><span class="window">Move Icon</span> dialogue box</a> for the selected icon or icons.</p>
 
 <h2 id="edittool">28. The editable window tool bar</h2>
 
@@ -663,8 +669,9 @@
 <li>Align...</li>
 <li>Space out...</li>
 <li>Resize...</li>
-<li>Coords...</li>
+<li><a href="#move">Move...</a></li>
 <li>Frame...</li>
+<li>Coords...</li>
 <li>Select all (<span class="mouse">Select</span> mouse button) / Clear selection (<span class="mouse">Adjust</span> mouse button)</li>
 </ul>
 
@@ -817,62 +824,69 @@
 
 <p>For simple on/off flags you can choose one of the radios <span class="icon">Y</span>, <span class="icon">N</span> or <span class="icon">?</span>, meaning set the flag for all selected icons, reset it, or leave this flag alone for each icon respectively. For <span class="icon">ESG</span> and <span class="icon">Button</span> type tick the option button on the left to enable a value to be entered for all selected icons, otherwise they will not be affected.</p>
 
-<h2 id="align">37. Align dialogue box</h2>
+<h2 id="move">37. Move dialogue box</h2>
+
+
+<p>Opened from an editable window menu tree, the <span class="window">Move Icon</span> dialogue box can be used to move one or more icons by precise numbers of OS units.</p>
+
+<p>Enter the required movement into the <span class="icon">Horizontal</span> and <span class="icon">Vertical</span> fields, where negative values will move the icons left and down respectively, then click on <span class="icon">Move</span> to apply the change.</p>
+
+<h2 id="align">38. Align dialogue box</h2>
 
 
 <p>This is opened from an editable window menu tree. It is for aligning groups of icons with each other. The top group of radio icons determines along which edge the icons will be aligned. If only one icon is selected it can be centred in its window.</p>
 
-<h3>37.1. Left</h3>
+<h3>38.1. Left</h3>
 
 
 <p>The icons will all share the same left (minimum x) coordinate.</p>
 
-<h3>37.2. H centre</h3>
+<h3>38.2. H centre</h3>
 
 
 <p>The icons will be arranged so that half their width is each side of a notional vertical midline. This midline is calculated from the leftmost or rightmost midpoint of all the icons, depending on whether the <span class="icon">Move left</span> or <span class="icon">Move right</span> icon is selected.</p>
 
-<h3>37.3. Right</h3>
+<h3>38.3. Right</h3>
 
 
 <p>The icons will all share the same right (maximum <span class="maths">X</span>) coordinate.</p>
 
-<h3>37.4. Top</h3>
+<h3>38.4. Top</h3>
 
 
 <p>The icons will all share the same top (maximum <span class="maths">Y</span>) coordinate.</p>
 
-<h3>37.5. V centre</h3>
+<h3>38.5. V centre</h3>
 
 
 <p>The icons will be arranged so that half their height is each side of a notional horizontal midline. This midline is calculated from the topmost or bottommost midpoint of all the icons, depending on whether the <span class="icon">Move down</span> or <span class="icon">Move up</span> icon is selected.</p>
 
-<h3>37.6. Bottom</h3>
+<h3>38.6. Bottom</h3>
 
 
 <p>The icons will all share the same bottom (minimum <span class="maths">Y</span>) coordinate.</p>
 
-<h3>37.7. Group box &amp; label</h3>
+<h3>38.7. Group box &amp; label</h3>
 
 
 <p>This is only applicable if exactly two icons are selected in the editable window and the lowernumbered of them has a border and no text and the other has text and no border. The icons will be aligned so that the label’s left edge 32 OS units to the right of the left edge of the group box and its bottom edge is 24 OS units below the top of the group box (ideal for labels 44 OS units high).</p>
 
-<h3>37.8. Move / Resize</h3>
+<h3>38.8. Move / Resize</h3>
 
 
 <p>Icons can either be moved or resized to achieve alignment. If <span class="icon">Move</span> is chosen, icons are moved without changing their size. If <span class="icon">Resize</span> is chosen, only the edge that has to be aligned is moved, thus resizing the icon; icons will not be allowed to become too small to be selected.</p>
 
-<h3>37.9. Move left/down/label / Move right/up/box</h3>
+<h3>38.9. Move left/down/label / Move right/up/box</h3>
 
 
 <p>These determine which way the icons will be moved or resized. For instance if one of the horizontal alignments is selected above and Move left is selected all the icons will be aligned with the originally leftmost icon. In the special case of Group box &amp; label these options determine whether the label or the box is moved.</p>
 
-<h3>37.10. Centre in window</h3>
+<h3>38.10. Centre in window</h3>
 
 
 <p>If this is selected instead of one of the above, the centre of the window is chosen as the reference point instead of one of the icons, and it only allows alignment of centres, not edges.</p>
 
-<h2 id="space">38. Space out dialogue box</h2>
+<h2 id="space">39. Space out dialogue box</h2>
 
 
 <p>Opened from an editable window menu tree, the Space out dialogue box can either be used to space a group of icons out from each other or a single icon from the edge of the visible area.</p>
@@ -881,12 +895,12 @@
 
 <p>If only a single icon is selected it is spaced out from the edge of the visible area corresponding to the direction radio icons.</p>
 
-<h2 id="resize">39. Resize icons dialogue box</h2>
+<h2 id="resize">40. Resize icons dialogue box</h2>
 
 
 <p>This dialogue box is for changing the size of icons, either making a group all the same size, making a single icon or group just large enough to display its data, or a single icon a specified size. The resizing is carried out on the right and top edges, leaving the bottom left corner fixed.</p>
 
-<h3>39.1. Minimise</h3>
+<h3>40.1. Minimise</h3>
 
 
 <p>These action buttons change the width and/or height of the selected icon(s), making it just large enough to display its data, using fairly intelligent rules.</p>
@@ -897,64 +911,64 @@
 
 <p>Versions of <cite>WinEd</cite> from 2.12 onwards ensure that icons that use the system font are also large enough for the current RiscPC Desktop font. If the Desktop font is the System font or you are using RISC OS 3.1 then 12pt Homerton Medium is used. Note that this does not apply to <code>L</code> validation, but it is unlikely that an outline font will take more room than the System font for long strings.</p>
 
-<h3>39.2. Make same size</h3>
+<h3>40.2. Make same size</h3>
 
 
 <p>This only applies to multiple selections. All the icons can be set to the same width or height, either taking on the width of the narrowest or the widest or the height of the tallest or shortest.</p>
 
-<h3>39.3. Excluding borders</h3>
+<h3>40.3. Excluding borders</h3>
 
 
 <p>If this option is set while making a group of icons the same size as each other, only the size of the icons inside their borders is made the same, so icons with wider borders will be larger overall. This is most useful for sets of action buttons where the default action button is the same size as the others with an additional trench around it.</p>
 
-<h2 id="coords">40. Coordinates dialogue box</h2>
+<h2 id="coords">41. Coordinates dialogue box</h2>
 
 
 <p>This allows you to enter the position (relative to the window’s work area) and size coordinates of an icon. The Top entry is usually negative.</p>
 
 <p>The bumper buttons cause the sizes to change in units of 4, unless the <span class="keypress"><span class="key">Shift</span></span> or <span class="keypress"><span class="key">Ctrl</span></span> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p>
 
-<h2 id="frame">41. Frame dialogue box</h2>
+<h2 id="frame">42. Frame dialogue box</h2>
 
 
 <p>This is for placing a frame around the selected icons. The frame can consist of the window’s visible area or an empty bordered icon (group box) with a lower number than any of the selected icons.</p>
 
 <p>The bumper buttons cause the sizes to change in units of 4, unless the <span class="keypress"><span class="key">Shift</span></span> or <span class="keypress"><span class="key">Ctrl</span></span> modifier keys are pressed, in which case the numbers are altered in units of 2 and 1, respectively.</p>
 
-<h3>41.1. Gap</h3>
+<h3>42.1. Gap</h3>
 
 
 <p>Enter the minimum gap (OS units) to leave between the frame and any icons inside it. This varies depending on whether the frame is the window’s visible area (816 looks best) or an icon with a 3D border (usually with <code>R4</code> validation, 20 or more looks better).</p>
 
-<h3>41.2. Visible area</h3>
+<h3>42.2. Visible area</h3>
 
 
 <p>If selected the frame is made by resizing the window’s visible area to fit the selection. The window’s work area must be large enough to accommodate it.</p>
 
-<h3>41.3. Icon</h3>
+<h3>42.3. Icon</h3>
 
 
 <p>If selected the frame is made by moving and resizing the icon specified in the adjacent writable field to make a group box. It must satisfy the requirements outlined above.</p>
 
-<h3>41.4. Allow for label</h3>
+<h3>42.4. Allow for label</h3>
 
 
 <p>Group boxes often have a label at the top. If this option is selected an extra gap (read from the writable icon, the default is 24 OS units) is left between the top of the frame and the topmost selected icon to make room for a text label.</p>
 
-<h3>41.5. Top, Left, Right, Bottom</h3>
+<h3>42.5. Top, Left, Right, Bottom</h3>
 
 
 <p>Only the frame’s edges indicated by which of these icons are selected are moved (unless the frame would become too small or have negative size). This is useful because frames are often initially placed in relation to objects outside them and resized when their contents have been entered.</p>
 
-<h2 id="hints">42. Hints &amp; tips</h2>
+<h2 id="hints">43. Hints &amp; tips</h2>
 
 
-<h3>42.1. Size of dialogue boxes</h3>
+<h3>43.1. Size of dialogue boxes</h3>
 
 
 <p>When designing dialogue boxes and non-scrollable windows, try to make sure they will fit on screen in as many modes as possible. Mode 22 support (768 × 576 OS units) is not strictly necessary, but you should at least fit your windows on a Mode 27 screen (1280 × 960 OS units). The <cite>Style Guide</cite> recommends a maximum of 800 × 600 OS units for dialogue boxes.</p>
 
-<h3>42.2. Positioning icons</h3>
+<h3>43.2. Positioning icons</h3>
 
 
 <p>Icons with similar functions should be the same size as each other and aligned. When aligning icons, some of which have double borders (eg. <code>R6</code> validation), align with the inner border (use the centre alignment options). If a dialogue box has several groups of icons (eg two or more groups of radio icons with two or more different ESGs) place group boxes around them.</p>
@@ -965,12 +979,12 @@
 
 <p>Note that <cite>WinEd</cite>’s window and icon editing dialogue boxes are not spaced out very much, in this case it was considered more important to make them as small as possible. It is also unconventional to have scrolling dialogue boxes unless they are a pane with the default action and <span class="icon">Cancel</span> buttons in the parent window so they are also visible. Panes were used in <cite>WinEd</cite> 1.00, but were too restrictive.</p>
 
-<h3>42.3. Writable icons</h3>
+<h3>43.3. Writable icons</h3>
 
 
 <p>Use a validation string containing <code>Kta</code>, not <code>Ktar</code> as the <cite>Style Guide</cite> suggests. Due to a bug in RISC OS 3.1 this must be the last entry in a validation string to work correctly.</p>
 
-<h3>42.4. Outline fonts</h3>
+<h3>43.4. Outline fonts</h3>
 
 
 <p>Outline fonts in icons should generally be avoided. Apart from the latest versions of RISC OS now being able to automatically use outline fonts in all icons there are a couple of bugs.</p>
@@ -981,19 +995,19 @@
 
 <p>In RISC OS 3.1 at least, outline fonts seem to be incompatible with <code>L</code> validation commands.</p>
 
-<h3>42.5. Modifying other people’s templates</h3>
+<h3>43.5. Modifying other people’s templates</h3>
 
 
 <p>Be careful when modifying other people’s templates; always make sure you have a backup of the original file. Some programs may object to changes in their template files – eg. adding outline fonts, changing the order of windows in the file, and increasing the amount of indirected data. Never renumber any icons.</p>
 
-<h3>42.6. Deleting icons</h3>
+<h3>43.6. Deleting icons</h3>
 
 
 <p>Unlike many template editors, when deleting an icon in <cite>WinEd</cite> its definition is entirely removed from the template, subsequent icons are renumbered to ‘fill the gap’.</p>
 
 <p>The Delete flag is best avoided: having deleted icons in your templates can cause confusion when using other template editors.</p>
 
-<h2 id="custom">43. Customising <cite>WinEd</cite></h2>
+<h2 id="custom">44. Customising <cite>WinEd</cite></h2>
 
 
 <p>As well as the <span class="window">Choices</span> dialogue box <cite>WinEd</cite> can be customised by editing its own template file; this is the file called <span class="filename">Templates</span> within the <cite>WinEd</cite> resources directory.</p>
@@ -1002,22 +1016,22 @@
 
 <p>Some windows you may wish to customise are listed here</p>
 
-<h3>43.1. Icon picker</h3>
+<h3>44.1. Icon picker</h3>
 
 
 <p>You can put any icons you want in here (but no outline fonts), depending on which icons you like to create most often. Its initial position depends on its template.</p>
 
-<h3>43.2. Monitor</h3>
+<h3>44.2. Monitor</h3>
 
 
 <p>The monitor’s initial position depends on its template.</p>
 
-<h3>43.3. Edit window dialogue box / Edit icon dialogue box</h3>
+<h3>44.3. Edit window dialogue box / Edit icon dialogue box</h3>
 
 
 <p>The shape, size and initial positions of these dialogue boxes may be inconvenient to you so you may wish to rearrange the icons. Do not renumber or delete any icons; if you want to get rid of any nonfunctional icons such as group boxes and labels, temporarily enlarge the work area and move them out of the way. Remember you can turn the command button panes off in Choices if you want to reshape the window.</p>
 
-<h3>43.4. Tool panes</h3>
+<h3>44.4. Tool panes</h3>
 
 
 <p>You can customise these by editing the <span class="name">WinTools</span> and <span class="name">BrowTools</span> templates and/or the <span class="filename">Sprites</span> and <span class="filename">Sprites22</span> files. Note that you will have to disable the Editable window tool icons option to avoid inadvertently resizing the current <a href="#browsertool"><span class="window">Browser</span> tool bar</a> while editing it. You can make these panes any size you like, within reason. If you design some that you think are better than mine, which are perhaps a little small, please let me know.</p>
@@ -1026,7 +1040,7 @@
 
 <p>If you alter <cite>WinEd</cite>’s templates be sure to back up the original file; <cite>WinEd</cite> must be distributed with this <span class="filename">Templates</span> file.</p>
 
-<h3>43.5. Exporting icon names</h3>
+<h3>44.5. Exporting icon names</h3>
 
 
 <p>The format in which icon names are exported is highly configurable by editing the <span class="filename">Messages</span> file. For example, look at the export template messages as supplied; you should find them at the bottom of the file:</p>
@@ -1083,22 +1097,23 @@ ExportTypedefEnd:} @wn_icons;</pre></div>
 <tr><td><code>\@</code></td><td>Insert a literal @</td></tr>
 </table></div>
 
-<h2 id="versions">44. Version history</h2>
+<h2 id="versions">45. Version history</h2>
 
 
 <p>The version history of <cite>WinEd</cite>, back as far as version 3.23, is as follows. Change logs prior to 2020 are not currently available.</p>
 
-<h3>44.1. Test Build</h3>
+<h3>45.1. Test Build</h3>
 
 
 <ul>
 <li>Reduce the OS version check from RISC OS 4.00 to RISC OS 3.00.</li>
+<li>Add the <a href="#move"><span class="window">Move Icon</span> dialogue box</a> to allow icons to be moved by specific numerical amounts.</li>
 <li>Fix the detection of <code>L</code> validation strings when processing icon resize operations.</li>
 <li>Add the <span class="icon">Resize multi-line icons</span> option to <span class="window">Choices</span>.</li>
 <li>Sort the templates in the <a href="#stats"><span class="window">Statistics</span> window</a> if <span class="icon">Display templates sorted</span> is selected.</li>
 </ul>
 
-<h3>44.2. Version 3.27 (27 April 2024)</h3>
+<h3>45.2. Version 3.27 (27 April 2024)</h3>
 
 
 <div class="callout warning">
@@ -1125,7 +1140,7 @@ ExportTypedefEnd:} @wn_icons;</pre></div>
 <li>Overhaul of the documentation, including a replacement of the text version of the manual with one matching the HTML documentation and the addition of the recent version history.</li>
 </ul>
 
-<h3>44.3. Version 3.26 (29 August 2020)</h3>
+<h3>45.3. Version 3.26 (29 August 2020)</h3>
 
 
 <ul>
@@ -1139,7 +1154,7 @@ ExportTypedefEnd:} @wn_icons;</pre></div>
 <li>Re-implement the <span class="window">icon export</span> dialogue, resolving reported issues and adding <code>typedef</code> enum and <code>#define</code> options, optional name prefix, case conversion and invalid character substitution.</li>
 </ul>
 
-<h3>44.4. Version 3.25 (28 July 2020)</h3>
+<h3>45.4. Version 3.25 (28 July 2020)</h3>
 
 
 <div class="callout warning">
@@ -1165,24 +1180,24 @@ ExportTypedefEnd:} @wn_icons;</pre></div>
 <li>Ensure that the <span class="window">Save As</span> dialogue closes after a save triggered by closing an unsaved file.</li>
 </ul>
 
-<h3>44.5. Version 3.24</h3>
+<h3>45.5. Version 3.24</h3>
 
 
 <p>This version number was skipped, due to the possibility that it had been used for some limited-release test builds at some stage in the past.</p>
 
-<h3>44.6. Version 3.23 (17 June 2020)</h3>
+<h3>45.6. Version 3.23 (17 June 2020)</h3>
 
 
 <ul>
 <li>Resolve a significant NULL pointer dereference in the menu code, which made the application almost unusable with a High Vector ROM.</li>
 </ul>
 
-<h2 id="bug">45. Bug reports &amp; suggestions</h2>
+<h2 id="bug">46. Bug reports &amp; suggestions</h2>
 
 
 <p>Although every effort has been made to iron out bugs, no application is completely bug free so you are advised to save your work regularly. Please report any bugs that you find to Steve Fryatt at <a href="mailto:info@stevefryatt.org.uk">info@stevefryatt.org.uk</a>.</p>
 
-<h2 id="acknowledgements">46. Acknowledgements</h2>
+<h2 id="acknowledgements">47. Acknowledgements</h2>
 
 
 <p><cite>WinEd</cite> was originally written by Tony Houghton in C (compiled by <cite>Acorn C</cite> Release 5) with extensive use of <a href="http://www.riscos.info/index.php/DeskLib" class="external"><cite>DeskLib</cite></a>. This version has been compiled using the <a href="http://www.riscos.info/index.php/GCCSDK" class="external"><cite>GCCSDK</cite></a>. <cite>DeskLib</cite> is a set of Freeware C libraries written by Jason Williams and many others. All C programmers should consider this an essential replacement for <cite>RISC_OSLib</cite>.</p>
