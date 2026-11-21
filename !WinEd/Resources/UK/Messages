@@ -157,6 +157,7 @@ H_VRM_000202:\Sto copy the selected icon(s) to the left.
 H_VRM_000203:\Sto copy the selected icon(s) upwards.
 H_VRM_0003:\Sedit the selected icon.
 H_VRM_0003G:\Gthere is not exactly one selected icon.
+H_VT_13
 H_VRM_0004:\Smove the selected icons by a specified amount.
 H_VT_07
 H_VRM_0005:\Salign the selected icons with each other.
