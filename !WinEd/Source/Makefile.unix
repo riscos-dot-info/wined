@@ -151,8 +151,8 @@ templates.o : templates.c common.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) templates.c
 terminator.o : terminator.c common.h tempdefs.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) terminator.c
-unsaved.o : unsaved.c common.h
-	$(CC) $(COMPILEFLAGS tempdefs.h) $(BUILD_INFO) $(INCLUDES) unsaved.c
+unsaved.o : unsaved.c common.h tempdefs.h
+	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) unsaved.c
 uri.o : uri.c common.h
 	$(CC) $(COMPILEFLAGS) $(BUILD_INFO) $(INCLUDES) uri.c
 usersprt.o : usersprt.c common.h
